@@ -24,7 +24,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 # CẤU HÌNH - Chỉnh sửa tại đây
 # ==========================================
 
-API_KEY     = "AIzaSyCq1NC2f6putIUF-pX2Bvq0H_UcJpnX1xU"    #Dán API Key                 
+API_KEY     = ""    #Dán API Key                 
 DIRECTORY   = r"C:\Users\Admin\MyProject\ScrapeData"    # Thư mục chứa file cleaned_*.json
 MODEL       = "gemini-2.0-flash"                  
 BATCH_SIZE  = 10                                        # Số title gửi mỗi lần gọi API

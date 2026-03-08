@@ -31,7 +31,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 # CẤU HÌNH
 # ==========================================
 
-API_KEY    = "AIzaSyD27GpYa6lAbnUYymnbqfTlnmm07wi2R3E" #Dán API Key
+API_KEY    = "" #Dán API Key
 DIRECTORY  = r"C:\Users\Admin\MyProject\ScrapeData"
 MODEL      = "gemini-2.0-flash"
 BATCH_SIZE = 5

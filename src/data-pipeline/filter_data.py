@@ -15,20 +15,35 @@ import json
 import os
 import sys
 import time
+from dotenv import load_dotenv
 
 # Fix encoding cho Windows terminal
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
 
+load_dotenv()
+
 # ==========================================
 # CẤU HÌNH - Chỉnh sửa tại đây
 # ==========================================
 
-API_KEY     = ""    #Dán API Key                 
-DIRECTORY   = r"C:\Users\Admin\MyProject\ScrapeData"    # Thư mục chứa file cleaned_*.json
-MODEL       = "gemini-2.0-flash"                  
-BATCH_SIZE  = 10                                        # Số title gửi mỗi lần gọi API
-DELAY       = 5.0                                       # Giây chờ giữa các batch (tránh rate limit)
+API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_API_KEY_HERE")    # Dán API Key hoặc đặt GEMINI_API_KEY
+
+# Thư mục gốc project (dựa trên vị trí file hiện tại)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Thư mục chứa file cleaned_data_*.json (output từ bước clean)
+CLEANED_DATA_DIR = os.path.join(BASE_DIR, "cleaned_data")
+
+# Thư mục chứa file filtered_data_*.json (output sau khi lọc IT)
+FILTERED_DATA_DIR = os.path.join(BASE_DIR, "filtered_data")
+
+# Thư mục mặc định để scan input (có thể override bằng --dir)
+DIRECTORY  = CLEANED_DATA_DIR
+
+MODEL      = "gemini-2.5-flash"
+BATCH_SIZE = 10      # Số title gửi mỗi lần gọi API
+DELAY      = 10.0    # Giây chờ giữa các batch (tránh rate limit)
 
 # Khi nâng cấp async, thêm:
 # MAX_CONCURRENT = 5                                    # Số batch chạy song song tối đa
@@ -36,12 +51,6 @@ DELAY       = 5.0                                       # Giây chờ giữa cá
 # ==========================================
 # KIỂM TRA CẤU HÌNH
 # ==========================================
-
-if API_KEY == "YOUR_API_KEY_HERE":
-    print("=" * 55)
-    print("  LỖI: Chưa điền API Key!")
-    print("=" * 55)
-    sys.exit(1)
 
 try:
     from google import genai
@@ -60,39 +69,139 @@ client = genai.Client(api_key=API_KEY)
 # HÀM PHÂN LOẠI THEO BATCH (Title-only)
 # ==========================================
 
-SYSTEM_PROMPT = """You are a strict classifier for Vietnamese software and AI news articles.
-Your sole task: determine whether each article is DIRECTLY about SOFTWARE, AI, or PROGRAMMING.
+SYSTEM_PROMPT = """You are a STRICT binary classifier for Vietnamese news article TITLES.
 
-### CLASSIFY YES only if the article's PRIMARY subject is:
-- AI & machine learning: LLMs, chatbots, generative AI, neural networks, AI models (e.g., ChatGPT, Gemini, Claude)
-- AI applications: AI tools, AI regulation/law, AI ethics, AI use cases in business/society
-- Software & platforms: operating systems, mobile/web apps, SaaS, cloud platforms (AWS, GCP, Azure), databases
-- Programming & development: programming languages, frameworks, developer tools, open-source projects, APIs
-- Cybersecurity (software-focused): malware, vulnerabilities, hacking, data breaches, security software
-- Digital services: e-commerce platforms, social media platforms, streaming services (the service/software itself, not the company's business news)
-- Software companies & their PRODUCTS: OpenAI, Google (software products), Meta (software), Microsoft (software)
+Your ONLY task: for each title, decide if the article is PRIMARILY about:
+- AI (trí tuệ nhân tạo, machine learning, deep learning, mô hình ngôn ngữ)
+- PROGRAMMING / SOFTWARE DEVELOPMENT / DEVTOOLS
+- INFORMATION TECHNOLOGY JOBS & CAREERS (tuyển dụng, kỹ năng, lộ trình nghề nghiệp trong ngành CNTT)
 
-### CLASSIFY NO if the article is about:
-- Hardware & devices: smartphones, laptops, tablets, chips, DRAM, CPUs, GPUs, batteries, screens
-  → Example NO: "iPhone 17e hỗ trợ MagSafe", "Xiaomi Pad 8 Pro", "Giá DRAM biến động theo giờ"
-- Telecom & networks: 5G, 6G, fiber, network infrastructure, telecom companies (Viettel, VNPT, MobiFone)
-  → Example NO: "TP HCM đề nghị ba nhà mạng cùng phát triển thí điểm 6G"
-- Consumer electronics: TVs, cameras, smart home appliances, dehumidifiers, air purifiers
-  → Example NO: "Dreame DD20 - máy hút ẩm có khử khuẩn plasma"
-- Astronomy, medicine, politics, business, sports, culture, environment
+If the main topic matches these, output YES.
+Otherwise, output NO.
 
-### STRICT BOUNDARY RULES:
-1. A device/gadget review is NEVER YES, even if the device runs AI software
-2. A company's fundraising/IPO/stock news is NO, unless the article is specifically about their software product
-3. AI regulation laws ARE YES (e.g., "Luật Trí tuệ nhân tạo") — policy directly about AI/software counts
-4. Cybersecurity incidents involving software/networks ARE YES; physical hardware attacks are NO
-5. When in doubt, choose NO — only label YES if software/AI is unmistakably the core subject
+========================
+WHAT COUNTS AS YES
+========================
 
-### OUTPUT FORMAT — return ONLY this, nothing else:
+Label YES when the PRIMARY focus is:
+
+1. AI & MACHINE LEARNING
+   - AI models: LLMs, chatbots, generative AI, neural networks, computer vision, speech models
+   - Ứng dụng AI: công cụ AI, trợ lý AI, tác nhân AI, AI trong doanh nghiệp/xã hội
+   - Hạ tầng AI: huấn luyện mô hình, triển khai mô hình, tối ưu chi phí AI, GPU cloud cho AI
+   - Chính sách/pháp luật về AI: quy định, đạo luật, chuẩn an toàn AI
+
+2. SOFTWARE, APPS, PLATFORMS, DIGITAL SERVICES
+   - Hệ điều hành, phần mềm máy tính/di động/web
+   - Ứng dụng mobile/web, SaaS, cloud platforms, database, middleware
+   - Dịch vụ số: mạng xã hội, nền tảng video, streaming, thương mại điện tử, thanh toán điện tử,
+     ngân hàng số, ví điện tử, mobile banking, super app
+   - Tính năng/phát hành/cập nhật của sản phẩm phần mềm hoặc dịch vụ số
+   - Công cụ làm việc số: bộ văn phòng, phần mềm thiết kế, IDE, công cụ năng suất
+
+3. PROGRAMMING, DEVELOPMENT, DEVTOOLS
+   - Ngôn ngữ lập trình, framework, thư viện, SDK, API
+   - Hướng dẫn, tips, best practices cho lập trình viên
+   - Công cụ dev: GitHub, CI/CD, Docker, Kubernetes, hệ thống logging, monitoring
+   - Open-source project, release mới, thay đổi license
+
+4. CYBERSECURITY (PHẦN MỀM / MẠNG)
+   - Tấn công mạng, malware, ransomware, lỗ hổng bảo mật, rò rỉ dữ liệu
+   - Phần mềm/bộ giải pháp bảo mật, firewall, antivirus, VPN, xác thực, mã hóa
+   - Sự cố bảo mật trên nền tảng số (mạng xã hội, dịch vụ cloud, ngân hàng số, ví điện tử)
+
+5. IT JOBS & CAREERS (CÔNG VIỆC LIÊN QUAN CNTT)
+   - Tuyển dụng, thông báo việc làm, mô tả vị trí, mức lương cho:
+     lập trình viên, kỹ sư phần mềm, data engineer, data scientist, ML engineer,
+     DevOps, QA/QC, tester, BA, PM phần mềm, kiến trúc sư giải pháp, kỹ sư bảo mật, admin hệ thống
+   - Khóa học, chứng chỉ, kỹ năng dành cho nghề IT / lập trình / AI
+   - Phân tích xu hướng nghề nghiệp, nhu cầu tuyển dụng, lộ trình nghề nghiệp trong ngành CNTT
+   - Ví dụ YES:
+     - "TopCV: Tuyển dụng Python Developer lương 30 triệu"
+     - "Nhu cầu kỹ sư AI tăng mạnh tại Việt Nam"
+     - "Khóa học lập trình web full-stack cho người mới bắt đầu"
+
+6. COMPANY NEWS – ONLY IF TRỌNG TÂM LÀ SẢN PHẨM PHẦN MỀM/AI HOẶC NHÂN SỰ IT
+   - Ra mắt / cập nhật / chiến lược liên quan đến sản phẩm phần mềm hoặc AI cụ thể
+   - Chiến lược tuyển dụng/đào tạo đội ngũ kỹ sư phần mềm, AI, data của doanh nghiệp
+   - Ví dụ YES:
+     - "OpenAI ra mắt GPT-6 với khả năng lập trình tốt hơn"
+     - "Ngân hàng X tuyển 100 kỹ sư IT cho nền tảng ngân hàng số"
+
+========================
+WHAT COUNTS AS NO
+========================
+
+Luôn label NO nếu tiêu đề tập trung vào:
+
+1. HARDWARE, THIẾT BỊ, GADGET
+   - Điện thoại, laptop, tablet, PC, TV, màn hình, camera, tai nghe, thiết bị gia dụng
+   - So sánh cấu hình, đánh giá, giá bán, khuyến mãi của thiết bị
+   - Ví dụ NO:
+     - "iPhone 17e khác gì 16e, có đáng nâng cấp?"
+     - "Laptop màn hình gập kiêm máy chơi game"
+     - "Điện thoại robot sẽ lên kệ trong năm nay"
+
+2. VIỄN THÔNG & HẠ TẦNG MẠNG
+   - 5G, 6G, cáp quang, trạm phát sóng, hạ tầng viễn thông
+   - Thử nghiệm 6G, mở rộng vùng phủ sóng, băng tần, gói cước
+   - Ví dụ NO:
+     - "TP HCM đề nghị ba nhà mạng cùng phát triển thí điểm 6G"
+     - "Tốc độ mạng 5G Việt Nam tăng cao"
+
+3. ĐIỆN TỬ TIÊU DÙNG, ĐỒ GIA DỤNG, XE CỘ
+   - Tủ lạnh, máy giặt, máy hút ẩm, robot hút bụi, điều hòa, ô tô/xemáy (kể cả xe điện)
+   - Ví dụ NO:
+     - "Máy hút ẩm có khử khuẩn plasma"
+     - "Galaxy S26 Ultra đọ pin với iPhone 17 Pro Max"
+
+4. TÀI CHÍNH, KINH DOANH, CHỨNG KHOÁN (KHÔNG TRỌNG TÂM VÀO PHẦN MỀM/AI/IT JOBS)
+   - Kết quả kinh doanh, IPO, cổ phiếu, M&A, gọi vốn
+   - Tin chung về nền kinh tế, bất động sản, vàng, lãi suất
+   - Ví dụ NO:
+     - "Cổ phiếu công ty X tăng mạnh sau báo cáo tài chính"
+     - "Giá vàng lập đỉnh mới"
+
+5. CÁC LĨNH VỰC KHÁC
+   - Thể thao, giải trí, thời trang, sức khỏe, y tế, giáo dục, môi trường, thiên văn, chính trị
+   - Công việc không liên quan đến CNTT (bán hàng, marketing, chăm sóc khách hàng, tài xế, phục vụ…)
+   - Kể cả khi có nhắc tới công nghệ nhưng không phải trọng tâm bài
+   - Ví dụ NO:
+     - "Xôi lạc TV và những 'cánh tay nối dài' của cá độ"
+     - "Đội tuyển bóng đá sử dụng phân tích dữ liệu để nâng cao thành tích"
+
+========================
+STRICT BOUNDARY RULES
+========================
+
+1. Bài review/thông số/giá bán thiết bị PHẦN CỨNG luôn là NO, kể cả khi có AI bên trong.
+2. Bài về doanh thu, cổ phiếu, thương vụ của công ty công nghệ là NO,
+   trừ khi tiêu đề nói rõ về SẢN PHẨM phần mềm/AI hoặc TUYỂN DỤNG/KỸ NĂNG IT cụ thể.
+3. Bài về luật, quy định, chiến lược quốc gia VỀ AI HAY CHUYỂN ĐỔI SỐ là YES.
+4. Sự cố bảo mật/phát tán dữ liệu trên nền tảng số, hệ thống mạng là YES.
+5. Khi có nhiều chủ đề trong 1 title, hãy chọn CHỦ ĐỀ CHÍNH. Nếu không rõ ràng, chọn NO.
+6. Khi phân vân, LUÔN chọn NO.
+
+========================
+OUTPUT FORMAT
+========================
+
+Bạn sẽ nhận được một danh sách tiêu đề dạng:
+
+1. Tiêu đề thứ nhất
+2. Tiêu đề thứ hai
+3. Tiêu đề thứ ba
+...
+
+Hãy trả về KẾT QUẢ DUY NHẤT theo đúng định dạng sau, không thêm giải thích:
+
 1. YES
 2. NO
 3. YES
-..."""
+4. NO
+...
+
+Chỉ dùng YES hoặc NO. Không thêm bất kỳ chữ nào khác."""
 
 # ==========================================
 # KEYWORD PRE-FILTER (không tốn API quota)
@@ -161,6 +270,8 @@ BLACKLIST = [
     "bất động sản", "cho vay", "lãi suất ngân hàng", "trái phiếu",
     "vàng", "bầu cử",
 ]
+WHITELIST_L = [kw.lower() for kw in WHITELIST]
+BLACKLIST_L = [kw.lower() for kw in BLACKLIST]
 
 
 def keyword_filter(title: str):
@@ -172,11 +283,11 @@ def keyword_filter(title: str):
         None   → không chắc, cần gọi API
     """
     t = title.lower()
-    for kw in BLACKLIST:
-        if kw.lower() in t:
+    for kw in BLACKLIST_L:
+        if kw in t:
             return False
-    for kw in WHITELIST:
-        if kw.lower() in t:
+    for kw in WHITELIST_L:
+        if kw in t:
             return True
     return None  # Không chắc → để API quyết định
 
@@ -190,7 +301,7 @@ def classify_batch(titles: list[str]) -> list[bool]:
     Khi nâng cấp: dùng await client.aio.models.generate_content()
     Phần còn lại của hàm giữ nguyên.
     """
-    MAX_RETRIES = 5
+    MAX_RETRIES = 3
     BASE_DELAY  = 10  # giây, nhân đôi mỗi lần retry
 
     title_list = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(titles))
@@ -203,7 +314,12 @@ def classify_batch(titles: list[str]) -> list[bool]:
                 model=MODEL,
                 contents=prompt
             )
-            raw = response.text.strip()
+            raw_text = response.text or ""
+            raw = raw_text.strip()
+
+            if not raw:
+                print("    [WARN] API không trả về nội dung — gán False cho toàn bộ batch này")
+                return [False] * len(titles)
 
             # Parse kết quả: "1. YES\n2. NO\n3. YES" → [True, False, True]
             results = []
@@ -216,8 +332,8 @@ def classify_batch(titles: list[str]) -> list[bool]:
                 results.append(answer.startswith("YES"))
 
             if len(results) != len(titles):
-                print(f"    [WARN] Parse lệch ({len(results)} vs {len(titles)}) — giữ tất cả")
-                return [True] * len(titles)
+                print(f"    [WARN] Parse lệch ({len(results)} vs {len(titles)}) — gán False cho toàn bộ batch này")
+                return [False] * len(titles)
 
             return results
 
@@ -228,11 +344,11 @@ def classify_batch(titles: list[str]) -> list[bool]:
                 print(f"    [RATE LIMIT] Lần {attempt + 1}/{MAX_RETRIES} — chờ {wait}s rồi thử lại...")
                 time.sleep(wait)
             else:
-                print(f"    [WARN] Lỗi API: {e} — giữ tất cả bài trong batch này")
-                return [True] * len(titles)
+                print(f"    [WARN] Lỗi API: {e} — gán False cho toàn bộ batch này")
+                return [False] * len(titles)
 
-    print(f"    [ERROR] Đã thử {MAX_RETRIES} lần vẫn lỗi — giữ tất cả bài trong batch này")
-    return [True] * len(titles)
+    print(f"    [ERROR] Đã thử {MAX_RETRIES} lần vẫn lỗi — gán False cho toàn bộ batch này")
+    return [False] * len(titles)
 
 
 def make_batches(lst: list, size: int) -> list[list]:
@@ -247,7 +363,7 @@ def make_batches(lst: list, size: int) -> list[list]:
 def filter_json_file(input_path: str) -> str:
     """
     Đọc file cleaned JSON, gán nhãn is_relevant cho mỗi bài bằng batch API,
-    ghi ra file mới với tiền tố 'labeled_'.
+    ghi ra file mới với tiền tố 'filtered_data_' trong thư mục filtered_data.
 
     [Thiết kế để nâng cấp async]
     Khi nâng cấp: đổi thành async def filter_json_file()
@@ -319,16 +435,26 @@ def filter_json_file(input_path: str) -> str:
     # Gán nhãn is_relevant vào từng bài
     relevant_count = 0
     for i, post in enumerate(posts):
-        is_it = results_map.get(i, True)
+        is_it = results_map.get(i, False)
         post["is_relevant"] = is_it
         if is_it:
             relevant_count += 1
 
-    # Lưu file output
-    dir_name   = os.path.dirname(input_path)
-    base_name  = os.path.basename(input_path)
-    clean_name = base_name.replace("cleaned_", "", 1)
-    output_path = os.path.join(dir_name, "labeled_" + clean_name)
+    # Lưu file output vào thư mục filtered_data với tên dạng filtered_data_XXX.json
+    os.makedirs(FILTERED_DATA_DIR, exist_ok=True)
+    base_name = os.path.basename(input_path)
+
+    # Nếu input là cleaned_data_XXX.json → output filtered_data_XXX.json
+    if base_name.startswith("cleaned_data_"):
+        suffix = base_name[len("cleaned_data_"):]  # phần XXX.json
+    # Trường hợp cũ: cleaned_XXX.json → filtered_data_XXX.json
+    elif base_name.startswith("cleaned_"):
+        suffix = base_name[len("cleaned_"):]       # phần XXX.json
+    else:
+        suffix = base_name
+
+    output_filename = "filtered_data_" + suffix
+    output_path = os.path.join(FILTERED_DATA_DIR, output_filename)
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -346,13 +472,36 @@ def filter_json_file(input_path: str) -> str:
 def main():
     # [Async upgrade]: đổi thành async def main(), chạy bằng asyncio.run(main())
 
+    global DIRECTORY
+
     parser = argparse.ArgumentParser(description="Lọc bài viết IT bằng Gemini API")
     parser.add_argument(
-        "files", nargs="*",
-        help="Đường dẫn file cleaned_*.json cần xử lý. "
-             "Nếu bỏ trống, tự scan thư mục DIRECTORY."
+        "files",
+        nargs="*",
+        help=(
+            "Đường dẫn file cleaned_*.json cần xử lý. "
+            "Nếu bỏ trống, script sẽ tự scan thư mục mặc định hoặc --dir."
+        ),
     )
+    parser.add_argument(
+        "--dir",
+        dest="directory",
+        default=DIRECTORY,
+        help=f"Thư mục chứa file cleaned_*.json (mặc định: {DIRECTORY}).",
+    )
+
     args = parser.parse_args()
+
+    # Cập nhật thư mục runtime từ argument
+    DIRECTORY = args.directory
+
+    if API_KEY == "YOUR_API_KEY_HERE":
+        print("=" * 55)
+        print("  LỖI: Chưa cấu hình API Key Gemini.")
+        print("  - Đặt biến môi trường GEMINI_API_KEY trong hệ thống")
+        print("  - Hoặc khai báo GEMINI_API_KEY trong file .env")
+        print("=" * 55)
+        sys.exit(1)
 
     if args.files:
         # Chế độ chỉ định file cụ thể
@@ -364,6 +513,10 @@ def main():
             sys.exit(1)
     else:
         # Fallback: scan DIRECTORY
+        if not os.path.isdir(DIRECTORY):
+            print(f"[LỖI] Thư mục không tồn tại: {DIRECTORY}")
+            sys.exit(1)
+
         json_files = [
             os.path.join(DIRECTORY, f)
             for f in os.listdir(DIRECTORY)
@@ -382,7 +535,7 @@ def main():
         filter_json_file(file_path)
 
     print(f"\n{'=' * 55}")
-    print("Hoàn thành! Kiểm tra các file labeled_*.json")
+    print("Hoàn thành! Kiểm tra các file filtered_data_*.json trong thư mục filtered_data")
     print(f"{'=' * 55}")
 
 

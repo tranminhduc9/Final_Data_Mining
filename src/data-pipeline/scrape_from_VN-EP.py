@@ -5,13 +5,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
 import json
+import os
 from datetime import datetime
 
 driver = webdriver.Chrome()
 
 # Gán link tìm kiếm
 source_url = "https://vnexpress.net/khoa-hoc-cong-nghe"
-num_pages = 2  # Số trang muốn cào
+num_pages = 3  # Số trang muốn cào
 
 driver.get(source_url)
 
@@ -105,8 +106,9 @@ for idx, post in enumerate(posts_info):
     
 driver.quit()
 
-# Lưu dữ liệu vào file JSON
-output_file = "raw_data_VN-EP.json"
+# Lưu dữ liệu vào file JSON trong folder raw_data
+os.makedirs("raw_data", exist_ok=True)
+output_file = os.path.join("raw_data", "raw_data_VN-EP.json")
 with open(output_file, "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
 

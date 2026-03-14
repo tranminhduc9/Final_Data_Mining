@@ -23,10 +23,10 @@ from neo4j_config import (
 )
 
 def main():
-    """Main pipeline"""
+    """Main pipeline with ALL relationships"""
     
     logger.info("=" * 60)
-    logger.info("DATA TRANSFORMATION & NEO4J IMPORT PIPELINE")
+    logger.info("DATA TRANSFORMATION & NEO4J IMPORT PIPELINE (v2.5)")
     logger.info("=" * 60)
     
     # Step 1: Transform data
@@ -35,18 +35,13 @@ def main():
     
     transformer = DataTransformer()
     
-    # Transform VN-Express
     stats_vnep = transformer.batch_transform(DATA_PATH_VNEP)
     logger.info(f"VN-Express: {stats_vnep['articles']} articles")
     
-    # Transform Dân Trí
     stats_dt = transformer.batch_transform(DATA_PATH_DT)
     logger.info(f"Dân Trí: {stats_dt['articles']} articles")
     
-    # Print summary
     logger.info(transformer.get_summary())
-    
-    # Export transformed data
     transformer.export_to_json()
     
     # Step 2: Import to Neo4j
@@ -70,11 +65,37 @@ def main():
         importer.import_persons(list(transformer.persons))
         importer.import_skills(list(transformer.skills))
         
-        # Create relationships
+        # Step 3: Create ALL Relationships
+        logger.info("\n🔗 STEP 3: CREATING RELATIONSHIPS")
+        logger.info("-" * 60)
+        
+        # ✅ Article MENTIONS Technology/Company
         importer.create_article_mentions_relationships(transformer)
         
-        # Print statistics
-        logger.info("\n📈 IMPORT STATISTICS")
+        # ✅ Company USES Technology
+        importer.create_company_uses_technology_relationships()
+        
+        # ✅ Technology RELATED_TO Technology
+        importer.create_technology_related_to_relationships()
+        
+        # ✅ Person WORKS_AT Company
+        importer.create_person_works_at_relationships()
+        
+        # ✅ Person WROTE Article
+        importer.create_person_wrote_article_relationships()
+        
+        # ✅ Skill relationships
+        importer.create_skill_relationships(transformer)
+        
+        # ... sau khi import xong ...
+
+        # Step 4: Verify All Relationships
+        logger.info("\n✔️ STEP 4: VERIFYING RELATIONSHIPS")
+        logger.info("-" * 60)
+        rel_stats = importer.verify_relationships()
+        
+        # Step 5: Print Statistics
+        logger.info("\n📈 FINAL IMPORT STATISTICS")
         logger.info("-" * 60)
         stats = importer.get_statistics()
         for node_type, count in stats.items():

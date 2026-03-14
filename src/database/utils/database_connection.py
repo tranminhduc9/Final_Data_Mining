@@ -199,6 +199,39 @@ class Neo4jJobImporter:
             logger.error(f"✗ Error importing skills: {e}")
             return 0
     
+    def verify_relationships(self) -> Dict[str, int]:
+        """
+        Verify all relationship types exist
+        
+        Returns:
+            dict: Count of each relationship type
+        """
+        try:
+            with self.driver.session(database=self.database) as session:
+                relationship_types = [
+                    'MENTIONS', 'USES', 'RELATED_TO', 
+                    'WORKS_AT', 'WROTE', 'IS_TECHNOLOGY'
+                ]
+                
+                rel_stats = {}
+                for rel_type in relationship_types:
+                    result = session.run(
+                        f"MATCH ()-[r:{rel_type}]->() RETURN count(r) as count"
+                    )
+                    record = result.single()
+                    count = record['count'] if record else 0
+                    rel_stats[rel_type] = count
+                    
+                    if count > 0:
+                        logger.info(f"✅ {rel_type:15s}: {count:5d}")
+                    else:
+                        logger.warning(f"⚠️  {rel_type:15s}: {count:5d} (MISSING)")
+                
+                return rel_stats
+        except Exception as e:
+            logger.error(f"✗ Error verifying relationships: {e}")
+            return {}
+
     def create_article_mentions_relationships(self, data_transformer) -> int:
         """Create MENTIONS relationships: Article -> Technology/Company"""
         try:
@@ -246,6 +279,145 @@ class Neo4jJobImporter:
             logger.error(f"✗ Error creating relationships: {e}")
             return 0
     
+    def create_company_uses_technology_relationships(self) -> int:
+        """
+        Create USES relationships: Company -> Technology
+        Based on article mentions co-occurrence
+        """
+        try:
+            with self.driver.session(database=self.database) as session:
+                # Heuristic: Nếu article mention cả company và technology
+                # → có khả năng company uses technology đó
+                result = session.run(
+                    """
+                    MATCH (a:Article)-[:MENTIONS]->(c:Company)
+                    MATCH (a)-[:MENTIONS]->(t:Technology)
+                    WITH c, t, count(a) as co_mention_count
+                    WHERE co_mention_count >= 2
+                    MERGE (c)-[r:USES {frequency: co_mention_count}]->(t)
+                    RETURN count(r) as rel_count
+                    """
+                )
+                record = result.single()
+                rel_count = record['rel_count'] if record else 0
+                
+                logger.info(f"✅ Created {rel_count} USES relationships")
+                return rel_count
+        except Exception as e:
+            logger.error(f"✗ Error creating USES relationships: {e}")
+            return 0
+    
+    def create_technology_related_to_relationships(self) -> int:
+        """
+        Create RELATED_TO relationships: Technology -> Technology
+        Based on article co-mentions
+        """
+        try:
+            with self.driver.session(database=self.database) as session:
+                result = session.run(
+                    """
+                    MATCH (a:Article)-[:MENTIONS]->(t1:Technology)
+                    MATCH (a)-[:MENTIONS]->(t2:Technology)
+                    WHERE t1.name < t2.name
+                    WITH t1, t2, count(a) as co_mention_count
+                    WHERE co_mention_count >= 1
+                    MERGE (t1)-[r:RELATED_TO {frequency: co_mention_count}]->(t2)
+                    RETURN count(r) as rel_count
+                    """
+                )
+                record = result.single()
+                rel_count = record['rel_count'] if record else 0
+                
+                logger.info(f"✅ Created {rel_count} RELATED_TO relationships")
+                return rel_count
+        except Exception as e:
+            logger.error(f"✗ Error creating RELATED_TO relationships: {e}")
+            return 0
+    
+    def create_person_works_at_relationships(self) -> int:
+        """
+        Create WORKS_AT relationships: Person -> Company
+        Based on article mentions patterns
+        """
+        try:
+            with self.driver.session(database=self.database) as session:
+                # Nếu person và company được mention trong cùng article
+                # nhiều lần → có khả năng person works at company
+                result = session.run(
+                    """
+                    MATCH (a:Article)-[:MENTIONS]->(p:Person)
+                    MATCH (a)-[:MENTIONS]->(c:Company)
+                    WITH p, c, count(a) as mention_count
+                    WHERE mention_count >= 2
+                    MERGE (p)-[r:WORKS_AT {confidence: mention_count}]->(c)
+                    RETURN count(r) as rel_count
+                    """
+                )
+                record = result.single()
+                rel_count = record['rel_count'] if record else 0
+                
+                logger.info(f"✅ Created {rel_count} WORKS_AT relationships")
+                return rel_count
+        except Exception as e:
+            logger.error(f"✗ Error creating WORKS_AT relationships: {e}")
+            return 0
+    
+    def create_person_wrote_article_relationships(self) -> int:
+        """
+        Create WROTE relationships: Person -> Article
+        Based on heuristic: if person mentioned in article, likely involved
+        """
+        try:
+            with self.driver.session(database=self.database) as session:
+                result = session.run(
+                    """
+                    MATCH (a:Article)-[:MENTIONS]->(p:Person)
+                    MERGE (p)-[:WROTE]->(a)
+                    RETURN count(*) as rel_count
+                    """
+                )
+                record = result.single()
+                rel_count = record['rel_count'] if record else 0
+                
+                logger.info(f"✅ Created {rel_count} WROTE relationships")
+                return rel_count
+        except Exception as e:
+            logger.error(f"✗ Error creating WROTE relationships: {e}")
+            return 0
+    
+    def create_skill_relationships(self, transformer) -> int:
+        """
+        Create relationships between Skills and Technologies
+        Inferred from technology mentions
+        """
+        try:
+            with self.driver.session(database=self.database) as session:
+                rel_count = 0
+                
+                # Skill có cùng tên với Technology → RELATED
+                for skill in transformer.skills:
+                    result = session.run(
+                        """
+                        MATCH (s:Skill {name: $skill_name})
+                        MATCH (t:Technology {name: $tech_name})
+                        MERGE (s)-[:IS_TECHNOLOGY]->(t)
+                        RETURN count(*) as count
+                        """,
+                        parameters={
+                            'skill_name': skill.name,
+                            'tech_name': skill.name
+                        }
+                    )
+                    record = result.single()
+                    if record:
+                        rel_count += record['count'] if record['count'] else 0
+                
+                logger.info(f"✅ Created {rel_count} Skill-Technology relationships")
+                return rel_count
+        except Exception as e:
+            logger.error(f"✗ Error creating skill relationships: {e}")
+            return 0
+
     def get_statistics(self) -> Dict[str, int]:
         """Get database statistics"""
         try:
@@ -266,3 +438,5 @@ class Neo4jJobImporter:
         except Exception as e:
             logger.error(f"✗ Error getting statistics: {e}")
             return {}
+        
+    

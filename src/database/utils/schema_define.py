@@ -1,0 +1,87 @@
+"""
+Node Definitions for Job Market Graph
+"""
+from dataclasses import dataclass, field
+from typing import Optional, List
+from datetime import datetime
+
+@dataclass
+class Technology:
+    """Technology Node"""
+    name: str
+    category: str  # AI, Cloud, DevOps, Frontend, Backend, etc.
+    description: str = ""
+    trend_score: float = 0.5  # 0-1, based on article mentions frequency
+    aliases: List[str] = field(default_factory=list)  # AI, Artificial Intelligence, ML
+    
+    def __hash__(self):
+        return hash(self.name.lower())
+
+@dataclass
+class Company:
+    """Company Node"""
+    name: str
+    industry: str  # Tech, Finance, Healthcare, etc.
+    size: str = "Unknown"  # Startup, SME, Enterprise
+    location: str = "Unknown"
+    rating: float = 0.0  # Based on sentiment from articles
+    
+    def __hash__(self):
+        return hash(self.name.lower())
+
+@dataclass
+class Job:
+    """Job Node"""
+    title: str
+    salary_min: Optional[float] = None
+    salary_max: Optional[float] = None
+    level: str = "Unknown"  # Entry, Mid, Senior
+    source_url: str = ""
+    company_name: str = ""  # Reference to Company
+    posted_date: Optional[datetime] = None
+    
+    def __hash__(self):
+        return hash((self.title.lower(), self.company_name.lower()))
+
+@dataclass
+class Skill:
+    """Skill Node"""
+    name: str
+    category: str  # Programming, DevOps, Soft Skills, etc.
+    demand_score: float = 0.5  # 0-1, based on job requirements frequency
+    
+    def __hash__(self):
+        return hash(self.name.lower())
+
+@dataclass
+class Article:
+    """Article Node"""
+    title: str
+    content: str
+    source: str  # VN-Express, Dân Trí
+    published_date: datetime
+    sentiment_score: float = 0.0  # -1 to 1
+    
+    def __hash__(self):
+        return hash(self.title.lower())
+
+@dataclass
+class Person:
+    """Person Node"""
+    name: str
+    role: str = "Unknown"  # CEO, CTO, Engineer, Researcher, etc.
+    
+    def __hash__(self):
+        return hash(self.name.lower())
+
+# Relationship Types
+class RelationshipType:
+    REQUIRES = "REQUIRES"           # Job -> Skill
+    USES = "USES"                   # Company -> Technology
+    POSTED_BY = "POSTED_BY"         # Job -> Company
+    MENTIONS_TECH = "MENTIONS"      # Article -> Technology
+    MENTIONS_COMPANY = "MENTIONS"   # Article -> Company
+    RELATED_TO = "RELATED_TO"       # Technology -> Technology
+    HAS_SENTIMENT = "HAS_SENTIMENT" # Article -> Sentiment
+    WORKS_AT = "WORKS_AT"           # Person -> Company
+    WROTE = "WROTE"                 # Person -> Article

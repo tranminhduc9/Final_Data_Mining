@@ -3,7 +3,6 @@ import json
 import re
 import os
 import sys
-from datetime import datetime
 
 # Fix encoding cho Windows terminal
 if sys.stdout.encoding != "utf-8":
@@ -19,16 +18,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_DATA_DIR = os.path.join(BASE_DIR, "raw_data")
 CLEANED_DATA_DIR = os.path.join(BASE_DIR, "cleaned_data")
 
-# Map tên thứ tiếng Việt -> số thứ tự (dùng khi format lại)
-THU_MAP = {
-    "thứ hai": "Thứ Hai",
-    "thứ ba": "Thứ Ba",
-    "thứ tư": "Thứ Tư",
-    "thứ năm": "Thứ Năm",
-    "thứ sáu": "Thứ Sáu",
-    "thứ bảy": "Thứ Bảy",
-    "chủ nhật": "Chủ Nhật",
-}
 
 # ==========================================
 # HÀM LÀM SẠCH VĂN BẢN
@@ -113,8 +102,8 @@ def clean_description(description: str) -> str:
 
 def normalize_datetime(created_at: str) -> str:
     """
-    Chuẩn hoá created_at từ nhiều format khác nhau về:
-    'Thứ Hai, 02/03/2026, 15:58'
+    Chuẩn hoá created_at từ nhiều format khác nhau về: 'dd/mm/yyyy'
+    (bỏ phần thứ và giờ)
 
     Hỗ trợ các format đầu vào:
     - VnExpress: "Thứ sáu, 6/3/2026, 07:00 (GMT+7)"
@@ -131,34 +120,51 @@ def normalize_datetime(created_at: str) -> str:
 
     # --- Format 1: VnExpress "Thứ sáu, 6/3/2026, 07:00" ---
     match_vn = re.match(
-        r"(Thứ\s+\w+|Chủ\s+nhật),\s*(\d{1,2})/(\d{1,2})/(\d{4}),\s*(\d{2}:\d{2})",
+        r"(?:Thứ\s+\w+|Chủ\s+nhật),\s*(\d{1,2})/(\d{1,2})/(\d{4}),\s*\d{2}:\d{2}",
         text, re.IGNORECASE
     )
 
     # --- Format 2: Dân Trí "Thứ sáu, 06/03/2026 - 15:58" ---
     match_dt = re.match(
-        r"(Thứ\s+\w+|Chủ\s+nhật),\s*(\d{2})/(\d{2})/(\d{4})\s+-\s*(\d{2}:\d{2})",
+        r"(?:Thứ\s+\w+|Chủ\s+nhật),\s*(\d{2})/(\d{2})/(\d{4})\s+-\s*\d{2}:\d{2}",
         text, re.IGNORECASE
     )
 
+    # --- Format 3: chỉ có ngày "02/03/2026" hoặc "2/3/2026" ---
+    match_date_only = re.match(r"(\d{1,2})/(\d{1,2})/(\d{4})", text)
+
     if match_vn:
-        thu_raw, day, month, year, time = match_vn.groups()
+        day, month, year = match_vn.groups()
     elif match_dt:
-        thu_raw, day, month, year, time = match_dt.groups()
+        day, month, year = match_dt.groups()
+    elif match_date_only:
+        day, month, year = match_date_only.groups()
     else:
         # Không nhận dạng được, trả về clean cơ bản
         return clean_text(created_at)
 
-    # Chuẩn hoá tên thứ (viết hoa chữ đầu)
-    thu_lower = thu_raw.lower().strip()
-    thu_chuan = THU_MAP.get(thu_lower, thu_raw.title())
-
     # Đảm bảo ngày tháng có 2 chữ số
-    day_fmt   = day.zfill(2)
-    month_fmt = month.zfill(2)
+    return f"{day.zfill(2)}/{month.zfill(2)}/{year}"
 
-    return f"{thu_chuan}, {day_fmt}/{month_fmt}/{year}, {time}"
 
+def clean_skill_tech(skills: list) -> list:
+    """
+    Làm sạch danh sách SKILL/TECH (data từ TopCV):
+    - Xoá từ rác như 'Xem thêm'
+    - Xoá icon, ký tự đặc biệt
+    - Xoá trùng lặp (giữ nguyên thứ tự)
+    """
+    if not isinstance(skills, list):
+        return skills
+        
+    cleaned = []
+    for s in skills:
+        s_clean = clean_text(str(s))
+        if s_clean and s_clean.lower() != "xem thêm":
+            cleaned.append(s_clean)
+            
+    # Xoá trùng lặp preserving order
+    return list(dict.fromkeys(cleaned))
 
 # ==========================================
 # HÀM CHÍNH
@@ -184,17 +190,43 @@ def clean_json_file(input_path: str) -> str:
     for i, post in enumerate(posts):
         original = dict(post)
 
-        post["title"]       = clean_title(post.get("title", ""))
-        post["description"] = clean_description(post.get("description", ""))
-        post["created_at"]  = normalize_datetime(post.get("created_at", ""))
+        # Xử lý các trường của VnExpress/Dân Trí
+        if "title" in post:
+            post["title"]       = clean_title(post.get("title", ""))
+        if "description" in post:
+            post["description"] = clean_description(post.get("description", ""))
+        if "created_at" in post:
+            post["created_at"]  = normalize_datetime(post.get("created_at", ""))
 
-        # Báo cáo nếu có thay đổi (rút gọn output, chỉ in tiêu đề và mô tả)
-        if post != original:
+        # Xử lý các trường của TopCV
+        if "JOB_ROLE" in post:
+            post["JOB_ROLE"] = clean_title(post.get("JOB_ROLE", ""))
+        if "DEADLINE_DATE" in post:
+            post["DEADLINE_DATE"] = normalize_datetime(post.get("DEADLINE_DATE", ""))
+        if "SKILL/TECH" in post:
+            post["SKILL/TECH"] = clean_skill_tech(post.get("SKILL/TECH", []))
+
+        # In chi tiết những trường có thay đổi
+        changed_fields = []
+        for field in ("title", "description", "JOB_ROLE", "SKILL/TECH"):
+            before = original.get(field, "")
+            after  = post.get(field, "")
+            if before != after:
+                changed_fields.append((field, before, after))
+
+        if changed_fields:
             cleaned_count += 1
-            print(f"\n  Bài {i+1}: '{post['title'][:50]}...'")
-            if post["description"] != original.get("description", ""):
-                print(f"    description: {repr(original['description'][-40:])}")
-                print(f"             -> {repr(post['description'][-40:])}")
+            title_display = post.get('title') or post.get('JOB_ROLE', '')
+            print(f"\n  [{i + 1}] {title_display[:60]}")
+            for field, before, after in changed_fields:
+                b_str = str(before)
+                a_str = str(after)
+                # Rút gọn chuỗi/list dài để log dễ đọc
+                b = (b_str[:60] + "…") if len(b_str) > 60 else b_str
+                a = (a_str[:60]  + "…") if len(a_str)  > 60 else a_str
+                print(f"    {field}:")
+                print(f"      trước: {b}")
+                print(f"      sau  : {a}")
 
     # Lưu file output vào thư mục cleaned_data với tên dạng cleaned_data_*.json
     os.makedirs(CLEANED_DATA_DIR, exist_ok=True)

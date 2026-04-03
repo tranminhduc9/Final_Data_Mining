@@ -1,0 +1,250 @@
+{
+  "source_platform": "Báo điện tử Dân trí - Tin tức cập nhật liên tục 24/7",
+  "source_url": "https://dantri.com.vn/cong-nghe.htm",
+  "scraped_at": "2026-03-09 16:44:12",
+  "post_detail": [
+    {
+      "title": "TPHCM thành lập Ban Chỉ đạo về dữ liệu",
+      "description": "Chủ tịch UBND TPHCM vừa ra Quyết định số 1286/QĐ-UBND về việc thành lập Ban Chỉ đạo về dữ liệu TPHCM.",
+      "created_at": "07/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "UBND TPHCM",
+          "Ban Chỉ đạo về dữ liệu TPHCM"
+        ],
+        "LOC": [
+          "TPHCM"
+        ],
+        "DATE": [],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Nhiều điện thoại sẽ không thể sử dụng MoMo, Zalopay",
+      "description": "Các nền tảng thanh toán như MoMo, Zalopay đã nâng cấp bảo mật theo Thông tư 77/2025/TT-NHNN và chặn những thiết bị thiếu an toàn.",
+      "created_at": "07/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "NHNN"
+        ],
+        "LOC": [],
+        "DATE": [
+          "77/2025"
+        ],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Tìm thợ mở lại Mobile Banking trên điện thoại, cẩn thận tiền mất tật mang",
+      "description": "Không ít người dùng đang không thể truy cập vào ứng dụng ngân hàng do thiết bị không đảm bảo an toàn bảo mật.",
+      "created_at": "06/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [],
+        "DATE": [],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Những hành vi sử dụng AI bị nghiêm cấm tại Việt Nam",
+      "description": "Các công cụ AI đang ngày càng trở nên phổ biến và đa dạng. Tuy nhiên, nhiều người không biết rằng nhiều hành vi sử dụng AI đang bị nghiêm cấm tại Việt Nam.",
+      "created_at": "06/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ]
+      }
+    },
+    {
+      "title": "Nhiều người bị khóa app ngân hàng do thiết bị không đạt chuẩn bảo mật",
+      "description": "Trong ít ngày qua, không ít người dùng di động tại Việt Nam đã rơi vào tình cảnh \"dở khóc dở cười\" khi các ứng dụng ngân hàng trên thiết bị ngừng hoạt động.",
+      "created_at": "05/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Xôi lạc TV và những \"cánh tay nối dài\" của cá độ trực tuyến bất hợp pháp",
+      "description": "Các hệ thống phát lậu thể thao trực tuyến như Xôi lạc TV, 90phutTV… không chỉ là hành vi vi phạm nghiêm trọng bản quyền truyền hình, mà còn là \"cánh tay nối dài\" của những nhà cái cá độ bất hợp pháp.",
+      "created_at": "05/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "90"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Luật AI 2025: \"Lá chắn\" bảo vệ văn hóa và chủ quyền số quốc gia",
+      "description": "Luật Trí tuệ nhân tạo 2025 chính thức đi vào cuộc sống đã đánh dấu một bước ngoặt quan trọng trong quá trình chuyển đổi số của Việt Nam.",
+      "created_at": "05/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "Trí tuệ nhân tạo"
+        ]
+      }
+    },
+    {
+      "title": "Chuyên gia nhận định camera AI là rủi ro an ninh trong vụ không kích Tehran",
+      "description": "Vụ việc tại Tehran làm dấy lên lo ngại về lỗ hổng bảo mật trong hệ thống camera AI đô thị, khi hạ tầng giám sát thông minh có thể bị khai thác cho mục đích tình báo nếu không được bảo vệ chặt chẽ.",
+      "created_at": "04/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [
+          "Tehran"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ]
+      }
+    },
+    {
+      "title": "Hình ảnh, video do AI tạo ra bắt buộc phải gắn dấu hiệu nhận biết",
+      "description": "Luật Trí tuệ nhân tạo 2025 chính thức có hiệu lực từ 1/3, đánh dấu một bước ngoặt trong việc quản lý công nghệ số tại Việt Nam.",
+      "created_at": "04/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "Trí tuệ nhân tạo"
+        ]
+      }
+    },
+    {
+      "title": "MWC 2026: Cách AI bước vào cuộc sống hàng ngày",
+      "description": "Tại MWC 2026, Xiaomi đánh dấu cột mốc quan trọng trong tiến trình phát triển trí tuệ nhân tạo.",
+      "created_at": "03/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Xiaomi"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ]
+      }
+    },
+    {
+      "title": "Làn sóng tấn công mạng chưa từng có làm tê liệt hạ tầng Iran",
+      "description": "Trong bối cảnh các cuộc không kích và xung đột quân sự trực tiếp làm rung chuyển Trung Đông, một mặt trận khác khốc liệt không kém đang diễn ra trong không gian kỹ thuật số.",
+      "created_at": "03/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [
+          "Iran",
+          "Trung Đông"
+        ],
+        "DATE": [],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Vị thế con người trong nỗ lực xác lập chủ quyền đạo đức trước AI",
+      "description": "Sự chuyển dịch của trí tuệ nhân tạo (AI) từ các mô hình tạo sinh sang hệ thống tác nhân AI đã đặt ra những thách thức mới cho quản trị truyền thông số.",
+      "created_at": "03/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "trí tuệ nhân tạo",
+          "tác nhân AI"
+        ]
+      }
+    },
+    {
+      "title": "\"Sạc mua sắm\" - Cú bắt tay chiến lược của Esky Corp và Saigon Co.op",
+      "description": "Ngày 3/3, Esky Corp ký kết hợp tác chiến lược với SaiGon Co.op, đánh dấu bước triển khai quan trọng trong chiến lược mở rộng hạ tầng sạc nhanh gắn với đời sống tiêu dùng.",
+      "created_at": "04/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Esky Corp",
+          "Saigon Co. op",
+          "SaiGon Co. op"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": []
+      }
+    },
+    {
+      "title": "Làn sóng AI đẩy những chiếc điện thoại vào vòng xoáy đắt đỏ kỷ lục",
+      "description": "Thị trường di động toàn cầu đang đứng trước một nghịch lý chưa từng có trong lịch sử, trong khi nhu cầu tiêu dùng có dấu hiệu suy giảm, giá bán lẻ của smartphone không ngừng tăng.",
+      "created_at": "02/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ]
+      }
+    },
+    {
+      "title": "Mẹo tìm lại điện thoại bị mất chỉ với một chiếc máy khác",
+      "description": "Khi điện thoại bị mất, nhiều người dễ hoảng loạn. Tuy nhiên, chỉ cần một thiết bị khác và tài khoản đã đăng nhập trước đó, bạn vẫn có thể xác định vị trí máy từ xa.",
+      "created_at": "01/03/2026",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [],
+        "LOC": [],
+        "DATE": [],
+        "TECH": []
+      }
+    }
+  ]
+}

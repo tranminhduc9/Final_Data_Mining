@@ -8,9 +8,12 @@ import json
 from pathlib import Path
 
 from schema_define import (
-    Technology, Company, Job, Skill, Article, Person,
+    Technology, Company, Skill, Person,
     RelationshipType
 )
+
+# Import Article and Job types from database_connection
+from database_connection import Article, Job
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +26,7 @@ class DataTransformer:
         self.skills: Set[Skill] = set()
         self.articles: List[Article] = []
         self.persons: Set[Person] = set()
+        self.job_roles: List[Job] = []
         
         # Tech category mapping
         self.tech_categories = {

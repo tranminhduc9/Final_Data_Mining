@@ -5,6 +5,9 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 from datetime import datetime
 
+# Note: Article and Job classes are defined in database_connection.py
+# to avoid circular import issues
+
 @dataclass
 class Technology:
     """Technology Node"""
@@ -39,19 +42,9 @@ class Job:
     source_url: str = ""
     company_name: str = ""  # Reference to Company
     posted_date: Optional[datetime] = None
-    
+
     def __hash__(self):
         return hash((self.title.lower(), self.company_name.lower()))
-
-@dataclass
-class Skill:
-    """Skill Node"""
-    name: str
-    category: str  # Programming, DevOps, Soft Skills, etc.
-    demand_score: float = 0.5  # 0-1, based on job requirements frequency
-    
-    def __hash__(self):
-        return hash(self.name.lower())
 
 @dataclass
 class Article:
@@ -61,16 +54,26 @@ class Article:
     source: str  # VN-Express, Dân Trí
     published_date: datetime
     sentiment_score: float = 0.0  # -1 to 1
-    
+
     def __hash__(self):
         return hash(self.title.lower())
+
+@dataclass
+class Skill:
+    """Skill Node"""
+    name: str
+    category: str  # Programming, DevOps, Soft Skills, etc.
+    demand_score: float = 0.5  # 0-1, based on job requirements frequency
+
+    def __hash__(self):
+        return hash(self.name.lower())
 
 @dataclass
 class Person:
     """Person Node"""
     name: str
     role: str = "Unknown"  # CEO, CTO, Engineer, Researcher, etc.
-    
+
     def __hash__(self):
         return hash(self.name.lower())
 

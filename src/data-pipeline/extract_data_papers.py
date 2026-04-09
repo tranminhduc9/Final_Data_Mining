@@ -46,7 +46,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILTERED_DATA_DIR = os.path.join(BASE_DIR, "filtered_data")
 
 # Thư mục chứa file extracted_data_phobert_*.json (output sau bước NER PhoBERT)
-EXTRACTED_DATA_DIR = os.path.join(BASE_DIR, "extracted_data_phobert")
+EXTRACTED_DATA_DIR = os.path.join(BASE_DIR, "extracted_data")
 
 # Thư mục mặc định để scan input (có thể override bằng --dir)
 DIRECTORY = FILTERED_DATA_DIR

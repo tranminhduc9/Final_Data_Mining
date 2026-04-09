@@ -1,277 +1,63 @@
 {
   "source_platform": "Báo điện tử Dân trí - Tin tức cập nhật liên tục 24/7",
-  "source_url": "https://dantri.com.vn/cong-nghe.htm",
-  "scraped_at": "2026-03-09 16:44:12",
+  "source_url": "https://dantri.com.vn/cong-nghe/ai-internet.htm",
+  "scraped_at": "2026-04-09 00:09:49",
   "post_detail": [
     {
-      "title": "iPhone 17e giảm giá dù chưa lên kệ tại Việt Nam",
-      "description": "iPhone 17e phiên bản 256GB giảm 500.000 đồng, xuống mức giá 17,5 triệu đồng. Phiên bản 512GB cũng được điều chỉnh giảm 1 triệu đồng, còn 23,5 triệu đồng.",
-      "created_at": "Thứ hai, 09/03/2026 - 14:12"
+      "title": "Tương lai của chip máy tính chỉ đơn thuần là thay thế điện năng?",
+      "content": "Trí tuệ nhân tạo (AI) đang ngày càng trở nên phổ biến, len lỏi vào mọi ngóc ngách của cuộc sống, thậm chí cả với những người không quan tâm hoặc không muốn sự hiện diện của nó trên thiết bị của mình. Dù có quan điểm thế nào về công nghệ này, hai điều không thể phủ nhận là: AI đã gây ra tình trạng thiếu chip, đẩy giá công nghệ lên cao, và nó cực kỳ có hại cho môi trường.\n\nNguyên nhân chính của tác động tiêu cực đến môi trường là do yêu cầu về sức mạnh xử lý khổng lồ của AI. Các trung tâm dữ liệu AI tiêu thụ một lượng điện và nước khổng lồ. Đơn cử, việc tương tác lịch sự với chatbot đã tiêu tốn của ChatGPT hàng chục triệu đô la Mỹ.\n\nTuy nhiên, một bước đột phá mới mang tên chip quang tử đang mở ra tiềm năng cải thiện đáng kể hiệu quả năng lượng của AI. Khác với các chip hiện tại sử dụng electron để hoạt động, chip quang tử sử dụng photon (các hạt ánh sáng) để thực hiện các phép tính.\n\nĐiều này có nghĩa là chúng thực hiện các phép tính AI bằng ánh sáng thay vì điện, từ đó tiêu thụ ít tài nguyên thiên nhiên hơn.\n\nCơ chế hoạt động của chip quang học\n\nKhông chỉ thân thiện hơn với môi trường, chip quang tử còn mạnh mẽ hơn, hoạt động nhanh hơn cả các GPU hiện có. Trong bối cảnh cuộc sống ngày càng phụ thuộc vào internet và AI khiến các trung tâm dữ liệu tiêu thụ nhiều năng lượng hơn, chip quang học có thể giảm thiểu tác động tiêu cực của công nghệ này đến môi trường, đồng thời mang lại sự cải thiện tổng thể về hiệu suất.\n\nĐể hiểu rõ hơn về lợi ích môi trường của chip quang học, cần xem xét cách hoạt động của chip silicon truyền thống. Một vi mạch nhỏ chứa hàng tỷ bóng bán dẫn, có chức năng bật hoặc tắt dòng điện, về cơ bản là đẩy các electron qua mạch. Quá trình này tạo ra ma sát, sinh nhiệt và đòi hỏi các trung tâm dữ liệu phải có hệ thống làm mát phức tạp, tiêu thụ rất nhiều nước.\n\nChip quang học thay thế các bóng bán dẫn này bằng các nơron quang học dẫn ánh sáng qua chip để tạo ra năng lượng. Mặc dù không hoàn toàn không cần điện (vì chúng hoạt động trong các thiết bị điện tử), chức năng chính của chúng là chuyển đổi tín hiệu điện thành ánh sáng, thực hiện các phép tính cần thiết, sau đó chuyển đổi trở lại thành hệ thống điện trả về máy tính.\n\nNgoài ra, một đường dẫn ánh sáng có thể chứa nhiều kênh (điều mà dòng điện không thể làm được), cho phép các chip này xử lý đồng thời nhiều giá trị, từ đó sử dụng ít năng lượng hơn so với việc xử lý riêng lẻ. Hơn nữa, ánh sáng không gặp phải điện trở như điện, giúp chip quang học thực hiện các tác vụ tương tự mà không tạo ra nhiều nhiệt, từ đó sử dụng ít nước hơn.\n\nTốc độ và hiệu quả vượt trội\n\nBên cạnh khả năng tiết kiệm năng lượng, chip quang học còn mạnh mẽ hơn đáng kể so với các chip hiện hành. Các nhà khoa học Trung Quốc đứng sau dự án LightGen đã công bố trên tạp chí Khoa học rằng nguyên mẫu của họ \"vượt trội hơn hai bậc so với các chip điện tử tiên tiến nhất\" về tốc độ tính toán và hiệu quả năng lượng.\n\nTương tự, công ty Q.ANT của Đức tuyên bố NPU Gen 2 của họ tiết kiệm năng lượng hơn tới 30 lần và nhanh hơn 50 lần so với công nghệ hiện đang được sử dụng trong các trung tâm dữ liệu.\n\nNhững con số ấn tượng này không gây ngạc nhiên, bởi ma sát điện từ lâu đã là rào cản đối với sự tiến bộ trong công nghệ chip. Khả năng một đường dẫn ánh sáng chứa nhiều kênh cho phép xử lý đồng thời nhiều giá trị, giúp tiết kiệm năng lượng hơn so với xử lý riêng lẻ.\n\nThậm chí, chúng còn rất chính xác, với nguyên mẫu của Đại học Sydney nhận diện hình ảnh chính xác từ 90-99% thời gian.\n\nDù muốn hay không, trí tuệ nhân tạo sẽ không biến mất trong thời gian ngắn. Những tiến bộ trong công nghệ chip như xử lý proton là dấu hiệu đáng khích lệ cho thấy chúng ta có thể làm cho công nghệ AI và việc sử dụng dữ liệu khác ít gây hại cho môi trường hơn.\n\nViệc đạt được điều này đồng thời với việc nâng cao hiệu quả hoạt động là một điểm cộng rất lớn."
     },
     {
-      "title": "TPHCM thành lập Ban Chỉ đạo về dữ liệu",
-      "description": "Chủ tịch UBND TPHCM vừa ra Quyết định số 1286/QĐ-UBND về việc thành lập Ban Chỉ đạo về dữ liệu TPHCM.",
-      "created_at": "Thứ bảy, 07/03/2026 - 17:32"
+      "title": "Chủ tàu Hải Phòng lắp đặt Internet Starlink trái phép bị xử phạt 70 triệu",
+      "content": "Bộ thu phát Internet vệ tinh trên tàu du lịch tại Hải Phòng (Ảnh: Cục Tần số Vô tuyến điện).\n\nSáng 2/4, Cục Tần số vô tuyến điện (Bộ Khoa học và Công nghệ) thông báo một tàu du lịch hoạt động tại Cát Bà (Hải Phòng) trong quý I/2026 đã sử dụng thiết bị thu phát sóng vệ tinh (đài vệ tinh Trái Đất) Starlink để cung cấp Internet cho khách du lịch.\n\nĐáng chú ý, thiết bị chưa được cơ quan có thẩm quyền cấp phép theo quy định tại Việt Nam.\n\nChủ tàu đã bị xử phạt vi phạm hành chính 70 triệu đồng.\n\n\"Cơ quan chức năng đang truy vết nguồn gốc xuất xứ thiết bị thu phát sóng vệ tinh Starlink để xử lý\", đại diện Cục Tần số cho biết.\n\nTheo ghi nhận của phóng viên, trên nhiều sàn thương mại điện tử và website tại Việt Nam đang xuất hiện nhiều phiên bản bộ thiết bị thu phát Internet vệ tinh Starlink với giá dao động từ 19 đến 35 triệu đồng. Người dùng cần lưu ý không mua và sử dụng khi dịch vụ chưa được cơ quan chức năng cấp phép chính thức.\n\nQuy định xử phạt vi phạm hành chính trong lĩnh vực bưu chính, viễn thông, tần số vô tuyến điện, công nghệ thông tin và giao dịch điện tử tại Nghị định 15 năm 2020 quy định, hành vi sử dụng đài vệ tinh trái đất không có Giấy phép sử dụng tần số và thiết bị vô tuyến điện bị phạt tiền từ 70.000.000 đồng đến 100.000.000 đồng.\n\nTại cuộc họp báo thường kỳ sáng 1/4, đại diện Cục Viễn thông (Bộ Khoa học và Công nghệ) cho biết, Starlink Services Vietnam đã được cấp phép cung cấp dịch vụ theo hình thức thí điểm. Giai đoạn thí điểm kéo dài trong 5 năm và phải kết thúc trước năm 2031. Trong thời gian này, quy mô được khống chế ở mức tối đa 600.000 thuê bao.\n\nTheo cơ quan quản lý, con số này được cân nhắc dựa trên cả năng lực kỹ thuật của hệ thống vệ tinh lẫn yêu cầu đảm bảo quản lý nhà nước.\n\nVề hạ tầng mặt đất, Starlink dự kiến xây dựng 4 trạm gateway tại Phú Thọ, Đà Nẵng và TPHCM nhằm duy trì chất lượng kết nối và đáp ứng các quy định về an ninh mạng.\n\nĐại diện Cục Viễn thông cho biết việc triển khai được kiểm soát chặt chẽ từ phạm vi đến quy mô. Quá trình vận hành sẽ được theo dõi liên tục để kịp thời điều chỉnh chính sách, tránh gây xáo trộn thị trường.\n\nChi phí dự kiến sử dụng dịch vụ Internet vệ tinh Starlink tại Việt Nam\n\nPhí thiết bị ban đầu: Khoảng 9,2 triệu đồng cho bộ thu phát tín hiệu.\n\nCước thuê bao hàng tháng: Khoảng 2,2 triệu đồng/tháng.\n\nTổng chi phí năm đầu tiên: Khoảng 34-35 triệu đồng (bao gồm thiết bị và 12 tháng cước).\n\nTừ năm thứ hai: Khoảng 26 triệu đồng/năm.\n\nMức cước hàng tháng của Starlink cao gấp khoảng 9-10 lần so với các gói Internet cáp quang phổ biến hiện nay tại Việt Nam (từ 190.000 đồng/tháng)."
     },
     {
-      "title": "Samsung giao Galaxy S26 đến tay người dùng Việt",
-      "description": "Sáng 6/3, Samsung đã tiến hành giao máy cho những khách hàng đặt trước dòng sản phẩm Galaxy S26 tại cửa hàng Samsung 68 Bitexco.",
-      "created_at": "Thứ bảy, 07/03/2026 - 13:38"
+      "title": "\"Con gà đẻ trứng vàng\" của Anthropic bị lộ mã nguồn",
+      "content": "Mô hình AI Claude Code bị rò rỉ mã nguồn (Ảnh minh hoạ: PCMag).\n\nNgày 31/3, công ty khởi nghiệp trí tuệ nhân tạo Anthropic xác nhận đã vô tình để lộ một phần mã nguồn của Claude Code - trợ lý AI lập trình.\n\nĐại diện Anthropic khẳng định đây là lỗi của con người trong quá trình cập nhật, không phải một vụ tấn công mạng có chủ đích từ bên ngoài.\n\n\"Không có dữ liệu nhạy cảm của khách hàng hay thông tin đăng nhập nào bị ảnh hưởng, công ty đang khẩn trương triển khai các biện pháp kỹ thuật để ngăn chặn những sai sót tương tự trong tương lai\", người phát ngôn của Anthropic nhấn mạnh.\n\nTuy nhiên, giới chuyên gia nhận định vụ rò rỉ này có thể giúp các đối thủ cạnh tranh hiểu sâu hơn về kiến trúc và cách thức vận hành của Claude Code.\n\nĐáng chú ý, một bài đăng trên mạng xã hội X chứa liên kết dẫn đến đoạn mã bị lộ đã thu hút hơn 21 triệu lượt xem chỉ sau vài giờ, cho thấy mức độ quan tâm cực lớn từ cộng đồng công nghệ.\n\nĐây là sự cố bảo mật thứ hai của Anthropic chỉ trong chưa đầy một tuần. Trước đó, theo báo cáo của tờ Fortune, nhiều tài liệu nội bộ mô tả các mô hình AI thế hệ mới của công ty cũng đã bị phát hiện nằm trong một kho dữ liệu công khai.\n\nTheo nội dung tài liệu, Claude Mythos, với tên mã nội bộ Capybara, được mô tả là phiên bản phát triển tiếp theo, có hiệu năng cao hơn so với các mô hình trước đó của Anthropic như Claude Opus 4.6.\n\nCác kết quả thử nghiệm nội bộ cho thấy mô hình này đạt điểm số cao trong các bài kiểm tra liên quan đến tư duy học thuật và lập trình phức tạp.\n\nTài liệu còn cho thấy, Claude Mythos được thiết kế với khả năng phân tích chuyên sâu trong lĩnh vực an ninh mạng, bao gồm phát hiện và đánh giá lỗ hổng trong hệ thống phần mềm.\n\nChuỗi sai sót liên tiếp đặt ra dấu hỏi lớn về quy trình kiểm soát nội bộ của Anthropic, nhất là khi công ty này luôn tự nhận mình là đơn vị tiên phong về an toàn và đạo đức trong lĩnh vực trí tuệ nhân tạo.\n\nClaude Code được phát hành chính thức vào tháng 5/2025, công cụ AI này nhanh chóng trở thành \"con gà đẻ trứng vàng\" của Anthropic.\n\nTính đến tháng 2, doanh thu hàng năm từ công cụ này đã vượt mốc 2,5 tỷ USD nhờ khả năng hỗ trợ lập trình viên xây dựng tính năng và sửa lỗi tự động một cách vượt trội.\n\nSự phát triển mạnh mẽ của Claude Code đã buộc các ông lớn công nghệ như OpenAI, Google và xAI phải dồn lực đầu tư vào các sản phẩm đối trọng."
     },
     {
-      "title": "7 mẹo tiết kiệm pin người dùng iPhone nhất định phải biết",
-      "description": "Pin iPhone tụt nhanh dù không dùng nhiều là tình trạng phổ biến. Một số thói quen nhỏ trong quá trình sử dụng có thể khiến thiết bị hao pin hơn mà người dùng không nhận ra.",
-      "created_at": "Thứ bảy, 07/03/2026 - 11:03"
+      "title": "Cước phí Starlink tại Việt Nam sẽ cao hơn nhiều lần Internet truyền thống",
+      "content": "Triển khai thí điểm, giới hạn số lượng thuê bao\n\nTại cuộc họp báo thường kỳ sáng 1/4, đại diện Cục Viễn thông (Bộ Khoa học và Công nghệ) đã thông tin về kế hoạch triển khai cũng như các cơ chế quản lý đối với dịch vụ Internet xuyên biên giới này.\n\nÔng Nguyễn Anh Cương, Phó Cục trưởng Cục Viễn thông cho biết Starlink Services Vietnam đã được cấp phép cung cấp dịch vụ theo hình thức thí điểm.\n\nViệc triển khai theo lộ trình này nhằm giúp cơ quan quản lý đánh giá tác động của công nghệ mới đối với hạ tầng viễn thông quốc gia.\n\nHọp báo thường kỳ sáng 1/4 tại Bộ Khoa học và Công nghệ (Ảnh: Bộ KH&CN).\n\nGiai đoạn thí điểm kéo dài trong 5 năm và phải kết thúc trước năm 2031. Trong thời gian này, quy mô được khống chế ở mức tối đa 600.000 thuê bao.\n\nTheo cơ quan quản lý, con số này được cân nhắc dựa trên cả năng lực kỹ thuật của hệ thống vệ tinh lẫn yêu cầu đảm bảo quản lý nhà nước.\n\nVề hạ tầng mặt đất, Starlink dự kiến xây dựng 4 trạm gateway tại Phú Thọ, Đà Nẵng và TPHCM nhằm duy trì chất lượng kết nối và đáp ứng các quy định về an ninh mạng.\n\nĐại diện Cục Viễn thông cho biết việc triển khai được kiểm soát chặt chẽ từ phạm vi đến quy mô. Quá trình vận hành sẽ được theo dõi liên tục để kịp thời điều chỉnh chính sách, tránh gây xáo trộn thị trường.\n\nGiá dịch vụ cao, phải đăng ký và công khai\n\nGiá cước là nội dung được quan tâm đặc biệt. Theo dự kiến, người dùng tại Việt Nam sẽ phải chi khoảng 435 USD cho tháng đầu tiên, tương đương hơn 11 triệu đồng, bao gồm thiết bị và phí thuê bao.\n\nTừ tháng thứ hai, chi phí duy trì vào khoảng 85 USD mỗi tháng, tương đương 2,2 triệu đồng.\n\nÔng Nguyễn Anh Cương, Phó Cục trưởng Cục Viễn thông (Ảnh: Bộ KH&CN).\n\nSo với Internet cáp quang trong nước đang từ 200.000 đến 400.000 đồng mỗi tháng, mức giá của Starlink cao hơn nhiều lần.\n\nDù vậy, cơ quan quản lý vẫn yêu cầu doanh nghiệp tuân thủ đầy đủ quy định về giá. Theo Luật Viễn thông, mọi nhà cung cấp dịch vụ đều phải đăng ký và công khai giá cước.\n\nQuy định này nhằm ngăn chặn nguy cơ cạnh tranh không lành mạnh, đặc biệt là tình trạng bán phá giá để chiếm lĩnh thị trường. Nếu phát hiện vi phạm, cơ quan chức năng sẽ can thiệp để bảo vệ quyền lợi của doanh nghiệp trong nước và người sử dụng.\n\nBổ sung cho hạ tầng hiện có, phục vụ vùng khó khăn\n\nTheo định hướng, Starlink không nhằm thay thế cáp quang hay mạng 5G mà đóng vai trò bổ sung cho hệ thống viễn thông hiện có.\n\nDịch vụ Internet vệ tinh được kỳ vọng đáp ứng nhu cầu kết nối tại các khu vực vùng sâu, vùng xa, hải đảo hoặc những nơi có địa hình phức tạp, nơi hạ tầng cáp quang khó tiếp cận.\n\nNgoài ra, công nghệ này cũng có thể phát huy hiệu quả trong các tình huống thiên tai, khi hạ tầng truyền thống bị gián đoạn.\n\nNếu tiến độ nhập khẩu thiết bị và lắp đặt diễn ra thuận lợi, người dùng tại Việt Nam có thể tiếp cận dịch vụ Internet vệ tinh từ giữa năm 2026.\n\nViệc đưa Starlink vào thử nghiệm được xem là bước đi mở trong tiếp cận công nghệ mới, song đi kèm với đó là yêu cầu kiểm soát chặt để đảm bảo thị trường phát triển ổn định và cạnh tranh công bằng."
     },
     {
-      "title": "Nhiều điện thoại sẽ không thể sử dụng MoMo, Zalopay",
-      "description": "Các nền tảng thanh toán như MoMo, Zalopay đã nâng cấp bảo mật theo Thông tư 77/2025/TT-NHNN và chặn những thiết bị thiếu an toàn.",
-      "created_at": "Thứ bảy, 07/03/2026 - 10:30"
+      "title": "Đã có thể thay đổi địa chỉ Gmail",
+      "content": "\"Nếu địa chỉ email tài khoản Google có đuôi gmail.com, thì bạn có thể thay đổi địa chỉ đó thành một địa chỉ khác có đuôi @gmail.com. Địa chỉ email trước đây có đuôi gmail.com dùng cho tài khoản Google sẽ trở thành địa chỉ email thay thế\", Google cho biết.\n\nMỗi năm, người dùng có thể thay đổi địa chỉ email tài khoản Google một lần (Ảnh: Business Insider).\n\nHiện tại, tính năng này bắt đầu được triển khai tại thị trường Mỹ. Công ty cho biết tính năng thay đổi địa chỉ email của tài khoản Google sẽ sớm được triển khai cho tất cả người dùng trên toàn cầu.\n\nTrước đây, người dùng bắt buộc phải lập tài khoản mới nếu muốn đổi tên email. Điều đó đồng nghĩa với việc người dùng phải đối mặt với cơn ác mộng chuyển đổi dữ liệu từ ảnh, tin nhắn đến các dịch vụ liên kết. Với cập nhật mới, nỗi lo này đã được xóa bỏ.\n\nSau khi đổi tên, địa chỉ email cũ vẫn sẽ tiếp tục hoạt động song song. Người dùng vẫn sẽ nhận được thư gửi đến cả địa chỉ cũ lẫn địa chỉ mới, giúp quá trình chuyển đổi diễn ra mượt mà mà không sợ thất lạc thông tin.\n\nNgười dùng có thể thay đổi địa chỉ email tài khoản Google của mình một lần mỗi năm, tối đa 3 lần tổng cộng. Cập nhật này đặc biệt quan trọng đối với nhóm người dùng đã sử dụng dịch vụ tài khoản Google lâu năm với những địa chỉ email như “congchuabongbong_200x” hay “boy_dep_trai_9x”...\n\nKhông chỉ dừng lại ở việc xóa bỏ những cái tên \"kém sang\", tính năng này còn mang ý nghĩa nhân văn với cộng đồng người chuyển giới hoặc những người đã đổi tên pháp lý, giúp họ đồng nhất bản sắc cá nhân trên không gian số một cách dễ dàng."
     },
     {
-      "title": "OnePlus 15T lộ ảnh thực tế với viền màn hình siêu mỏng",
-      "description": "Thị trường điện thoại cao cấp nhỏ gọn sắp đón nhận một đối thủ đáng gờm khi OnePlus chính thức hé lộ những hình ảnh đầu tiên về chiếc 15T.",
-      "created_at": "Thứ bảy, 07/03/2026 - 07:33"
+      "title": "Máy tính lượng tử sẽ sớm phá vỡ Bitcoin",
+      "content": "Sự kiện \"Q-Day\" là gì?\n\nKhi người dùng thực hiện một giao dịch trên blockchain, public key (khóa công khai) sẽ lộ ra trong quá trình ký và phát giao dịch lên mạng. Khóa công khai được sử dụng như một chữ ký số, chứng minh quyền sở hữu private key (khóa riêng tư) và tạo ra các địa chỉ công khai của tiền điện tử.\n\nPhần lớn các blockchain hiện nay, bao gồm cả Bitcoin và Ethereum, đều sử dụng cơ chế mật mã dựa trên bài toán Elliptic Curve Discrete Logarithm Problem (ECDLP-256) để bảo vệ private key và xác thực giao dịch.\n\nPhần lớn các blockchain hiện nay đều sử dụng cơ chế mật mã ECDLP-256 (Ảnh: BitcoinMagazine).\n\nCơ chế này đảm bảo rằng nếu chỉ có public key gần như không thể suy ra private key. Từ đó, tài sản của người dùng sẽ được giữ an toàn. Trong nhiều năm qua, ECDLP-256 trở thành một trong những nền tảng bảo mật cốt lõi của blockchain và toàn bộ ngành công nghiệp tiền điện tử`.\n\nTuy vậy, báo cáo mới nhất từ Google chỉ ra rằng máy tính lượng tử có thể sẽ sớm phá vỡ cơ chế bảo mật của blockchain.\n\nNếu các máy tính lượng tử đạt đến quy mô cần thiết, hệ thống có thể truy xuất ngược từ public key ra private key. Lúc này, những dữ liệu được mã hóa, các hệ thống tài chính và danh tính có thể bị lộ. Sự kiện này được gọi với cái tên \"Q-Day\".\n\nTác động của máy tính lượng tử\n\nKhác với máy tính truyền thống sử dụng bit (0 và 1), máy tính lượng tử sử dụng qubit (quantum bit) có thể tồn tại đồng thời ở nhiều trạng thái khác nhau nhờ hiện tượng chồng chất lượng tử và vướng víu lượng tử.\n\nKhả năng này cho phép máy tính lượng tử xử lý lượng lớn các phép tính song song, giải quyết những bài toán phức tạp mà máy tính truyền thống phải mất hàng trăm năm để hoàn thành.\n\nChuyên gia nhận định Q-Day sẽ diễn ra vào năm 2032 (Ảnh: NoteBookCheck).\n\nGoogle ước tính chỉ cần dưới 500.000 physical qubit là đã có thể giải được bài toán ECDLP-256, giảm khoảng 20 lần so với các dự đoán trước đây. Thậm chí, một hệ thống lượng tử đủ mạnh có thể hoàn tất chỉ trong khoảng 9-12 phút, gần tương đương với thời gian trung bình 10 phút để tạo một block Bitcoin.\n\n\"Chúng tôi muốn nâng cao nhận thức về vấn đề này, đồng thời cung cấp cho cộng đồng tiền điện tử các khuyến nghị để cải thiện tính bảo mật và ổn định. Một trong số đó là chuyển đổi các blockchain sang mã hóa hậu lượng tử (Post Quantum Cryptography - PQC). Đây là loại mã hóa có khả năng chống lại các cuộc tấn công lượng tử\", các nhà nghiên cứu của Google cho biết.\n\nTrong một bài đăng trên mạng xã hội X, Justin Drake, một nhà nghiên cứu bảo mật Bitcoin, cho rằng khả năng Q-Day diễn ra vào năm 2032 đang tăng lên đáng kể.\n\n\"Có ít nhất 10% khả năng vào năm 2032, một máy tính lượng tử sẽ khôi phục được private key từ một public key bị lộ. Bây giờ là lúc để bắt đầu chuẩn bị\", ông nói thêm.\n\nMối quan hệ giữa máy tính lượng tử và Bitcoin\n\nCác cuộc tranh luận liên quan đến máy tính lượng tử và Bitcoin ngày càng trở nên căng thẳng. Thậm chí, không ít ý kiến cho rằng những công bố liên quan đến máy tính lượng tử chỉ là thông tin xấu nhằm kìm hãm Bitcoin.\n\n\"Mọi thứ cần được nhìn nhận trong bối cảnh cụ thể. Rủi ro đang tăng lên nhưng điều này đã được dự báo trước. Không có gì phải hoảng loạn. Những bộ óc thông minh nhất thế giới đang tích cực giải quyết vấn đề này\", Shiv Shankar, CEO của Boundless, chia sẻ.\n\nMáy tính lượng tử có thể thay đổi ngành công nghiệp tiền điện tử (Ảnh: CoinDesk).\n\nÔng cho rằng đây không phải là vấn đề riêng của blockchain. Nếu máy tính lượng tử thực sự khôi phục được private key từ public key, toàn bộ Internet sẽ gặp rủi ro. Đồng thời, đây cũng là cơ hội để Internet được nâng cấp.\n\nTrong khi đó, các nhà phân tích tại Bitfinex nhận định rủi ro mà máy tính lượng tử mang đến cho Bitcoin nên được hiểu là một thách thức kỹ thuật dài hạn hơn là một cuộc khủng hoảng hiện hữu ngay lập tức.\n\n“Điện toán lượng tử đại diện cho một thách thức kỹ thuật thực sự đối với ngành công nghiệp tiền điện tử. Tuy nhiên, nó không phải một mối đe dọa ở hiện tại. Các nền tảng mật mã của Bitcoin và nhiều giao thức khác luôn được hiểu là có thời hạn sử dụng hữu hạn. Điều quan trọng là ngành công nghiệp đã và đang chuyển động\", các chuyên gia chia sẻ."
     },
     {
-      "title": "Vivo X300 Ultra lộ diện với hai camera 200MP, chống rung chuyên nghiệp",
-      "description": "Chiếc X300 Ultra sắp ra mắt có thể sẽ trở thành một trong những smartphone chụp ảnh tốt nhất hiện nay, khi trang bị hai cảm biến 200 megapixel cùng hệ thống chống rung đạt chuẩn camera chuyên nghiệp.",
-      "created_at": "Thứ bảy, 07/03/2026 - 07:31"
+      "title": "Instagram thử nghiệm gói Plus, thu phí người dùng",
+      "content": "Meta đã bắt đầu thử nghiệm một gói đăng ký Instagram cao cấp tại một số quốc gia. Theo báo cáo từ TechCrunch, dịch vụ mới này được gọi là Instagram Plus và đi kèm với các tính năng độc quyền dành cho người dùng trả phí.\n\nMeta chưa công bố mức giá chính thức của gói đăng ký Plus (Ảnh: PhoneArena).\n\nCông ty chưa chia sẻ cụ thể những quốc gia nào đang được thử nghiệm gói đăng ký trên. Tuy nhiên, người dùng tại một số quốc gia như Nhật Bản, Mexico và Philippines cho biết đã nhìn thấy thông báo này.\n\nHầu hết các tính năng cao cấp mà Meta cung cấp đều liên quan đến Stories (tin). Đây là những bài đăng ảnh hoặc video ngắn có thời hạn biến mất sau 24 giờ .\n\nTrong đó, một tính năng cho phép người đăng ký xem một tin mà người khác không hề hay biết. Một tính năng khác cho phép kéo dài thời gian hiển thị của một tin thêm 24 giờ nữa. Người đăng ký cũng có thể làm nổi bật một tin mỗi tuần một lần để tăng khả năng hiển thị, hoặc gửi Superlike trên tin của người khác.\n\nTrên thực tế, Meta không phải là nền tảng mạng xã hội đầu tiên triển khai các gói dịch vụ cao cấp. Snapchat và X đã có những dịch vụ tương tự từ lâu, trong đó Snapchat+ hiện thu hút được hơn 25 triệu người đăng ký.\n\nHiện vẫn chưa rõ khi nào Instagram Plus sẽ được triển khai tại nhiều thị trường hơn và cho nhiều người dùng hơn. Meta cũng chưa công bố mức giá chính thức đối với gói dịch vụ Instagram Plus. Tuy vậy, một số người dùng cho biết mức giá đối với dịch vụ thử nghiệm khoảng 1-2 USD tùy theo từng thị trường."
     },
     {
-      "title": "NVIDIA dần mất kiên nhẫn với thị trường Trung Quốc",
-      "description": "Theo báo cáo mới từ Financial Times, nhà sản xuất chip AI hàng đầu thế giới được cho là đã tạm dừng kế hoạch sản xuất chip H200 dành cho Trung Quốc.",
-      "created_at": "Thứ bảy, 07/03/2026 - 07:03"
+      "title": "Thu thuế thu nhập 0,1% trên mỗi giao dịch tài sản mã hóa",
+      "content": "Thu thuế thu nhập cá nhân khi giao dịch tài sản mã hoá (Ảnh minh hoạ: ST).\n\nCụ thể, các nhà đầu tư cá nhân khi thực hiện giao dịch tài sản mã hóa sẽ phải nộp thuế thu nhập cá nhân (TNCN) ở mức 0,1% trên giá trị mỗi lần chuyển nhượng.\n\nĐây là quy định cụ thể hóa lộ trình đưa tài sản mã hóa vào khuôn khổ quản lý pháp lý tại Việt Nam.\n\nTheo đó, tại Điều 5 về chính sách thuế TNCN, nhà đầu tư là cá nhân (không phân biệt cá nhân cư trú hay không cư trú) có hoạt động chuyển nhượng tài sản mã hóa qua tổ chức cung cấp dịch vụ tài sản mã hóa thuộc đối tượng nộp thuế thu nhập cá nhân theo tỷ lệ 0,1% trên giá chuyển nhượng từng lần.\n\nTuy nhiên, nhà đầu tư cần lưu ý rằng mức thuế 0,1% này hiện chỉ áp dụng trong khuôn khổ Nghị quyết 05/2025/NQ-CP của Chính phủ về thí điểm thị trường tiền mã hóa tại Việt Nam.\n\nĐiều này có nghĩa là nhà đầu tư cá nhân khi giao dịch tài sản mã hoá trên các sàn được cấp phép phải chịu mức thuế theo tỉ lệ như trên. Đối với những người đang giao dịch trên các sàn quốc tế chưa đăng ký hoặc chưa có hiện diện pháp lý tại Việt Nam sẽ không nằm trong khuôn khổ của quy định này.\n\nBên cạnh đó, hoạt động chuyển nhượng và kinh doanh tài sản mã hóa không thuộc diện chịu thuế giá trị gia tăng.\n\nCác hoạt động khác có liên quan nhưng không phải chuyển nhượng trực tiếp vẫn phải thực hiện nghĩa vụ thuế giá trị gia tăng theo quy định hiện hành.\n\nNgoài ra, thời điểm xác định doanh thu, thu nhập đối với chuyển nhượng tài sản mã hóa thực hiện như quy định của pháp luật thuế thu nhập doanh nghiệp, thuế thu nhập cá nhân về thời điểm xác định doanh thu, thu nhập đối với chuyển nhượng chứng khoán và pháp luật về tài sản mã hóa."
     },
     {
-      "title": "Mua máy lạnh từ tháng 3 với hàng loạt ưu đãi từ Điện máy Xanh",
-      "description": "Ngay từ đầu tháng 3, nhiều người tiêu dùng đã bắt đầu rục rịch sắm máy lạnh để tận hưởng nhiều ưu đãi mua sớm tại Điện máy Xanh, vừa thảnh thơi chọn mẫu, vừa được lắp đặt nhanh chóng.",
-      "created_at": "Thứ hai, 09/03/2026 - 14:34"
+      "title": "Nỗi lo vô hình lan rộng ngành chip toàn cầu",
+      "content": "Cảng Đài Trung là một trong ba cảng ở Đài Loan (Trung Quốc) có khả năng tiếp nhận và lưu trữ khí thiên nhiên hóa lỏng (Ảnh: NYT).\n\nKhi nguồn cung Heli từ Qatar bị gián đoạn và các tuyến vận tải huyết mạch qua eo biển Hormuz bị phong tỏa, những gã khổng lồ chip bán dẫn như TSMC, Samsung hay Nvidia đang phải đối mặt với bài toán dự trữ đầy rủi ro.\n\nHeli vốn được biết đến rộng rãi trong đời sống hàng ngày và trong dây chuyền sản xuất chip. Loại khí này là vật liệu gần như không thể thay thế ở nhiều công đoạn sản xuất chip tiên tiến, đặc biệt ở các quy trình làm mát wafer và kiểm soát môi trường siêu sạch.\n\nVới đặc tính hóa học trơ và khả năng làm mát cực hạn, Heli đóng vai trò bảo vệ các tấm silicon mỏng manh khỏi nhiệt độ cao và tạp chất trong quy trình khắc mạch siêu nhỏ.\n\nThiếu đi sự hỗ trợ của khí Heli, dây chuyền sản xuất chip AI - động lực tăng trưởng chính của kinh tế toàn cầu hiện nay - sẽ đứng trước nguy cơ đình trệ nghiêm trọng.\n\nKhủng hoảng hiện tại bắt nguồn từ sự đứt gãy kép: Sản lượng tại Qatar bị cắt giảm và hệ thống hậu cần quốc tế bị tê liệt. Ước tính khoảng một phần ba nguồn cung Heli toàn cầu đã bị gián đoạn sau những biến động tại khu vực Trung Đông.\n\nChuyên gia ngành khí đốt Phil Kornbluth ví von tình trạng này như một \"cơn sóng thần\" đang âm thầm tiến vào bờ: \"Dù các nhà sản xuất chip vẫn đang duy trì hoạt động nhờ lượng dự trữ sẵn có, nhưng tác động thực sự sẽ sớm lộ diện khi hàng trăm container chuyên dụng vẫn đang mắc kẹt trên các tuyến đường thủy bị phong tỏa\".\n\nThách thức lớn nhất đối với việc giải cứu nguồn cung nằm ở đặc tính kỹ thuật khắt khe của Heli hóa lỏng. Việc vận chuyển loại khí này đòi hỏi điều kiện nhiệt độ gần độ không tuyệt đối và các thùng chứa nitơ lỏng cách nhiệt phức tạp.\n\nĐặc biệt, do thời gian lưu trữ an toàn rất ngắn - thường không quá 1,5 tháng - việc tích trữ quy mô lớn trong thời gian dài là điều gần như bất khả thi.\n\nĐiều này đẩy các hãng công nghệ vào một cuộc đua khốc liệt về giá để giành giật nguồn cung ít ỏi còn lại, từ đó gây sức ép dây chuyền lên các lĩnh vực thiết yếu khác như chẩn đoán hình ảnh y tế (máy MRI) và nghiên cứu khoa học chuyên sâu.\n\nTrước tình hình này, các doanh nghiệp đầu ngành như TSMC, Samsung và SK Hynix đang nỗ lực đa dạng hóa nguồn cung từ Hoa Kỳ và các khu vực thay thế.\n\nTuy nhiên, giới phân tích nhận định việc tái cấu trúc toàn bộ hệ thống hậu cần và đảm bảo các container chuyên dụng không thể diễn ra trong một sớm một chiều.\n\nDù nguy cơ thiếu hụt đã hiện hữu, giới phân tích cho rằng các hãng chip lớn vẫn còn đủ tồn kho cho vài tuần đến vài tháng. Rủi ro thực sự nằm ở việc xung đột kéo dài quá chu kỳ tái nạp container heli chuyên dụng.\n\nNếu các nút thắt địa chính trị không sớm được tháo gỡ, ngành công nghiệp bán dẫn có thể phải đối mặt với một giai đoạn khan hiếm vật liệu nghiêm trọng, trực tiếp làm chậm tốc độ phát triển của trí tuệ nhân tạo toàn cầu."
     },
     {
-      "title": "Tìm thợ mở lại Mobile Banking trên điện thoại, cẩn thận tiền mất tật mang",
-      "description": "Không ít người dùng đang không thể truy cập vào ứng dụng ngân hàng do thiết bị không đảm bảo an toàn bảo mật.",
-      "created_at": "Thứ sáu, 06/03/2026 - 15:58"
+      "title": "Tiết lộ mới về mối quan hệ giữa Apple và Google",
+      "content": "Apple được cho là có \"nhiều quyền tự do hơn với công nghệ của Google\" so với dự kiến. Một nguồn tin nội bộ tiết lộ Apple có toàn quyền truy cập vào mô hình Gemini trong các cơ sở trung tâm dữ liệu của riêng mình.\n\nMối quan hệ giữa Apple và Google ngày càng thân thiết hơn (Ảnh: Forbes).\n\nTheo đó, công ty có thể sử dụng quyền truy cập này để tạo ra các mô hình nhỏ hơn nhằm xử lý một số tác vụ cụ thể hoặc đủ nhỏ để chạy trực tiếp trên các thiết bị của Apple, giúp thực hiện các tác vụ nhanh hơn.\n\nQuá trình tạo ra các mô hình nhánh mới được gọi là \"distillation\" (tạm dịch: chưng cất). Đây là phương pháp mà một mô hình ngôn ngữ lớn (LLM) có thể chuyển giao kiến thức sang các mô hình nhỏ hơn, tinh giản hơn.\n\nCác mô hình nhỏ hơn có thể hiệu quả hơn khi yêu cầu ít năng lượng tính toán hơn và mang lại kết quả nhanh hơn. Chúng có ý nghĩa hơn nhiều đối với việc chạy trực tiếp trên thiết bị so với các mô hình ngôn ngữ lớn cần phải xử lý trên đám mây.\n\nVì Apple có toàn quyền truy cập vào Gemini, mô hình của hãng cũng có thể học cách mà Gemini đưa ra câu trả lời. Mục tiêu là tạo ra các mô hình nhỏ hơn đạt được hiệu suất xấp xỉ với các mô hình tiên tiến nhưng yêu cầu ít năng lượng tính toán hơn.\n\nTuy vậy, đây có thể là một quá trình khó khăn. Các mục tiêu của Apple dành cho Siri không phải lúc nào cũng phù hợp với thế mạnh chuyên biệt của Gemini.\n\nApple sẽ sử dụng Gemini để tạo ra các mô hình AI nhỏ gọn và tích hợp trực tiếp lên thiết bị của hãng (Ảnh: CNet).\n\nTheo kế hoạch, Apple sẽ tiết lộ những thay đổi lớn cho Siri tại sự kiện WWDC diễn ra vào tháng 6. Chatbot Siri dự kiến ra mắt cùng bản cập nhật iOS 27, với định hướng cạnh tranh trực tiếp các nền tảng trí tuệ nhân tạo như Claude và ChatGPT.\n\nSiri sẽ hỗ trợ cả hội thoại bằng văn bản và giọng nói. Ứng dụng sẽ hiển thị dưới dạng danh sách hoặc lưới các cuộc trò chuyện trước đó, kèm theo các tùy chọn để đánh dấu yêu thích, tìm kiếm, bắt đầu cuộc trò chuyện mới và lưu lại.\n\nCuộc hội thoại với Siri sẽ có giao diện sử dụng tương tự giao diện trên iMessage với các bong bóng chat. Các cuộc trò chuyện mới sẽ bắt đầu bằng những gợi ý về nội dung cần hỏi.\n\nTheo MacRumors, Siri có thể thực hiện hầu hết những tác vụ mà các chatbot hiện nay làm được, chẳng hạn như tìm kiếm trên web, cung cấp bản tóm tắt và đánh giá các tài liệu được tải lên. Trợ lý cá nhân này cũng sẽ được tích hợp sâu vào các thiết bị của Apple."
     },
     {
-      "title": "\"Ông lớn\" viễn thông đồng loạt tăng giá cước Internet cố định",
-      "description": "Thị trường Internet cố định tại Việt Nam vừa ghi nhận một đợt điều chỉnh giá đồng loạt từ ba nhà mạng lớn là Viettel, FPT và VNPT.",
-      "created_at": "Thứ sáu, 06/03/2026 - 15:46"
+      "title": "Viettel đánh dấu mốc 20 năm kinh doanh toàn cầu",
+      "content": "Bộ trưởng Phan Văn Giang phát biểu tại buổi lễ (Ảnh: BTC).\n\nPhát biểu tại buổi lễ, Bộ trưởng Phan Văn Giang nhấn mạnh: “Công cuộc đầu tư ra nước ngoài không chỉ cho thấy tinh thần dám nghĩ, dám làm, tiên phong mở lối của Viettel, mà còn thể hiện năng lực làm chủ công nghệ, chuyển từ doanh nghiệp nội địa thành tập đoàn công nghệ toàn cầu và là cầu nối quan trọng thúc đẩy quan hệ hữu nghị, hợp tác toàn diện giữa Việt Nam với các quốc gia đối tác, góp phần tạo dựng môi trường hòa bình, ổn định để xây dựng, phát triển đất nước, nâng cao vị thế, uy tín quốc tế của Việt Nam trong kỷ nguyên số”.\n\nTrong thời gian tới, Bộ trưởng Bộ Quốc phòng yêu cầu Viettel thực hiện tốt chức năng đội quân lao động sản xuất; tổ chức sản xuất, kinh doanh hiệu quả, an toàn, đúng pháp luật, “kinh doanh gắn liền với trách nhiệm xã hội”.\n\nViettel bắt đầu đầu tư ra nước ngoài từ thị trường Campuchia vào năm 2006. Sau hai thập kỷ, doanh nghiệp này đã hiện diện tại 16 quốc gia, bao gồm cả thị trường đầu tư và các văn phòng đại diện.\n\nHoạt động kinh doanh quốc tế mang lại doanh thu hơn 3 tỷ USD mỗi năm, với tốc độ tăng trưởng khoảng 20% trong những năm gần đây. Các thị trường nước ngoài đóng góp dòng tiền về nước khoảng 350-400 triệu USD mỗi năm.\n\nTheo số liệu công bố, tỷ lệ thu hồi vốn của các dự án đạt khoảng 92%. Tổng Công ty Đầu tư Quốc tế Viettel được ước tính có mức vốn hóa khoảng 10 tỷ USD. Trong số các thị trường viễn thông đang hoạt động, Viettel giữ vị trí dẫn đầu tại 7 thị trường.\n\nTrung tướng Tào Đức Thắng, Ủy viên Trung ương Đảng, Chủ tịch kiêm Tổng Giám đốc Tập đoàn Viettel, khẳng định, trong giai đoạn tới, Viettel tiếp tục duy trì hoạt động trong lĩnh vực viễn thông, đồng thời mở rộng sang các lĩnh vực như công nghệ số, công nghiệp công nghệ cao, thương mại điện tử và logistics.\n\n\"Với mục tiêu tăng trưởng tối thiểu 20% hàng năm, Viettel tiếp tục mở rộng ra các thị trường mới, sẵn sàng đương đầu với những thử thách mới”, lãnh đạo Viettel phát biểu.\n\nTrung tướng Tào Đức Thắng, Ủy viên Trung ương Đảng, Chủ tịch kiêm Tổng Giám đốc Tập đoàn Viettel (Ảnh: BTC).\n\nTrong hai thập kỷ qua, hoạt động đầu tư ra nước ngoài của Viettel chủ yếu tập trung vào các thị trường có mức độ cạnh tranh cao hoặc điều kiện hạ tầng còn hạn chế.\n\nTại Campuchia, thương hiệu Metfone gia nhập thị trường khi đã có 7 nhà mạng hoạt động. Doanh nghiệp này sau đó mở rộng mạng lưới tới nhiều khu vực dân cư, bao gồm cả vùng nông thôn và biên giới, góp phần mở rộng khả năng tiếp cận dịch vụ viễn thông.\n\nHiện nay, Metfone là một trong những nhà mạng có quy mô lớn tại Campuchia, đồng thời tham gia vào một số hoạt động xã hội và đóng góp ngân sách tại địa phương.\n\nTại Haiti, Viettel triển khai đầu tư trong bối cảnh quốc gia này vừa trải qua trận động đất năm 2010, khiến hạ tầng viễn thông bị ảnh hưởng nghiêm trọng. Sau khi cam kết đầu tư, doanh nghiệp đã cử nhân sự sang xây dựng hệ thống viễn thông từ giai đoạn đầu.\n\nMạng viễn thông tại đây sau đó được mở rộng, trong đó Natcom là thương hiệu do Viettel vận hành. Hệ thống này góp phần cải thiện khả năng tiếp cận dịch vụ viễn thông và tạo việc làm cho người lao động địa phương.\n\nTheo đại diện Viettel, sau 20 năm hoạt động tại thị trường quốc tế, doanh nghiệp đang định hướng chuyển từ mô hình đầu tư sang chiến lược kinh doanh toàn cầu. Mục tiêu là mở rộng hoạt động trong lĩnh vực công nghiệp và công nghệ ra thị trường quốc tế."
     },
     {
-      "title": "Galaxy S26 lên kệ, phiên bản Ultra bán chạy nhất tại Việt Nam",
-      "description": "Theo thống kê từ các đại lý, doanh số của Galaxy S26 tăng trưởng tốt so với thế hệ tiền nhiệm. Trong đó, phiên bản Galaxy S26 Ultra được chọn mua nhiều nhất.",
-      "created_at": "Thứ sáu, 06/03/2026 - 13:50"
+      "title": "Mark Zuckerberg và nỗi đau metaverse",
+      "content": "Meta đang tiếp tục thực hiện các đợt tái cấu trúc nội bộ, theo đó, một số nhân viên bị ảnh hưởng đang được đề nghị chuyển sang các vị trí mới trong công ty.\n\nĐáng chú ý, trong một số trường hợp, những vị trí này sẽ yêu cầu thay đổi địa điểm làm việc, gây ra những xáo trộn nhất định cho người lao động.\n\nMeta vừa thông báo sa thải hàng loạt nhân viên, trong đó có bộ phận Reality Labs (Ảnh: CNBC).\n\nMột phát ngôn viên của Meta cho biết: “Các nhóm tại Meta thường xuyên tái cấu trúc hoặc thực hiện các thay đổi để đảm bảo họ ở vị trí tốt nhất và đạt được mục tiêu của mình. Chúng tôi đang tìm kiếm các cơ hội khác cho những nhân viên bị ảnh hưởng\".\n\nĐộng thái cắt giảm nhân sự này diễn ra trong bối cảnh Meta đang dồn lực đầu tư hàng tỷ USD vào lĩnh vực trí tuệ nhân tạo (AI). Đây là một cuộc đua mà gã khổng lồ mạng xã hội đang nỗ lực để bắt kịp các đối thủ lớn như OpenAI, Anthropic và Google.\n\nTrước đó, từ tháng 1, Meta đã tiến hành sa thải nhân viên thuộc bộ phận Reality Labs và đóng cửa một số studio đang phát triển các tựa game thực tế ảo. Những đợt cắt giảm này đã ảnh hưởng đến hơn 1.000 việc làm.\n\nGần đây nhất, Meta cũng thông báo người dùng sẽ không còn truy cập được các thế giới nhập vai trong Horizon Worlds qua kính thực tế ảo kể từ ngày 15/6. Đây được xem là một động thái ngầm thừa nhận thất bại của Mark Zuckerberg đối với tầm nhìn metaverse đầy tham vọng.\n\nVũ trụ ảo mà Mark Zuckerberg phát triển đang đi đến hồi kết (Ảnh: CNN).\n\nCác thống kê cho thấy, đến nay, gã khổng lồ mạng xã hội đã đầu tư khoảng 80 tỷ USD vào việc phát triển metaverse thông qua bộ phận Reality Labs. Tuy nhiên, metaverse và thực tế ảo (VR) vẫn chỉ là sở thích của một bộ phận nhỏ người dùng, chưa bao giờ trở thành một xu hướng phổ biến.\n\nĐáng nói, vũ trụ ảo mà Meta xây dựng cũng gặp rất nhiều vấn đề khác nhau. Phiên bản đầu tiên của Horizon Worlds còn tồn tại nhiều lỗi, hình đại diện người chơi thô sơ và thiếu sót, điển hình là việc trong một thời gian dài chúng chỉ là những thân người lơ lửng không có chân.\n\nDù vậy, Meta không phải là trường hợp duy nhất thất bại với VR. Apple cũng đã ra mắt kính Vision Pro vào năm 2024 với giá 3.500 USD, nhưng sản phẩm này đến nay gần như không để lại bất cứ dấu ấn nào đáng kể trên thị trường."
     },
     {
-      "title": "Những hành vi sử dụng AI bị nghiêm cấm tại Việt Nam",
-      "description": "Các công cụ AI đang ngày càng trở nên phổ biến và đa dạng. Tuy nhiên, nhiều người không biết rằng nhiều hành vi sử dụng AI đang bị nghiêm cấm tại Việt Nam.",
-      "created_at": "Thứ sáu, 06/03/2026 - 13:20"
+      "title": "Chuyên gia FPT và hành trình thay đổi cách làm việc với AI của hàng nghìn kỹ sư",
+      "content": "Tại bộ phận Dịch vụ và Giải pháp doanh nghiệp (Enterprise Business Services), Tập đoàn FPT với 1.000 kỹ sư công nghệ, anh Võ Xuân Cường, một nhà quản trị dự án với 13 năm kinh nghiệm, được giao nhiệm vụ dẫn dắt một nhóm chuyên gia tiên phong ứng dụng AI để tăng năng suất, tối ưu vận hành trong toàn bộ quá trình phát triển phần mềm.\n\nKhi làn sóng AI ập đến, anh hiểu rằng thay đổi một tập thể lớn không thể bắt đầu bằng mệnh lệnh. “Chỉ kêu gọi lập trình viên dùng AI bằng những mỹ từ công nghệ là chưa đủ và cũng không thuyết phục nếu bản thân người tiên phong không làm chủ nó”, anh chia sẻ.\n\nBắt tay vào giải bài toán thói quen, anh Cường cùng nhóm 15 chuyên gia nòng cốt phân tích các công cụ trên thị trường, thiết lập quy chế kiểm soát rủi ro và định rõ ranh giới dữ liệu. Từ đó, họ tạo ra một môi trường làm việc an toàn, đáp ứng tiêu chuẩn của những khách hàng khó tính, đồng thời phát triển các công cụ AI bổ trợ trực tiếp vào dự án.\n\nKhông dừng ở thử nghiệm, anh đưa AI vào quy trình thực tế, trực tiếp dẫn dắt các dự án ứng dụng AI xuyên suốt vòng đời phát triển phần mềm.\n\nAnh cũng chuẩn hóa việc ứng dụng công cụ trợ lý lập trình Cursor AI trên nền tảng mã nguồn mở Odoo thành quy trình rõ ràng, dễ nhân rộng, đồng thời định hình cách sử dụng và quản lý trợ lý AI (AI Agent) để đảm bảo tích hợp nhanh và bảo mật.\n\nTừ một bài toán rất cụ thể, làm sao để thay đổi cách làm việc của kỹ sư, câu chuyện của anh Cường phản ánh một thách thức phổ biến hơn mà nhiều doanh nghiệp đang đối mặt khi triển khai AI. Đó là AI đã có mặt trong doanh nghiệp nhưng cách làm việc không thay đổi.\n\nMột nghiên cứu của McKinsey chỉ ra: dù 78% doanh nghiệp toàn cầu đã trang bị AI, chỉ 1-6% thực sự tạo ra đột phá về lợi nhuận. Phần lớn tổ chức rơi vào “bẫy triển khai”, khi xem AI như một ứng dụng cần cài đặt, thay vì một sự thay đổi toàn diện về cách vận hành.\n\nVới hơn 30.000 nhân sự công nghệ phục vụ thị trường nước ngoài, FPT đối mặt với bài toán tương tự: không chỉ trang bị công cụ, mà phải đưa AI vào toàn bộ vòng đời phát triển phần mềm vốn đã được chuẩn hóa chặt chẽ.\n\nLàm thế nào để hàng chục nghìn kỹ sư có thể đồng bộ sử dụng AI, không chỉ để viết mã nhanh hơn mà còn tham gia vào các khâu như phân tích, thiết kế, kiểm thử?\n\nNhận thức được điều này, FPT lựa chọn cách tiếp cận chủ động, đặt trọng tâm vào tuyến quản lý giữa và xây dựng tư duy \"AI-First\" để từ đó, hình thành cơ chế “hạt nhân AI” (AI Champion), những người chịu trách nhiệm thiết kế lại cách làm việc, chuẩn hóa cách dùng AI và biến nỗ lực cá nhân thành năng lực có thể nhân rộng.\n\nTừ thực tiễn ứng dụng AI hiệu quả và đóng gói giải pháp một cách bài bản, với vai trò “hạt nhân AI”, anh Cường tiếp tục chia sẻ kinh nghiệm tại hàng chục hội thảo.\n\nAnh Võ Xuân Cường tại các buổi hội thảo lớn (Ảnh: FPT).\n\nThông qua các hoạt động như cuộc thi ứng dụng AI, anh Cường cùng các “hạt nhân” khác đã tạo ra một cú hích văn hóa mạnh mẽ.\n\nTrong năm 2025, tư duy “đặt AI làm trọng tâm” đã lan tỏa trong toàn bộ phận hơn 1.000 kỹ sư, với 80% nhân sự trở thành người dùng AI thường xuyên; 87% dự án có sự hiện diện của AI hàng tuần; tối ưu gần 10% chi phí vận hành.\n\nGiá trị của AI không dừng lại ở từng cá nhân, mà được kích hoạt ở quy mô tổ chức. Kinh nghiệm triển khai nội bộ của anh Cường sau đó được đúc kết thành giải pháp “AI Workplace Service” - mô hình giúp doanh nghiệp ứng dụng AI một cách bài bản, có kiểm soát và có thể nhân rộng.\n\nGiải pháp được xây dựng trên hệ sinh thái Microsoft với tiêu chuẩn bảo mật cao, giúp xác định được lộ trình cho các dự án chuyển đổi với AI, đi vào vận hành một cách nhanh chóng.\n\nĐồng thời giải pháp cũng hỗ trợ cho người quản trị nắm bắt được các chỉ số đo lường, theo dõi hiệu quả việc sử dụng AI agent trong thư viện AI agent sẵn có. Có quy chuẩn và công cụ hỗ trợ định hướng, lập trình viên tại đơn vị Dịch vụ giải pháp doanh nghiệp linh hoạt lựa chọn theo nhu cầu và có thể ứng dụng ngay tức thì.\n\nNhư Harvard Business Review nhận định, chuyển đổi chỉ “bén rễ” khi quyền dẫn dắt được trao cho các hạt nhân nội bộ ở tuyến giữa. Bằng cách trao quyền và tạo không gian thử nghiệm, doanh nghiệp có thể biến năng lực cá nhân thành mô hình có khả năng nhân rộng.\n\nNhững “hạt nhân AI” như anh Võ Xuân Cường không chỉ sử dụng công nghệ, mà đang góp phần định hình lại cách làm việc trong ngành phần mềm, nơi AI trở thành một phần của năng lực cốt lõi, thay vì chỉ là công cụ hỗ trợ."
     },
     {
-      "title": "Privacy Display trên Galaxy S26 Ultra khác gì kính chống nhìn trộm?",
-      "description": "Galaxy S26 Ultra được trang bị Privacy Display, tính năng hạn chế góc nhìn màn hình để bảo vệ nội dung hiển thị. Công nghệ này được đặt lên bàn cân so với kính cường lực chống nhìn trộm quen thuộc.",
-      "created_at": "Thứ sáu, 06/03/2026 - 06:55"
-    },
-    {
-      "title": "Nhiều người bị khóa app ngân hàng do thiết bị không đạt chuẩn bảo mật",
-      "description": "Trong ít ngày qua, không ít người dùng di động tại Việt Nam đã rơi vào tình cảnh \"dở khóc dở cười\" khi các ứng dụng ngân hàng trên thiết bị ngừng hoạt động.",
-      "created_at": "Thứ năm, 05/03/2026 - 22:55"
-    },
-    {
-      "title": "Báo Dân trí đạt giải thưởng báo chí viết về Nghị quyết 57",
-      "description": "Tuyến bài “Tinh hoa 5 châu phụng sự đất nước” của báo Dân trí khắc họa hành trình trí thức Việt trở về cống hiến, lan tỏa khát vọng đưa khoa học, công nghệ thành động lực phát triển.",
-      "created_at": "Thứ năm, 05/03/2026 - 15:59"
-    },
-    {
-      "title": "Xôi lạc TV và những “cánh tay nối dài” của cá độ trực tuyến bất hợp pháp",
-      "description": "Các hệ thống phát lậu thể thao trực tuyến như Xôi lạc TV, 90phutTV… không chỉ là hành vi vi phạm nghiêm trọng bản quyền truyền hình, mà còn là “cánh tay nối dài” của những nhà cái cá độ bất hợp pháp.",
-      "created_at": "Thứ năm, 05/03/2026 - 15:48"
-    },
-    {
-      "title": "MacBook Air M4 bị khai tử tại Việt Nam",
-      "description": "Những ngày qua, Apple đã giới thiệu hàng loạt sản phẩm mới, trong đó có MacBook Air M5, MacBook Pro M5 và MacBook Neo. Đồng thời, hãng cũng gỡ bỏ MacBook Air M4 khỏi cửa hàng trực tuyến tại Việt Nam.",
-      "created_at": "Thứ năm, 05/03/2026 - 14:33"
-    },
-    {
-      "title": "Camera trên điện thoại Samsung sẽ tiệm cận máy ảnh chuyên dụng?",
-      "description": "Sự chuyển dịch trong chiến lược phần cứng của gã khổng lồ công nghệ Hàn Quốc đang mở ra một kỷ nguyên mới cho camera trên điện thoại thông minh thông qua dự án cảm biến đầy đột phá.",
-      "created_at": "Thứ năm, 05/03/2026 - 14:31"
-    },
-    {
-      "title": "Luật AI 2025: \"Lá chắn\" bảo vệ văn hóa và chủ quyền số quốc gia",
-      "description": "Luật Trí tuệ nhân tạo 2025 chính thức đi vào cuộc sống đã đánh dấu một bước ngoặt quan trọng trong quá trình chuyển đổi số của Việt Nam.",
-      "created_at": "Thứ năm, 05/03/2026 - 11:25"
-    },
-    {
-      "title": "Những tượng đài điện tử tiêu dùng Nhật Bản về tay các tập đoàn Trung Quốc",
-      "description": "Nhiều thương hiệu điện tử tiêu dùng nổi tiếng của Nhật Bản đã bị các tập đoàn lớn của Trung Quốc thâu tóm, dù những thương hiệu này đã tạo được tên tuổi và một lượng lớn người dùng trung thành.",
-      "created_at": "Thứ năm, 05/03/2026 - 11:12"
-    },
-    {
-      "title": "Trên tay MacBook Neo - Chiếc laptop “giá rẻ” mới ra mắt của Apple",
-      "description": "Apple đã chính thức cho ra mắt MacBook Neo, chiếc laptop nhắm đến phân khúc cận cao cấp với mức giá khởi điểm 16,5 triệu đồng tại Việt Nam.",
-      "created_at": "Thứ năm, 05/03/2026 - 07:29"
-    },
-    {
-      "title": "Điện thoại dung lượng pin lớn, tích hợp kèm bật lửa",
-      "description": "Smartphone và bật lửa, hai dụng cụ không hề liên quan đến nhau, lại được tích hợp chung vào cùng một thiết bị vừa được hãng điện thoại Trung Quốc Oukitel trình làng tại Triển lãm Di động Thế giới.",
-      "created_at": "Thứ tư, 04/03/2026 - 22:31"
-    },
-    {
-      "title": "Giá MacBook Neo từ 16,5 triệu đồng tại Việt Nam",
-      "description": "Tối 4/3, Apple đã giới thiệu dòng máy tính xách tay giá rẻ mới nhất của hãng. Đúng như những thông tin rò rỉ trước đó, thiết bị có tên gọi MacBook Neo.",
-      "created_at": "Thứ tư, 04/03/2026 - 21:47"
-    },
-    {
-      "title": "Vì sao Samsung chưa trang bị công nghệ pin silicon-carbon cho Galaxy S26?",
-      "description": "Thay vì trang bị pin silicon-carbon thế hệ mới, Samsung vẫn chỉ sử dụng pin lithium-ion công nghệ cũ cho loạt Galaxy S26, điều này khiến dung lượng pin trên sản phẩm hầu như không thay đổi.",
-      "created_at": "Thứ tư, 04/03/2026 - 15:32"
-    },
-    {
-      "title": "Tốc độ mạng 5G Việt Nam tăng cao",
-      "description": "Theo dữ liệu từ công cụ i-Speed của Trung tâm Internet Việt Nam, tốc độ tải xuống của mạng 5G tại Việt Nam đã tăng 50% trong tháng 1.",
-      "created_at": "Thứ tư, 04/03/2026 - 15:25"
-    },
-    {
-      "title": "Galaxy S25 Ultra bất ngờ tăng giá sau khi Galaxy S26 Ultra ra mắt",
-      "description": "Cuối tháng 2, Samsung đã công bố dòng sản phẩm Galaxy S thế hệ mới, bao gồm Galaxy S26, Galaxy S26+ và Galaxy S26 Ultra. Sau khi Galaxy S26 ra mắt, loạt sản phẩm đời cũ đột ngột tăng giá.",
-      "created_at": "Thứ tư, 04/03/2026 - 12:40"
-    },
-    {
-      "title": "Chuyên gia nhận định camera AI là rủi ro an ninh trong vụ không kích Tehran",
-      "description": "Vụ việc tại Tehran làm dấy lên lo ngại về lỗ hổng bảo mật trong hệ thống camera AI đô thị, khi hạ tầng giám sát thông minh có thể bị khai thác cho mục đích tình báo nếu không được bảo vệ chặt chẽ.",
-      "created_at": "Thứ tư, 04/03/2026 - 11:07"
-    },
-    {
-      "title": "Laptop giá rẻ của Apple lộ diện với tên gọi MacBook Neo?",
-      "description": "MacBook Neo được kỳ vọng là mẫu máy tính có giá bán thấp nhất mà Apple từng công bố.",
-      "created_at": "Thứ tư, 04/03/2026 - 09:45"
-    },
-    {
-      "title": "Hình ảnh, video do AI tạo ra bắt buộc phải gắn dấu hiệu nhận biết",
-      "description": "Luật Trí tuệ nhân tạo 2025 chính thức có hiệu lực từ 1/3, đánh dấu một bước ngoặt trong việc quản lý công nghệ số tại Việt Nam.",
-      "created_at": "Thứ tư, 04/03/2026 - 09:13"
-    },
-    {
-      "title": "Galaxy S26 Ultra đọ pin với iPhone 17 Pro Max và loạt smartphone cao cấp",
-      "description": "Galaxy S26 Ultra, chiếc smartphone cao cấp vừa được ra mắt của Samsung, có thời lượng pin như thế nào so với iPhone 17 Pro Max và các mẫu điện thoại “bom tấn” khác trên thị trường?",
-      "created_at": "Thứ tư, 04/03/2026 - 07:12"
-    },
-    {
-      "title": "Viettel hợp tác với hàng loạt tập đoàn công nghệ lớn trên thế giới",
-      "description": "Hội nghị Di động Thế giới (MWC) 2026 đang diễn ra tại Barcelona đặt ra những tiêu chuẩn công nghệ mới, tiên tiến cho ngành công nghệ di động. Trong bước ngoặt công nghệ này có sự tham gia của một doanh nghiệp Việt Nam - Viettel.",
-      "created_at": "Thứ năm, 05/03/2026 - 15:36"
-    },
-    {
-      "title": "MacBook Pro M5, MacBook Air M5 ra mắt tại Việt Nam",
-      "description": "Tối 3/3, Apple đã giới thiệu loạt sản phẩm mới bao gồm MacBook Pro M5, MacBook Air M5 cùng bộ đôi màn hình Studio Display và Studio Display XDR.",
-      "created_at": "Thứ ba, 03/03/2026 - 22:11"
-    },
-    {
-      "title": "iPhone 17e khác gì 16e, có đáng nâng cấp?",
-      "description": "iPhone 17e sắp mở bán tại Việt Nam với mức giá cao hơn 1 triệu đồng so với 16e. Liệu những nâng cấp bên trong có đủ thuyết phục người dùng đổi máy, hay chỉ là thay đổi nhỏ?",
-      "created_at": "Thứ ba, 03/03/2026 - 20:12"
-    },
-    {
-      "title": "MWC 2026: Viettel công bố lộ trình thúc đẩy 6G",
-      "description": "Tại MWC 2026, Tập đoàn Công nghiệp - Viễn thông Quân đội (Viettel) công bố tăng tốc nghiên cứu, phát triển và thương mại hóa các sản phẩm công nghệ 6G do Viettel làm chủ.",
-      "created_at": "Thứ ba, 03/03/2026 - 20:07"
-    },
-    {
-      "title": "MWC 2026: Cách AI bước vào cuộc sống hàng ngày",
-      "description": "Tại MWC 2026, Xiaomi đánh dấu cột mốc quan trọng trong tiến trình phát triển trí tuệ nhân tạo.",
-      "created_at": "Thứ ba, 03/03/2026 - 14:22"
-    },
-    {
-      "title": "Làn sóng tấn công mạng chưa từng có làm tê liệt hạ tầng Iran",
-      "description": "Trong bối cảnh các cuộc không kích và xung đột quân sự trực tiếp làm rung chuyển Trung Đông, một mặt trận khác khốc liệt không kém đang diễn ra trong không gian kỹ thuật số.",
-      "created_at": "Thứ ba, 03/03/2026 - 09:42"
-    },
-    {
-      "title": "Mẫu iPhone vừa bị khai tử tại Việt Nam",
-      "description": "Tối 2/3, Apple đã giới thiệu dòng sản phẩm iPhone 17e. Bên cạnh đó, công ty cũng âm thầm gỡ bỏ mẫu iPhone 16e khỏi cửa hàng trực tuyến của hãng tại thị trường Việt Nam.",
-      "created_at": "Thứ ba, 03/03/2026 - 08:55"
-    },
-    {
-      "title": "Vị thế con người trong nỗ lực xác lập chủ quyền đạo đức trước AI",
-      "description": "Sự chuyển dịch của trí tuệ nhân tạo (AI) từ các mô hình tạo sinh sang hệ thống tác nhân AI đã đặt ra những thách thức mới cho quản trị truyền thông số.",
-      "created_at": "Thứ ba, 03/03/2026 - 07:14"
-    },
-    {
-      "title": "“Sạc mua sắm” - Cú bắt tay chiến lược của Esky Corp và Saigon Co.op",
-      "description": "Ngày 3/3, Esky Corp ký kết hợp tác chiến lược với SaiGon Co.op, đánh dấu bước triển khai quan trọng trong chiến lược mở rộng hạ tầng sạc nhanh gắn với đời sống tiêu dùng.",
-      "created_at": "Thứ tư, 04/03/2026 - 17:00"
-    },
-    {
-      "title": "Apple ra mắt iPhone 17e, iPad Air M4 tại Việt Nam",
-      "description": "Tối 2/3, Apple đã âm thầm giới thiệu chiếc iPhone 17e. Đây là mẫu máy có giá bán thấp nhất trong toàn bộ dòng sản phẩm iPhone 17.",
-      "created_at": "Thứ hai, 02/03/2026 - 22:21"
-    },
-    {
-      "title": "Làn sóng AI đẩy những chiếc điện thoại vào vòng xoáy đắt đỏ kỷ lục",
-      "description": "Thị trường di động toàn cầu đang đứng trước một nghịch lý chưa từng có trong lịch sử, trong khi nhu cầu tiêu dùng có dấu hiệu suy giảm, giá bán lẻ của smartphone không ngừng tăng.",
-      "created_at": "Thứ hai, 02/03/2026 - 18:11"
-    },
-    {
-      "title": "Panasonic: Giá trị đổi mới sáng tạo không dừng lại ở cải tiến công nghệ",
-      "description": "Với Panasonic, đổi mới sáng tạo không chỉ là bước tiến công nghệ, mà còn là hành trình bền bỉ bảo vệ sức khỏe và nâng tầm chất lượng sống cho hàng triệu gia đình Việt.",
-      "created_at": "Thứ tư, 04/03/2026 - 14:00"
-    },
-    {
-      "title": "MWC 2026: Motorola ra mắt điện thoại gập, cạnh tranh với Galaxy Z Fold 7",
-      "description": "Motorola Razr Fold gây chú ý với thiết kế mỏng nhẹ, cấu hình mạnh và phần mềm tối ưu cho máy gập, cạnh tranh sòng phẳng ở phân khúc cao cấp.",
-      "created_at": "Thứ hai, 02/03/2026 - 17:24"
-    },
-    {
-      "title": "MWC 2026: Laptop màn hình gập kiêm máy chơi game cầm tay",
-      "description": "Lenovo Legion Go Fold có thể kết hợp với các phụ kiện như bàn phím hoặc tay cầm chơi game để biến thành những thiết bị khác nhau.",
-      "created_at": "Thứ hai, 02/03/2026 - 12:14"
-    },
-    {
-      "title": "Galaxy S26 và S25: Có đáng nâng cấp lên thế hệ mới?",
-      "description": "Sự xuất hiện của Galaxy S26 ngay lập tức đặt ra câu hỏi về mức độ khác biệt so với Galaxy S25 và liệu những nâng cấp lần này có đủ rõ ràng để thuyết phục người dùng cân nhắc nâng cấp.",
-      "created_at": "Thứ hai, 02/03/2026 - 09:48"
-    },
-    {
-      "title": "MWC 2026: Điện thoại robot sẽ lên kệ trong năm nay",
-      "description": "Trong khuôn khổ sự kiện Mobile World Congress (MWC) 2026 diễn ra tại Barcelona, Honor tiết lộ công ty đang lên kế hoạch để mở bán mẫu Robot Phone (điện thoại robot) vào nửa cuối năm nay.",
-      "created_at": "Thứ hai, 02/03/2026 - 07:11"
-    },
-    {
-      "title": "Livotec bảo hành 1 đổi 1 nguyên chiếc điều hòa trong 90 ngày",
-      "description": "Livotec công bố chính sách bảo hành 1 đổi 1 trong vòng 90 ngày cho dòng điều hòa DHV- Series mới ra mắt, mang đến sự an tâm cho người dùng.",
-      "created_at": "Thứ tư, 04/03/2026 - 08:00"
-    },
-    {
-      "title": "Clip \"tình huống gây tranh cãi khi đổ xăng” nổi bật tuần qua",
-      "description": "Đoạn video ghi lại khoảnh khắc một tài xế ngồi trên xe ô tô làm rơi tiền xuống đất sau khi đổ xăng, đã gây ra nhiều tranh cãi trên cộng đồng mạng tuần qua.",
-      "created_at": "Chủ nhật, 01/03/2026 - 20:19"
-    },
-    {
-      "title": "Điểm tuần: Cáp quang biển gặp sự cố",
-      "description": "Những thông tin công nghệ nổi bật tuần qua gồm nhiều điện thoại sẽ không thể truy cập ứng dụng ngân hàng từ ngày 1/3, cáp quang biển gặp sự cố, Galaxy S26 ra mắt.",
-      "created_at": "Chủ nhật, 01/03/2026 - 07:04"
-    },
-    {
-      "title": "Mẹo tìm lại điện thoại bị mất chỉ với một chiếc máy khác",
-      "description": "Khi điện thoại bị mất, nhiều người dễ hoảng loạn. Tuy nhiên, chỉ cần một thiết bị khác và tài khoản đã đăng nhập trước đó, bạn vẫn có thể xác định vị trí máy từ xa.",
-      "created_at": "Chủ nhật, 01/03/2026 - 06:46"
-    },
-    {
-      "title": "Xiaomi 17 ra mắt, cạnh tranh iPhone 17 và Galaxy S26",
-      "description": "Tối 28/2, Xiaomi đã công bố loạt điện thoại cao cấp mới của hãng tại thị trường Việt Nam, bao gồm Xiaomi 17, Xiaomi 17 Ultra và phiên bản đặc biệt Leica LeitzPhone.",
-      "created_at": "Chủ nhật, 01/03/2026 - 04:38"
-    },
-    {
-      "title": "Từ chiến dịch 2G-4G đến bùng nổ 5G: Viettel nhận đề cử GLOMO Awards 2026",
-      "description": "Sáng kiến chuyển đổi đồng bộ từ 2G lên 5G trên phạm vi toàn quốc đã đưa Viettel vào danh sách đề cử GLOMO Awards 2026, ghi nhận nỗ lực thu hẹp khoảng cách số và phổ cập công nghệ cho mọi người dân.",
-      "created_at": "Thứ ba, 03/03/2026 - 16:00"
-    },
-    {
-      "title": "TPHCM đề nghị 3 nhà mạng nghiên cứu thử nghiệm 6G",
-      "description": "TPHCM đề nghị ba tập đoàn viễn thông lớn gồm Viettel, VNPT và MobiFone nghiên cứu, phát triển công nghệ 6G và phối hợp thí điểm tại một khu vực trên địa bàn trong năm 2026.",
-      "created_at": "Thứ bảy, 28/02/2026 - 17:40"
+      "title": "Sàn tài sản số: An ninh, an toàn là yếu tố then chốt",
+      "content": "Nghị quyết số 05/2025/NQ-CP đã đánh dấu một bước ngoặt lịch sử cho thị trường tài sản số tại Việt Nam.\n\nTuy nhiên, để hiện thực hóa mục tiêu đưa một lĩnh vực vốn dĩ phi tập trung và ẩn danh vào khuôn khổ quản lý nhà nước, đòi hỏi một lộ trình thận trọng với những tiêu chuẩn vận hành khắt khe.\n\nTại hội thảo \"Thiết lập cơ chế giám sát và chuẩn vận hành cho thị trường tài sản số Việt Nam\" do Hiệp hội Blockchain và Tài sản số Việt Nam phối hợp cùng Uỷ ban Chứng khoán nhà nước tổ chức ngày 22/3 vừa qua, các chuyên gia đã chia sẻ những rào cản về công nghệ, pháp lý và an ninh mạng trong bối cảnh các sàn giao dịch nội địa đầu tiên đang thành hình.\n\nAn ninh mạng là điều kiện cần nhưng chưa đủ\n\nViệt Nam rà soát hồ sơ các doanh nghiệp đăng ký cung cấp dịch vụ giao dịch tài sản mã hóa (Ảnh minh hoạ: Ivy).\n\nHiện Việt Nam đang rà soát hồ sơ các doanh nghiệp đăng ký cung cấp dịch vụ giao dịch tài sản mã hóa.\n\nÔng Tô Trần Hòa, Phó Trưởng ban Thường trực Ban quản lý thị trường giao dịch tài sản mã hóa (Ủy ban Chứng khoán Nhà nước) cho biết, cơ quan quản lý đang tiến hành rà soát tính đầy đủ và hợp lệ của hồ sơ dựa trên các quy định tại Điều 9 của Nghị quyết: \"Ở giai đoạn này, chúng tôi không chỉ xem xét hồ sơ trên giấy tờ mà còn phối hợp chặt chẽ để lấy ý kiến từ Bộ Công an và Ngân hàng Nhà nước.\n\nCác doanh nghiệp phải chủ động hoàn thiện quy trình và đặc biệt là xây dựng hệ thống công nghệ thông tin đáp ứng tiêu chuẩn an ninh an toàn cấp độ 4”.\n\nTheo đó, an ninh an toàn là yếu tố then chốt, việc đáp ứng tiêu chuẩn cấp độ 4 không chỉ là điều kiện cần để được cấp phép mà là nền tảng để thị trường có thể vận hành chính thức một cách chuẩn mực.\n\nMột trong những thách thức lớn nhất của tài sản số so với tài chính truyền thống chính là đặc tính công nghệ. Nếu tiền trong ngân hàng có hệ thống kiểm soát nội bộ qua nhiều tầng nấc phê duyệt trực tiếp, thì tài sản số lại phụ thuộc hoàn toàn vào \"chìa khóa bí mật\" (private key).\n\nChuyên gia an ninh mạng Nguyễn Lê Thành, Nhà sáng lập Verichains nêu quan điểm: \"Bảo vệ tài sản số khó hơn bảo vệ tiền mặt ở ngân hàng rất nhiều, do tính chất phi tập trung khiến việc truy vết và thu hồi tài sản khi xảy ra sự cố trở nên cực kỳ phức tạp”.\n\n“Tiêu chuẩn cấp độ 4 là đúng đắn, nhưng mới chỉ là điều kiện cần. Đối với sàn giao dịch, một lỗi quản trị nhỏ hoặc việc một nhân sự cầm chìa khóa bí mật bị thao túng có thể dẫn đến mất trắng toàn bộ tài sản. Các sàn phải áp dụng công nghệ mật mã hiện đại như MPC (Multi-Party Computation) để chia nhỏ quyền kiểm soát khóa, thay vì để tập trung vào một cá nhân hay một máy chủ duy nhất\", ông Thành phân tích.\n\nBài học từ kinh nghiệm quốc tế\n\nBà Đoàn Mai Hạnh, Tổng giám đốc TCEX cho biết: ”Đơn vị đã chuẩn bị hơn một năm qua và hiện hệ thống đã sẵn sàng vận hành trên môi trường thực tế\".\n\nBà Hạnh khẳng định, TCEX đã hợp tác với các đối tác quốc tế để triển khai các giải pháp nhằm đánh giá nguồn gốc tài sản, đảm bảo các giao dịch không liên quan đến ví đen hoặc các nguồn bất hợp pháp.\n\nNhìn từ góc độ một sàn giao dịch đã hiện diện tại 170 quốc gia, bà Nguyễn Ngọc Sơn Quỳnh, Trưởng ban chiến lược sàn MEXC Việt Nam cho rằng, niềm tin của người dùng là tài sản quý giá nhất. Để xây dựng niềm tin đó, sự minh bạch là yếu tố không thể thương lượng.\n\n\"Sàn giao dịch có trách nhiệm công bố minh bạch và thường xuyên lượng tài sản dự trữ để người dùng có thể kiểm tra trên chuỗi (on-chain). Ngoài ra, hệ thống khớp lệnh phải đủ mạnh để xử lý các tình huống thị trường biến động cực đoan, tránh tình trạng treo lệnh hay mất lệnh gây thiệt hại cho nhà đầu tư\", bà Sơn Quỳnh chia sẻ.\n\nMột câu hỏi lớn được đặt ra tại hội thảo là “số phận” của những tài sản mà người Việt đang nắm giữ trên các sàn quốc tế nhưng không được niêm yết trên sàn nội địa sau khi Nghị quyết 05 có hiệu lực.\n\nVề vấn đề này, ông Tô Trần Hòa cho biết, tới đây sẽ có các cơ chế giao dịch thỏa thuận hoặc chuyển đổi để hỗ trợ nhà đầu tư, bởi đây cũng là một phần nghiệp vụ trong giấy phép của các sàn.\n\nTuy nhiên, thách thức về mặt dân sự như quyền thừa kế tài sản số cũng là vấn đề cần làm rõ, vì theo quy định hiện hành, tài sản số cũng cần được xem xét dưới góc độ Bộ luật Dân sự 2015 để đảm bảo các quyền lợi về thừa kế và sở hữu hợp pháp."
     }
   ]
 }

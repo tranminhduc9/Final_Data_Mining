@@ -1,0 +1,162 @@
+{
+  "source_platform": "Báo điện tử Dân trí - Tin tức cập nhật liên tục 24/7",
+  "source_url": "https://dantri.com.vn/cong-nghe/ai-internet.htm",
+  "scraped_at": "2026-04-09 00:09:49",
+  "post_detail": [
+    {
+      "title": "Tương lai của chip máy tính chỉ đơn thuần là thay thế điện năng?",
+      "content": "Trí tuệ nhân tạo (AI) đang ngày càng trở nên phổ biến, len lỏi vào mọi ngóc ngách của cuộc sống, thậm chí cả với những người không quan tâm hoặc không muốn sự hiện diện của nó trên thiết bị của mình. Dù có quan điểm thế nào về công nghệ này, hai điều không thể phủ nhận là: AI đã gây ra tình trạng thiếu chip, đẩy giá công nghệ lên cao, và nó cực kỳ có hại cho môi trường.\n\nNguyên nhân chính của tác động tiêu cực đến môi trường là do yêu cầu về sức mạnh xử lý khổng lồ của AI. Các trung tâm dữ liệu AI tiêu thụ một lượng điện và nước khổng lồ. Đơn cử, việc tương tác lịch sự với chatbot đã tiêu tốn của ChatGPT hàng chục triệu đô la Mỹ.\n\nTuy nhiên, một bước đột phá mới mang tên chip quang tử đang mở ra tiềm năng cải thiện đáng kể hiệu quả năng lượng của AI. Khác với các chip hiện tại sử dụng electron để hoạt động, chip quang tử sử dụng photon (các hạt ánh sáng) để thực hiện các phép tính.\n\nĐiều này có nghĩa là chúng thực hiện các phép tính AI bằng ánh sáng thay vì điện, từ đó tiêu thụ ít tài nguyên thiên nhiên hơn.\n\nCơ chế hoạt động của chip quang học\n\nKhông chỉ thân thiện hơn với môi trường, chip quang tử còn mạnh mẽ hơn, hoạt động nhanh hơn cả các GPU hiện có. Trong bối cảnh cuộc sống ngày càng phụ thuộc vào internet và AI khiến các trung tâm dữ liệu tiêu thụ nhiều năng lượng hơn, chip quang học có thể giảm thiểu tác động tiêu cực của công nghệ này đến môi trường, đồng thời mang lại sự cải thiện tổng thể về hiệu suất.\n\nĐể hiểu rõ hơn về lợi ích môi trường của chip quang học, cần xem xét cách hoạt động của chip silicon truyền thống. Một vi mạch nhỏ chứa hàng tỷ bóng bán dẫn, có chức năng bật hoặc tắt dòng điện, về cơ bản là đẩy các electron qua mạch. Quá trình này tạo ra ma sát, sinh nhiệt và đòi hỏi các trung tâm dữ liệu phải có hệ thống làm mát phức tạp, tiêu thụ rất nhiều nước.\n\nChip quang học thay thế các bóng bán dẫn này bằng các nơron quang học dẫn ánh sáng qua chip để tạo ra năng lượng. Mặc dù không hoàn toàn không cần điện (vì chúng hoạt động trong các thiết bị điện tử), chức năng chính của chúng là chuyển đổi tín hiệu điện thành ánh sáng, thực hiện các phép tính cần thiết, sau đó chuyển đổi trở lại thành hệ thống điện trả về máy tính.\n\nNgoài ra, một đường dẫn ánh sáng có thể chứa nhiều kênh (điều mà dòng điện không thể làm được), cho phép các chip này xử lý đồng thời nhiều giá trị, từ đó sử dụng ít năng lượng hơn so với việc xử lý riêng lẻ. Hơn nữa, ánh sáng không gặp phải điện trở như điện, giúp chip quang học thực hiện các tác vụ tương tự mà không tạo ra nhiều nhiệt, từ đó sử dụng ít nước hơn.\n\nTốc độ và hiệu quả vượt trội\n\nBên cạnh khả năng tiết kiệm năng lượng, chip quang học còn mạnh mẽ hơn đáng kể so với các chip hiện hành. Các nhà khoa học Trung Quốc đứng sau dự án LightGen đã công bố trên tạp chí Khoa học rằng nguyên mẫu của họ \"vượt trội hơn hai bậc so với các chip điện tử tiên tiến nhất\" về tốc độ tính toán và hiệu quả năng lượng.\n\nTương tự, công ty Q.ANT của Đức tuyên bố NPU Gen 2 của họ tiết kiệm năng lượng hơn tới 30 lần và nhanh hơn 50 lần so với công nghệ hiện đang được sử dụng trong các trung tâm dữ liệu.\n\nNhững con số ấn tượng này không gây ngạc nhiên, bởi ma sát điện từ lâu đã là rào cản đối với sự tiến bộ trong công nghệ chip. Khả năng một đường dẫn ánh sáng chứa nhiều kênh cho phép xử lý đồng thời nhiều giá trị, giúp tiết kiệm năng lượng hơn so với xử lý riêng lẻ.\n\nThậm chí, chúng còn rất chính xác, với nguyên mẫu của Đại học Sydney nhận diện hình ảnh chính xác từ 90-99% thời gian.\n\nDù muốn hay không, trí tuệ nhân tạo sẽ không biến mất trong thời gian ngắn. Những tiến bộ trong công nghệ chip như xử lý proton là dấu hiệu đáng khích lệ cho thấy chúng ta có thể làm cho công nghệ AI và việc sử dụng dữ liệu khác ít gây hại cho môi trường hơn.\n\nViệc đạt được điều này đồng thời với việc nâng cao hiệu quả hoạt động là một điểm cộng rất lớn.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Q. ANT",
+          "Đại học Sydney"
+        ],
+        "LOC": [
+          "Mỹ",
+          "Trung Quốc",
+          "Đức"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "GPU",
+          "NPU",
+          "Trí tuệ nhân tạo",
+          "chatbot",
+          "ChatGPT"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "\"Con gà đẻ trứng vàng\" của Anthropic bị lộ mã nguồn",
+      "content": "Mô hình AI Claude Code bị rò rỉ mã nguồn (Ảnh minh hoạ: PCMag).\n\nNgày 31/3, công ty khởi nghiệp trí tuệ nhân tạo Anthropic xác nhận đã vô tình để lộ một phần mã nguồn của Claude Code - trợ lý AI lập trình.\n\nĐại diện Anthropic khẳng định đây là lỗi của con người trong quá trình cập nhật, không phải một vụ tấn công mạng có chủ đích từ bên ngoài.\n\n\"Không có dữ liệu nhạy cảm của khách hàng hay thông tin đăng nhập nào bị ảnh hưởng, công ty đang khẩn trương triển khai các biện pháp kỹ thuật để ngăn chặn những sai sót tương tự trong tương lai\", người phát ngôn của Anthropic nhấn mạnh.\n\nTuy nhiên, giới chuyên gia nhận định vụ rò rỉ này có thể giúp các đối thủ cạnh tranh hiểu sâu hơn về kiến trúc và cách thức vận hành của Claude Code.\n\nĐáng chú ý, một bài đăng trên mạng xã hội X chứa liên kết dẫn đến đoạn mã bị lộ đã thu hút hơn 21 triệu lượt xem chỉ sau vài giờ, cho thấy mức độ quan tâm cực lớn từ cộng đồng công nghệ.\n\nĐây là sự cố bảo mật thứ hai của Anthropic chỉ trong chưa đầy một tuần. Trước đó, theo báo cáo của tờ Fortune, nhiều tài liệu nội bộ mô tả các mô hình AI thế hệ mới của công ty cũng đã bị phát hiện nằm trong một kho dữ liệu công khai.\n\nTheo nội dung tài liệu, Claude Mythos, với tên mã nội bộ Capybara, được mô tả là phiên bản phát triển tiếp theo, có hiệu năng cao hơn so với các mô hình trước đó của Anthropic như Claude Opus 4.6.\n\nCác kết quả thử nghiệm nội bộ cho thấy mô hình này đạt điểm số cao trong các bài kiểm tra liên quan đến tư duy học thuật và lập trình phức tạp.\n\nTài liệu còn cho thấy, Claude Mythos được thiết kế với khả năng phân tích chuyên sâu trong lĩnh vực an ninh mạng, bao gồm phát hiện và đánh giá lỗ hổng trong hệ thống phần mềm.\n\nChuỗi sai sót liên tiếp đặt ra dấu hỏi lớn về quy trình kiểm soát nội bộ của Anthropic, nhất là khi công ty này luôn tự nhận mình là đơn vị tiên phong về an toàn và đạo đức trong lĩnh vực trí tuệ nhân tạo.\n\nClaude Code được phát hành chính thức vào tháng 5/2025, công cụ AI này nhanh chóng trở thành \"con gà đẻ trứng vàng\" của Anthropic.\n\nTính đến tháng 2, doanh thu hàng năm từ công cụ này đã vượt mốc 2,5 tỷ USD nhờ khả năng hỗ trợ lập trình viên xây dựng tính năng và sửa lỗi tự động một cách vượt trội.\n\nSự phát triển mạnh mẽ của Claude Code đã buộc các ông lớn công nghệ như OpenAI, Google và xAI phải dồn lực đầu tư vào các sản phẩm đối trọng.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Mythos"
+        ],
+        "ORG": [
+          "Fortune",
+          "Claude Code",
+          "OpenAI",
+          "Google",
+          "xAI"
+        ],
+        "LOC": [],
+        "DATE": [
+          "tháng 5",
+          "tháng 2"
+        ],
+        "TECH": [
+          "AI",
+          "Anthropic",
+          "Claude",
+          "trí tuệ nhân tạo",
+          "OpenAI",
+          "xAI"
+        ],
+        "JOB_ROLE": [
+          "lập trình viên"
+        ],
+        "SALARY": [
+          "21 triệu"
+        ]
+      }
+    },
+    {
+      "title": "Đã có thể thay đổi địa chỉ Gmail",
+      "content": "\"Nếu địa chỉ email tài khoản Google có đuôi gmail.com, thì bạn có thể thay đổi địa chỉ đó thành một địa chỉ khác có đuôi @gmail.com. Địa chỉ email trước đây có đuôi gmail.com dùng cho tài khoản Google sẽ trở thành địa chỉ email thay thế\", Google cho biết.\n\nMỗi năm, người dùng có thể thay đổi địa chỉ email tài khoản Google một lần (Ảnh: Business Insider).\n\nHiện tại, tính năng này bắt đầu được triển khai tại thị trường Mỹ. Công ty cho biết tính năng thay đổi địa chỉ email của tài khoản Google sẽ sớm được triển khai cho tất cả người dùng trên toàn cầu.\n\nTrước đây, người dùng bắt buộc phải lập tài khoản mới nếu muốn đổi tên email. Điều đó đồng nghĩa với việc người dùng phải đối mặt với cơn ác mộng chuyển đổi dữ liệu từ ảnh, tin nhắn đến các dịch vụ liên kết. Với cập nhật mới, nỗi lo này đã được xóa bỏ.\n\nSau khi đổi tên, địa chỉ email cũ vẫn sẽ tiếp tục hoạt động song song. Người dùng vẫn sẽ nhận được thư gửi đến cả địa chỉ cũ lẫn địa chỉ mới, giúp quá trình chuyển đổi diễn ra mượt mà mà không sợ thất lạc thông tin.\n\nNgười dùng có thể thay đổi địa chỉ email tài khoản Google của mình một lần mỗi năm, tối đa 3 lần tổng cộng. Cập nhật này đặc biệt quan trọng đối với nhóm người dùng đã sử dụng dịch vụ tài khoản Google lâu năm với những địa chỉ email như “congchuabongbong_200x” hay “boy_dep_trai_9x”...\n\nKhông chỉ dừng lại ở việc xóa bỏ những cái tên \"kém sang\", tính năng này còn mang ý nghĩa nhân văn với cộng đồng người chuyển giới hoặc những người đã đổi tên pháp lý, giúp họ đồng nhất bản sắc cá nhân trên không gian số một cách dễ dàng.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Google"
+        ],
+        "LOC": [
+          "Mỹ"
+        ],
+        "DATE": [],
+        "TECH": [],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Mark Zuckerberg và nỗi đau metaverse",
+      "content": "Meta đang tiếp tục thực hiện các đợt tái cấu trúc nội bộ, theo đó, một số nhân viên bị ảnh hưởng đang được đề nghị chuyển sang các vị trí mới trong công ty.\n\nĐáng chú ý, trong một số trường hợp, những vị trí này sẽ yêu cầu thay đổi địa điểm làm việc, gây ra những xáo trộn nhất định cho người lao động.\n\nMeta vừa thông báo sa thải hàng loạt nhân viên, trong đó có bộ phận Reality Labs (Ảnh: CNBC).\n\nMột phát ngôn viên của Meta cho biết: “Các nhóm tại Meta thường xuyên tái cấu trúc hoặc thực hiện các thay đổi để đảm bảo họ ở vị trí tốt nhất và đạt được mục tiêu của mình. Chúng tôi đang tìm kiếm các cơ hội khác cho những nhân viên bị ảnh hưởng\".\n\nĐộng thái cắt giảm nhân sự này diễn ra trong bối cảnh Meta đang dồn lực đầu tư hàng tỷ USD vào lĩnh vực trí tuệ nhân tạo (AI). Đây là một cuộc đua mà gã khổng lồ mạng xã hội đang nỗ lực để bắt kịp các đối thủ lớn như OpenAI, Anthropic và Google.\n\nTrước đó, từ tháng 1, Meta đã tiến hành sa thải nhân viên thuộc bộ phận Reality Labs và đóng cửa một số studio đang phát triển các tựa game thực tế ảo. Những đợt cắt giảm này đã ảnh hưởng đến hơn 1.000 việc làm.\n\nGần đây nhất, Meta cũng thông báo người dùng sẽ không còn truy cập được các thế giới nhập vai trong Horizon Worlds qua kính thực tế ảo kể từ ngày 15/6. Đây được xem là một động thái ngầm thừa nhận thất bại của Mark Zuckerberg đối với tầm nhìn metaverse đầy tham vọng.\n\nVũ trụ ảo mà Mark Zuckerberg phát triển đang đi đến hồi kết (Ảnh: CNN).\n\nCác thống kê cho thấy, đến nay, gã khổng lồ mạng xã hội đã đầu tư khoảng 80 tỷ USD vào việc phát triển metaverse thông qua bộ phận Reality Labs. Tuy nhiên, metaverse và thực tế ảo (VR) vẫn chỉ là sở thích của một bộ phận nhỏ người dùng, chưa bao giờ trở thành một xu hướng phổ biến.\n\nĐáng nói, vũ trụ ảo mà Meta xây dựng cũng gặp rất nhiều vấn đề khác nhau. Phiên bản đầu tiên của Horizon Worlds còn tồn tại nhiều lỗi, hình đại diện người chơi thô sơ và thiếu sót, điển hình là việc trong một thời gian dài chúng chỉ là những thân người lơ lửng không có chân.\n\nDù vậy, Meta không phải là trường hợp duy nhất thất bại với VR. Apple cũng đã ra mắt kính Vision Pro vào năm 2024 với giá 3.500 USD, nhưng sản phẩm này đến nay gần như không để lại bất cứ dấu ấn nào đáng kể trên thị trường.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Mark Zuckerberg",
+          "Meta"
+        ],
+        "ORG": [
+          "Meta",
+          "Reality Labs",
+          "CNBC",
+          "OpenAI",
+          "Anthropic",
+          "Google",
+          "CNN",
+          "Apple"
+        ],
+        "LOC": [],
+        "DATE": [
+          "tháng 1",
+          "năm 2024"
+        ],
+        "TECH": [
+          "AI",
+          "trí tuệ nhân tạo",
+          "OpenAI",
+          "Anthropic"
+        ],
+        "JOB_ROLE": [
+          "sa"
+        ],
+        "SALARY": [
+          "1.000",
+          "3.500"
+        ]
+      }
+    },
+    {
+      "title": "Chuyên gia FPT và hành trình thay đổi cách làm việc với AI của hàng nghìn kỹ sư",
+      "content": "Tại bộ phận Dịch vụ và Giải pháp doanh nghiệp (Enterprise Business Services), Tập đoàn FPT với 1.000 kỹ sư công nghệ, anh Võ Xuân Cường, một nhà quản trị dự án với 13 năm kinh nghiệm, được giao nhiệm vụ dẫn dắt một nhóm chuyên gia tiên phong ứng dụng AI để tăng năng suất, tối ưu vận hành trong toàn bộ quá trình phát triển phần mềm.\n\nKhi làn sóng AI ập đến, anh hiểu rằng thay đổi một tập thể lớn không thể bắt đầu bằng mệnh lệnh. “Chỉ kêu gọi lập trình viên dùng AI bằng những mỹ từ công nghệ là chưa đủ và cũng không thuyết phục nếu bản thân người tiên phong không làm chủ nó”, anh chia sẻ.\n\nBắt tay vào giải bài toán thói quen, anh Cường cùng nhóm 15 chuyên gia nòng cốt phân tích các công cụ trên thị trường, thiết lập quy chế kiểm soát rủi ro và định rõ ranh giới dữ liệu. Từ đó, họ tạo ra một môi trường làm việc an toàn, đáp ứng tiêu chuẩn của những khách hàng khó tính, đồng thời phát triển các công cụ AI bổ trợ trực tiếp vào dự án.\n\nKhông dừng ở thử nghiệm, anh đưa AI vào quy trình thực tế, trực tiếp dẫn dắt các dự án ứng dụng AI xuyên suốt vòng đời phát triển phần mềm.\n\nAnh cũng chuẩn hóa việc ứng dụng công cụ trợ lý lập trình Cursor AI trên nền tảng mã nguồn mở Odoo thành quy trình rõ ràng, dễ nhân rộng, đồng thời định hình cách sử dụng và quản lý trợ lý AI (AI Agent) để đảm bảo tích hợp nhanh và bảo mật.\n\nTừ một bài toán rất cụ thể, làm sao để thay đổi cách làm việc của kỹ sư, câu chuyện của anh Cường phản ánh một thách thức phổ biến hơn mà nhiều doanh nghiệp đang đối mặt khi triển khai AI. Đó là AI đã có mặt trong doanh nghiệp nhưng cách làm việc không thay đổi.\n\nMột nghiên cứu của McKinsey chỉ ra: dù 78% doanh nghiệp toàn cầu đã trang bị AI, chỉ 1-6% thực sự tạo ra đột phá về lợi nhuận. Phần lớn tổ chức rơi vào “bẫy triển khai”, khi xem AI như một ứng dụng cần cài đặt, thay vì một sự thay đổi toàn diện về cách vận hành.\n\nVới hơn 30.000 nhân sự công nghệ phục vụ thị trường nước ngoài, FPT đối mặt với bài toán tương tự: không chỉ trang bị công cụ, mà phải đưa AI vào toàn bộ vòng đời phát triển phần mềm vốn đã được chuẩn hóa chặt chẽ.\n\nLàm thế nào để hàng chục nghìn kỹ sư có thể đồng bộ sử dụng AI, không chỉ để viết mã nhanh hơn mà còn tham gia vào các khâu như phân tích, thiết kế, kiểm thử?\n\nNhận thức được điều này, FPT lựa chọn cách tiếp cận chủ động, đặt trọng tâm vào tuyến quản lý giữa và xây dựng tư duy \"AI-First\" để từ đó, hình thành cơ chế “hạt nhân AI” (AI Champion), những người chịu trách nhiệm thiết kế lại cách làm việc, chuẩn hóa cách dùng AI và biến nỗ lực cá nhân thành năng lực có thể nhân rộng.\n\nTừ thực tiễn ứng dụng AI hiệu quả và đóng gói giải pháp một cách bài bản, với vai trò “hạt nhân AI”, anh Cường tiếp tục chia sẻ kinh nghiệm tại hàng chục hội thảo.\n\nAnh Võ Xuân Cường tại các buổi hội thảo lớn (Ảnh: FPT).\n\nThông qua các hoạt động như cuộc thi ứng dụng AI, anh Cường cùng các “hạt nhân” khác đã tạo ra một cú hích văn hóa mạnh mẽ.\n\nTrong năm 2025, tư duy “đặt AI làm trọng tâm” đã lan tỏa trong toàn bộ phận hơn 1.000 kỹ sư, với 80% nhân sự trở thành người dùng AI thường xuyên; 87% dự án có sự hiện diện của AI hàng tuần; tối ưu gần 10% chi phí vận hành.\n\nGiá trị của AI không dừng lại ở từng cá nhân, mà được kích hoạt ở quy mô tổ chức. Kinh nghiệm triển khai nội bộ của anh Cường sau đó được đúc kết thành giải pháp “AI Workplace Service” - mô hình giúp doanh nghiệp ứng dụng AI một cách bài bản, có kiểm soát và có thể nhân rộng.\n\nGiải pháp được xây dựng trên hệ sinh thái Microsoft với tiêu chuẩn bảo mật cao, giúp xác định được lộ trình cho các dự án chuyển đổi với AI, đi vào vận hành một cách nhanh chóng.\n\nĐồng thời giải pháp cũng hỗ trợ cho người quản trị nắm bắt được các chỉ số đo lường, theo dõi hiệu quả việc sử dụng AI agent trong thư viện AI agent sẵn có. Có quy chuẩn và công cụ hỗ trợ định hướng, lập trình viên tại đơn vị Dịch vụ giải pháp doanh nghiệp linh hoạt lựa chọn theo nhu cầu và có thể ứng dụng ngay tức thì.\n\nNhư Harvard Business Review nhận định, chuyển đổi chỉ “bén rễ” khi quyền dẫn dắt được trao cho các hạt nhân nội bộ ở tuyến giữa. Bằng cách trao quyền và tạo không gian thử nghiệm, doanh nghiệp có thể biến năng lực cá nhân thành mô hình có khả năng nhân rộng.\n\nNhững “hạt nhân AI” như anh Võ Xuân Cường không chỉ sử dụng công nghệ, mà đang góp phần định hình lại cách làm việc trong ngành phần mềm, nơi AI trở thành một phần của năng lực cốt lõi, thay vì chỉ là công cụ hỗ trợ.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Võ Xuân Cường",
+          "Cường"
+        ],
+        "ORG": [
+          "FPT",
+          "và Giải pháp",
+          "Tập đoàn FPT",
+          "McKinsey",
+          "Microsoft",
+          "Harvard Business Review"
+        ],
+        "LOC": [],
+        "DATE": [
+          "năm 2025"
+        ],
+        "TECH": [
+          "AI",
+          "AI Agent"
+        ],
+        "JOB_ROLE": [
+          "lập trình viên"
+        ],
+        "SALARY": [
+          "1.000",
+          "30.000"
+        ]
+      }
+    }
+  ]
+}

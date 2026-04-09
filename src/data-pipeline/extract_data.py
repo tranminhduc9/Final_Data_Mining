@@ -6,14 +6,18 @@
 
 PIPELINE:
   1. Đọc các file `filtered_data_*.json` (hoặc danh sách file được truyền vào)
-  2. Chỉ giữ lại các bài có `is_relevant = true`
-  3. Gộp `title + description`, đưa qua model NER tiếng Việt (ORG / PER / LOC)
+     Cấu trúc file: { "source_platform", "source_url", "scraped_at",
+                      "post_detail": [ { "title", "content", "is_relevant" } ] }
+  2. Chỉ giữ lại các bài có `is_relevant = true` (hoặc chuỗi "True")
+  3. Gộp `title + content`, đưa qua model NER tiếng Việt (ORG / PER / LOC)
   4. Lưu TRỰC TIẾP danh sách thực thể mà model trả ra vào field `entities`
      cho từng bài, với mỗi phần tử có dạng:
        { "entity": <span>, "label": <entity_group>, "score": <float 0-1> }
-  5. Bổ sung thêm 2 loại thực thể bằng dictionary + rule-based:
-       - DATE : ngày tháng năm (regex patterns tiếng Việt)
-       - TECH : công nghệ / ngôn ngữ lập trình / framework / tool (dictionary)
+  5. Bổ sung thêm 4 loại thực thể bằng dictionary + rule-based:
+       - DATE     : ngày tháng năm (regex patterns tiếng Việt)
+       - TECH     : công nghệ / ngôn ngữ lập trình / framework / tool (dictionary)
+       - JOB_ROLE : vị trí / chức danh nghề nghiệp (dictionary + regex)
+       - SALARY   : thông tin lương / mức lương (regex patterns)
 
 Lưu ý:
 - Script này KHÔNG gọi LLM, không cần API key.
@@ -198,6 +202,80 @@ _TECH_PATTERN = re.compile(
 )
 
 
+# ==========================================
+# DICTIONARY & PATTERNS: JOB_ROLE và SALARY
+# ==========================================
+
+# ----- JOB_ROLE: chức danh / vị trí nghề nghiệp -----
+# Ưu tiên cụm dài hơn (sorted by length desc trong regex)
+JOB_ROLE_KEYWORDS: List[str] = [
+    # Quản lý / lãnh đạo cấp cao
+    "Chief Executive Officer", "Chief Technology Officer", "Chief Information Officer",
+    "Chief Product Officer", "Chief Data Officer", "Chief Operating Officer",
+    "Vice President", "General Manager", "Managing Director",
+    "Giám đốc điều hành", "Giám đốc công nghệ", "Giám đốc kỹ thuật",
+    "Giám đốc sản phẩm", "Giám đốc dữ liệu", "Giám đốc vận hành",
+    "Tổng giám đốc", "Phó giám đốc", "Trưởng phòng", "Phó phòng",
+    "Trưởng nhóm", "Trưởng bộ phận", "Quản lý dự án",
+    # IT / Tech roles
+    "Software Engineer", "Software Developer", "Senior Software Engineer",
+    "Junior Software Engineer", "Full Stack Developer", "Full-Stack Developer",
+    "Frontend Developer", "Front-end Developer", "Backend Developer", "Back-end Developer",
+    "Mobile Developer", "iOS Developer", "Android Developer",
+    "DevOps Engineer", "Cloud Engineer", "Data Engineer", "Data Scientist",
+    "Data Analyst", "Business Analyst", "System Analyst", "System Administrator",
+    "Database Administrator", "Network Engineer", "Security Engineer",
+    "QA Engineer", "QA Tester", "Test Engineer", "Automation Engineer",
+    "AI Engineer", "ML Engineer", "Machine Learning Engineer",
+    "Product Manager", "Project Manager", "Scrum Master", "Tech Lead",
+    "Solution Architect", "Technical Architect", "Enterprise Architect",
+    "UI/UX Designer", "UX Designer", "UI Designer", "UX Researcher",
+    "IT Manager", "IT Director", "IT Specialist", "IT Support",
+    # Tiếng Việt
+    "Kỹ sư phần mềm", "Lập trình viên", "Nhà phát triển phần mềm",
+    "Kỹ sư dữ liệu", "Kỹ sư AI", "Kỹ sư học máy",
+    "Kỹ sư hệ thống", "Kỹ sư mạng", "Kỹ sư bảo mật",
+    "Kỹ sư DevOps", "Kỹ sư cloud", "Kỹ sư kiểm thử",
+    "Chuyên viên phân tích dữ liệu", "Chuyên viên phân tích nghiệp vụ",
+    "Chuyên viên phát triển phần mềm", "Chuyên viên IT",
+    "Nhà khoa học dữ liệu", "Kiến trúc sư phần mềm",
+    "Quản lý sản phẩm", "Quản lý dự án IT",
+    "Nhà thiết kế UI", "Nhà thiết kế UX", "Nhà thiết kế giao diện",
+    # Viết tắt phổ biến
+    "CEO", "CTO", "CIO", "CPO", "CDO", "COO", "CFO",
+    "VP", "GM", "PM", "PO", "BA", "SA", "DBA",
+    "SDE", "SWE", "QA", "QC",
+]
+
+_JOB_ROLE_SORTED = sorted(JOB_ROLE_KEYWORDS, key=len, reverse=True)
+_JOB_ROLE_PATTERN = re.compile(
+    r"(?<![\w.])(" + "|".join(re.escape(j) for j in _JOB_ROLE_SORTED) + r")(?![\w.])",
+    re.IGNORECASE,
+)
+
+
+# ----- SALARY: regex nhận diện mức lương -----
+SALARY_PATTERNS = [
+    # Dạng "X - Y triệu", "X – Y triệu", "từ X đến Y triệu"
+    r"\b(\d+(?:[,.]\d+)?\s*[-–]\s*\d+(?:[,.]\d+)?\s*tri[eệ]u(?:\s*VNĐ|\s*VND|\s*đồng)?)\b",
+    # Dạng "X triệu", "X,X triệu"
+    r"\b(\d+(?:[,.]\d+)?\s*tri[eệ]u(?:\s*VNĐ|\s*VND|\s*đồng)?)\b",
+    # Dạng "upto X$", "up to X USD", "up to $X"
+    r"\b(up\s*to\s*\$?\d+(?:[,.]\d+)?(?:\s*USD|\s*VND|\s*VNĐ)?)\b",
+    # Dạng "$X,XXX - $Y,XXX" hoặc "$X,XXX+"
+    r"(\$\d{1,3}(?:,\d{3})*(?:\s*[-–]\s*\$\d{1,3}(?:,\d{3})*)?(?:\+)?(?:\s*USD|\s*VND|\s*VNĐ)?)",
+    # Dạng số lớn: "10,000,000 VNĐ" hoặc "10.000.000đ"
+    r"\b(\d{1,3}(?:[,.]\d{3})+(?:\s*VNĐ|\s*VND|\s*đồng|đ)?)\b",
+    # Dạng "lương X triệu", "thu nhập X triệu", "mức lương X triệu"
+    r"\b(?:lương|thu\s+nhập|mức\s+lương|salary)\s+(\d+(?:[,.]\d+)?(?:\s*[-–]\s*\d+(?:[,.]\d+)?)?\s*(?:tri[eệ]u|nghìn|USD|VNĐ|VND)?)\b",
+    # Dạng cụm "lương thương lượng", "lương cạnh tranh", "lương hấp dẫn"
+    r"\b(lương\s+(?:thương\s+lượng|cạnh\s+tranh|hấp\s+dẫn|theo\s+năng\s+lực|thoả\s+thuận))\b",
+    r"\b(salary\s+(?:negotiable|competitive|attractive))\b",
+]
+
+_SALARY_REGEXES = [re.compile(p, re.IGNORECASE) for p in SALARY_PATTERNS]
+
+
 def extract_date_entities(text: str) -> List[dict]:
     """
     Trích xuất các thực thể DATE từ văn bản bằng regex.
@@ -241,45 +319,139 @@ def extract_tech_entities(text: str) -> List[dict]:
     return found
 
 
+def extract_job_role_entities(text: str) -> List[dict]:
+    """
+    Trích xuất JOB_ROLE từ văn bản bằng dictionary + regex.
+    Mỗi chức danh chỉ xuất hiện một lần (case-insensitive dedup).
+    Trả về list [{ "entity": <span>, "label": "JOB_ROLE", "score": 1.0 }].
+    """
+    seen: set = set()
+    found: List[dict] = []
+
+    for m in _JOB_ROLE_PATTERN.finditer(text):
+        kw = m.group()
+        key = kw.lower()
+        if key not in seen:
+            seen.add(key)
+            found.append({"entity": kw, "label": "JOB_ROLE", "score": 1.0})
+
+    return found
+
+
+def extract_salary_entities(text: str) -> List[dict]:
+    """
+    Trích xuất SALARY từ văn bản bằng regex patterns.
+    Tránh trùng lặp dựa trên vị trí ký tự (overlap check).
+    Trả về list [{ "entity": <span>, "label": "SALARY", "score": 1.0 }].
+    """
+    found: List[dict] = []
+    covered_spans = []
+
+    for regex in _SALARY_REGEXES:
+        for m in regex.finditer(text):
+            # Lấy group(1) nếu có (bắt phần giá trị), không thì dùng group()
+            span = (m.group(1) if m.lastindex and m.group(1) else m.group()).strip()
+            if not span:
+                continue
+            s, e = m.start(), m.end()
+            if any(s < ce and e > cs for cs, ce in covered_spans):
+                continue
+            covered_spans.append((s, e))
+            found.append({"entity": span, "label": "SALARY", "score": 1.0})
+
+    return found
+
+
+def _chunk_text_by_tokens(text: str, max_tokens: int = 480, overlap: int = 50) -> List[str]:
+    """
+    Chia text thành các chunk không vượt quá `max_tokens` token (không tính special tokens).
+    Các chunk liên tiếp overlap nhau `overlap` token để tránh bỏ sót entity tại biên.
+    Dùng tokenizer của model NER để đảm bảo đúng số lượng token.
+    """
+    token_ids = _tokenizer.encode(text, add_special_tokens=False)
+    if len(token_ids) <= max_tokens:
+        return [text]
+
+    chunks: List[str] = []
+    start = 0
+    while start < len(token_ids):
+        end = min(start + max_tokens, len(token_ids))
+        chunk_text = _tokenizer.decode(
+            token_ids[start:end],
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=True,
+        )
+        chunks.append(chunk_text)
+        if end >= len(token_ids):
+            break
+        start += max_tokens - overlap   # bước nhảy có overlap
+    return chunks
+
+
 def extract_entities_ner(text: str) -> List[dict]:
     """
-    Chạy NER model trên text, đồng thời bổ sung DATE và TECH bằng rule-based.
+    Chạy NER model trên text, đồng thời bổ sung DATE/TECH/JOB_ROLE/SALARY bằng rule-based.
 
     Định dạng mỗi phần tử:
       {
         "entity": <chuỗi span>,
-        "label": <entity_group: ORG / PER / LOC / DATE / TECH>,
+        "label": <entity_group: ORG / PER / LOC / DATE / TECH / JOB_ROLE / SALARY>,
         "score": <độ tin cậy 0-1, làm tròn 2 chữ số>
       }
+
+    Xử lý text dài hơn giới hạn 512 tokens của ELECTRA bằng sliding-window chunking:
+      - Chunk tối đa 480 token (để lại buffer cho special tokens)
+      - Overlap 50 token giữa các chunk liên tiếp
+      - Dedup NER theo (word.lower(), label) qua tất cả các chunk
+      - Rule-based extractors (DATE/TECH/JOB_ROLE/SALARY) chạy trên text gốc đầy đủ
     """
     if not text.strip():
         return []
 
-    # --- 1. Kết quả từ NER model (PER / ORG / LOC) ---
-    ner_results = ner_pipeline(text)
+    # --- 1. Chia text thành chunks nếu vượt giới hạn 512 tokens ---
+    chunks = _chunk_text_by_tokens(text, max_tokens=480, overlap=50)
 
+    # --- 2. Chạy NER trên từng chunk, dedup theo (word.lower(), label) ---
     final_entities: List[dict] = []
-    for ent in ner_results:
-        # aggregation_strategy='simple' → 'entity_group'
-        # raw token (aggregation=None) → 'entity'
-        label = (ent.get("entity_group") or ent.get("entity") or "").upper()
-        if not label or label in ("O", ""):
-            continue
-        word  = ent.get("word", "").strip()
-        score = ent.get("score")
-        if not word or score is None:
-            continue
-        final_entities.append({
-            "entity": word,
-            "label":  label,
-            "score":  round(float(score), 2),
-        })
+    _ner_seen: set = set()
 
-    # --- 2. DATE bằng regex rule-based ---
+    for chunk in chunks:
+        if not chunk.strip():
+            continue
+        try:
+            ner_results = ner_pipeline(chunk)
+        except Exception as e:
+            print(f"    [WARN] NER pipeline lỗi trên chunk ({len(chunk)} ký tự): {e}")
+            continue
+
+        for ent in ner_results:
+            label = (ent.get("entity_group") or ent.get("entity") or "").upper()
+            if not label or label in ("O", ""):
+                continue
+            word  = ent.get("word", "").strip()
+            score = ent.get("score")
+            if not word or score is None:
+                continue
+            dedup_key = (word.lower(), label)
+            if dedup_key not in _ner_seen:
+                _ner_seen.add(dedup_key)
+                final_entities.append({
+                    "entity": word,
+                    "label":  label,
+                    "score":  round(float(score), 2),
+                })
+
+    # --- 3. DATE bằng regex rule-based (chạy trên text gốc đầy đủ) ---
     final_entities.extend(extract_date_entities(text))
 
-    # --- 3. TECH bằng dictionary rule-based ---
+    # --- 4. TECH bằng dictionary rule-based ---
     final_entities.extend(extract_tech_entities(text))
+
+    # --- 5. JOB_ROLE bằng dictionary rule-based ---
+    final_entities.extend(extract_job_role_entities(text))
+
+    # --- 6. SALARY bằng regex rule-based ---
+    final_entities.extend(extract_salary_entities(text))
 
     return final_entities
 
@@ -296,9 +468,11 @@ _LABEL_TO_KEY = {
     "PERSON":       "PER",
     "ORGANIZATION": "ORG",
     "LOCATION":     "LOC",
-    # DATE, TECH (rule-based)
+    # Rule-based entities
     "DATE":         "DATE",
     "TECH":         "TECH",
+    "JOB_ROLE":     "JOB_ROLE",
+    "SALARY":       "SALARY",
     # Tiền tố B-/I- + dạng ngắn
     "B-PER": "PER",  "I-PER": "PER",
     "B-ORG": "ORG",  "I-ORG": "ORG",
@@ -345,22 +519,26 @@ def group_entities(flat_entities: List[dict]) -> dict:
     """
     Chuyển danh sách entities phẳng sang dict có cấu trúc:
       {
-        "PER":  [...],
-        "ORG":  [...],
-        "LOC":  [...],
-        "DATE": [...],
-        "TECH": [...]
+        "PER":      [...],
+        "ORG":      [...],
+        "LOC":      [...],
+        "DATE":     [...],
+        "TECH":     [...],
+        "JOB_ROLE": [...],
+        "SALARY":   [...]
       }
     - Mỗi entity được chuẩn hóa qua normalize_entity() trước khi lưu.
     - Mỗi entity chỉ xuất hiện một lần trong mỗi nhóm (dedup case-sensitive sau normalize).
     - Các label không nằm trong ánh xạ sẽ bị bỏ qua.
     """
     result: dict = {
-        "PER":  [],
-        "ORG":  [],
-        "LOC":  [],
-        "DATE": [],
-        "TECH": [],
+        "PER":      [],
+        "ORG":      [],
+        "LOC":      [],
+        "DATE":     [],
+        "TECH":     [],
+        "JOB_ROLE": [],
+        "SALARY":   [],
     }
     seen: dict = {k: set() for k in result}
 
@@ -405,7 +583,7 @@ def ner_json_file_phobert(input_path: str) -> str:
     print("\n[Bước] Chạy NER model tiếng Việt (trả về list entities thô)...")
     all_entities: List[List[dict]] = []
     for i, post in enumerate(relevant_posts):
-        text = f"{post.get('title', '')}. {post.get('description', '')}".strip()
+        text = f"{post.get('title', '')}. {post.get('content', '')}".strip()
         ents = extract_entities_ner(text)
         all_entities.append(ents)
 

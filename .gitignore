@@ -39,6 +39,7 @@ env/
 *.swp
 *.swo
 *~
+.DS_Store
 
 # Data & Logs
 *.log
@@ -55,6 +56,3 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
-
-# Prompt
-/PROMPT

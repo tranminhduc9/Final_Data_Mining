@@ -4,8 +4,8 @@ import sys
 
 # Cấu hình thư mục
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FILTERED_DATA_DIR = os.path.join(BASE_DIR, "filtered_data")
-EXTRACTED_DATA_DIR = os.path.join(BASE_DIR, "extracted_data_topCV")
+FILTERED_DATA_DIR = os.path.join(BASE_DIR, "filtered_data", "topCV")
+EXTRACTED_DATA_DIR = os.path.join(BASE_DIR, "extracted_data", "topCV")
 
 def extract_topcv(input_path: str) -> str:
     if not os.path.exists(input_path):
@@ -57,13 +57,8 @@ def extract_topcv(input_path: str) -> str:
     # Ghi ra file
     os.makedirs(EXTRACTED_DATA_DIR, exist_ok=True)
     
-    base_name = os.path.basename(input_path)
-    if base_name.startswith("filtered_data_"):
-        output_filename = base_name.replace("filtered_data_", "extracted_data_")
-    else:
-        output_filename = "extracted_data_" + base_name
-        
-    output_path = os.path.join(EXTRACTED_DATA_DIR, output_filename)
+    # Giữ nguyên tên file (YYYY_MM_DD.json)
+    output_path = os.path.join(EXTRACTED_DATA_DIR, os.path.basename(input_path))
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -85,10 +80,10 @@ def main():
         for f in json_files:
             extract_topcv(f)
     else:
-        # Tự scan thư mục filtered_data
+        # Tự scan thư mục filtered_data/topCV
         if os.path.isdir(FILTERED_DATA_DIR):
             for f in os.listdir(FILTERED_DATA_DIR):
-                if f.startswith("filtered_data_topCV") and f.endswith(".json"):
+                if f.endswith(".json"):
                     extract_topcv(os.path.join(FILTERED_DATA_DIR, f))
         else:
             print(f"[LỖI] Thư mục không tồn tại: {FILTERED_DATA_DIR}")

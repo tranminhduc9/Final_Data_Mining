@@ -27,7 +27,7 @@ load_dotenv()
 # CẤU HÌNH - Chỉnh sửa tại đây
 # ==========================================
 
-API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_API_KEY_HERE")    # Dán API Key hoặc đặt GEMINI_API_KEY
+API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyDUsgEvbMQaQfrGl59i4mArs1jJwTVfomM")    # Dán API Key hoặc đặt GEMINI_API_KEY
 
 # Thư mục gốc project (dựa trên vị trí file hiện tại)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -39,7 +39,7 @@ CLEANED_DATA_DIR = os.path.join(BASE_DIR, "cleaned_data")
 FILTERED_DATA_DIR = os.path.join(BASE_DIR, "filtered_data")
 
 # Thư mục mặc định để scan input (có thể override bằng --dir)
-DIRECTORY  = CLEANED_DATA_DIR
+DIRECTORY  = os.path.join(CLEANED_DATA_DIR, "topCV")
 
 MODEL      = "gemini-2.5-flash"
 BATCH_SIZE = 10      # Số title gửi mỗi lần gọi API
@@ -277,16 +277,11 @@ def make_batches(lst: list, size: int) -> list[list]:
 # ==========================================
 
 def _resolve_output_path(input_path: str) -> str:
-    """Chuyển đường dẫn cleaned_*.json → đường dẫn filtered_data_*.json."""
+    """Chuyển đường dẫn cleaned_*.json → đường dẫn filtered_data/topCV/YYYY_MM_DD.json."""
     base = os.path.basename(input_path)
-    for prefix in ("cleaned_data_", "cleaned_"):
-        if base.startswith(prefix):
-            suffix = base[len(prefix):]
-            break
-    else:
-        suffix = base
-    os.makedirs(FILTERED_DATA_DIR, exist_ok=True)
-    return os.path.join(FILTERED_DATA_DIR, "filtered_data_" + suffix)
+    output_dir = os.path.join(FILTERED_DATA_DIR, "topCV")
+    os.makedirs(output_dir, exist_ok=True)
+    return os.path.join(output_dir, base)
 
 
 def _run_api_filter(posts: list, need_api: list, results_map: dict) -> None:
@@ -399,7 +394,7 @@ def _collect_input_files(args) -> list[str]:
     return [
         os.path.join(DIRECTORY, f)
         for f in os.listdir(DIRECTORY)
-        if f.startswith("cleaned_") and f.endswith(".json")
+        if f.endswith(".json")
     ]
 
 

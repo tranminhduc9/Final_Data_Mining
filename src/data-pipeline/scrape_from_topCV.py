@@ -9,42 +9,108 @@ import time
 import random
 import json
 import os
+import sys
 from datetime import datetime, timedelta
 import traceback
+import logging
+
+# Cấu hình logging
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    filename=os.path.join("logs", "topCV_scrape.log"),
+    level=logging.ERROR,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    encoding="utf-8"
+)
+
 def safe_find(driver, css):
     try:
         return driver.find_element(By.CSS_SELECTOR, css).text.strip()
     except NoSuchElementException:
         return ""
 #driver = webdriver.Chrome()
-driver = uc.Chrome()
+driver = uc.Chrome(version_main=145)
 
-source_url = "https://www.topcv.vn/tim-viec-lam-cong-nghe-thong-tin-cr257?sort=new&type_keyword=1&category_family=r257&saturday_status=0"
-#num_pages = 2
+source_url = "https://www.topcv.vn/tim-viec-lam-moi-nhat?company_field=1&type_keyword=1&sba=1&saturday_status=0"
+num_pages = 5  # Số trang muốn cào (mỗi trang ~50 bài)
 
-driver.get(source_url)
-
-source_platform = driver.find_element(By.CSS_SELECTOR, "a.header-menu-mobile__logo img").get_attribute("title")
-
-scraped_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+scraped_at_dt = datetime.now()
+scraped_at = scraped_at_dt.strftime("%Y-%m-%d %H:%M:%S")
 
 data = {
-    "source_platform": source_platform,
+    "source_platform": "TopCV", # Sẽ được cập nhật sau khi mở trang
     "source_url": source_url,
     "scraped_at": scraped_at,
     "post_detail": []
 }
 
+# Quy cách đặt tên file mới để kiểm tra tồn tại
+today_str = scraped_at_dt.strftime("%Y_%m_%d")
+output_dir = os.path.join("raw_data", "topCV")
+os.makedirs(output_dir, exist_ok=True)
+output_file = os.path.join(output_dir, f"{today_str}.json")
+
+# Kiểm tra file đã tồn tại chưa để thực hiện Append & Deduplicate
+existing_data = None
+existing_links = set()
+
+if os.path.exists(output_file):
+    try:
+        with open(output_file, "r", encoding="utf-8") as f:
+            existing_data = json.load(f)
+            existing_links = {post.get("url") for post in existing_data.get("post_detail", []) if post.get("url")}
+        print(f"Tìm thấy file cũ với {len(existing_links)} bài viết đã cào.")
+    except Exception as e:
+        print(f"Lỗi khi đọc file cũ: {e}")
+
 wait = WebDriverWait(driver, 10)
 
-elements_links = driver.find_elements(By.CSS_SELECTOR, "h3.title a")
+all_links = []
 
-# Lấy href
-links = list(set([
-    e.get_attribute("href")
-    for e in elements_links
-    if e.get_attribute("href")
-]))
+for page in range(1, num_pages + 1):
+    current_page_url = f"{source_url}&page={page}"
+    print(f"\n--- Đang thu thập link từ trang {page}/{num_pages} ---")
+    
+    try:
+        driver.get(current_page_url)
+        time.sleep(random.uniform(3, 5))
+        
+        if page == 1:
+            try:
+                source_platform = driver.find_element(By.CSS_SELECTOR, "a.header-menu-mobile__logo img").get_attribute("title")
+                data["source_platform"] = source_platform
+            except:
+                pass
+
+        elements_links = driver.find_elements(By.CSS_SELECTOR, "h3.title a")
+        page_links = [
+            e.get_attribute("href")
+            for e in elements_links
+            if e.get_attribute("href")
+        ]
+        
+        # Deduplication ngay tại bước thu thập link
+        new_page_links = [l for l in page_links if l not in existing_links and l not in all_links]
+        all_links.extend(new_page_links)
+        
+        print(f"Tìm thấy {len(page_links)} link (trong đó có {len(new_page_links)} bài mới) ở trang {page}")
+        
+        if not page_links:
+            print("Không tìm thấy link nào nữa, dừng thu thập.")
+            break
+            
+    except Exception as e:
+        print(f"Lỗi khi thu thập trang {page}: {e}")
+        break
+
+# Loại bỏ trùng lặp (nếu còn)
+links = all_links # đã deduplicate ở trên
+print(f"\nTổng cộng có {len(links)} bài viết MỚI cần cào.")
+
+if not links:
+    print("Không có bài viết mới nào để cào. Kết thúc.")
+    driver.quit()
+    sys.exit(0)
 
 for idx, link in enumerate(links):
     print(f"\nĐang xử lý bài {idx + 1}/{len(links)}")
@@ -86,6 +152,7 @@ for idx, link in enumerate(links):
 
         # Thêm thông tin bài viết vào data
         post_detail = {
+            "url": link, # Lưu link để deduplicate lần sau
             "title" : title,
             "created_at" : created_at_str,
             "ORG" : organization,
@@ -99,15 +166,26 @@ for idx, link in enumerate(links):
         data["post_detail"].append(post_detail)
 
     except Exception as e:
-        print(f"  [LỖI] Xử lý bài {link} thất bại. Chi tiết: {e}")
+        error_msg = f"Xử lý bài {link} thất bại. Chi tiết: {e}"
+        print(f"  [LỖI] {error_msg}")
+        logging.error(error_msg)
         continue
 
 driver.quit()
 
-os.makedirs("raw_data", exist_ok=True)
-output_file = os.path.join("raw_data", "raw_data_topCV.json")
-with open(output_file, "w", encoding="utf-8") as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
+# Thực hiện Append: Gộp dữ liệu cũ và dữ liệu mới
+if existing_data:
+    # Giữ nguyên thông tin chung của file cũ, chỉ gộp post_detail
+    total_posts = existing_data.get("post_detail", []) + data["post_detail"]
+    existing_data["post_detail"] = total_posts
+    existing_data["scraped_at"] = data["scraped_at"] # Cập nhật thời gian cào mới nhất
+    final_data = existing_data
+else:
+    final_data = data
 
-print(f"\nĐã lưu dữ liệu vào file: {output_file}")
-print(f"\nTổng số bài viết: {len(data['post_detail'])}")
+with open(output_file, "w", encoding="utf-8") as f:
+    json.dump(final_data, f, ensure_ascii=False, indent=2)
+
+print(f"\nĐã cập nhật dữ liệu vào file: {output_file}")
+print(f"Tổng số bài viết hiện có trong file: {len(final_data['post_detail'])}")
+print(f"Số bài vừa cào thêm: {len(data['post_detail'])}")

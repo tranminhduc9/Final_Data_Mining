@@ -228,19 +228,12 @@ def clean_json_file(input_path: str) -> str:
                 print(f"      trước: {b}")
                 print(f"      sau  : {a}")
 
-    # Lưu file output vào thư mục cleaned_data với tên dạng cleaned_data_*.json
-    os.makedirs(CLEANED_DATA_DIR, exist_ok=True)
-    base_name = os.path.basename(input_path)
-
-    # Nếu file đầu vào có dạng raw_data_XXX.json -> cleaned_data_XXX.json
-    if base_name.startswith("raw_data_"):
-        suffix = base_name[len("raw_data_"):]  # phần XXX.json
-    else:
-        # Nếu không đúng pattern, dùng nguyên tên làm suffix
-        suffix = base_name
-
-    output_filename = "cleaned_data_" + suffix
-    output_path = os.path.join(CLEANED_DATA_DIR, output_filename)
+    # Lưu file output vào thư mục cleaned_data/topCV
+    output_dir = os.path.join(CLEANED_DATA_DIR, "topCV")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Giữ nguyên tên file từ raw (YYYY_MM_DD.json)
+    output_path = os.path.join(output_dir, os.path.basename(input_path))
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -267,12 +260,13 @@ def main():
                 print(f"[LỖI] Không tìm thấy file: {f}")
             sys.exit(1)
     else:
-        # Nếu không chỉ định file, tự scan thư mục raw_data trong project
-        if os.path.isdir(RAW_DATA_DIR):
+        # Tự scan thư mục raw_data/topCV trong project
+        directory = os.path.join(RAW_DATA_DIR, "topCV")
+        if os.path.isdir(directory):
             json_files = [
-                os.path.join(RAW_DATA_DIR, f)
-                for f in os.listdir(RAW_DATA_DIR)
-                if f.startswith("raw_data_") and f.endswith(".json")
+                os.path.join(directory, f)
+                for f in os.listdir(directory)
+                if f.endswith(".json")
             ]
         else:
             json_files = []

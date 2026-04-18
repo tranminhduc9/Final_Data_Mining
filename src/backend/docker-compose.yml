@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: techpulse-golang-api
     env_file:
-      - ./.env.example
+      - ./.env
     environment:
       PYTHON_AI_BASE_URL: http://python-api:8001
     ports:
@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: techpulse-python-ai
     env_file:
-      - ./.env.example
+      - ./.env
     ports:
       - "8001:8001"
     restart: unless-stopped

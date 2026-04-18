@@ -10,6 +10,9 @@ class FakeElement:
     def get_attribute(self, key):
         return self._attrs.get(key, "")
 
+    def is_displayed(self):
+        return True
+
 
 class DummyWait:
     def __init__(self, *args, **kwargs):
@@ -22,6 +25,10 @@ class DummySelect:
 
 
 class NoSuchElementException(Exception):
+    pass
+
+
+class StaleElementReferenceException(Exception):
     pass
 
 
@@ -44,7 +51,7 @@ def install_fake_selenium(monkeypatch, fake_driver):
     chrome_options_mod.Options = Options
 
     by_mod = types.ModuleType("selenium.webdriver.common.by")
-    by_mod.By = types.SimpleNamespace(CSS_SELECTOR="css selector")
+    by_mod.By = types.SimpleNamespace(CSS_SELECTOR="css selector", ID="id")
 
     ui_mod = types.ModuleType("selenium.webdriver.support.ui")
     ui_mod.WebDriverWait = DummyWait
@@ -55,6 +62,7 @@ def install_fake_selenium(monkeypatch, fake_driver):
 
     common_exc_mod = types.ModuleType("selenium.common.exceptions")
     common_exc_mod.NoSuchElementException = NoSuchElementException
+    common_exc_mod.StaleElementReferenceException = StaleElementReferenceException
 
     uc_mod = types.ModuleType("undetected_chromedriver")
     uc_mod.Chrome = lambda *args, **kwargs: fake_driver

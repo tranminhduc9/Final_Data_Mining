@@ -1,5 +1,7 @@
 import importlib.util
 import json
+import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -8,195 +10,268 @@ import pytest
 pytestmark = pytest.mark.fast
 
 
-def _load_module(module_name: str, relative_path: str):
-    root = Path(__file__).resolve().parents[2]
-    file_path = root / relative_path
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def _install_fake_classifier_dependencies(monkeypatch):
+    torch_mod = types.ModuleType("torch")
+
+    class _Cuda:
+        @staticmethod
+        def is_available():
+            return False
+
+    class _NoGrad:
+        def __enter__(self):
+            return None
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            return False
+
+    class _ProbVector:
+        def __init__(self, probs):
+            self.probs = probs
+
+        def __getitem__(self, idx):
+            return _Scalar(self.probs[idx])
+
+    class _SoftmaxResult:
+        def __init__(self, probs):
+            self.probs = probs
+
+        def __getitem__(self, idx):
+            return _ProbVector(self.probs)
+
+    class _ArgMaxResult:
+        def __init__(self, idx):
+            self.idx = idx
+
+        def item(self):
+            return self.idx
+
+    class _Scalar:
+        def __init__(self, value):
+            self.value = value
+
+        def item(self):
+            return self.value
+
+    def _softmax(_logits, dim=-1):
+        return _SoftmaxResult([0.2, 0.8])
+
+    def _argmax(_probs, dim=-1):
+        return _ArgMaxResult(1)
+
+    torch_mod.cuda = _Cuda()
+    torch_mod.device = lambda name: name
+    torch_mod.no_grad = lambda: _NoGrad()
+    torch_mod.softmax = _softmax
+    torch_mod.argmax = _argmax
+
+    transformers_mod = types.ModuleType("transformers")
+
+    class _FakeBatch(dict):
+        def to(self, _device):
+            return self
+
+    class _AutoTokenizer:
+        @staticmethod
+        def from_pretrained(_):
+            class _Tokenizer:
+                def __call__(self, *args, **kwargs):
+                    return _FakeBatch()
+
+            return _Tokenizer()
+
+    class _AutoModelForSequenceClassification:
+        @staticmethod
+        def from_pretrained(_):
+            class _Model:
+                def eval(self):
+                    return self
+
+                def to(self, _device):
+                    return self
+
+                def __call__(self, **kwargs):
+                    return types.SimpleNamespace(logits=[[0.2, 0.8]])
+
+            return _Model()
+
+    transformers_mod.AutoTokenizer = _AutoTokenizer
+    transformers_mod.AutoModelForSequenceClassification = _AutoModelForSequenceClassification
+
+    underthesea_mod = types.ModuleType("underthesea")
+    underthesea_mod.word_tokenize = lambda text, format="text": text
+    underthesea_mod.ner = lambda _text: []
+
+    monkeypatch.setitem(sys.modules, "torch", torch_mod)
+    monkeypatch.setitem(sys.modules, "transformers", transformers_mod)
+    monkeypatch.setitem(sys.modules, "underthesea", underthesea_mod)
+
+
+def _load_filter_data(monkeypatch):
+    _install_fake_classifier_dependencies(monkeypatch)
+    file_path = ROOT / "src/data-pipeline/filter_data.py"
+    spec = importlib.util.spec_from_file_location("filter_data_module", file_path)
     module = importlib.util.module_from_spec(spec)
     assert spec and spec.loader
     spec.loader.exec_module(module)
     return module
 
 
-filter_data = _load_module("filter_data_module", "src/data-pipeline/filter_data.py")
+def test_preprocess_title_handles_ner_and_normalization(monkeypatch):
+    filter_data = _load_filter_data(monkeypatch)
+
+    monkeypatch.setattr(
+        filter_data,
+        "ner",
+        lambda _text: [
+            ("OpenAI", "Np", "B-NP", "B-ORG"),
+            ("Ha Noi", "Np", "B-NP", "B-LOC"),
+        ],
+    )
+    monkeypatch.setattr(filter_data, "word_tokenize", lambda text, format="text": text)
+
+    out = filter_data.preprocess_title("OpenAI tăng 12% tại Ha Noi năm 2026")
+
+    assert "name" in out
+    assert "loc" in out
+    assert "percent" in out
+    assert "date" in out
 
 
-def test_keyword_and_topcv_validation_scenario_matrix():
-    keyword_cases = [
-        ("Tin AI m\u1edbi nh\u1ea5t", True),
-        ("Hi\u1ec7n t\u01b0\u1ee3ng nguy\u1ec7t th\u1ef1c t\u1ed1i nay", False),
-        ("M\u1ed9t ti\u00eau \u0111\u1ec1 trung t\u00ednh", None),
-        ("AI v\u1ec1 hi\u1ec7n t\u01b0\u1ee3ng nguy\u1ec7t th\u1ef1c", False),
-    ]
-    for title, expected in keyword_cases:
-        assert filter_data.keyword_filter(title) is expected
+def test_classify_titles_uses_predict_one_results(monkeypatch):
+    filter_data = _load_filter_data(monkeypatch)
 
-    posts = [
-        {"ORG": "A", "DEADLINE_DATE": "01/01/2027"},
-        {"ORG": "", "DEADLINE_DATE": "01/01/2027"},
-        {"ORG": "B", "DEADLINE_DATE": ""},
-        {"ORG": "C", "DEADLINE_DATE": "02/01/2027"},
-    ]
-    assert filter_data._remove_invalid_topcv_posts(posts) == [
-        {"ORG": "A", "DEADLINE_DATE": "01/01/2027"},
-        {"ORG": "C", "DEADLINE_DATE": "02/01/2027"},
-    ]
+    seq = iter([(True, 0.9), (False, 0.8), (True, 0.7)])
+    monkeypatch.setattr(filter_data, "predict_one", lambda _t: next(seq))
+
+    out = filter_data.classify_titles(["a", "b", "c"])
+    assert out == [True, False, True]
 
 
-def test_classify_batch_resilience_scenario(monkeypatch):
-    class _RespEmpty:
-        text = ""
+def test_resolve_output_path_prefix_conversion(monkeypatch, tmp_path):
+    filter_data = _load_filter_data(monkeypatch)
+    monkeypatch.setattr(filter_data, "FILTERED_DATA_DIR", str(tmp_path / "filtered"))
 
-    class _RespMismatch:
-        text = "1. YES\n2. NO"
+    p1 = filter_data._resolve_output_path("/tmp/raw_data_DT.json")
+    p2 = filter_data._resolve_output_path("/tmp/custom.json")
 
-    call_count = {"n": 0}
-
-    class _RespOk:
-        text = "1. YES\n2. NO"
-
-    class _ModelsEmpty:
-        @staticmethod
-        def generate_content(*args, **kwargs):
-            return _RespEmpty()
-
-    class _ModelsMismatch:
-        @staticmethod
-        def generate_content(*args, **kwargs):
-            return _RespMismatch()
-
-    class _ModelsRetry:
-        @staticmethod
-        def generate_content(*args, **kwargs):
-            call_count["n"] += 1
-            if call_count["n"] == 1:
-                raise Exception("429 rate limit")
-            return _RespOk()
-
-    class _Client:
-        def __init__(self, models):
-            self.models = models
-
-    monkeypatch.setattr(filter_data, "client", _Client(_ModelsEmpty()))
-    assert filter_data.classify_batch(["A", "B"]) == [False, False]
-
-    monkeypatch.setattr(filter_data, "client", _Client(_ModelsMismatch()))
-    assert filter_data.classify_batch(["A", "B", "C"]) == [False, False, False]
-
-    monkeypatch.setattr(filter_data, "client", _Client(_ModelsRetry()))
-    monkeypatch.setattr(filter_data.time, "sleep", lambda *_: None)
-    assert filter_data.classify_batch(["A", "B"]) == [True, False]
-    assert call_count["n"] == 2
+    assert Path(p1).name == "filtered_data_DT.json"
+    assert Path(p2).name == "filtered_data_custom.json"
 
 
-def test_filter_json_file_end_to_end_with_topcv_cleanup_and_api_fallback(tmp_path, monkeypatch):
+def test_filter_json_file_adds_is_relevant_and_writes_output(monkeypatch, tmp_path):
+    filter_data = _load_filter_data(monkeypatch)
+
     payload = {
+        "source_platform": "Demo",
         "post_detail": [
-            {"title": "AI b\u00f9ng n\u1ed5", "ORG": "A", "DEADLINE_DATE": "01/01/2027"},
-            {"title": "Nguy\u1ec7t th\u1ef1c hi\u1ebfm g\u1eb7p", "ORG": "B", "DEADLINE_DATE": "02/01/2027"},
-            {"title": "Ti\u00eau \u0111\u1ec1 m\u01a1 h\u1ed3 A", "ORG": "C", "DEADLINE_DATE": "03/01/2027"},
-            {"title": "Ti\u00eau \u0111\u1ec1 m\u01a1 h\u1ed3 B", "ORG": "D", "DEADLINE_DATE": "04/01/2027"},
-            {"title": "B\u1ecb lo\u1ea1i vi thieu ORG", "ORG": "", "DEADLINE_DATE": "05/01/2027"},
-        ]
+            {"title": "A", "content": "x"},
+            {"title": "B", "content": "y"},
+            {"title": "C", "content": "z"},
+        ],
     }
-
-    in_file = tmp_path / "cleaned_data_topCV.json"
+    in_file = tmp_path / "raw_data_demo.json"
     in_file.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-    filter_data.FILTERED_DATA_DIR = str(tmp_path / "filtered")
 
-    api_called = {"value": False}
-
-    def _fake_run_api_filter(posts, need_api, results_map):
-        api_called["value"] = True
-        assert need_api == [2, 3]
-        results_map[2] = True
-        results_map[3] = False
-
-    monkeypatch.setattr(filter_data, "_run_api_filter", _fake_run_api_filter)
+    monkeypatch.setattr(filter_data, "FILTERED_DATA_DIR", str(tmp_path / "filtered"))
+    seq = iter([(True, 0.9), (False, 0.8), (True, 0.7)])
+    monkeypatch.setattr(filter_data, "predict_one", lambda _t: next(seq))
 
     out_path = filter_data.filter_json_file(str(in_file))
     out = json.loads(Path(out_path).read_text(encoding="utf-8"))
 
-    assert api_called["value"] is True
-    assert Path(out_path).name == "filtered_data_topCV.json"
-    assert len(out["post_detail"]) == 5
-    assert out["post_detail"][0]["is_relevant"] is True
-    assert out["post_detail"][1]["is_relevant"] is False
-    assert out["post_detail"][2]["is_relevant"] is True
-    assert out["post_detail"][3]["is_relevant"] is False
+    assert Path(out_path).name == "filtered_data_demo.json"
+    assert [p["is_relevant"] for p in out["post_detail"]] == [True, False, True]
 
 
-def test_collect_input_files_scan_and_missing_file_error(tmp_path):
-    class _ArgsMissing:
-        files = ["this_file_does_not_exist.json"]
+def test_filter_json_file_returns_empty_for_no_posts(monkeypatch, tmp_path):
+    filter_data = _load_filter_data(monkeypatch)
 
-    with pytest.raises(SystemExit):
-        filter_data._collect_input_files(_ArgsMissing())
+    payload = {"post_detail": []}
+    in_file = tmp_path / "raw_data_empty.json"
+    in_file.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
 
-    cleaned_dir = tmp_path / "cleaned"
-    cleaned_dir.mkdir()
-    (cleaned_dir / "cleaned_data_A.json").write_text("{}", encoding="utf-8")
-    (cleaned_dir / "note.txt").write_text("skip", encoding="utf-8")
-
-    class _ArgsScan:
-        files = []
-
-    old_dir = filter_data.DIRECTORY
-    try:
-        filter_data.DIRECTORY = str(cleaned_dir)
-        files = filter_data._collect_input_files(_ArgsScan())
-        assert len(files) == 1
-        assert Path(files[0]).name == "cleaned_data_A.json"
-    finally:
-        filter_data.DIRECTORY = old_dir
+    assert filter_data.filter_json_file(str(in_file)) == ""
 
 
-def test_api_retry_exhaustion_and_keyword_boundary_edge_cases(monkeypatch):
-    # --- classify_batch: all 3 retries fail (429 every time) → returns all False ---
-    call_count = {"n": 0}
+def test_main_handles_no_input_files(monkeypatch, tmp_path):
+    filter_data = _load_filter_data(monkeypatch)
 
-    class _ModelsAlwaysFail:
-        @staticmethod
-        def generate_content(*args, **kwargs):
-            call_count["n"] += 1
-            raise Exception("429 rate limit exceeded")
+    monkeypatch.setattr(filter_data.glob, "glob", lambda _pattern: [])
+    monkeypatch.setattr(filter_data, "RAW_DATA_DIR", str(tmp_path))
 
-    class _Client:
-        def __init__(self, models):
-            self.models = models
+    filter_data.main()
 
-    monkeypatch.setattr(filter_data, "client", _Client(_ModelsAlwaysFail()))
-    monkeypatch.setattr(filter_data.time, "sleep", lambda *_: None)
-    result = filter_data.classify_batch(["Title A", "Title B"])
-    assert result == [False, False]
-    assert call_count["n"] == 3  # tried exactly MAX_RETRIES times
 
-    # --- classify_batch: non-rate-limit exception → returns False immediately (no retry) ---
-    non_rate_count = {"n": 0}
+def test_preprocess_title_returns_empty_for_invalid_inputs(monkeypatch):
+    filter_data = _load_filter_data(monkeypatch)
+    monkeypatch.setattr(filter_data, "word_tokenize", lambda text, format="text": text)
 
-    class _ModelsNonRate:
-        @staticmethod
-        def generate_content(*args, **kwargs):
-            non_rate_count["n"] += 1
-            raise Exception("Connection timeout")
+    assert filter_data.preprocess_title("") == ""
+    assert filter_data.preprocess_title(None) == ""
+    assert filter_data.preprocess_title(123) == ""
 
-    monkeypatch.setattr(filter_data, "client", _Client(_ModelsNonRate()))
-    result2 = filter_data.classify_batch(["X"])
-    assert result2 == [False]
-    assert non_rate_count["n"] == 1  # no retry for non-rate-limit errors
 
-    # --- keyword_filter: regex word boundary (\\bJava\\b should NOT match "JavaScript") ---
-    assert filter_data.keyword_filter("Lập trình JavaScript nâng cao") is True  # "JavaScript" is in whitelist
-    # "Java" alone with \\b should match
-    assert filter_data.keyword_filter("Tuyển dụng Java Developer") is True
+def test_preprocess_title_continues_when_ner_raises(monkeypatch):
+    filter_data = _load_filter_data(monkeypatch)
+    monkeypatch.setattr(filter_data, "word_tokenize", lambda text, format="text": text)
 
-    # --- make_batches ---
-    assert filter_data.make_batches([1, 2, 3, 4, 5], 2) == [[1, 2], [3, 4], [5]]
-    assert filter_data.make_batches([], 3) == []
+    monkeypatch.setattr(filter_data, "ner", lambda _text: (_ for _ in ()).throw(RuntimeError("ner down")))
+    out = filter_data.preprocess_title("Bài viết 12/03/2026 tăng 15% trong Quý 2 năm 2025")
+    assert "date" in out
+    assert "percent" in out
 
-    # --- _resolve_output_path: cleaned_ prefix vs cleaned_data_ prefix ---
-    path1 = filter_data._resolve_output_path("/tmp/cleaned_data_DT.json")
-    assert Path(path1).name == "filtered_data_DT.json"
 
-    path2 = filter_data._resolve_output_path("/tmp/cleaned_VN-EP.json")
-    assert Path(path2).name == "filtered_data_VN-EP.json"
+def test_filter_json_file_preserves_metadata(monkeypatch, tmp_path):
+    filter_data = _load_filter_data(monkeypatch)
+
+    payload = {
+        "source_platform": "DemoPlatform",
+        "source_url": "https://example.com/feed",
+        "scraped_at": "2026-04-18 10:30:45",
+        "post_detail": [
+            {"title": "A"},
+            {"title": "B"},
+            {"title": "C"},
+        ],
+    }
+    in_file = tmp_path / "raw_data_meta.json"
+    in_file.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    monkeypatch.setattr(filter_data, "FILTERED_DATA_DIR", str(tmp_path / "filtered"))
+    monkeypatch.setattr(filter_data, "predict_one", lambda _t: (False, 0.88))
+
+    out_path = filter_data.filter_json_file(str(in_file))
+    out = json.loads(Path(out_path).read_text(encoding="utf-8"))
+
+    assert out["source_platform"] == payload["source_platform"]
+    assert out["source_url"] == payload["source_url"]
+    assert out["scraped_at"] == payload["scraped_at"]
+
+
+def test_filter_json_file_marks_all_non_it_false(monkeypatch, tmp_path):
+    filter_data = _load_filter_data(monkeypatch)
+
+    payload = {
+        "source_platform": "DemoPlatform",
+        "source_url": "https://example.com/feed",
+        "scraped_at": "2026-04-18 10:30:45",
+        "post_detail": [
+            {"title": "A"},
+            {"title": "B"},
+            {"title": "C"},
+        ],
+    }
+    in_file = tmp_path / "raw_data_meta.json"
+    in_file.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    monkeypatch.setattr(filter_data, "FILTERED_DATA_DIR", str(tmp_path / "filtered"))
+    monkeypatch.setattr(filter_data, "predict_one", lambda _t: (False, 0.88))
+
+    out_path = filter_data.filter_json_file(str(in_file))
+    out = json.loads(Path(out_path).read_text(encoding="utf-8"))
+
+    assert [p["is_relevant"] for p in out["post_detail"]] == [False, False, False]

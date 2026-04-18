@@ -1,6 +1,7 @@
 import json
 import runpy
 import time
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -18,11 +19,9 @@ class FakeVNArticle:
         self.link = link
 
     def find_elements(self, by, selector):
-        if selector in ("h3.title-news, h4.title-news",):
+        if selector == "h2.title-news":
             return [FakeElement(text=self.title)] if self.title is not None else []
-        if selector == "p.description":
-            return [FakeElement(text=self.description)]
-        if selector == "h3.title-news a, h4.title-news a":
+        if selector == "h2.title-news a":
             return [FakeElement(attrs={"href": self.link})]
         return []
 
@@ -42,6 +41,8 @@ class FakeVNEPDriver:
     def find_element(self, by, selector):
         if selector == "a.logo":
             return FakeElement(attrs={"title": "VnExpress"})
+        if by == "id" and selector == "fck_detail_gallery":
+            return _FakeParagraphContainer(["Doan 1", "Doan 2"])
         raise ValueError(selector)
 
     def find_elements(self, by, selector):
@@ -83,7 +84,8 @@ def test_vn_express_scrape_end_to_end_basic_output(tmp_path, monkeypatch):
     data = json.loads(output_path.read_text(encoding="utf-8"))
     assert data["source_platform"] == "VnExpress"
     assert len(data["post_detail"]) == 2
-    assert all("title" in p and "description" in p and "created_at" in p for p in data["post_detail"])
+    assert all("title" in p for p in data["post_detail"])
+    assert all("content" in p for p in data["post_detail"])
 
 
 def test_vn_express_scrape_noise_and_missing_metadata_scenario(tmp_path, monkeypatch):
@@ -106,5 +108,80 @@ def test_vn_express_scrape_noise_and_missing_metadata_scenario(tmp_path, monkeyp
     assert "Bai 1" in titles
     assert "" in titles
 
-    missing_meta_post = next(item for item in data["post_detail"] if item["title"] == "")
-    assert missing_meta_post["created_at"] == ""
+
+class _FakeParagraphContainer:
+    def __init__(self, texts):
+        self.texts = texts
+
+    def find_elements(self, by, selector):
+        if selector == "p.Normal":
+            return [FakeElement(text=t) for t in self.texts]
+        return []
+
+
+def test_vn_express_all_missing_content_returns_empty_post_detail(tmp_path, monkeypatch):
+    root = Path(__file__).resolve().parents[2]
+    script = root / "src" / "data-pipeline" / "scrape_from_VN-EP.py"
+    no_such_exc = install_fake_selenium(monkeypatch, fake_driver=None)
+
+    class _Driver(FakeVNEPDriver):
+        def find_element(self, by, selector):
+            if selector == "a.logo":
+                return FakeElement(attrs={"title": "VnExpress"})
+            if by == "id" and selector == "fck_detail_gallery":
+                raise no_such_exc(selector)
+            raise ValueError(selector)
+
+    driver = _Driver(with_noise=False)
+    install_fake_selenium(monkeypatch, driver)
+    monkeypatch.setattr(time, "sleep", lambda *_: None)
+    monkeypatch.chdir(tmp_path)
+
+    runpy.run_path(str(script), run_name="__main__")
+
+    output = tmp_path / "raw_data" / "raw_data_VN-EP.json"
+    data = json.loads(output.read_text(encoding="utf-8"))
+    assert data["post_detail"] == []
+
+
+def test_vn_express_metadata_and_datetime_format(tmp_path, monkeypatch):
+    root = Path(__file__).resolve().parents[2]
+    script = root / "src" / "data-pipeline" / "scrape_from_VN-EP.py"
+
+    driver = FakeVNEPDriver(with_noise=False)
+    install_fake_selenium(monkeypatch, driver)
+    monkeypatch.setattr(time, "sleep", lambda *_: None)
+    monkeypatch.chdir(tmp_path)
+
+    runpy.run_path(str(script), run_name="__main__")
+
+    output = tmp_path / "raw_data" / "raw_data_VN-EP.json"
+    data = json.loads(output.read_text(encoding="utf-8"))
+
+    assert data["source_platform"] == "VnExpress"
+    assert data["source_url"] == "https://vnexpress.net/khoa-hoc-cong-nghe/ai"
+    datetime.strptime(data["scraped_at"], "%Y-%m-%d %H:%M:%S")
+
+
+def test_vn_express_joins_paragraphs_with_double_newline(tmp_path, monkeypatch):
+    root = Path(__file__).resolve().parents[2]
+    script = root / "src" / "data-pipeline" / "scrape_from_VN-EP.py"
+
+    class _Driver(FakeVNEPDriver):
+        def find_element(self, by, selector):
+            if selector == "a.logo":
+                return FakeElement(attrs={"title": "VnExpress"})
+            if by == "id" and selector == "fck_detail_gallery":
+                return _FakeParagraphContainer(["Doan 1", "Doan 2"])
+            raise ValueError(selector)
+
+    driver = _Driver(with_noise=False)
+    install_fake_selenium(monkeypatch, driver)
+    monkeypatch.setattr(time, "sleep", lambda *_: None)
+    monkeypatch.chdir(tmp_path)
+
+    runpy.run_path(str(script), run_name="__main__")
+
+    output = tmp_path / "raw_data" / "raw_data_VN-EP.json"
+    data = json.loads(output.read_text(encoding="utf-8"))
+    assert data["post_detail"][0]["content"] == "Doan 1\n\nDoan 2"

@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/config"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/handler"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
 func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
@@ -17,6 +19,13 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 		databaseStatus = "connected"
 	}
 
+	authService := service.NewAuthService()
+	authHandler := handler.NewAuthHandler(authService)
+	radarHandler := handler.NewRadarHandler()
+	compareHandler := handler.NewCompareHandler()
+	graphHandler := handler.NewGraphHandler()
+	chatHandler := handler.NewChatHandler()
+
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status":      "ok",
@@ -27,12 +36,56 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 	})
 
 	api := r.Group("/api/v1")
-	api.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status":  "ok",
-			"version": "v1",
+	{
+		api.GET("/health", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "ok",
+				"version": "v1",
+			})
 		})
-	})
+
+		api.GET("/radar", radarHandler.Index)
+		api.GET("/compare", compareHandler.Index)
+		api.GET("/graph", graphHandler.Index)
+		api.GET("/chat", chatHandler.Index)
+
+		radar := api.Group("/radar")
+		{
+			radar.GET("/top4", radarHandler.Top4)
+			radar.GET("/search", radarHandler.Search)
+			radar.GET("/export-png", radarHandler.ExportPNG)
+			radar.GET("/export-csv", radarHandler.ExportCSV)
+			radar.GET("/top10", radarHandler.Top10)
+		}
+
+		compare := api.Group("/compare")
+		{
+			compare.GET("/search", compareHandler.Search)
+			compare.GET("/llm-summary", compareHandler.LLMSummary)
+		}
+
+		graph := api.Group("/graph")
+		{
+			graph.GET("/explore", graphHandler.Explore)
+			graph.GET("/filter", graphHandler.Filter)
+		}
+
+		auth := api.Group("/auth")
+		{
+			auth.POST("/register", authHandler.Register)
+			auth.POST("/login", authHandler.Login)
+			auth.POST("/refresh", authHandler.Refresh)
+			auth.POST("/logout", authHandler.Logout)
+			auth.GET("/me", authHandler.Me)
+		}
+
+		chat := api.Group("/chat")
+		{
+			chat.POST("/session", chatHandler.CreateSession)
+			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)
+			chat.POST("/session/:session_id/messages", chatHandler.PostMessage)
+		}
+	}
 
 	return r
 }

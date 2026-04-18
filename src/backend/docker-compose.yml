@@ -1,0 +1,20 @@
+services:
+  golang-api:
+    build:
+      context: ./golang-api
+    container_name: techpulse-golang-api
+    env_file:
+      - ./.env.example
+    ports:
+      - "8080:8080"
+    depends_on:
+      - python-api
+
+  python-api:
+    build:
+      context: ./python-api
+    container_name: techpulse-python-ai
+    env_file:
+      - ./.env.example
+    ports:
+      - "8001:8001"

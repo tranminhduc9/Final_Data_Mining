@@ -9,10 +9,11 @@ import (
 )
 
 type Config struct {
-	AppEnv                     string
-	Port                       string
-	PostgresConnectionString   string
-	PythonAIBaseURL            string
+	AppEnv                   string
+	Port                     string
+	PostgresConnectionString string
+	PythonAIBaseURL          string
+	JWTSecret                string
 }
 
 func Load() (*Config, error) {
@@ -26,6 +27,7 @@ func Load() (*Config, error) {
 		Port:                     getEnv("PORT", "8080"),
 		PostgresConnectionString: normalize(getEnv("PostgreSQL_CONNECTION_STRING", "")),
 		PythonAIBaseURL:          getEnv("PYTHON_AI_BASE_URL", "http://localhost:8001"),
+		JWTSecret:                getEnv("JWT_SECRET", "change-this-in-production"),
 	}
 
 	if cfg.PostgresConnectionString == "" {

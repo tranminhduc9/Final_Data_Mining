@@ -7,6 +7,7 @@ import (
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/config"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/handler"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/middleware"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
@@ -19,7 +20,8 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 		databaseStatus = "connected"
 	}
 
-	authService := service.NewAuthService()
+	jwtMiddleware := middleware.NewJWTMiddleware(cfg.JWTSecret)
+	authService := service.NewAuthService(jwtMiddleware)
 	authHandler := handler.NewAuthHandler(authService)
 	radarHandler := handler.NewRadarHandler()
 	compareHandler := handler.NewCompareHandler()
@@ -47,7 +49,7 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 		api.GET("/radar", radarHandler.Index)
 		api.GET("/compare", compareHandler.Index)
 		api.GET("/graph", graphHandler.Index)
-		api.GET("/chat", chatHandler.Index)
+		api.GET("/chat", jwtMiddleware.RequireAuth(), chatHandler.Index)
 
 		radar := api.Group("/radar")
 		{
@@ -75,11 +77,12 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 			auth.POST("/register", authHandler.Register)
 			auth.POST("/login", authHandler.Login)
 			auth.POST("/refresh", authHandler.Refresh)
-			auth.POST("/logout", authHandler.Logout)
-			auth.GET("/me", authHandler.Me)
+			auth.POST("/logout", jwtMiddleware.RequireAuth(), authHandler.Logout)
+			auth.GET("/me", jwtMiddleware.RequireAuth(), authHandler.Me)
 		}
 
 		chat := api.Group("/chat")
+		chat.Use(jwtMiddleware.RequireAuth())
 		{
 			chat.POST("/session", chatHandler.CreateSession)
 			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)

@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/dto"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/middleware"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
@@ -16,21 +18,59 @@ func NewAuthHandler(authService *service.AuthService) *AuthHandler {
 }
 
 func (h *AuthHandler) Register(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "register endpoint not implemented yet"})
+	var req dto.RegisterRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "register scaffold success",
+		"data": gin.H{
+			"email":     req.Email,
+			"full_name": req.FullName,
+		},
+	})
 }
 
 func (h *AuthHandler) Login(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "login endpoint not implemented yet"})
+	var req dto.LoginRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	resp, err := h.authService.BuildLoginResponse(req.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to build login response"})
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
 func (h *AuthHandler) Refresh(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "refresh endpoint not implemented yet"})
+	var req dto.RefreshTokenRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.AuthResponse{
+		TokenType: "Bearer",
+		Message:   "refresh scaffold success",
+		ExpiresIn: 3600,
+	})
 }
 
 func (h *AuthHandler) Logout(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "logout endpoint not implemented yet"})
+	c.JSON(http.StatusOK, gin.H{"message": "logout scaffold success"})
 }
 
 func (h *AuthHandler) Me(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "me endpoint not implemented yet"})
+	c.JSON(http.StatusOK, dto.MeResponse{
+		UserID: c.GetString(middleware.ContextUserIDKey),
+		Email:  c.GetString(middleware.ContextEmailKey),
+		Role:   c.GetString(middleware.ContextRoleKey),
+	})
 }

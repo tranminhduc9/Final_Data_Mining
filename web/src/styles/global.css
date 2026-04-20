@@ -5,21 +5,21 @@
   --font-base: 'Inter', sans-serif;
 
   /* Colors */
-  --bg: #0d0f1a;
-  --bg-2: #131625;
-  --surface: #1a1d2e;
-  --surface-2: #222640;
-  --border: #2a2f50;
-  --border-2: #373d6b;
+  --bg: #000000;
+  --bg-2: #0a0a0a;
+  --surface: #111111;
+  --surface-2: #1a1a1a;
+  --border: #333333;
+  --border-2: #444444;
 
-  --primary: #6c63ff;
-  --primary-light: #8b85ff;
-  --primary-dark: #4f47cc;
-  --primary-glow: rgba(108, 99, 255, 0.25);
+  --primary: #ffffff;
+  --primary-light: #f0f0f0;
+  --primary-dark: #cccccc;
+  --primary-glow: rgba(255, 255, 255, 0.25);
 
-  --accent: #ff6584;
-  --accent-light: #ff8fa3;
-  --accent-glow: rgba(255, 101, 132, 0.25);
+  --accent: #cccccc;
+  --accent-light: #e0e0e0;
+  --accent-glow: rgba(200, 200, 200, 0.25);
 
   --green: #00d68f;
   --green-light: #00f0a8;
@@ -149,7 +149,7 @@ select {
 
 .btn-primary {
   background: var(--primary);
-  color: #fff;
+  color: #000;
   box-shadow: var(--shadow-primary);
 }
 

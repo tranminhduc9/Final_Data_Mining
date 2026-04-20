@@ -53,3 +53,47 @@ export async function streamChatResponse(message, onChunk, onDone) {
     }
     onDone();
 }
+
+/* =========================================================================
+   THỰC TẾ API /api/v1/chat (Tạm thời được comment vì chưa dùng đến)
+========================================================================= */
+/*
+export const createChatSession = async (token) => {
+    // Endpoint: POST /api/v1/chat/session
+    // Description: Tạo phiên chat trả về ID phiên
+    // Auth: Yes
+    const response = await fetch('/api/v1/chat/session', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.json();
+};
+
+export const getChatHistory = async (token, sessionId) => {
+    // Endpoint: GET /api/v1/chat/session/{session_id}/messages
+    // Description: Lấy lịch sử trò chuyện của phiên hiện tại (khi reload lại)
+    // Auth: Yes
+    const response = await fetch(`/api/v1/chat/session/${sessionId}/messages`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.json();
+};
+
+export const sendChatMessageSSE = async (token, sessionId, messagePayload) => {
+    // Endpoint: POST /api/v1/chat/session/{session_id}/messages
+    // Description: Gửi tin nhắn mới đến chatbot và nhận phản hồi (trả về SSE)
+    // Auth: Yes
+    const response = await fetch(`/api/v1/chat/session/${sessionId}/messages`, {
+        method: 'POST',
+        headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(messagePayload)
+    });
+    
+    // Vì đây là luồng SSE, ta sẽ lấy stream từ response thay vì `.json()`
+    return response; 
+};
+*/

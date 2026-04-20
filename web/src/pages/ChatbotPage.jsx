@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { streamChatResponse } from '../services/chatMock';
+import { streamChatResponse } from '../api/chatMock';
 import './ChatbotPage.css';
 
 // Minimal markdown renderer (bold, italic, headers, lists, tables)
@@ -132,7 +132,7 @@ export default function ChatbotPage() {
                 <div className="chat-window">
                     {messages.map(msg => (
                         <div key={msg.id} className={`chat-bubble-wrap ${msg.role}`}>
-                            {msg.role === 'bot' && <div className="bot-avatar">AI</div>}
+                            {msg.role === 'bot' && <div className="bot-avatar text-avatar">AI</div>}
                             <div className={`chat-bubble ${msg.role}`}>
                                 <div className="bubble-content">
                                     {renderMarkdown(msg.text)}
@@ -146,7 +146,7 @@ export default function ChatbotPage() {
                                     </div>
                                 )}
                             </div>
-                            {msg.role === 'user' && <div className="user-avatar">B</div>}
+                            {msg.role === 'user' && <div className="user-avatar text-avatar">U</div>}
                         </div>
                     ))}
                     <div ref={bottomRef} />

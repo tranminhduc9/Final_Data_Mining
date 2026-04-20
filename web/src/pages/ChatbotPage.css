@@ -237,7 +237,7 @@
     border-radius: var(--radius);
     background: var(--primary);
     border: none;
-    color: #fff;
+    color: #000;
     font-size: 1.1rem;
     display: flex;
     align-items: center;

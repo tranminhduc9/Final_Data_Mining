@@ -110,7 +110,7 @@ export default function TrendDashboard() {
         import('html2canvas').then(({ default: html2canvas }) => {
             const el = document.getElementById('main-chart-wrapper');
             if (!el) return;
-            html2canvas(el, { backgroundColor: '#0d0f1a' }).then(canvas => {
+            html2canvas(el, { backgroundColor: '#000000' }).then(canvas => {
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL('image/png');
                 a.download = 'tech_trend_chart.png';

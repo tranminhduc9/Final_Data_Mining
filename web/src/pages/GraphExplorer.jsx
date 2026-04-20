@@ -283,16 +283,15 @@ export default function GraphExplorer() {
             <div className="graph-search-bar card">
                 <div className="feature-switcher-tabs">
                     <button className={`feat-tab${activeFeature === 'explore' ? ' active' : ''}`} onClick={() => toggleFeature('explore')}>
-                        <span className="feat-icon">&#128269;</span> Khám phá
+                         Khám phá
                     </button>
                     <button className={`feat-tab${activeFeature === 'journey' ? ' active' : ''}`} onClick={() => toggleFeature('journey')}>
-                        <span className="feat-icon">&#128739;</span> Phân tích lộ trình
+                         Phân tích lộ trình
                     </button>
                 </div>
 
                 {activeFeature === 'explore' ? (
                     <div className="search-input-wrap">
-                        <span className="search-icon">&#128269;</span>
                         <input
                             className="search-input"
                             placeholder="Tìm node: Golang, VNG, Docker..."
@@ -321,7 +320,6 @@ export default function GraphExplorer() {
                                 {pathStart && <span className="journey-selected-badge" style={{ background: NODE_TYPES[pathStart.type]?.color + '33', color: NODE_TYPES[pathStart.type]?.color }}>✓ {pathStart.label}</span>}
                             </label>
                             <div className="search-input-wrap">
-                                <span className="search-icon">&#128205;</span>
                                 <input
                                     className="search-input"
                                     placeholder="Tìm điểm đi: Golang, VNG..."
@@ -350,7 +348,6 @@ export default function GraphExplorer() {
                                 {pathEnd && <span className="journey-selected-badge" style={{ background: NODE_TYPES[pathEnd.type]?.color + '33', color: NODE_TYPES[pathEnd.type]?.color }}>✓ {pathEnd.label}</span>}
                             </label>
                             <div className="search-input-wrap">
-                                <span className="search-icon">&#127937;</span>
                                 <input
                                     className="search-input"
                                     placeholder="Tìm điểm đến: Docker, Hà Nội..."
@@ -373,7 +370,7 @@ export default function GraphExplorer() {
                         {/* Clear button */}
                         {(pathStart || pathEnd) && (
                             <button className="btn btn-ghost" style={{ alignSelf: 'flex-end' }} onClick={() => { setPathStart(null); setPathEnd(null); setActivePath(null); setJourneyStartQuery(''); setJourneyEndQuery(''); }}>
-                                ✕ Xóa
+                                Xóa
                             </button>
                         )}
                     </div>
@@ -452,7 +449,7 @@ export default function GraphExplorer() {
                         linkCanvasObjectMode={() => 'after'}
                         linkDirectionalArrowLength={5}
                         linkDirectionalArrowRelPos={1}
-                        backgroundColor="#0d0f1a"
+                        backgroundColor="#000000"
                         width={undefined}
                         height={undefined}
                     />
@@ -523,7 +520,7 @@ export default function GraphExplorer() {
                         <div className="journey-panel card">
                             <div className="jp-header">
                                 <h3>Lộ trình kết nối</h3>
-                                <button className="btn btn-ghost" style={{ padding: '4px' }} onClick={() => { setPathStart(null); setPathEnd(null); setActivePath(null); }}>✕</button>
+                                <button className="btn btn-ghost" style={{ padding: '4px' }} onClick={() => { setPathStart(null); setPathEnd(null); setActivePath(null); }}>X</button>
                             </div>
                             <div className="jp-body">
                                 <div className="jp-summary">
@@ -569,7 +566,7 @@ export default function GraphExplorer() {
                         <div className="edge-panel card">
                             <div className="ep-header">
                                 <h3>Chi tiết mối quan hệ</h3>
-                                <button className="btn btn-ghost" style={{ padding: '4px 8px' }} onClick={() => setSelectedEdge(null)}>✕</button>
+                                <button className="btn btn-ghost" style={{ padding: '4px 8px' }} onClick={() => setSelectedEdge(null)}>X</button>
                             </div>
                             <div className="ep-body">
                                 <div className="ep-row">

@@ -8,6 +8,7 @@ import (
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/handler"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/middleware"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/postgres"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
@@ -21,8 +22,11 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 	}
 
 	jwtMiddleware := middleware.NewJWTMiddleware(cfg.JWTSecret)
-	authService := service.NewAuthService(jwtMiddleware)
+
+	userRepo := postgres.NewUserRepository(db)
+	authService := service.NewAuthService(jwtMiddleware, userRepo)
 	authHandler := handler.NewAuthHandler(authService)
+
 	radarHandler := handler.NewRadarHandler()
 	compareHandler := handler.NewCompareHandler()
 	graphHandler := handler.NewGraphHandler()

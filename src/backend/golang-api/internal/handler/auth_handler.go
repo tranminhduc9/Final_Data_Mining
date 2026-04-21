@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/dto"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/middleware"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/postgres"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
@@ -24,13 +26,17 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "register scaffold success",
-		"data": gin.H{
-			"email":     req.Email,
-			"full_name": req.FullName,
-		},
-	})
+	resp, err := h.authService.Register(c.Request.Context(), req.Email, req.Password, req.FullName)
+	if err != nil {
+		if errors.Is(err, postgres.ErrEmailTaken) {
+			c.JSON(http.StatusConflict, gin.H{"message": "email already registered"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "registration failed"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, resp)
 }
 
 func (h *AuthHandler) Login(c *gin.Context) {
@@ -40,9 +46,13 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	resp, err := h.authService.BuildLoginResponse(req.Email)
+	resp, err := h.authService.Login(c.Request.Context(), req.Email, req.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to build login response"})
+		if errors.Is(err, service.ErrInvalidCredentials) {
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid email or password"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "login failed"})
 		return
 	}
 
@@ -56,15 +66,17 @@ func (h *AuthHandler) Refresh(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dto.AuthResponse{
-		TokenType: "Bearer",
-		Message:   "refresh scaffold success",
-		ExpiresIn: 3600,
-	})
+	resp, err := h.authService.Refresh(c.Request.Context(), req.RefreshToken)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid or expired refresh token"})
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
 func (h *AuthHandler) Logout(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "logout scaffold success"})
+	c.JSON(http.StatusOK, gin.H{"message": "logged out"})
 }
 
 func (h *AuthHandler) Me(c *gin.Context) {

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -13,6 +14,9 @@ const (
 	ContextUserIDKey = "user_id"
 	ContextEmailKey  = "email"
 	ContextRoleKey   = "role"
+
+	TokenTypeAccess  = "access"
+	TokenTypeRefresh = "refresh"
 )
 
 type JWTMiddleware struct {
@@ -23,17 +27,36 @@ func NewJWTMiddleware(secret string) *JWTMiddleware {
 	return &JWTMiddleware{secretKey: []byte(secret)}
 }
 
-func (m *JWTMiddleware) GenerateToken(userID, email, role string, ttl time.Duration) (string, error) {
+func (m *JWTMiddleware) GenerateToken(userID, email, role, tokenType string, ttl time.Duration) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":   userID,
-		"email": email,
-		"role":  role,
-		"exp":   time.Now().Add(ttl).Unix(),
-		"iat":   time.Now().Unix(),
+		"sub":        userID,
+		"email":      email,
+		"role":       role,
+		"token_type": tokenType,
+		"exp":        time.Now().Add(ttl).Unix(),
+		"iat":        time.Now().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(m.secretKey)
+}
+
+func (m *JWTMiddleware) ParseClaims(tokenString string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, jwt.ErrTokenSignatureInvalid
+		}
+		return m.secretKey, nil
+	})
+	if err != nil || !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("invalid token claims")
+	}
+	return claims, nil
 }
 
 func (m *JWTMiddleware) RequireAuth() gin.HandlerFunc {
@@ -50,20 +73,14 @@ func (m *JWTMiddleware) RequireAuth() gin.HandlerFunc {
 			return
 		}
 
-		token, err := jwt.Parse(parts[1], func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, jwt.ErrTokenSignatureInvalid
-			}
-			return m.secretKey, nil
-		})
-		if err != nil || !token.Valid {
+		claims, err := m.ParseClaims(parts[1])
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "invalid or expired token"})
 			return
 		}
 
-		claims, ok := token.Claims.(jwt.MapClaims)
-		if !ok {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "invalid token claims"})
+		if tokenType, _ := claims["token_type"].(string); tokenType != TokenTypeAccess {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "access token required"})
 			return
 		}
 

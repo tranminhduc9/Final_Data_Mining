@@ -12,13 +12,18 @@ import (
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
-func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
+func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery())
 
 	databaseStatus := "disconnected"
 	if db != nil && db.Pool != nil {
 		databaseStatus = "connected"
+	}
+
+	neo4jStatus := "disconnected"
+	if neo4jDB != nil {
+		neo4jStatus = "connected"
 	}
 
 	jwtMiddleware := middleware.NewJWTMiddleware(cfg.JWTSecret)
@@ -38,6 +43,7 @@ func New(cfg *config.Config, db *database.Postgres) *gin.Engine {
 			"service":     "golang-api",
 			"environment": cfg.AppEnv,
 			"database":    databaseStatus,
+			"neo4j":       neo4jStatus,
 		})
 	})
 

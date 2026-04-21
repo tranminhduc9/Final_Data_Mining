@@ -14,6 +14,10 @@ type Config struct {
 	PostgresConnectionString string
 	PythonAIBaseURL          string
 	JWTSecret                string
+	Neo4jURI                 string
+	Neo4jUsername            string
+	Neo4jPassword            string
+	Neo4jDatabase            string
 }
 
 func Load() (*Config, error) {
@@ -28,6 +32,10 @@ func Load() (*Config, error) {
 		PostgresConnectionString: normalize(getEnv("PostgreSQL_CONNECTION_STRING", "")),
 		PythonAIBaseURL:          getEnv("PYTHON_AI_BASE_URL", "http://localhost:8001"),
 		JWTSecret:                getEnv("JWT_SECRET", "change-this-in-production"),
+		Neo4jURI:                 getEnv("NEO4J_URI", ""),
+		Neo4jUsername:            getEnv("NEO4J_USERNAME", ""),
+		Neo4jPassword:            getEnv("NEO4J_PASSWORD", ""),
+		Neo4jDatabase:            getEnv("NEO4J_DATABASE", ""),
 	}
 
 	if cfg.PostgresConnectionString == "" {

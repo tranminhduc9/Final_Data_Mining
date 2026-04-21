@@ -15,13 +15,23 @@ func main() {
 		log.Fatalf("load config: %v", err)
 	}
 
-	db, err := database.NewPostgres(context.Background(), cfg.PostgresConnectionString)
+	ctx := context.Background()
+
+	db, err := database.NewPostgres(ctx, cfg.PostgresConnectionString)
 	if err != nil {
 		log.Fatalf("connect postgres: %v", err)
 	}
 	defer db.Close()
 
-	engine := router.New(cfg, db)
+	neo4jDB, err := database.NewNeo4j(ctx, cfg.Neo4jURI, cfg.Neo4jUsername, cfg.Neo4jPassword, cfg.Neo4jDatabase)
+	if err != nil {
+		log.Printf("WARNING: neo4j unavailable — graph features disabled: %v", err)
+	} else {
+		defer neo4jDB.Close(ctx)
+		log.Println("neo4j connected")
+	}
+
+	engine := router.New(cfg, db, neo4jDB)
 	log.Printf("golang-api started on :%s (%s)", cfg.Port, cfg.AppEnv)
 
 	if err := engine.Run(":" + cfg.Port); err != nil {

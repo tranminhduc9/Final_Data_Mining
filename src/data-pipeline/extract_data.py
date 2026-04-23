@@ -8,7 +8,7 @@ PIPELINE:
   1. Đọc các file `filtered_data_*.json` (hoặc danh sách file được truyền vào)
      Cấu trúc file: { "source_platform", "source_url", "scraped_at",
                       "post_detail": [ { "title", "content", "is_relevant" } ] }
-  2. Chỉ giữ lại các bài có `is_relevant = true` (hoặc chuỗi "True")
+  2. Chỉ giữ lại các bài có `is_relevant = true`
   3. Gộp `title + content`, đưa qua model NER tiếng Việt (ORG / PER / LOC)
   4. Lưu TRỰC TIẾP danh sách thực thể mà model trả ra vào field `entities`
      cho từng bài, với mỗi phần tử có dạng:

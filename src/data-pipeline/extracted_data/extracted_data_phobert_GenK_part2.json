@@ -1,0 +1,977 @@
+{
+  "source_platform": "GenK-Trang thông tin điện tử từ tổng hợp",
+  "source_url": "https://genk.vn/internet.chn",
+  "scraped_at": "2026-04-24 02:06:25",
+  "post_detail": [
+    {
+      "title": "Chấm dứt kỷ nguyên \"Microslop\": Microsoft dọn dẹp mớ bòng bong AI trên Windows 11",
+      "content": "Trong giới công nghệ thời gian qua, thuật ngữ \"Microslop\" (sự cẩu thả và nhồi nhét của Microsoft) đã trở thành một câu cửa miệng mỉa mai quen thuộc trên các diễn đàn.\n\nCụm từ này ra đời nhằm ám chỉ hội chứng ám ảnh với trí tuệ nhân tạo của gã khổng lồ phần mềm, khi họ liên tục ép buộc người dùng Windows 11 phải nhìn thấy Copilot ở khắp mọi nơi, từ những ứng dụng phức tạp cho đến các công cụ cơ bản nhất. Tuy nhiên, chuỗi ngày \"tra tấn\" thị giác này dường như đã đi đến hồi kết. Nằm trong kế hoạch đại tu toàn diện nhằm cứu vãn trải nghiệm Windows 11, Microsoft vừa chính thức xác nhận sẽ cắt giảm mạnh tay sự hiện diện của AI trên toàn bộ hệ sinh thái.\n\nĐây là một quyết định \"quay xe\" mang tính lịch sử đối với một tập đoàn đang đặt cược toàn bộ tương lai và hàng tỷ USD doanh thu vào AI. Việc đội ngũ phát triển Windows dám đứng lên nói \"không\" với tình trạng phình to phần mềm cho thấy hãng đã nhận ra bài học đắt giá về trải nghiệm người dùng. Việc biến Notepad, Photos, Snipping Tool hay khu vực Widgets thành những tấm biển quảng cáo miễn phí cho Copilot thực chất không mang lại giá trị thực tiễn nào, mà chỉ biến hệ điều hành thành một mớ bòng bong rối rắm và nặng nề.\n\nNhững kiểu menu \"nhồi nhét\" như thế này sẽ sớm lùi vào dĩ vãng trên Windows 11.\n\nTrở về với những giá trị cốt lõi\n\nPhó Chủ tịch điều hành Windows & Thiết bị của Microsoft, ông Pavan Davuluri, đã thẳng thắn thừa nhận định hướng mới này. Ông nhấn mạnh rằng trong năm nay, Microsoft sẽ có tính chủ đích cao hơn trong việc tích hợp Copilot, chỉ tập trung vào những trải nghiệm thực sự hữu ích và được gọt giũa tỉ mỉ. Ngay lập tức, những điểm truy cập AI vô duyên và khiên cưỡng nhất trên các ứng dụng hệ thống cơ bản sẽ bị lược bỏ hoàn toàn hoặc làm cho mờ nhạt đi.\n\nÔng cho biết : \"Chúng tôi đang tiến hành cắt giảm các nơi truy cập Copilot không cần thiết, bắt đầu từ những ứng dụng như Snipping Tool, Photos, Widgets và Notepad.\"\n\nĐộng thái \"thanh lọc\" này mang đến một luồng sinh khí mới mẻ cho cộng đồng người dùng Windows. Việc Microsoft chấp nhận lùi lại một bước, ngừng chạy đua số lượng tính năng bóng bẩy để tập trung giải quyết các vấn đề nền tảng là một tín hiệu cực kỳ đáng mừng. Khi hệ điều hành không còn phải oằn mình gánh vác những luồng xử lý AI vô thưởng vô phạt dưới nền, Windows 11 có cơ hội lớn để trở lại là một nền tảng ổn định, bảo mật và phản hồi nhanh nhạy hơn.\n\nNỗ lực dọn dẹp hệ điều hành của Microsoft diễn ra vào một thời điểm không thể thuận lợi hơn. Theo dữ liệu mới nhất từ Statcounter tính đến tháng 2/2026, thị phần của Windows 11 đang chứng kiến một cú nhảy vọt chưa từng có.\n\nTừ mức chỉ khoảng 39% vào đầu năm 2025, Windows 11 đã liên tục bứt phá, chính thức vượt qua Windows 10 và đạt mức thị phần kỷ lục 72,57%.\n\nĐiều này cho thấy người dùng đang ồ ạt chuyển sang hệ điều hành mới khi Windows 10 đã bị khai tử.\n\nChính vì thế, việc loại bỏ kỷ nguyên \"Microslop\", mớ bòng bong tính năng AI rác, thực chất là một nước đi chiến lược mang tính sống còn. Với vai trò là hệ điều hành thống trị, Windows 11 buộc phải chứng minh sự trưởng thành của mình bằng sự ổn định và tinh gọn, thay vì cố gắng phô diễn những công nghệ chưa chín muồi.\n\nDĩ nhiên, Microsoft không hề từ bỏ đứa con cưng của mình. Copilot vẫn sẽ tồn tại, nhưng nó sẽ được trả về đúng vị trí xứng đáng như một ứng dụng độc lập chuyên nghiệp hoặc một thanh công cụ Ask Copilot.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Pavan Davuluri"
+        ],
+        "ORG": [
+          "Microsoft",
+          "Statcounter"
+        ],
+        "LOC": [],
+        "DATE": [
+          "tháng 2",
+          "năm 2025"
+        ],
+        "TECH": [
+          "AI",
+          "trí tuệ nhân tạo",
+          "Copilot"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Android sắp thay đổi lớn: Cài app ngoài Play Store theo cách này, nhưng ứng dụng ngân hàng của bạn có thể bị gián đoạn 24 giờ",
+      "content": "Google từ lâu đã lên kế hoạch thay đổi cách sideloading hoạt động trên Android. Dù vấp phải không ít phản ứng trái chiều từ cộng đồng người dùng yêu thích sự tự do, có vẻ như Google cuối cùng đã chốt hạ được một hướng đi nhằm cân bằng giữa việc tăng cường bảo mật và giữ cho nền tảng này ở trạng thái \"mở\".\n\nHãng vừa chính thức công bố chi tiết quy trình \"luồng nâng cao\" (advanced flow) dự kiến tung ra vào tháng 8 tới đây. Mục tiêu của quy trình này là siết chặt việc cài đặt ứng dụng từ các nhà phát triển chưa được xác minh, hay nói cách đơn giản là cài đặt các file APK trôi nổi bên ngoài Play Store. Quy trình mới được thiết kế như một chốt chặn, nhằm bảo vệ người dùng khỏi sự thao túng của tội phạm mạng.\n\nCụ thể, người dùng sẽ phải tự tay truy cập vào cài đặt hệ thống để kích hoạt Chế độ nhà phát triển (Developer Mode). Thao tác thủ công này nhằm ngăn chặn các cú chạm vô tình hay kịch bản nạn nhân bị lừa gạt qua điện thoại. Tiếp đó, hệ thống yêu cầu xác nhận rằng bạn không bị ai hướng dẫn thao tác, đồng thời buộc khởi động lại thiết bị để cắt đứt mọi quyền điều khiển từ xa của hacker nếu có.\n\nGoogle thông báo về quy trình cài đặt sideload mới trên Android.\n\nCuối cùng, một \"khoảng thời gian làm nguội\" (cooldown) kéo dài trọn vẹn 24 giờ đồng hồ sẽ được kích hoạt. Nước đi này của Google nhằm phá vỡ sự cấp bách giả tạo mà kẻ gian thường sử dụng để thúc ép nạn nhân. Chỉ khi thời gian chờ mòn mỏi này kết thúc, người dùng mới có thể dùng sinh trắc học để xác thực và chọn cấp quyền cài đặt APK trong 7 ngày hoặc vô thời hạn.\n\nBước đi của Google là một nỗ lực đáng ghi nhận trong bối cảnh an ninh mạng toàn cầu đang diễn biến cực kỳ phức tạp, trong khi vẫn cố gắng duy trì đặc quyền sideload dành cho những ai biết rõ mình đang làm gì.\n\nTuy nhiên, tại thị trường Việt Nam, yêu cầu bắt buộc bật Developer Mode lại vô tình kích hoạt hệ thống phòng vệ chủ động của các tổ chức tài chính.\n\nTuân thủ theo Thông tư 77/2025/TT-NHNN của Ngân hàng Nhà nước, các ngân hàng nội địa đang áp dụng những tiêu chuẩn bảo vệ cực kỳ khắt khe. Ứng dụng ngân hàng số hiện nay, điển hình như VIB, LPBank hay BVBank,... được thiết kế để tự động nhận diện rủi ro. Các ứng dụng này sẽ lập tức từ chối cấp quyền truy cập hoặc tạm ngưng toàn bộ giao dịch ngay khi phát hiện điện thoại đang bật Developer Mode, kết nối ADB hoặc có bất kỳ dấu hiệu can thiệp sâu nào vào hệ thống.\n\nHành động này là lớp khiên chắn để bảo vệ tài sản người dùng.\n\nDeveloper Mode vốn là cánh cửa cho phép can thiệp cực sâu vào lõi hệ điều hành. Bật tính năng này khi không rõ mình đang làm gì có thể tạo điều kiện lý tưởng để các loại mã độc đọc trộm màn hình và đánh cắp mã OTP ẩn danh mà chủ nhân chiếc máy không hề hay biết.\n\nViệc cài đặt ứng dụng ngoài Play Store từ lâu đã trở thành một thói quen người dùng Android. Thậm chí, nhiều người còn xem đây là lợi thế của nền tảng này so với iOS.\n\nChính sự giao thoa giữa hai cơ chế bảo mật này đã dẫn đến tình huống ‘24 giờ chờ đợi’ mà nhiều người dùng Android thích vọc vạch có thể gặp phải.\n\nĐể sử dụng các ứng dụng ngân hàng cho những nhu cầu cơ bản như thanh toán hay chuyển khoản gấp, người dùng thường phải tắt Developer Mode để đưa thiết bị về trạng thái an toàn mặc định.\n\nĐiều này đẩy những người dùng yêu thích sự tự do của Android vào một cuộc thử thách chịu đựng.\n\nTrong suốt 24 giờ đồng hồ chờ đợi hệ thống của Google cấp phép, chiếc điện thoại của họ sẽ bị đặt trong tình trạng \"thiết quân luật\" về mặt tài chính. Mọi nhu cầu thanh toán qua ứng dụng ngân hàng, từ việc quét mã QR mua cốc cà phê cho đến chuyển khoản gấp cho đối tác, đều sẽ bị đình trệ hoàn toàn vì app ngân hàng kiên quyết từ chối hoạt động.\n\nTrong những tình huống giao dịch khẩn cấp, nếu không có sẵn phương án thanh toán dự phòng, người dùng buộc phải tắt chế độ Developer Mode để khôi phục ứng dụng ngân hàng. Tuy nhiên, cái giá phải trả là quy trình cấp phép sẽ bị hủy bỏ, buộc họ phải chờ đợi lại 24 giờ đằng đẵng vào lần sau.\n\nRất may, sự bất tiện này không phải là một vòng lặp vô tận. Điểm mấu chốt của quy trình mới nằm ở việc Google cho phép đặc quyền này tồn tại độc lập với trạng thái của thiết bị sau khi đã hoàn tất xác thực.\n\nNói một cách dễ hiểu, giới vọc vạch công nghệ không cần phải đợi đến khi thực sự cần cài một file APK mới bắt đầu thực hiện luồng nâng cao. Họ hoàn toàn có thể chủ động trải qua \"nghi thức nhập môn\" này trước.\n\nChỉ cần chịu đựng việc bật Developer Mode và không sử dụng app ngân hàng trong 24 giờ đầu tiên, sau đó chọn cấp quyền cài đặt \"vô thời hạn\" (indefinitely). Ngay khi lựa chọn này được xác nhận, người dùng có thể tắt ngay Developer Mode đi để đưa máy về trạng thái an toàn nguyên bản.\n\nLúc này, các ứng dụng ngân hàng sẽ hoạt động trở lại, trong khi quyền tự do cài đặt file APK vẫn được bảo lưu trên thiết bị đó. Google đã tạo ra một cánh cửa hẹp: họ không cấm triệt để, nhưng bắt bạn phải trả giá bằng một ngày gián đoạn sinh hoạt để chứng minh mình thực sự làm chủ được thiết bị.\n\nGoogle cho biết quy trình với thời gian chờ 24 giờ chủ yếu áp dụng cho các ứng dụng đến từ những nhà phát triển chưa được xác minh danh tính. Đối với các nhà phát triển đã hoàn tất quy trình cung cấp giấy tờ định danh và được Google chứng nhận, việc cài đặt APK của họ vẫn có thể diễn ra nhanh chóng và tương tự như trước đây.\n\nSong song đó, Google cũng giới thiệu giải pháp mang tên “Tài khoản phân phối giới hạn” (Limited distribution accounts). Hướng đi này hướng đến sinh viên và những người đam mê lập trình, cho phép họ chia sẻ ứng dụng tự phát triển đến một nhóm nhỏ tối đa 20 thiết bị mà không cần cung cấp giấy tờ tùy thân hay trả phí đăng ký.\n\nTuấn Nguyễn",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Tuấn Nguyễn"
+        ],
+        "ORG": [
+          "Google",
+          "NHNN",
+          "Ngân hàng Nhà nước",
+          "VIB",
+          "LPBank",
+          "BVBank"
+        ],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [
+          "tháng 8",
+          "77/2025"
+        ],
+        "TECH": [
+          "Android"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "'Rác' AI đội lốt giáo dục trên YouTube đang dạy trẻ em những hành vi nguy hiểm, phụ huynh cần cảnh giác",
+      "content": "YouTube đang xuất hiện hàng loạt video do AI tạo ra đang gieo rắc thông tin sai lệch, thậm chí truyền tải những “bài học” mang tính nguy hiểm cho khán giả nhí.\n\nĐiển hình, một video bài hát thiếu nhi về xe cộ lại mô tả cảnh trẻ em không thắt dây an toàn, thản nhiên đi bộ giữa đường phố trong khi xe cộ lao tới phía sau.\n\nTrong một video ca nhạc khác về 50 tiểu bang của Mỹ, AI tạo ra hàng loạt cái tên vô nghĩa, không khớp với lời bài hát, buộc trẻ phải học thuộc những địa danh không tồn tại như “Ribio Island”, “Conmecticut”, “Oklolodia” hay “Louggisslia”.\n\nMột video về bảy châu lục hiển thị hình ảnh chiếc la bàn với nhiều hơn bốn hướng và các ký hiệu khó hiểu thay cho “N”, “S”, “E” và “W”.\n\nChuyên gia truyền thông trẻ em Carla Engelbrecht, người từng làm việc với các thương hiệu như Sesame Street và PBS Kids, còn phát hiện các video hướng dẫn trẻ sơ sinh nuốt trọn quả nho hoặc ăn mật ong, những hành vi có thể gây nguy hiểm.\n\nĐáng lo hơn, một số video còn đưa vào hình ảnh méo mó, gây sốc, hoàn toàn không phù hợp với trẻ nhỏ.\n\nLàn sóng thông tin sai lệch quy mô công nghiệp\n\nHiểm họa từ những nội dung này là rất rõ ràng, khi trẻ nhỏ có xu hướng bắt chước những gì chúng nhìn thấy. Nguy cơ càng lớn hơn trong bối cảnh các video kiểu này được sản xuất với tốc độ chóng mặt, trong khi nhiều phụ huynh ngày càng phụ thuộc vào YouTube để giải trí hoặc dỗ dành con cái.\n\nGiáo sư Kathy Hirsh-Pasek từ Temple University cảnh báo rằng đây là một vấn đề lớn cần được kiểm soát sớm. Đồng quan điểm, giáo sư Dana Suskind từ University of Chicago cho rằng đây là dạng thông tin sai lệch bằng AI nhắm vào trẻ nhỏ ở quy mô công nghiệp, tiềm ẩn rủi ro nghiêm trọng đối với sự phát triển của não bộ.\n\nQuy mô thực sự của vấn đề vẫn khó xác định. Tuy nhiên, một báo cáo từ Kapwing ước tính khoảng 21% nguồn cấp dữ liệu YouTube hiện chứa nội dung AI kém chất lượng. Một kênh đăng tải nhạc thiếu nhi nói trên đã xuất bản hơn 10.000 video chỉ trong bảy tháng, tương đương khoảng 50 video mỗi ngày.\n\nLỗ hổng trong thuật toán và kiểm duyệt nội dung\n\nCuộc điều tra của The New York Times với hơn 1.000 video YouTube Shorts đề xuất cho trẻ em cũng cho thấy bức tranh đáng lo ngại. Sau khi tạo tài khoản mới và xem các nội dung thiếu nhi truyền thống, thuật toán nhanh chóng đề xuất gần một nửa video tiếp theo là nội dung do AI tạo ra.\n\nĐiều này cho thấy hệ thống gợi ý của YouTube có thể đang vô tình ưu ái loại nội dung nói trên, hoặc những người sản xuất đã tìm ra cách khai thác thuật toán một cách hiệu quả.\n\nPhần lớn các video AI nhắm đến trẻ em đều tự gắn nhãn “giáo dục”, nhưng lại cung cấp thông tin mâu thuẫn hoặc vô lý. Theo Engelbrecht, những tín hiệu sai lệch này có thể làm gián đoạn quá trình học hỏi nguyên nhân - kết quả của trẻ, khiến việc tiếp thu kiến thức bị chậm lại.\n\nGiáo sư Suskind thậm chí gọi đây là hiện tượng “còi cọc não bộ”, bởi trẻ em ở giai đoạn phát triển sớm rất nhạy cảm với môi trường thông tin, và những trải nghiệm sai lệch có thể tạo ra các kết nối thần kinh không chính xác.\n\nDù nhiều video không xuất hiện trên ứng dụng YouTube Kids theo báo cáo của The 74, điều tra của The New York Times lại cho thấy không ít nội dung tương tự vẫn lọt qua hệ thống lọc của nền tảng này.\n\nTrong khi đó, nhiều phụ huynh vẫn cho trẻ sử dụng YouTube phiên bản thông thường, nơi các cơ chế kiểm soát còn hạn chế hơn.\n\nPhía YouTube cho biết họ áp dụng các tiêu chuẩn nghiêm ngặt hơn đối với nội dung dành cho trẻ em. Tuy nhiên, thực tế cho thấy nhiều video vẫn vượt qua được kiểm duyệt. Một trong những lỗ hổng lớn nằm ở quy định chỉ yêu cầu dán nhãn nội dung AI nếu video trông “chân thực”, điều gần như không có tác dụng với các video hoạt hình, vốn là định dạng phổ biến của nội dung này.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Carla Engelbrecht",
+          "Kathy Hirsh - Pasek",
+          "Dana Suskind",
+          "Engelbrecht",
+          "Suskind"
+        ],
+        "ORG": [
+          "Sesame Street",
+          "PBS Kids",
+          "Temple University",
+          "University of Chicago",
+          "Kapwing",
+          "The New York Times",
+          "YouTube",
+          "The 74"
+        ],
+        "LOC": [
+          "Mỹ",
+          "Ribio Island"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "10.000",
+          "1.000"
+        ]
+      }
+    },
+    {
+      "title": "Nút bấm \"Tôi không phải là robot\" thực chất không hề vô nghĩa: Sự thật kế hoạch hàng tỷ USD của Google",
+      "content": "Mỗi ngày, hàng trăm triệu người dùng internet thực hiện một nghi thức quen thuộc: giải mã các ô hình ảnh mờ nhòe của reCAPTCHA để đăng nhập tài khoản hoặc gửi biểu mẫu. Chúng ta coi đó là một phiền toái nhỏ để bảo mật, nhưng đằng sau những cú nhấp chuột \"vô hại\" ấy là một cỗ máy khai thác dữ liệu khổng lồ, nơi nhân loại đang lặng lẽ huấn luyện không công cho các hệ thống xe tự lái của Google.\n\nCâu chuyện bắt đầu vào năm 2000, khi Luis von Ahn, một nhà khoa học máy tính tại Đại học Carnegie Mellon, phát minh ra CAPTCHA để ngăn chặn nạn tin rác. Tuy nhiên, ông sớm nhận ra hàng triệu giờ lao động trí tuệ của con người đang bị lãng phí vào những ký tự vô nghĩa. Năm 2007, reCAPTCHA ra đời với một ý tưởng nhân văn: thay vì gõ linh tinh, người dùng sẽ giúp số hóa các cuốn sách cũ mà phần mềm nhận dạng chữ viết (OCR) không thể đọc được.\n\nDự án này đã thành công rực rỡ khi giúp số hóa toàn bộ kho lưu trữ của Google Books và 13 triệu bài báo của tờ The New York Times . Năm 2009, Google mua lại reCAPTCHA với giá hàng chục triệu USD. Kể từ đây, sứ mệnh của công cụ này bắt đầu rẽ hướng. Khi kỷ nguyên của sách giấy dần lùi xa, Google đối mặt với một thách thức mới: dữ liệu hình ảnh cho bản đồ và trí tuệ nhân tạo.\n\nĐến khoảng năm 2012, những dòng chữ cong vẹo biến mất, thay thế bằng các lưới ảnh thực tế từ Street View. Người dùng bắt đầu được yêu cầu \"chọn tất cả các ô có biển báo đường phố\" hoặc \"nhận diện cửa hiệu\". Về bản chất, Google đã biến hàng tỷ người dùng thành những cộng tác viên gán nhãn dữ liệu (data labeler) quy mô nhất thế giới mà không phải trả một xu tiền lương.\n\nQuy mô của hoạt động này lớn đến mức khó tin. Một nghiên cứu năm 2023 từ Đại học California, Irvine (UCI) mang tên \"Dazed & Confused\" đã chỉ ra rằng, trong hơn 13 năm qua, nhân loại đã tiêu tốn khoảng 819 triệu giờ để giải reCAPTCHA. Nếu tính theo mức lương tối thiểu, giá trị lao động này tương đương ít nhất 6,1 tỷ USD.\n\nNghiên cứu cũng ước tính giá trị trọn đời của dữ liệu từ các cookie theo dõi mà reCAPTCHA thu thập được có thể lên tới 888 tỷ USD. Những con số này cho thấy reCAPTCHA không chỉ là một công cụ bảo mật đơn thuần; nó là một \"trang trại\" dữ liệu khổng lồ.\n\nDữ liệu hình ảnh sau khi được con người xác nhận sẽ chảy trực tiếp vào hệ thống của Google Maps để nhận diện địa chỉ và cấu trúc đô thị. Đáng chú ý hơn, nhiều chuyên gia tin rằng đây chính là nền tảng để huấn luyện Waymo – dự án xe tự lái của Alphabet (công ty mẹ của Google). Dù Google từng phủ nhận việc dữ liệu reCAPTCHA trực tiếp đào tạo Waymo, nhưng sự trùng khớp giữa các vật thể cần nhận diện (đèn giao thông, vạch kẻ đường, người đi bộ) và nhu cầu của xe tự lái là không thể phủ nhận.\n\nNăm 2018, Google tiến thêm một bước với reCAPTCHA v3. Phiên bản này không còn yêu cầu người dùng giải đố, mà âm thầm theo dõi hành vi trong nền. Nó phân tích quỹ đạo chuột, cách cuộn trang và môi trường trình duyệt để đánh giá độ tin cậy của người dùng.\n\nTuy nhiên, tính hiệu quả của nó đang bị đặt dấu hỏi lớn. Nghiên cứu của UCI phát hiện ra rằng ngay từ năm 2016, các thuật toán đã có thể vượt qua xác thực hình ảnh với độ chính xác 70%, thậm chí là 100% đối với một số loại xác thực khác. Điều này dẫn đến một kết luận sắc bén: reCAPTCHA hiện nay giống một công cụ thu thập dữ liệu và theo dõi người dùng hơn là một lá chắn bảo mật hiệu quả.\n\nCác cơ quan quản lý tại châu Âu đã bắt đầu vào cuộc. Tòa án Liên bang Áo từng phán quyết rằng reCAPTCHA vi phạm quy định GDPR vì truyền dữ liệu người dùng sang Google mà không có sự đồng ý rõ ràng. Tại sao chúng ta phải giúp một công ty trị giá hàng nghìn tỷ USD huấn luyện sản phẩm thương mại của họ chỉ để được quyền truy cập vào tài khoản ngân hàng của chính mình?\n\nHành trình từ một ý tưởng số hóa sách miễn phí cho nhân loại đến một công cụ huấn luyện AI cho Waymo – doanh nghiệp vừa huy động thêm 16 tỷ USD với định giá 126 tỷ USD vào đầu năm 2026 – là minh chứng rõ nhất cho việc \"không có gì là miễn phí trên Internet\". Khi bạn nhấn vào ô \"Tôi không phải là người máy\", bạn thực chất đang khẳng định vai trò của mình trong một dây chuyền sản xuất công nghệ hiện đại: một người lao động không lương, cung cấp tài nguyên quý giá nhất của kỷ nguyên mới – dữ liệu.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Luis von Ahn"
+        ],
+        "ORG": [
+          "Google",
+          "Đại học Carnegie Mellon",
+          "Google Books",
+          "The New York Times",
+          "Đại học California",
+          "UCI",
+          "Dazed Confused",
+          "Irvine",
+          "Waymo",
+          "Alphabet",
+          "Tòa án Liên bang Áo",
+          "reCAPTCHA"
+        ],
+        "LOC": [
+          "Irvine",
+          "châu Âu"
+        ],
+        "DATE": [
+          "năm 2000",
+          "Năm 2007",
+          "Năm 2009",
+          "năm 2012",
+          "năm 2023",
+          "Năm 2018",
+          "năm 2016",
+          "năm 2026"
+        ],
+        "TECH": [
+          "AI",
+          "học máy"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "13 triệu",
+          "819 triệu"
+        ]
+      }
+    },
+    {
+      "title": "AI không còn để thử cho vui: 4 ứng dụng AI Việt phục vụ công việc từ làm web đến trồng trọt",
+      "content": "Trong giai đoạn đầu của làn sóng AI, phần lớn người dùng tiếp cận công nghệ này theo hướng thử nghiệm: hỏi đáp, viết vài đoạn nội dung, hoặc tạo hình ảnh mang tính giải trí. Nhưng tại Việt Nam, một lớp ứng dụng mới đang xuất hiện với cách tiếp cận khác hẳn: AI không còn là thứ để test cho biết, mà trở thành công cụ phục vụ công việc và tạo ra giá trị thực tế.\n\nĐiểm đáng chú ý là các ứng dụng này không cố gắng làm mọi thứ, mà đi thẳng vào từng bài toán cụ thể từ làm website, sản xuất nội dung, hỗ trợ tri thức cho đến tối ưu sản xuất nông nghiệp.\n\nLàm website không cần biết code: Luna Base AI\n\nVới nhiều cá nhân hoặc doanh nghiệp nhỏ tại Việt Nam, việc xây dựng một website vẫn là rào cản không chỉ vì chi phí, mà còn vì thiếu kỹ năng kỹ thuật. Luna Base AI tiếp cận trực tiếp vấn đề này bằng mô hình AI agent: người dùng chỉ cần mô tả nhu cầu bằng ngôn ngữ tự nhiên, hệ thống sẽ đề xuất cấu trúc, bố cục và nội dung cơ bản của website.\n\nLuna Base AI\n\nLuna Base AI\n\nỞ góc độ ứng dụng, đây là một bước tiến theo hướng no-code / low-code, giúp rút ngắn đáng kể thời gian triển khai. Một landing page hoặc website đơn giản có thể được tạo ra trong thời gian ngắn, đủ để phục vụ nhu cầu kinh doanh cơ bản.\n\nTuy nhiên, cần nhìn nhận rõ giới hạn các sản phẩm dạng này phù hợp để tạo nền tảng ban đầu, nhưng chưa thể thay thế hoàn toàn designer hoặc developer trong các dự án phức tạp. Dù vậy, với nhóm cá nhân hoặc doanh nghiệp nhỏ nơi yêu cầu về tốc độ và chi phí quan trọng hơn độ tinh chỉnh đây là một công cụ có tính thực tiễn cao.\n\nSản xuất nội dung bằng giọng nói: Vbee AI Voice và bài toán chi phí\n\nTrong lĩnh vực nội dung số, chi phí sản xuất luôn là một yếu tố quan trọng, đặc biệt với video, podcast hoặc audiobook. Vbee AI Voice giải quyết bài toán này bằng công nghệ chuyển văn bản thành giọng nói tiếng Việt.\n\nNgười dùng có thể nhập nội dung văn bản và tạo ra giọng đọc tự động, phục vụ cho nhiều mục đích như video tin tức, nội dung mạng xã hội hoặc hệ thống thông báo. So với việc thuê voice talent, AI giúp giảm đáng kể chi phí và thời gian sản xuất, đồng thời cho phép tạo nội dung với quy mô lớn.\n\nVbee AI Voice\n\nVbee AI Voice\n\nVề mặt công nghệ, thách thức nằm ở việc xử lý ngữ điệu và phát âm tiếng Việt một ngôn ngữ có hệ thống thanh điệu phức tạp. Các nền tảng như Vbee cho thấy AI nội địa đã đạt đến mức có thể sử dụng trong thực tế, dù vẫn còn hạn chế về biểu cảm trong một số ngữ cảnh yêu cầu cảm xúc cao.\n\nTrợ lý tri thức tiếng Việt: AI Hay và nhu cầu học làm\n\nKhông phải ai cũng sử dụng AI để lập trình hay làm sản phẩm. Với phần lớn người dùng, nhu cầu phổ biến hơn là tìm thông tin, viết nội dung và hiểu nhanh một vấn đề. AI Hay đi theo hướng này, đóng vai trò như một trợ lý tri thức tối ưu cho tiếng Việt.\n\nNgười dùng có thể đặt câu hỏi, yêu cầu tóm tắt hoặc hỗ trợ viết, với trải nghiệm được thiết kế phù hợp với ngữ cảnh tiếng Việt. Điều này đặc biệt quan trọng trong bối cảnh nhiều công cụ AI quốc tế chưa tối ưu hoàn toàn cho người dùng Việt.\n\nAI Hay\n\nAI Hay\n\nỞ góc độ hiệu quả, AI Hay phù hợp với các tác vụ nhanh: soạn thảo nội dung, giải thích khái niệm, hỗ trợ học tập. Tuy nhiên, giống như các công cụ AI khác, kết quả vẫn cần được kiểm chứng khi sử dụng cho các mục đích chuyên sâu.\n\nAI trong nông nghiệp: Enfarm và bài toán kinh nghiệm vs dữ liệu\n\nNếu ba ứng dụng trên hoạt động trong môi trường số, Enfarm lại đi theo một hướng khác: đưa AI vào sản xuất nông nghiệp. Ứng dụng này cung cấp các khuyến nghị liên quan đến phân bón và chăm sóc cây trồng dựa trên dữ liệu.\n\nTrong thực tế, nhiều nông dân vẫn dựa vào kinh nghiệm để quyết định lượng phân bón, điều này có thể dẫn đến lãng phí hoặc ảnh hưởng năng suất. Các giải pháp như Enfarm hướng tới mô hình nông nghiệp chính xác (precision agriculture), nơi quyết định được hỗ trợ bởi dữ liệu thay vì chỉ dựa vào cảm tính.\n\nEnfarm\n\nEnfarm\n\nHiệu quả của các hệ thống này phụ thuộc lớn vào chất lượng dữ liệu đầu vào và khả năng triển khai tại từng khu vực. Tuy nhiên, nếu hoạt động đúng như thiết kế, đây có thể là một công cụ giúp tối ưu chi phí và hướng tới canh tác bền vững.\n\nKhi AI bắt đầu tạo ra giá trị thực\n\nBốn ứng dụng Luna Base AI, Vbee AI Voice, AI Hay và Enfarm đại diện cho bốn hướng tiếp cận khác nhau của AI tại Việt Nam. Điểm chung là chúng không còn dừng ở mức \"trải nghiệm công nghệ\", mà đang trực tiếp tham gia vào quy trình làm việc và sản xuất.\n\nLuna Base AI giúp rút ngắn thời gian xây dựng sản phẩm số.\n\nVbee giảm chi phí sản xuất nội dung.\n\nAI Hay hỗ trợ học tập và làm việc hàng ngày.\n\nEnfarm tối ưu đầu vào trong nông nghiệp.\n\nỞ góc độ tổng thể, đây là dấu hiệu cho thấy AI đang chuyển từ giai đoạn thử nghiệm sang giai đoạn ứng dụng. Giá trị của công nghệ không còn nằm ở việc làm được gì, mà ở việc giúp người dùng tiết kiệm thời gian, giảm chi phí và tăng hiệu quả.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Enfarm"
+        ],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "AI agent"
+        ],
+        "JOB_ROLE": [
+          "ba"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Game thủ chê công nghệ DLSS 5 của NVIDIA là “vô hồn”, bèn chế meme để bộc bạch cảm xúc",
+      "content": "NVIDIA vừa chính thức ra mắt DLSS 5, công nghệ được hãng ca ngợi là bước đột phá lớn nhất về đồ họa máy tính kể từ kỷ nguyên ray tracing năm 2018. Về cốt lõi, DLSS 5 sử dụng mô hình kết xuất AI theo thời gian thực để phân tích nhân vật, ánh sáng, chất liệu và tạo ra hình ảnh 4K vô cùng sống động, xóa nhòa ranh giới giữa đồ họa và đời thực. Bất chấp sự ủng hộ nồng nhiệt từ các \"ông lớn\" trong ngành game, công nghệ này lại đang vấp phải làn sóng tranh cãi dữ dội từ phía cộng đồng game thủ.\n\nTrên các diễn đàn lớn như Reddit, nhiều người chơi đã bày tỏ sự thất vọng và phẫn nộ, chê bai DLSS 5 giống như một lớp bộ lọc AI đắp lên game gốc, làm phá hỏng hoàn toàn ý đồ nghệ thuật nguyên bản của các họa sĩ. Một số game thủ mỉa mai gọi công nghệ này là \"Deep Learning Super Slop 5\" (Siêu rác thải học sâu 5).\n\nTuy nhiên, dư luận vẫn có sự chia rẽ. Một bộ phận người chơi lại tỏ ra thích thú với DLSS 5, nhận định rằng đồ họa trông chân thực, nhân vật đẹp mắt hơn và điều này giúp nâng tầm trải nghiệm cá nhân của họ.\n\nCuộc tranh cãi vẫn chưa chấm dứt, và trong lúc ấy, bạn hãy tận hưởng những … nụ cười mà cuộc khẩu chiến này mang lại. Một bộ phận không nhỏ game thủ đã tỏ ra bất bình dưới dạng meme: NVIDIA coi DLSS 5 là công nghệ đột phá trong ngành game, còn những game thủ bất bình coi đây là cơ hội để thể hiện khiếu hài hước.\n\nNhân vật Kratos trong God of War, trước và sau khi được \"nâng mặt\".\n\nNhân vật Patches nổi tiếng trong các game của From Software.\n\nVới nhiều ngời, Leon có vẻ vẫn chưa đủ hot, nên phải đưa anh đi phẫu thuật thẩm mỹ cho hợp gu.\n\nPhiên bản mới của \"Cô Gái\" trong Residen Evil: Requiem biến game kinh dị thành game thời trang.\n\nCây cối như được thổi hồn với DLSS 5.\n\nMr. X biến thành B.J. Blazkowicz với DLSS 5.\n\nFaker và phiên bản được AI chỉnh sửa cho đẹp hơn, Thầy Giáo Ba.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Kratos",
+          "Patches",
+          "Leon",
+          "X",
+          "B. J. Blazkowicz",
+          "Fake",
+          "Blazkowicz"
+        ],
+        "ORG": [
+          "NVIDIA"
+        ],
+        "LOC": [],
+        "DATE": [
+          "năm 2018"
+        ],
+        "TECH": [
+          "AI",
+          "Deep Learning"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Cha đẻ ChatGPT: AI đang trở thành \"vật tế thần\" để các công ty sa thải nhân sự",
+      "content": "Tại Hội nghị Hạ tầng BlackRock 2026 diễn ra ở Washington DC, CEO OpenAI Sam Altman đã thẳng thắn chỉ ra một hiện trạng đang diễn ra trên toàn cầu. Ông cho rằng AI đang trở thành \"vật tế thần\" hoàn hảo cho các công ty muốn cắt giảm nhân sự và giải thích cho chi phí vận hành gia tăng. Bất chấp nguyên nhân thực sự là gì, hầu hết các doanh nghiệp khi sa thải nhân viên hiện nay đều đổ lỗi cho sự xuất hiện của trí tuệ nhân tạo, đồng thời đẩy trách nhiệm về giá điện leo thang cho các trung tâm dữ liệu.\n\nCEO OpenAI Sam Altman (Ảnh: Getty)\n\nCEO OpenAI Sam Altman (Ảnh: Getty)\n\nHiện tượng này được Altman gọi là \"AI washing\" (tẩy trắng bằng AI). Thực chất, nhiều công ty đã lên kế hoạch thu hẹp quy mô từ trước do bối cảnh kinh tế khó khăn, nhưng lại sử dụng vỏ bọc \"tối ưu hóa bằng AI\" để xoa dịu dư luận và cổ đông. Nhận định này hoàn toàn có cơ sở khi đối chiếu với các dữ liệu thực tế. Báo cáo mới nhất từ Yale Budget Lab, dựa trên số liệu của Cục Thống kê Lao động Mỹ, chỉ ra rằng từ khi ChatGPT ra mắt cuối năm 2022 cho đến cuối năm 2025, tỷ lệ chuyển đổi nghề nghiệp hay thời gian thất nghiệp trung bình vẫn chưa có sự thay đổi mang tính bước ngoặt.\n\nThêm vào đó, một khảo sát từ Cục Nghiên cứu Kinh tế quốc gia Mỹ đối với các lãnh đạo doanh nghiệp cũng cho ra kết quả bất ngờ. Khoảng 80% giám đốc xác nhận AI chưa thực sự tạo ra tác động rõ rệt đến năng suất lao động hay làm giảm số lượng nhân sự tại đơn vị của họ. Điều này đi ngược lại hoàn toàn với những lời đe dọa trước đó rằng AI sẽ càn quét giới văn phòng chỉ trong vòng 18 tháng.\n\n\"Chủ nghĩa tư bản phụ thuộc vào sự cân bằng quyền lực giữa lao động và vốn. Nhưng khi con người khó có thể làm việc hiệu quả hơn một GPU, tôi không nghĩ có ai biết chính xác phải làm gì tiếp theo.\" Ông Sam Altman nói.\n\nTuy vạch trần chiêu trò của các doanh nghiệp, Sam Altman không phủ nhận việc AI đang dần đe dọa các công việc truyền thống. Ông nhấn mạnh rằng trong suốt hàng thiên niên kỷ, xã hội loài người được cấu trúc để quản lý \"sự khan hiếm\". Giờ đây, chúng ta đang đối mặt với bài toán ngược lại: học cách quản lý \"sự dư thừa\" khi AI tiên tiến tới ngưỡng trở thành công cụ kinh tế chủ lực. Trong vài tháng qua, AI đã vượt ra khỏi ranh giới lập trình cơ bản để đảm nhận các nhiệm vụ phức tạp. Altman cảnh báo tốc độ này rất dễ gây nhiễu loạn, đặc biệt khi các tác nhân AI (AI Agent) sắp tới có thể hoạt động độc lập trong nhiều tuần như một nhân sự cấp cao thực thụ.\n\nSự chuyển dịch này đang định hình lại cách các công ty khởi nghiệp vận hành. Thay vì tuyển dụng ồ ạt, một thế hệ startup mới chọn cách đổ tiền vào năng lực tính toán. Điển hình như tại Ấn Độ, các mô hình công ty \"không người\" đang mọc lên, vận hành hoàn toàn dựa trên lệnh AI để viết code, xử lý pháp lý và chăm sóc khách hàng. Ngay cả giới tinh hoa lãnh đạo cũng không an toàn. Nhắc lại cảnh báo của đối thủ Anthropic về những cụm AI có trí tuệ ngang ngửa 50 triệu người đoạt giải Nobel, Altman dự báo đến cuối năm 2028, năng lực nhận thức tại các trung tâm dữ liệu sẽ vượt xa con người. Lúc đó, các CEO hay nhà khoa học hàng đầu sẽ không thể làm việc nếu thiếu sự giám sát của AI.\n\nĐể chuẩn bị cho tương lai này, OpenAI đang theo đuổi các siêu dự án hạ tầng, xây dựng những trung tâm dữ liệu quy mô gigawatt để biến AI thành một nguồn tài nguyên \"quá rẻ để đo lường\". Ông chủ ChatGPT kỳ vọng trí tuệ nhân tạo sẽ phủ sóng toàn cầu như điện hay nước, viết lại luật chơi của nền kinh tế. Tuy nhiên, hành trình này sẽ trải qua một cuộc điều chỉnh vô cùng khắc nghiệt. Việc tự động hóa diện rộng có thể dẫn đến một thế giới giảm phát vĩnh viễn, nơi các chỉ số như GDP sụt giảm hoặc trở thành \"GDP ma\" gây hỗn loạn kinh tế ngắn hạn.\n\nThực tế thị trường lao động đã bắt đầu cảm nhận những cơn chấn động đầu tiên. Nghiên cứu của Đại học Stanford vào tháng 8/2025 cho thấy số lượng tin tuyển dụng cấp thấp đã giảm 13% kể từ cuối năm 2022. Những công việc mang tính lặp lại như thư ký, trợ lý hành chính hay chăm sóc khách hàng đang bị thu hẹp mạnh. Sự đứt gãy này dấy lên một mối lo ngại lớn cho cấu trúc nhân sự tương lai: khi cánh cửa dành cho người trẻ tích lũy kinh nghiệm bị khép lại, các doanh nghiệp sẽ lấy đâu ra đội ngũ kế cận am hiểu thực tế để thay thế cho lớp lãnh đạo cấp cao khi họ nghỉ hưu.\n\nTheo BI",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Sam Altman",
+          "Altman"
+        ],
+        "ORG": [
+          "OpenAI",
+          "Yale Budget Lab",
+          "Cục Thống kê Lao động Mỹ",
+          "Cục Nghiên cứu Kinh tế quốc gia Mỹ",
+          "ChatGPT",
+          "Đại học Stanford"
+        ],
+        "LOC": [
+          "Washington DC",
+          "Độ"
+        ],
+        "DATE": [
+          "tháng 8",
+          "năm 2022",
+          "năm 2025",
+          "năm 2028"
+        ],
+        "TECH": [
+          "AI",
+          "GPU",
+          "ChatGPT",
+          "OpenAI",
+          "trí tuệ nhân tạo",
+          "tác nhân AI",
+          "AI Agent",
+          "Anthropic"
+        ],
+        "JOB_ROLE": [
+          "sa",
+          "CEO"
+        ],
+        "SALARY": [
+          "50 triệu"
+        ]
+      }
+    },
+    {
+      "title": "Elon Musk đại chiến Pizza với OpenAI: Một chiếc bánh khơi mào xung đột hàng trăm triệu USD",
+      "content": "Tờ Business Insider (BI) cho hay cuộc đối đầu giữa xAI và OpenAI vừa được hâm nóng trở lại theo một cách không ai ngờ tới: thông qua những chiếc pizza nướng lò củi.\n\nCuối tuần qua, Elon Musk và một kỹ sư của OpenAI đã có màn \"so găng\" trực tiếp trên nền tảng X, xoay quanh các chủ đề từ độ giòn của đế bánh, quy trình lên men bột cho đến tay nghề của đầu bếp tại trụ sở.\n\nNhìn bề ngoài, đây có vẻ chỉ là một cuộc tán gẫu vô thưởng vô phạt về bữa trưa miễn phí. Tuy nhiên, sâu bên trong, nó phản ánh một xu hướng đang định hình lại toàn bộ hệ sinh thái công nghệ tại Thung lũng Silicon.\n\nCác công ty AI hàng đầu đang công khai phô diễn văn hóa doanh nghiệp và những đặc quyền xa xỉ như một \"mồi nhử\" chiến lược trong cuộc chiến giành giật những bộ não xuất sắc nhất hành tinh.\n\nPizza ai ngon hơn?\n\nMọi chuyện bắt đầu khi Musk chia sẻ lại video của một kỹ sư xAI, người đã gọi công việc hiện tại là \"cơ hội ngàn năm có một\". Ngay lập tức, vị tỷ phú không quên đính kèm dòng trạng thái mời gọi: \"Hãy gia nhập @xAI\".\n\nBài đăng nhanh chóng thu hút sự chú ý của đối thủ trực tiếp. Thibault Sottiaux, lãnh đạo kỹ thuật tại dự án Codex của OpenAI, đã đáp trả đầy thách thức khi mời gọi các ứng viên hãy chọn \"phe sáng\" (the bright side) vì ở đó có pizza.\n\n\"Nhưng pizza lò củi của các anh ngon đến mức nào?\", Elon Musk đáp trả.\n\nCuộc tranh luận sau đó nhanh chóng leo thang thành màn so kè về kỹ thuật làm bánh và đẳng cấp của đầu bếp riêng.\n\nMusk tự tin khẳng định bột bánh tại xAI cần ít nhất 24 giờ để lên men và không chấp nhận bất kỳ sự đốt cháy giai đoạn nào.\n\nThậm chí, ông còn dùng những lời lẽ \"có cánh\" nhất để ca ngợi đầu bếp của mình là tạo vật hoàn hảo nhất của thượng đế. Phía OpenAI cũng không kém cạnh khi tuyên bố công thức pizza của họ xuất sắc đến mức đang trực tiếp góp phần đẩy nhanh tiến trình đạt đến AGI (Trí tuệ nhân tạo tổng quát).\n\n\"Thế còn bột bánh thì sao?\" ông Thibault Sottiaux của OpenAI viết. \"Không thể đi tắt được, cần ít nhất 24 giờ. Và đầu bếp của chúng tôi rất đỉnh.”\n\n“Đầu bếp của chúng tôi giỏi đến mức Chúa đã nhìn xuống đồ ăn từ thiên đường và nói rằng ngươi là tạo vật ngon lành nhất của ta”, Elon Musk đáp trả\n\n\"Với pizza của chúng tôi, sau khi cắn một miếng, Chúa vẫn chưa hài lòng 100% và đã yêu cầu đầu bếp của chúng tôi cải thiện dựa trên SoTA (công nghệ tiên tiến nhất hiện nay)”, ông Sottiaux không chịu thua. \"Đầu bếp của chúng tôi đã thực hiện, và tạo ra một công thức mà giờ đây được cả thế giới công nhận là giúp thúc đẩy tiến trình đạt đến AGI.\"\n\nCuộc chiến thực sự đằng sau\n\nĐằng sau những dòng trạng thái có phần hài hước về món bánh cà chua phô mai là một thực tế khốc liệt. Các phòng thí nghiệm AI đang rơi vào một cuộc chạy đua vũ trang thực sự để sở hữu những kỹ sư tinh hoa.\n\nTại đây, những gói thù lao có thể lên tới con số 9 chữ số (hàng trăm triệu USD) không còn là chuyện hiếm. Amazon, Microsoft, Meta, OpenAI và xAI đang tranh giành một tệp chuyên gia cực kỳ nhỏ hẹp, những người thực sự đủ khả năng xây dựng thế hệ mô hình ngôn ngữ và cơ sở hạ tầng tiếp theo.\n\nBên cạnh tiền bạc, hai đặc quyền quan trọng khác đã nổi lên trong cuộc chiến này, theo nhận định của Mark Zuckerberg trong một bài phỏng vấn vào năm 2025, đó là quyền truy cập vào chip xử lý đồ họa (GPU) và việc có ít cấp dưới trực tiếp.\n\nCác kỹ sư hàng đầu hiện nay thường đưa ra yêu cầu rất thực tế: họ muốn có tối đa sức mạnh tính toán để làm việc và tối thiểu các rào cản quản lý hành chính.\n\nTrong bối cảnh ngành công nghệ nói chung đang thắt chặt chi tiêu, cắt giảm nhân sự và thu hẹp các chế độ làm việc từ xa hay phúc lợi chăm sóc thú cưng, thì những bữa trưa xa hoa vẫn là thành trì cuối cùng được giữ lại.\n\nKhi các tiêu chuẩn về công nghệ và lương thưởng dần trở nên bão hòa, một chiếc pizza lò củi được chăm chút kỹ lưỡng đôi khi lại chính là \"đòn quyết định\" để một thiên tài gật đầu đầu quân cho doanh nghiệp.\n\nRõ ràng, trong kỷ nguyên AI, cuộc đua không chỉ diễn ra trong các phòng máy chủ hàng tỷ USD, mà còn đang nóng hổi ngay trên những chiếc lò nướng bánh tại căng tin của các ông lớn công nghệ.\n\n*Nguồn: BI, Fortune",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Elon Musk",
+          "Musk",
+          "Thibault Sottiaux",
+          "Sottiaux",
+          "Mark Zuckerberg"
+        ],
+        "ORG": [
+          "Business Insider",
+          "BI",
+          "OpenAI",
+          "Amazon",
+          "Microsoft",
+          "Meta",
+          "xAI",
+          "Fortune"
+        ],
+        "LOC": [
+          "Thung lũng Silicon"
+        ],
+        "DATE": [
+          "năm 2025"
+        ],
+        "TECH": [
+          "AI",
+          "AGI",
+          "GPU",
+          "OpenAI",
+          "xAI",
+          "Trí tuệ nhân tạo",
+          "mô hình ngôn ngữ"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Cựu kỹ sư Google đánh cắp 2000 trang tài liệu công nghệ AI cho Trung Quốc",
+      "content": "Một cựu kỹ sư phần mềm của Google tại Mỹ vừa bị bồi thẩm đoàn liên bang kết tội gián điệp kinh tế và đánh cắp bí mật thương mại liên quan đến công nghệ trí tuệ nhân tạo (AI), nhằm phục vụ lợi ích của Trung Quốc.\n\nTheo CNBC, ngày 30/1, bồi thẩm đoàn tại San Francisco đã tuyên ông Linwei Ding (38 tuổi) phạm tổng cộng 14 tội danh, trong đó có 7 tội gián điệp kinh tế và 7 tội đánh cắp bí mật thương mại của Google.\n\nHồ sơ tòa án cho thấy trong khoảng thời gian từ tháng 5/2022 đến tháng 4/2023, ông Ding đã chiếm đoạt hơn 2.000 trang tài liệu mật về AI của Google và tải lên tài khoản Google Cloud cá nhân. Thời điểm này, ông Ding duy trì liên hệ với hai công ty công nghệ tại Trung Quốc, đồng thời chuẩn bị thành lập doanh nghiệp riêng.\n\nCựu kỹ sư Google - Linwei Ding bị kết tội đánh cắp công nghệ trí tuệ nhân tạo (AI). (Ảnh: LinkedIn/Reuters)\n\nCác tài liệu bị đánh cắp chứa nhiều thông tin đặc biệt nhạy cảm, bao gồm kiến trúc chip Tensor Processing Unit (TPU) do Google tự phát triển, hệ thống bộ xử lý đồ họa (GPU) và SmartNIC - thẻ giao diện mạng chuyên dụng giúp truyền dữ liệu tốc độ cao trong các siêu máy tính AI và nền tảng điện toán đám mây của Google.\n\nPhía bào chữa cho rằng những tài liệu này không đủ điều kiện được coi là bí mật thương mại. Luật sư Grant Fondo lập luận Google đã không áp dụng các biện pháp bảo mật nghiêm ngặt, khi hàng nghìn nhân viên có thể truy cập các tài liệu nói trên. Theo ông, tập đoàn công nghệ này “đã lựa chọn sự cởi mở thay vì an ninh”.\n\nNgược lại, ông Roman Rozhavsky, Phó giám đốc Cục Phản gián và Gián điệp của FBI, nhấn mạnh rằng trong cuộc cạnh tranh khốc liệt nhằm giành vị thế dẫn đầu về AI, ông Linwei Ding đã “phản bội cả nước Mỹ lẫn công ty nơi mình làm việc”, khi đánh cắp công nghệ chiến lược của Google vì lợi ích của Chính phủ Trung Quốc. Ông Rozhavsky khẳng định phán quyết này thể hiện quyết tâm của chính quyền Mỹ trong việc bảo vệ các công nghệ then chốt.\n\nPhiên tòa tuyên án dự kiến diễn ra vào tuần tới. Theo quy định, bị cáo có thể đối mặt với mức án tối đa 10 năm tù cho mỗi tội danh đánh cắp bí mật thương mại và 15 năm tù cho mỗi tội danh gián điệp kinh tế.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Linwei Ding",
+          "Ding",
+          "Grant Fondo",
+          "Roman Rozhavsky",
+          "Rozhavsky"
+        ],
+        "ORG": [
+          "Google",
+          "CNBC",
+          "Reuters",
+          "Cục Phản gián và Gián điệp",
+          "FBI"
+        ],
+        "LOC": [
+          "Trung Quốc",
+          "Mỹ",
+          "San Francisco"
+        ],
+        "DATE": [
+          "tháng 5",
+          "tháng 4"
+        ],
+        "TECH": [
+          "AI",
+          "TPU",
+          "GPU",
+          "trí tuệ nhân tạo",
+          "Google Cloud"
+        ],
+        "JOB_ROLE": [
+          "kỹ sư phần mềm",
+          "Phó giám đốc"
+        ],
+        "SALARY": [
+          "2.000"
+        ]
+      }
+    },
+    {
+      "title": "Chi tiết cách tra cứu nợ thuế thu nhập cá nhân năm 2026",
+      "content": "Việc tra cứu nợ thuế thu nhập cá nhân định kỳ là việc làm cần thiết để người nộp thuế đảm bảo hoàn thành đúng nghĩa vụ với ngân sách Nhà nước. Muốn biết mình nợ thuế hay không, người dân có thể tra cứu theo các cách sau.\n\nCách 1: Tra cứu trên ứng dụng eTax Mobile\n\nBước 1: Đăng nhập vào ứng dụng bằng tài khoản đã đăng ký hoặc đăng nhập bằng tài khoản định danh điện tử trên điện thoại thông minh.\n\nTrường hợp chưa có tài khoản, người nộp thuế đăng ký bằng thông tin mã số thuế cùng số căn cước công dân của mình và làm theo hướng dẫn. Sau đó, chọn mục \"Tra cứu nghĩa vụ thuế\".\n\nBước 2: Chọn \"Thông tin nghĩa vụ thuế\"\n\nBước 3: Bấm chọn \"Tra cứu\"\n\nTại đây, Hệ thống hiển thị hai mục\n\nTại đây, Hệ thống hiển thị hai mục\n\nTrong trường hợp người nộp thuế chưa phát sinh nghĩa vụ thuế tại thời điểm tra cứu, hệ thống sẽ hiển thị:\n\nCách 2: Tra cứu nợ thuế thu nhập cá nhân trên trang Thuế điện tử\n\nBước 1: Truy cập vào trang Thuế điện tử tại địa chỉ https://thuedientu.gdt.gov.vn/, và chọn \"Đăng nhập\" theo mã số thuế. Nếu quên mật khẩu, có thể lấy lại mật khẩu theo các bước bằng mã OTP qua số điện thoại cá nhân.\n\nMàn hình đăng nhập sẽ hiển thị như sau. Người nộp thuế có thể lựa chọn đăng nhập bằng tài khoản thuế điện tử (mã số thuế) hoặc đăng nhập bài tài khoản định danh điện tử VNeID.\n\nBước 2: Chọn mục \"Tra cứu\" rồi chọn \"Tra cứu nghĩa vụ thuế\".\n\nBước 3: Bấm \"Tra cứu\" để biết thông tin về thuế:\n\nTại đây, hệ thống hiển thị Kết quả tra cứu gồm hai mục\n\nTại đây, hệ thống hiển thị Kết quả tra cứu gồm hai mục\n\nTrong trường hợp người nộp thuế chưa phát sinh nghĩa vụ thuế tại thời điểm tra cứu, hệ thống sẽ hiển thị: Người nộp thuế chưa phát sinh nghĩa vụ tại thời điểm tra cứu.\n\nCách 3: Tra cứu trên trang web của Cục Thuế (Bộ Tài chính)\n\nBước 1: Truy cập vào trang web của Cục Thuế theo đường link: https://www.gdt.gov.vn/. Sau đó, chọn mục \"Dịch vụ công\", tiếp theo chọn mục \"Công khai cưỡng chế nợ thuế\".\n\nBước 2: Chọn tiếp \"Người nộp thuế có thông báo về xuất cảnh\".\n\nBước 3: Nhập mã số thuế hoặc số định danh cá nhân (căn cước công dân) vào các trường thông tin theo yêu cầu. Tiếp đó nhập \"Mã xác nhận\" và chọn \"Tìm kiếm\".\n\nNhập mã số thuế cá nhân, mã xác nhận và bấm Tìm kiếm. Hệ thống sẽ hiển thị thông tin về việc người nộp thuế có bị cấm xuất cảnh do nợ thuế hay không. Trường hợp cá nhân không bị tạm hoãn xuất cảnh sẽ hiển thị \"Không tìm thấy dữ liệu\".",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Cục Thuế",
+          "Bộ Tài chính"
+        ],
+        "LOC": [],
+        "DATE": [
+          "năm 2026"
+        ],
+        "TECH": [
+          "https"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Rùng mình nghe kẻ lừa đảo đọc vanh vách số dư, biết cả mã OTP: Lỗ hổng chết người đến từ đâu?",
+      "content": "Hãy thử tưởng tượng vào một ngày đẹp trời, điện thoại của bạn bỗng nhận thông báo tài khoản mạng xã hội hay Apple ID bị đăng nhập lạ. Ngay sau đó, một cuộc gọi xưng danh \"nhân viên ngân hàng\" ập tới, thông báo tài khoản bị trừ tiền nhầm hoặc cần hỗ trợ gấp. Để tăng độ tin cậy, kẻ gian đọc làu làu số thẻ, địa chỉ nhà và số dư hiện có của bạn. Trong khoảnh khắc hoang mang tột độ, nạn nhân thường làm theo hướng dẫn trong vô thức và chỉ tích tắc sau, toàn bộ tiền tiết kiệm tích cóp cả đời \"bốc hơi\".\n\nĐây không phải là kịch bản phim trinh thám, mà là thực tế tàn khốc đang diễn ra mỗi ngày. Câu hỏi nhức nhối đặt ra là: Tại sao chúng biết tất cả mọi thứ về bạn?\n\nTriệu Vũ, một chuyên gia lão luyện trong giới an ninh mạng và là người từng sáng lập Bạch Mạo Hội (nhóm hacker mũ trắng chuyên săn lùng tội phạm mạng), đã vén màn những bí mật đen tối phía sau các cuộc gọi này.\n\nTheo ông, dữ liệu cá nhân không tự nhiên xuất hiện trên máy tính của hacker. Nó bị rò rỉ từ chính những nơi bạn đặt niềm tin nhất: các sàn thương mại điện tử, diễn đàn hay ứng dụng mua sắm online. Khi người dùng vô tư điền địa chỉ, số thẻ để thanh toán, dữ liệu đó được lưu trữ trên máy chủ doanh nghiệp. Hacker không mất công tấn công vào từng cá nhân, chúng tấn công thẳng vào \"trái tim\" hệ thống lưu trữ của các doanh nghiệp này thông qua các lỗ hổng bảo mật.\n\nTrong giới tội phạm mạng, lỗ hổng bảo mật được ví như \"vàng ròng\". Nguy hiểm nhất là các lỗ hổng 0Day (chưa từng được công bố), cho phép hacker âm thầm cài cửa hậu và vơ vét dữ liệu trong thời gian dài mà không ai hay biết. Tuy nhiên, đáng sợ và phổ biến hơn cả lại là các lỗ hổng NDay - những lỗi cũ đã có bản vá nhưng doanh nghiệp lười cập nhật hoặc tiếc chi phí bảo trì. Chỉ cần một email giả mạo chứa mã độc gửi đến nhân viên công ty, kẻ xấu có thể khai thác lỗ hổng cũ này và nắm trọn cơ sở dữ liệu khách hàng trong tay.\n\nMột khi đã nắm trong tay dữ liệu thô, giới tội phạm mạng sẽ thực hiện bước tiếp theo gọi là kỹ thuật \"Dò kho\". Đây là chiêu thức tận dụng thói quen chết người của đại đa số người dùng internet: dùng chung một mật khẩu cho mọi tài khoản. Từ dữ liệu rò rỉ ở một website bán hàng nhỏ lẻ, hacker dùng chính email và mật khẩu đó để thử đăng nhập vào tài khoản ngân hàng, ví điện tử hay iCloud của nạn nhân. Hậu quả là từ một lỗ kim nhỏ, cả con đê vỡ toang. Hàng tỷ cặp tài khoản và mật khẩu đang lưu hành trong thế giới ngầm chính là kết quả của chuỗi tấn công liên hoàn này.\n\nTinh vi hơn nữa, để vượt qua chốt chặn bảo mật cuối cùng là mã OTP, hacker sử dụng các ứng dụng gián điệp. Chỉ cần người dùng tò mò cài đặt một ứng dụng lạ từ đường link gửi qua tin nhắn hay mạng xã hội, toàn bộ quyền kiểm soát thiết bị sẽ thuộc về hacker, bao gồm cả quyền đọc tin nhắn SMS và nghe lén cuộc gọi. Lúc này, dù điện thoại vẫn nằm trên tay bạn, nhưng mã OTP gửi về máy cũng đồng thời hiện lên màn hình của kẻ gian. Nạn nhân hoàn toàn bất lực nhìn tiền trong tài khoản bị chuyển đi mà không hiểu chuyện gì đang xảy ra.\n\nThâm nhập sâu vào thế giới ngầm, Triệu Vũ từng chứng kiến những sự thật đau lòng khi có những nạn nhân vừa nhắn tin khoe với vợ về khoản tiền thưởng Tết, giây sau đã bị hacker vét sạch vì lộ thông tin. Thế giới tội phạm mạng hiện nay hoạt động với quy mô công nghiệp, phân chia rõ ràng từ đội ngũ cho thuê máy chủ ẩn danh, nhóm chuyên rửa tiền đến nhóm chuyên khai thác dữ liệu. Cuộc chiến này vốn không cân sức và điểm yếu lớn nhất không nằm ở công nghệ, mà nằm ở con người. Sự chủ quan, thói quen đặt mật khẩu dễ đoán và việc click chuột vô tội vạ vào các đường link lạ chính là chìa khóa bạn tự tay trao cho kẻ lừa đảo mở két sắt nhà mình.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Triệu Vũ"
+        ],
+        "ORG": [
+          "Bạch Mạo Hội"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Ông Phạm Nhật Vượng giàu cỡ nào?",
+      "content": "Chốt phiên 23/12, cổ phiếu Vingroup (mã: VIC) của tỷ phú Phạm Nhật Vượng leo lên mốc đỉnh lịch sử 169.900 đồng/cp (giá đã điều chỉnh).\n\nCùng với nhịp tăng của cổ phiếu VIC, tài sản của ông Phạm Nhật Vượng cũng tăng chóng mặt. Theo số liệu thời gian thực của Forbes, tài sản của ông đạt 30 tỷ USD, tăng thêm 3,4 tỷ USD chỉ trong một ngày. Thành tích này đưa ông đứng vị trí thứ 71 trong danh sách những người giàu nhất thế giới, vượt qua cả tỷ phú Jack Ma, người đang sở hữu 29,6 tỷ USD.\n\nKhối tài sản khoảng 30 tỷ USD tương đương với 750.000 tỷ đồng đưa ông Phạm Nhật Vượng vào top 60 người giàu nhất thế giới và thuộc nhóm cá nhân hiếm hoi có khả năng tạo ảnh hưởng tài chính toàn cầu.\n\nĐể hình dung về quy mô tiền mặt, nếu xếp chồng các tờ tiền mệnh giá 100 USD, chồng tiền mà ông Vượng sở hữu sẽ cao hơn 30 km và nếu đem ra chi tiêu 1 triệu USD/ngày - mức mà nhiều tỷ phú hiện nay cũng phải \"chóng mặt\" thì ông Vượng cũng phải tiêu khoảng 82 năm mới hết còn nếu chi tiêu 100.000 USD/ngày, con số đó lên đến hơn 800 năm.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Phạm Nhật Vượng",
+          "Jack Ma",
+          "Vượng"
+        ],
+        "ORG": [
+          "Vingroup",
+          "Forbes"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "1 triệu",
+          "169.900 đồng",
+          "750.000",
+          "100.000"
+        ]
+      }
+    },
+    {
+      "title": "Coursera thâu tóm Udemy, dồn lực cho đào tạo AI với quy mô 2,5 tỷ USD",
+      "content": "Coursera vừa công bố kế hoạch mua lại đối thủ Udemy trong một thương vụ toàn cổ phiếu, qua đó hình thành một công ty giáo dục trực tuyến có giá trị khoảng 2,5 tỷ USD, tương đương gần 66.000 tỷ đồng. Động thái này diễn ra trong bối cảnh ngành giáo dục trực tuyến đang bước vào giai đoạn tái cấu trúc sau thời kỳ tăng trưởng nóng hậu đại dịch, đồng thời chịu áp lực ngày càng lớn từ nhà đầu tư về hiệu quả kinh doanh và khả năng sinh lời.\n\nTheo thỏa thuận, mỗi cổ phiếu Udemy sẽ được hoán đổi lấy 0,8 cổ phiếu Coursera. Dựa trên giá đóng cửa gần nhất của Coursera, mức đề nghị này định giá Udemy vào khoảng 930 triệu USD, tương đương gần 24.600 tỷ đồng. Tính theo Reuters, giá chào mua tương đương khoảng 6,35 USD cho mỗi cổ phiếu Udemy, cao hơn khoảng 18,3% so với mức giá trước khi có thông tin thương vụ. Sau khi tin tức được công bố, cổ phiếu Coursera tăng khoảng 4%, trong khi cổ phiếu Udemy bật tăng gần 22%.\n\nCoursera thâu tóm Udemy, hợp nhất 2 nền tảng cung cấp dịch vụ trực tuyến với một cam kết dài hạn vào AI - Ảnh: Internet\n\nCoursera và Udemy cho biết việc hợp nhất sẽ giúp nền tảng mới có vị thế tốt hơn để khai thác nhu cầu đào tạo lực lượng lao động của khối doanh nghiệp, đặc biệt trong các lĩnh vực đang tăng trưởng nhanh như trí tuệ nhân tạo, khoa học dữ liệu và phát triển phần mềm. Trong bối cảnh AI tạo sinh phát triển mạnh, nhiều doanh nghiệp đang đẩy mạnh đầu tư vào việc đào tạo lại và nâng cao kỹ năng cho nhân sự, tạo ra cơ hội tăng trưởng dài hạn cho các nền tảng học trực tuyến.\n\nNhận định về thương vụ, ông Stephen Sheldon, nhà phân tích tại William Blair, cho rằng đây là một bước đi hợp lý cả về mặt chiến lược lẫn tài chính. Theo ông, Coursera và Udemy có danh mục nội dung và giải pháp mang tính bổ trợ cho nhau, đồng thời có khả năng tạo ra các khoản tiết kiệm chi phí đáng kể nhờ phục vụ những thị trường đầu cuối tương đồng.\n\nHiện tại, Coursera chủ yếu hợp tác với các trường đại học và tổ chức giáo dục để cung cấp chương trình cấp bằng và các chứng chỉ nghề nghiệp, đồng thời ngày càng tập trung vào nhóm khách hàng doanh nghiệp. Trong khi đó, Udemy vận hành theo mô hình chợ nội dung, nơi các giảng viên độc lập bán khóa học riêng lẻ cũng như gói thuê bao cho doanh nghiệp.\n\nDù các công ty trong ngành liên tục nhấn mạnh đào tạo AI là cơ hội tăng trưởng lớn, giới đầu tư vẫn giữ thái độ thận trọng. Cổ phiếu các doanh nghiệp giáo dục trực tuyến nhìn chung kém tích cực so với thị trường chung, do lo ngại về cạnh tranh gay gắt, áp lực giá và mức độ không chắc chắn trong việc chuyển hóa đầu tư AI thành lợi nhuận. Tính từ đầu năm đến nay, cổ phiếu Udemy đã giảm khoảng 35%, còn Coursera giảm khoảng 7%, khiến cả hai vẫn giao dịch ở mức thấp hơn đáng kể so với giai đoạn sau IPO.\n\nHai công ty cho biết thương vụ dự kiến sẽ hoàn tất trong nửa cuối năm tới, sau khi đáp ứng các điều kiện về phê duyệt của cơ quan quản lý và cổ đông.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Stephen Sheldon"
+        ],
+        "ORG": [
+          "Coursera",
+          "Udemy",
+          "Reuters",
+          "William Blair"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "trí tuệ nhân tạo",
+          "AI tạo sinh"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "930 triệu",
+          "66.000",
+          "24.600"
+        ]
+      }
+    },
+    {
+      "title": "Internet Day 2025: Khi “niềm tin số” trở thành điều kiện sống còn của Internet Việt Nam",
+      "content": "Ngày 17/12 tại Hà Nội, Internet Day 2025 đã diễn ra với chủ đề “Kiến tạo không gian số tin cậy – Internet Must Be Safer”, quy tụ hơn 1.000 đại biểu đến từ các cơ quan quản lý, doanh nghiệp công nghệ, nền tảng số trong nước và quốc tế. Sự kiện do Hiệp hội Internet Việt Nam (VIA) phối hợp Trung tâm Internet Việt Nam (VNNIC) tổ chức, trong bối cảnh niềm tin của người dùng vào môi trường số đang bị thử thách nghiêm trọng.\n\nTại sự kiện, nhiều ý kiến cho rằng ranh giới giữa “thật” và “giả” trên Internet chưa bao giờ mong manh như hiện nay. Sự phát triển nhanh của AI tạo sinh, deepfake và các mô hình thao túng tâm lý đã khiến không ít người dùng – trong gần 80 triệu người sử dụng Internet tại Việt Nam – trở thành nạn nhân của lừa đảo trực tuyến. Khi người dùng e dè mỗi lần nhấp chuột, còn doanh nghiệp do dự trong chuyển đổi số vì lo ngại rủi ro an toàn, mục tiêu kinh tế số chiếm 30% GDP vào năm 2030 sẽ trở nên khó đạt hơn bao giờ hết.\n\nSự kiện Internet Day 2025.\n\nSự kiện Internet Day 2025.\n\nInternet Day 2025 xoay quanh khái niệm “Digital Trust” với bốn trụ cột chính: niềm tin giữa con người trong cách ứng xử và chia sẻ thông tin; niềm tin từ các nền tảng thông qua minh bạch dữ liệu và thuật toán; niềm tin từ công nghệ với AI có đạo đức và hạ tầng số ổn định; và niềm tin từ cộng đồng – nơi doanh nghiệp, tổ chức và người dùng cùng nuôi dưỡng văn hóa số lành mạnh.\n\nPhát biểu tại sự kiện, Thứ trưởng Bộ Khoa học và Công nghệ Phạm Đức Long nhấn mạnh xây dựng Internet an toàn, tin cậy không chỉ là vấn đề công nghệ mà còn là điều kiện tiên quyết để thúc đẩy đổi mới sáng tạo và phát triển kinh tế số. Trong khi đó, các bài học quốc tế được chia sẻ cho thấy nhóm doanh nghiệp siêu nhỏ, nhỏ và vừa (MSMEs) đang chịu ảnh hưởng nặng nề nhất nếu thiếu nền tảng niềm tin số, bởi phần lớn hoạt động kinh doanh hiện nay phụ thuộc vào các nền tảng trực tuyến.\n\nThứ trưởng Bộ Khoa học và Công nghệ Phạm Đức Long phát biểu khai mạc sự kiện.\n\nThứ trưởng Bộ Khoa học và Công nghệ Phạm Đức Long phát biểu khai mạc sự kiện.\n\nMột trong những nội dung đáng chú ý tại sự kiện là tham luận về vai trò của báo chí trong kỷ nguyên AI. Theo các chuyên gia, báo chí không thể chỉ “được tin” mà phải trở thành chủ thể đáng tin, chủ động đi trước AI và các dạng thức thông tin sai lệch như deepfake hay “AI slop”, nếu không muốn đánh mất vai trò dẫn dắt dư luận và niềm tin công chúng.\n\nỞ góc độ hạ tầng, đại diện VNNIC cho biết Việt Nam hiện đạt tỷ lệ chuyển đổi IPv6 lên tới gần 68%, dẫn đầu khu vực, mở ra không gian phát triển mới cho xã hội số và kinh tế số. VNNIC cũng đang ứng dụng AI để giám sát, ngăn chặn lạm dụng tên miền, tăng cường bảo vệ tài nguyên Internet thông qua các công nghệ như DNSSEC, RPKI và eKYC. Hệ thống DNS quốc gia hiện đạt mức độ sẵn sàng 99,999%, tiệm cận các tiêu chuẩn quốc tế cao nhất về an toàn thông tin.\n\nBên cạnh các phiên thảo luận chính sách, Internet Day 2025 còn tổ chức nhiều phiên chuyên sâu về bảo vệ người dùng yếu thế trên không gian mạng, an ninh mạng cho doanh nghiệp vừa và nhỏ, cũng như xu hướng hạ tầng Internet toàn cầu với sự tham gia của các tên tuổi như Viettel, VNPT, FPT, Google, TikTok, SpaceX/Starlink. Đáng chú ý, sự kiện cũng ra mắt một số sáng kiến hướng đến bảo vệ trẻ em và thanh thiếu niên – nhóm dễ tổn thương nhất trước các rủi ro số hiện nay.\n\nGian hàng triển lãm, trải nghiệm với sự tham gia của nhiều doanh nghiệp trong và ngoài nước với các giải pháp Internet an toàn, bảo mật.\n\nGian hàng triển lãm, trải nghiệm với sự tham gia của nhiều doanh nghiệp trong và ngoài nước với các giải pháp Internet an toàn, bảo mật.\n\nTrong bối cảnh Internet ngày càng gắn chặt với mọi mặt đời sống, Internet Day 2025 cho thấy xây dựng “không gian số tin cậy” không còn là khẩu hiệu, mà là bài toán sống còn. Tương lai của Internet Việt Nam – an toàn hay hỗn loạn – sẽ phụ thuộc vào cách nhà quản lý, doanh nghiệp công nghệ và cộng đồng người dùng cùng hành động từ hôm nay.\n\nBình Minh",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Phạm Đức Long",
+          "Bình Minh"
+        ],
+        "ORG": [
+          "Hiệp hội Internet Việt Nam",
+          "VIA",
+          "Trung tâm Internet Việt Nam",
+          "VNNIC",
+          "Bộ Khoa học và Công nghệ",
+          "Bộ Khoa học và Công",
+          "Viettel",
+          "VNPT",
+          "FPT",
+          "Google",
+          "TikTok",
+          "SpaceX",
+          "Starlink"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Hà Nội"
+        ],
+        "DATE": [
+          "năm 2030"
+        ],
+        "TECH": [
+          "AI",
+          "AI tạo sinh"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "80 triệu",
+          "1.000",
+          "99,999"
+        ]
+      }
+    },
+    {
+      "title": "Internet Day 2025 sắp diễn ra: Việt Nam đặt cược vào “Không gian số tin cậy” trong kỷ nguyên AI bùng nổ",
+      "content": "Ngày 17/12 tới, Internet Day 2025 sẽ chính thức diễn ra tại Sheraton Hanoi Hotel, mang theo một chủ đề được xem là “tâm điểm của kỷ nguyên AI”: “Kiến tạo không gian số tin cậy – Internet Must Be Safer” . Sau hơn một phần tư thế kỷ kể từ khi Việt Nam kết nối Internet toàn cầu, chưa bao giờ câu chuyện niềm tin số lại trở nên cấp thiết đến vậy.\n\nBùng nổ nền tảng số và AI đã mở ra nhiều cơ hội, nhưng kéo theo đó là sự gia tăng nhanh chóng của lừa đảo trực tuyến, thông tin sai lệch, tấn công mạng và nhiều hình thức gây tổn hại tinh vi khác đối với người dùng.\n\nInternet Day 2025 không chỉ là một diễn đàn công nghệ thường niên, mà được xem như lần “tổng kiểm” quan trọng cho mức độ an toàn của môi trường số Việt Nam. Thông điệp của sự kiện—tập trung vào bốn trụ cột Trust in People, Trust in Platforms, Trust in Technology và Trust in Community—đánh dấu nỗ lực nghiêm túc trong việc xây dựng một không gian số tử tế, minh bạch, bền vững và đáng tin cậy cho hàng chục triệu người dùng Internet.\n\nSự hiện diện của nhiều tổ chức và doanh nghiệp công nghệ lớn cho thấy quy mô và ảnh hưởng của sự kiện năm nay. Google sẽ mang đến góc nhìn về các giải pháp an toàn dựa trên AI, bao gồm công nghệ phát hiện lừa đảo và nghiên cứu ứng dụng AI trong ngăn chặn rửa tiền. Meta giới thiệu nền tảng OctoAI phục vụ đào tạo AI cho giáo viên, trong khi các doanh nghiệp Việt Nam như Viettel, VNPT, FPT hay CMC tập trung vào những vấn đề nóng như hạ tầng số đa tầng, bảo mật dữ liệu, điện toán đám mây và các biện pháp tăng cường niềm tin vào nền tảng nội địa. Ngoài ra, VNNIC sẽ chia sẻ định hướng phát triển hạ tầng Internet quốc gia theo hướng an toàn và bền vững hơn trong bối cảnh nhu cầu kết nối tăng mạnh.\n\nMột điểm nhấn đáng chú ý khác là sự tham gia của Báo Nhân Dân với tham luận về vai trò của báo chí trong việc củng cố niềm tin công chúng. Trong thời đại mà tin giả có thể lan rộng nhanh hơn cả tốc độ truyền dữ liệu, việc báo chí chủ động tham gia vào cuộc chiến bảo vệ thông tin chính xác được xem là yếu tố sống còn để xây dựng lại niềm tin giữa con người với con người trên không gian mạng.\n\nPhiên tọa đàm buổi sáng hứa hẹn trở thành tâm điểm khi quy tụ đại diện của nhiều cơ quan và doanh nghiệp lớn: từ VNNIC, Báo Nhân Dân, FPT, CMC, TikTok cho đến các tổ chức nội dung và doanh nhân nữ. Những câu hỏi quan trọng sẽ được đặt ra: Niềm tin số bắt đầu từ đâu? Liệu văn hóa số tử tế có thể được nuôi dưỡng như một chính sách? Người dùng có đang chịu thiệt trong sự thiếu minh bạch của các nền tảng? Và doanh nghiệp công nghệ cần làm gì để AI trở nên có đạo đức hơn, an toàn hơn? Đây là những vấn đề không chỉ mang tính kỹ thuật, mà còn đụng chạm đến thói quen, hành vi và kỳ vọng của toàn xã hội.\n\nHình ảnh tại sự kiện Internet Day các năm trước.\n\nHình ảnh tại sự kiện Internet Day các năm trước.\n\nBuổi chiều của Internet Day 2025 được chia thành ba phiên chuyên sâu. Phiên đầu tiên tập trung vào kỹ năng tự vệ số và bảo vệ trẻ em trên môi trường mạng, dự kiến livestream trực tiếp trên TikTok để tiếp cận rộng rãi hơn. Phiên thứ hai đi sâu vào khía cạnh kỹ thuật, bao gồm bảo mật dữ liệu, kiến trúc Cloud–Edge và các giải pháp an ninh mạng dành cho doanh nghiệp vừa và nhỏ. Phiên thứ ba mang đến góc nhìn quốc tế về hạ tầng Internet, với sự góp mặt của SpaceX/Starlink, BBIX và các chuyên gia kết nối đa tuyến, đa công nghệ—những yếu tố được dự báo sẽ định hình hạ tầng số của Việt Nam trong nhiều năm tới.\n\nĐáng chú ý, sự kiện cũng là nơi ra mắt dự án Safe Gate Plus của MSD nhằm nâng cao bảo vệ trẻ em và thanh thiếu niên trên môi trường mạng, một trong những nhóm người dùng chịu ảnh hưởng nặng nề nhất từ tình trạng lừa đảo và nội dung độc hại. Đây được xem là lời khẳng định rằng quá trình kiến tạo “không gian số tin cậy” không chỉ dừng lại ở công nghệ hay chính sách, mà còn gắn với trách nhiệm xã hội của các tổ chức và doanh nghiệp.\n\nTrong bối cảnh người dùng liên tục bị cuốn vào vòng xoáy rủi ro số, Internet Day 2025 có thể xem là sự kiện mà cộng đồng công nghệ, nhà quản lý và doanh nghiệp đều không thể bỏ lỡ. Tương lai của Internet Việt Nam—an toàn hay bất an, tin cậy hay hỗn loạn—phụ thuộc vào những cuộc đối thoại và cam kết bắt đầu từ đây.\n\nThông tin chi tiết và đăng ký tham dự sự kiện tại đây.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Google",
+          "Viettel",
+          "VNPT",
+          "FPT",
+          "CMC",
+          "VNNIC",
+          "Báo Nhân Dân",
+          "TikTok",
+          "SpaceX",
+          "Starlink",
+          "BBIX",
+          "MSD"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Sheraton Hanoi Hotel"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ],
+        "JOB_ROLE": [
+          "ba"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Elon Musk thừa nhận: Nếu có thể quay lại, tôi sẽ không tham gia DOGE",
+      "content": "Trong một cuộc trò chuyện trên podcast \"The Katie Miller Podcast\", Elon Musk đã tiết lộ rằng nếu có thể quay lại, ông sẽ không tham gia vào văn phòng Department of Government Efficiency (DOGE) do chính quyền Tổng thống Donald Trump thành lập. Musk cho biết văn phòng này chỉ đạt được thành công \"một phần nào đó\" trong việc tiết kiệm tiền thuế cho người dân.\n\nMusk nói rằng thay vì làm việc tại DOGE, ông sẽ tập trung vào việc phát triển các công ty của mình. Ông nhớ lại khoảng thời gian tham gia văn phòng này như một trải nghiệm khá kỳ lạ và không thể tin nổi.\n\nMặc dù Musk đã nhấn mạnh rằng việc cố gắng làm chậm chi tiêu của chính phủ là một mục tiêu đáng giá, nhưng ông tỏ ra không hài lòng với kết quả đạt được trong thời gian làm việc tại đây. Ông cho biết đã có một số thành công trong việc ngăn chặn các khoản chi không cần thiết, nhưng không đạt được những con số ấn tượng như kỳ vọng.\n\nMusk đã ước tính rằng DOGE có thể tiết kiệm được khoảng 2.000 tỷ USD trong ngân sách, nhưng sau đó điều chỉnh lại con số này xuống còn khoảng 150 tỷ USD cho năm tài chính 2026 trước khi rời khỏi văn phòng vào tháng 4. Cuối cùng, văn phòng DOGE đã bị giải tán vào tháng 7 mà không có thông báo chính thức về tổng số tiền tiết kiệm được.\n\nTrước đó, Musk phải đối mặt với nhiều chỉ trích từ công chúng và các nhà đầu tư Tesla, lo ngại rằng ông đang tiêu tốn quá nhiều thời gian cho DOGE thay vì tập trung vào công việc tại Tesla. Tuy nhiên, sau khi rời khỏi văn phòng, cổ phiếu của Tesla đã có sự phục hồi đáng kể.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Elon Musk",
+          "Donald Trump",
+          "Musk"
+        ],
+        "ORG": [
+          "Department of Government Efficiency",
+          "DOGE",
+          "Tesla"
+        ],
+        "LOC": [],
+        "DATE": [
+          "tháng 4",
+          "tháng 7"
+        ],
+        "TECH": [],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "2.000"
+        ]
+      }
+    },
+    {
+      "title": "Google công bố trend tìm kiếm năm nay: Không còn \"AI là gì?\", người Việt giờ tìm cách làm video, phục chế ảnh và tạo mô hình bằng AI",
+      "content": "Bức tranh tìm kiếm năm nay cho thấy hai xu hướng nổi bật: AI trở nên phổ biến ở mức chưa từng có và văn hóa, bản sắc Việt Nam chiếm vị trí trung tâm trong nhiều hạng mục được truy vấn nhiều nhất.\n\nSự thay đổi này phản ánh rõ nét một năm mà người dùng Việt Nam vừa bắt nhịp nhanh với công nghệ mới, vừa hướng sự quan tâm về cội nguồn, truyền thống và các giá trị tinh thần quen thuộc.\n\nAI không còn là khái niệm mới mà đã trở thành công cụ thường nhật\n\nNếu như những năm trước người dùng chủ yếu đặt các câu hỏi \"AI là gì?\", \"AI hoạt động ra sao?\", thì năm 2025 chứng kiến sự chuyển mình sang giai đoạn ứng dụng trực tiếp. Những truy vấn như \"cách làm video AI\", \"tạo ảnh Gemini\", \"phục chế ảnh cũ bằng AI\" hay \"tạo mô hình 3D\" xuất hiện dày đặc và liên tục đứng đầu bảng xếp hạng.\n\nDưới chủ đề Xu hướng chung, loạt từ khóa như Gemini, Pixverse AI, DeepSeek, Grok hay ChatGPT đều nằm ở nhóm dẫn đầu, cho thấy AI trở thành nền tảng quen thuộc trong sáng tạo số, học tập và công việc hằng ngày của người Việt. Báo cáo cũng trích dẫn dữ liệu từ e-Conomy SEA 2025, trong đó Việt Nam dẫn đầu Đông Nam Á về mức độ sẵn sàng với AI, với 81% người dùng tiếp xúc AI mỗi ngày.\n\nNgười dùng Việt không chỉ tò mò, mà đã chủ động biến AI thành công cụ \"đa năng\" phục vụ sáng tạo hình ảnh, xử lý video, phục hồi tư liệu cũ và sản xuất nội dung.\n\nVăn hóa Việt bứt phá ở mọi hạng mục tìm kiếm\n\nGiữa thời đại số, nội dung mang bản sắc Việt vẫn chứng tỏ sức hút nổi bật. Mảng điện ảnh là ví dụ rõ nhất.\n\nPhim Mưa đỏ - tác phẩm lịch sử thu hút sự chú ý mạnh mẽ - xuất hiện đồng thời ở ba bảng xếp hạng lớn: Xu hướng chung, Phim ảnh (chung) và Phim Việt Nam. Đây là tín hiệu cho thấy người xem dành sự quan tâm lớn cho các tác phẩm khai thác chất liệu lịch sử, truyền thống và tinh thần dân tộc.\n\nCùng với đó, các phim Việt như Nhà gia tiên, Đèn âm hồn, Địa đạo hay Tử chiến trên không cũng lọt top tìm kiếm, cạnh tranh sòng phẳng với loạt bom tấn quốc tế như Squid Game 2, Khi cuộc đời cho bạn quả quýt hay Khom lưng.\n\nKhông chỉ điện ảnh, những sân khấu hòa nhạc đậm chất Việt cũng nổi bật. Trong hạng mục Concert, các chương trình như V Concert, Tổ Quốc trong tim, Việt Nam trong tôi dẫn đầu lượt tìm kiếm, cho thấy khán giả tìm đến âm nhạc không chỉ để giải trí mà còn để kết nối với ký ức, lịch sử và niềm tự hào dân tộc.\n\nỞ mảng âm nhạc, nhiều ca khúc sử dụng chất liệu văn hóa - lịch sử nằm trong top tìm kiếm gồm Bắc Bling, Còn gì đẹp hơn, Nỗi đau giữa hòa bình. Bên cạnh đó, các ca khúc hiện đại như Tái sinh, Mất kết nối, Gã săn cá hay Một đời vì em thể hiện sự đa dạng trong thị hiếu người nghe Việt.\n\nGoogle Tìm kiếm trở thành \"trạm trung tâm\" của đời sống số\n\nTại các chủ đề \"Tin tức\", \"Là gì\" và \"Cách làm\", người Việt tiếp tục thể hiện sự chủ động trong việc nắm bắt thông tin và học hỏi kỹ năng mới. Tin tức về thời tiết, đặc biệt là các cơn bão Wipha, Kajiki, Kalmaegi, bão số 10 và số 11 đứng đầu danh sách, phản ánh mối quan tâm thường trực của người dân trong suốt mùa mưa bão.\n\nNhững hiện tượng mạng xã hội như \"Brother hai restaurant\" hay các sự kiện thể thao quốc tế như FIFA Club World Cup cũng được tìm kiếm nhiều.\n\nỞ chủ đề \"Là gì\", người dùng theo sát các trào lưu ngôn ngữ mới như \"A80\", \"8386\", \"sít rịt\", \"lowkey\", \"skip leg day\", cho thấy Google tiếp tục là nơi giải mã ngôn ngữ mạng và văn hóa đại chúng.\n\nTrong khi đó, ở mảng \"Cách làm\", các tìm kiếm về nấu ăn và thủ công vẫn phổ biến như \"trà vải\", \"siro mận\", \"khúc bạch vải\", \"đèn trung thu\". Đáng chú ý là từ khóa \"video AI\" cũng vươn lên dẫn đầu, phản ánh xu thế sản xuất nội dung bằng công nghệ.\n\nÔng Marc Woo, Tổng Giám đốc Google Việt Nam, nhận định rằng Year in Search 2025 tại Việt Nam là \"một sự chuyển dịch đầy cảm xúc\", nơi người dùng không chỉ học hỏi thông tin mới mà còn tìm về bản sắc cá nhân và cội nguồn văn hóa qua các lựa chọn nội dung.\n\nDu lịch nội địa chiếm trọn top 10 tìm kiếm\n\nNăm 2025 chứng kiến sự bùng nổ quan tâm dành cho du lịch trong nước. Toàn bộ 10 địa điểm được tìm kiếm nhiều nhất đều là điểm đến Việt Nam, từ Đà Lạt, An Giang, Mũi Né đến Đà Nẵng, Hạ Long, Cà Mau hay Phú Quốc.\n\nĐiều này phản ánh xu hướng người Việt ưu tiên các chuyến đi gần gũi với thiên nhiên, văn hóa bản địa và trải nghiệm gắn kết.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Marc Woo"
+        ],
+        "ORG": [
+          "Google",
+          "Gemini",
+          "DeepSeek",
+          "Gro",
+          "ChatGPT",
+          "Google Việt Nam"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Đông Nam Á",
+          "Đà Lạt",
+          "An Giang",
+          "Mũi Né",
+          "Đà Nẵng",
+          "Hạ Long",
+          "Cà Mau",
+          "Phú Quốc"
+        ],
+        "DATE": [
+          "năm 2025",
+          "Năm 2025"
+        ],
+        "TECH": [
+          "AI",
+          "Gemini",
+          "DeepSeek",
+          "Grok",
+          "ChatGPT"
+        ],
+        "JOB_ROLE": [
+          "ba",
+          "Tổng Giám đốc"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Người dùng Messenger trên máy tính sắp bị bỏ rơi?",
+      "content": "Điều này có nghĩa là người dùng trên hai nền tảng cho máy tính này sẽ phải chuyển sang sử dụng Messenger qua ứng dụng di động hoặc truy cập trang web Facebook để giao tiếp với bạn bè.\n\nỨng dụng Messenger trên PC chỉ hoạt động được trong 5 năm.\n\nSự thay đổi này đã gây ra nhiều suy đoán về lý do phía sau quyết định của Meta, trong đó một số ý kiến cho rằng công ty có thể muốn khuyến khích người dùng quay trở lại trang web Facebook. Mặc dù Meta chưa đưa ra lời giải thích chính thức, nhưng các ứng dụng Messenger hiện không còn khả dụng để tải xuống trên Windows và macOS. Những người đang sử dụng ứng dụng này sẽ chỉ có một khoảng thời gian giới hạn trước khi nó ngừng hoạt động hoàn toàn.\n\nTheo thông tin từ trang hỗ trợ của Meta, việc ngừng hỗ trợ hoàn toàn các ứng dụng trên macOS và Windows sẽ diễn ra trong khoảng 60 ngày kể từ ngày công bố. Dựa trên các báo cáo từ AppleInsider, thời điểm này có thể rơi vào khoảng ngày 15/12. Đối với những người sử dụng ứng dụng thường xuyên, đây là một thay đổi đột ngột và có thể gây khó khăn, đặc biệt là với những người không có tài khoản Facebook, vì họ sẽ chỉ được chuyển hướng đến Messenger.com trong trình duyệt.\n\nMặc dù quyết định này có thể khiến nhiều người ngạc nhiên, nhưng thực tế đã có dấu hiệu từ lâu về việc Meta chuyển hướng sang ứng dụng web thay vì các ứng dụng độc lập. Trước đó, công ty đã chuyển sang sử dụng ứng dụng web tiến bộ, và các ứng dụng độc lập đã bị coi là kém tin cậy. Meta cũng dự kiến sẽ thực hiện tương tự với WhatsApp trên Windows, chuyển đổi từ ứng dụng độc lập sang ứng dụng web tiến bộ.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Meta",
+          "AppleInsider"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Trò đùa “ăn mày AI đột nhập” gây hoang mang ở Trung Quốc",
+      "content": "Xu hướng này bắt nguồn từ các nền tảng mạng xã hội như TikTok với từ khóa #homelessmanprank, nơi giới trẻ tạo ra các bức ảnh AI người lạ đang lục lọi tủ lạnh, dùng bàn chải đánh răng, hay thậm chí nằm ngủ trên giường của cha mẹ.\n\nSự lo lắng tột độ của phụ huynh được ghi lại qua các tin nhắn và cuộc gọi liên tục, khiến các video này nhanh chóng đạt hàng triệu lượt xem.\n\nKhi lan truyền về Trung Quốc qua Douyin (nền tảng tương tự TikTok dành cho Trung Quốc), trò đùa được \"bản địa hóa\" thành các tình huống như con cái gửi ảnh cho cha mẹ với lời nhắn \"người họ hàng xa đang đứng trước cửa\" hay vợ gửi cho chồng hình ảnh người lạ ngồi trong bếp.\n\n\"Ăn mày AI đột nhập\" ở Trung Quốc bắt nguồn từ các nền tảng quốc tế như TikTok với từ khóa #homelessmanprank. Ảnh: Sina\n\nẢnh chụp màn hình kết quả tìm kiếm trò đùa \"ăn mày AI đột nhập\" trêu chọc cha mẹ trên một nền tảng video ngắn của Trung Quốc. Ảnh: Sina\n\nBan đầu, nhiều người xem và người chơi coi đây là trò đùa vô hại. Tuy nhiên, hậu quả thực tế đã chứng minh điều này gây ra thiệt hại về tinh thần và lãng phí nguồn lực công cộng\n\nTân Hoa Xã mới đây đưa tin một người vợ ở tỉnh An Huy dùng AI tạo ra hình ảnh \"người lạ ngồi trong bếp\" và gửi cho chồng đang đi ăn bên ngoài. Cô chỉ muốn \"thử lòng\" chồng nhưng không ngờ hình ảnh quá thật khiến người chồng tin là có kẻ xâm nhập nhà mình.\n\nNgười chồng lập tức gọi điện báo cảnh sát. Khi cảnh sát đến nơi mới phát hiện là báo động giả. Cảnh sát sau đó phê bình người vợ, nhấn mạnh rằng việc dùng AI gây hoang mang là lãng phí nghiêm trọng nguồn lực công cộng.\n\nThậm chí, một phụ huynh chia sẻ trên Douyin về sự hoảng loạn của mình: \"Tối qua thấy tin nhắn con gửi, tôi thực sự đã gọi cảnh sát\".\n\nNgười này sau đó biết là giả, gọi lại cho cảnh sát để giải thích, nhưng quá muộn. Cảnh sát xuất hiện với 4-5 xe cảnh sát và phụ huynh đó trách mắng đứa con một trận.\n\nNgười con gửi ảnh ăn mày vào nhà, nói dối là \"anh họ xa\", khiến người bố hoảng loạn. Vì lo sợ, ông tức tốc chạy về nhà. Ảnh: Sina\n\nTheo Tân Hoa Xã, những sự cố bất ngờ do ảnh AI tạo ra không hiếm gặp ở Trung Quốc. Chẳng hạn, tại một khu dân cư ở TP Quảng Châu, người con dùng ảnh AI \"ăn mày đột nhập\" gửi cho cha mẹ, khiến hình ảnh lan truyền trong nhóm cư dân và gây ra sự hoang mang trên diện rộng.\n\nThậm chí, AI còn bị lạm dụng trong giao dịch thương mại, khi nhiều khách hàng dùng ảnh AI tạo cảnh sản phẩm hư hỏng để yêu cầu người bán hoàn tiền.\n\nBên cạnh đó, để lôi kéo sự chú ý, một người dùng mạng xã hội tại tỉnh Sơn Đông đã dùng AI bịa đặt cảnh \"livestream bán hàng trong tù\" và bị cảnh sát xử phạt vì gây rối trật tự.\n\nTrước tình trạng trên, kể từ ngày 1-9, Trung Quốc chính thức áp dụng quy định mới, yêu cầu nội dung do AI tạo ra phải có dấu hiệu nhận biết rõ ràng để bảo đảm tính minh bạch.\n\nTuy nhiên, theo khảo sát gần đây của Pháp trị Nhật báo, việc thực thi quy định này vẫn thiếu đồng bộ. Kết quả, trên mạng vẫn tràn lan các bức ảnh AI nhìn như thật mà chẳng có dấu hiệu báo trước. Điều này làm lung lay niềm tin lâu nay rằng \"cứ có ảnh là thật\", khiến mọi người ngày càng bối rối, không biết đâu mới là thông tin đáng tin cậy.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Douyin",
+          "Tân Hoa Xã",
+          "Pháp trị Nhật báo"
+        ],
+        "LOC": [
+          "Trung Quốc",
+          "tỉnh An Huy",
+          "TP Quảng Châu",
+          "tỉnh Sơn Đông"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "TikTok chuẩn bị cho phép người dùng giảm bớt nội dung AI trên feed",
+      "content": "TikTok đang thử nghiệm một tùy chọn mới cho phép người dùng giảm bớt lượng nội dung tạo bởi AI xuất hiện trên mục \"For You\". Đây là thay đổi tiếp theo trong nỗ lực tăng quyền kiểm soát cho người dùng giữa bối cảnh các nền tảng mạng xã hội chứng kiến sự bùng nổ của nội dung do AI tạo ra.\n\nTheo thông báo, tính năng sẽ được triển khai trong “vài tuần tới” và xuất hiện trong phần \"manage topics\" của ứng dụng, nơi người dùng tùy chỉnh nhóm nội dung mà họ muốn xem nhiều hoặc ít hơn. TikTok cho biết lựa chọn mới nhằm giúp người dùng \"giảm tải\" nội dung AI nếu không muốn các video này chiếm quá nhiều trong luồng đề xuất. Trước đó, Pinterest cũng đã phải điều chỉnh thuật toán khi nhiều người phàn nàn rằng hình ảnh do AI tạo ra đang lấn át nội dung thật.\n\nTikTok hiện yêu cầu người dùng gắn nhãn cho các video được tạo bằng AI, đồng thời ghi nhận đã có hơn 1,3 tỷ video được gắn nhãn dạng này. Tuy vậy, nền tảng cũng thừa nhận hệ thống phát hiện hiện tại chưa hoàn hảo. TikTok đang sử dụng Content Credentials, một tiêu chuẩn watermark theo dạng metadata được nhiều hãng áp dụng, nhưng tín hiệu này dễ bị suy yếu khi nội dung được chỉnh sửa trong ứng dụng khác hoặc bị sao chép rồi chia sẻ lại trên các nền tảng khác.\n\nĐể cải thiện khả năng nhận diện, TikTok cho biết họ sẽ thử nghiệm thêm công nghệ watermark \"vô hình\". Công ty mô tả đây là lớp đánh dấu bổ sung dưới dạng \"watermark\" chỉ TikTok có thể đọc được, giúp hạn chế việc bị xóa hoặc làm mờ bởi các thao tác chỉnh sửa. Công nghệ mới được kỳ vọng tăng độ chính xác trong việc gắn nhãn nội dung AI, đặc biệt với các video lan truyền đã qua nhiều vòng biên tập.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "TikTok",
+          "Pinterest"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [
+          "AI"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Cloudflare là gì mà chỉ cần \"hắt hơi\", 20% Internet lập tức \"sổ mũi\"?",
+      "content": "Vào tối ngày 18/11 theo giờ Việt Nam, cộng đồng mạng toàn cầu đã có một phen nháo nhào khi hàng loạt dịch vụ \"cơm bữa\" như Canva, Spotify, X (Twitter) hay công cụ làm việc đắc lực ChatGPT bỗng dưng không thể truy cập. Nhiều người vội vàng kiểm tra lại modem wifi hay đổ lỗi cho đường truyền cáp quang, nhưng thực tế thủ phạm lại là cái tên ít người dùng phổ thông để ý đến: Cloudflare.\n\nSự cố này đã được xác nhận là do lỗi hệ thống mạng toàn cầu của Cloudflare, ảnh hưởng đến khoảng 20% website trên toàn thế giới. Vậy rốt cuộc Cloudflare là thế lực nào mà lại có quyền năng \"ngắt cầu dao\" của cả một góc Internet rộng lớn như vậy? Để hiểu điều này, chúng ta không cần bằng cấp kỹ sư công nghệ, mà chỉ cần tưởng tượng Internet giống như một chuỗi siêu thị khổng lồ.\n\nCó lẽ phần lớn người dùng đều đã quen thuộc với biểu tượng đám mây màu cam như này - Ảnh: Internet\n\nNgười \"bảo vệ\" kiêm \"thư ký\" mẫn cán của Internet\n\nNếu coi mỗi website (như ChatGPT hay web bán hàng của Amazon) là một \"cửa hàng\" chứa đầy hàng hóa, thì máy chủ gốc (server) chính là cái kho chứa hàng nằm ở trụ sở chính. Vấn đề là, nếu bạn ở Việt Nam mà muốn vào \"kho\" của Amazon tận bên Mỹ để xem hàng thì đường đi rất xa, tốn thời gian và đôi khi còn bị tắc đường.\n\nĐây là lúc Cloudflare xuất hiện. Họ đóng vai trò như một chuỗi các \"cửa hàng tiện lợi\" chi nhánh rải rác khắp nơi trên thế giới (được gọi là mạng phân phối nội dung - CDN). Thay vì bắt bạn chạy sang tận Mỹ để xem một tấm ảnh hay đọc một bài báo, Cloudflare sẽ \"photo\" sẵn nội dung đó và để ở một máy chủ ngay tại Việt Nam hoặc Singapore. Khi bạn gõ địa chỉ web, Cloudflare sẽ đưa ngay bản copy đó cho bạn. Nhờ vậy, web tải nhanh hơn, mượt hơn và \"kho tổng\" bên Mỹ cũng đỡ bị quá tải vì hàng triệu người ùa vào cùng lúc.\n\nCloudflare tạo một hàng rào bảo mật hứng chịu phần lớn các cuộc tấn công DDoS quy mô lớn - Ảnh: Internet\n\nNhưng Cloudflare không chỉ làm nhiệm vụ giao hàng nhanh. Vai trò quan trọng thứ hai của họ là làm \"bảo vệ\" (DDoS protection). Trong thế giới mạng luôn có những kẻ xấu muốn phá hoại các cửa hàng bằng cách thuê hàng triệu \"zombie\" (máy tính bị nhiễm virus) ùa vào cửa hàng cùng lúc để gây ách tắc, khiến khách thật không vào mua được. Cloudflare đứng chắn ngay cửa, soi thẻ căn cước từng người. Ai là khách thật thì mời vào, ai là \"zombie\" phá hoại thì bị chặn lại ngay từ vòng gửi xe.\n\nChính nhờ sự tiện lợi \"hai trong một\" này, vừa giúp web chạy nhanh như gió, vừa bảo kê khỏi giang hồ mạng, mà Cloudflare được tin dùng bởi hơn 25 triệu website trên toàn cầu, bao gồm cả những gã khổng lồ công nghệ lẫn các cơ quan chính phủ.\n\nKhi \"người gác cổng\" lăn ra ốm\n\nQuay trở lại sự cố tối 18/11, vấn đề nằm ở chỗ Cloudflare hoạt động như một lớp kính chắn giữa người dùng và website. Khi hệ thống này gặp trục trặc, nó giống như việc người bảo vệ cầm chìa khóa cửa bỗng dưng... ngủ gật hoặc làm gãy chìa trong ổ khóa.\n\nMeme về AWS và Cloudflare cho thấy hạ tầng internet phụ thuộc vào 2 dịch vụ này nhiều tới mức nào - Ảnh: Internet\n\nLúc này, dù bên trong \"cửa hàng\" (máy chủ của Spotify, OpenAI) vẫn hoạt động bình thường, nhân viên vẫn làm việc, hàng hóa vẫn đầy đủ, nhưng khách hàng (người dùng Internet) lại không cách nào bước qua cánh cửa để vào trong. Bức tường lửa vốn dùng để chặn kẻ xấu nay vô tình chặn luôn cả người tốt. Đó là lý do tại sao khi Cloudflare gặp sự cố, màn hình của bạn thường hiện ra thông báo lỗi 502 hoặc 503, nôm na là \"không kết nối được với máy chủ\", dù thực tế máy chủ gốc chẳng bị làm sao cả.\n\nĐiều đáng nói là sự phụ thuộc của Internet vào các dịch vụ trung gian như Cloudflare đang ngày càng lớn. Theo thống kê, nền tảng này đang \"chống lưng\" cho gần 20% tổng số website toàn cầu. Sự tập trung quyền lực này tạo ra một điểm yếu chí mạng: \"Single Point of Failure\" (Điểm chết duy nhất). Thay vì tấn công từng trang web riêng lẻ rất khó khăn, hacker hoặc đơn giản là một lỗi kỹ thuật tại Cloudflare có thể khiến hàng loạt dịch vụ sụp đổ theo dây chuyền domino.\n\nCái giá của sự tiện lợi\n\nSự cố đã được Cloudflare khắc phục dần sau khoảng hơn một giờ đồng hồ, và Internet đã quay trở lại nhịp điệu vốn có. Tuy nhiên, đây là lời nhắc nhở đắt giá về cấu trúc của thế giới mạng hiện đại. Chúng ta đang giao phó sự ổn định của luồng thông tin toàn cầu vào tay một vài \"người khổng lồ\" trung gian.\n\nVới người dùng bình thường, bài học rút ra đơn giản là: Lần tới khi Spotify hay ChatGPT không vào được, đừng vội đập modem hay gọi điện mắng nhà mạng. Rất có thể, \"người gác cổng\" của Internet chỉ đang bị hắt hơi sổ mũi một chút mà thôi.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "Amazon",
+          "Cloud",
+          "##are",
+          "AWS",
+          "OpenAI"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Mỹ",
+          "Singapore"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AWS",
+          "Cloudflare",
+          "ChatGPT",
+          "OpenAI"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "25 triệu"
+        ]
+      }
+    },
+    {
+      "title": "Từ tài chính đến cảm xúc: Làm sao để người Việt thật sự hạnh phúc?",
+      "content": "Trong hành trình phát triển, mỗi quốc gia đều đặt ra những mục tiêu về kinh tế, hạ tầng, công nghệ… Nhưng có một chỉ số ngày càng được quan tâm, bởi nó chạm đến trái tim và đời sống thường ngày của người dân: Chỉ số Hạnh phúc Quốc gia.\n\nTheo Báo cáo Hạnh phúc Thế giới 2025, Việt Nam xếp thứ 46 toàn cầu, mức cao nhất từ trước đến nay và đứng thứ 2 Đông Nam Á sau Singapore. Đây là tín hiệu tích cực về mức độ hài lòng cuộc sống, cũng như cảm giác an toàn, tin cậy và gắn kết trong cộng đồng người Việt.\n\nNhững câu hỏi như “Hạnh phúc của người Việt hôm nay được tạo nên từ đâu?” hay “Làm thế nào để chúng ta kiến tạo một Việt Nam hiện đại nhưng vẫn giàu bản sắc và nhân văn?” sẽ được các chuyên gia bàn luận, sẻ chia trong talkshow “Kiến tạo Đất nước – Tự hào Việt Nam”, tập đặc biệt mang tên “Hành trình hạnh phúc”. Chương trình do Cổng Thông tin điện tử Chính phủ, HTV9 và VCCorp phối hợp thực hiện, với sự đồng hành của Ngân hàng TMCP Quân đội (MB).\n\nChương trình có sự tham gia của hai vị khách mời:\n\nPGS.TS Trần Thành Nam – chuyên gia tâm lý học, Phó Hiệu trưởng Trường Đại học Giáo dục (ĐHQGHN), Phó Chủ tịch Hội Khoa học Tâm lý học – Giáo dục học Việt Nam;\n\nÔng Phạm Như Ánh – Tổng Giám đốc Ngân hàng TMCP Quân đội (MB) – một trong những ngân hàng tiên phong gắn kết kinh doanh với trách nhiệm cộng đồng.\n\nTại buổi tọa đàm, hai vị khách mời sẽ cùng chia sẻ góc nhìn đa chiều về “hạnh phúc người Việt”, từ khoa học tâm lý đến hành trình lan tỏa hạnh phúc tài chính trong xã hội hiện đại.\n\nTheo PGS.TS Trần Thành Nam, hạnh phúc của con người không chỉ đến từ vật chất, mà còn từ sự gắn kết xã hội, niềm tin và cảm giác an toàn. Khi tinh thần sẻ chia và lòng nhân ái được lan tỏa, con người cảm thấy được đồng hành, được thấu hiểu – và đó chính là gốc rễ của hạnh phúc bền vững.\n\nTừ góc nhìn doanh nghiệp, ông Phạm Như Ánh cho rằng hạnh phúc không chỉ là cảm xúc nhất thời mà là trạng thái an tâm dài lâu, khi mỗi người có nền tảng tài chính vững vàng và niềm tin vào tương lai.\n\nHạnh phúc không phải là điều xa vời, mà là kết quả của những hành động nhỏ, những giá trị sẻ chia từ mỗi cá nhân và tổ chức. Khi những hành động ấy được cộng hưởng, chúng tạo nên sức mạnh để đất nước phát triển, không chỉ nhanh mà còn bền vững, nhân văn và tự hào.\n\nTalkshow “Kiến tạo Đất nước – Tự hào Việt Nam” – tập “Hành trình hạnh phúc” được phát sóng trên Cổng Thông tin Chính phủ vào 20h tối thứ Ba ngày 4/11/2025, megalivestream trên hệ thống website VCCorp và phát lại vào lúc 21h45 tối thứ Năm trên HTV9 sẽ mang đến góc nhìn đa chiều về hạnh phúc người Việt – từ an tâm tài chính đến an toàn tinh thần, từ hạnh phúc cá nhân đến hạnh phúc cộng đồng. Mời độc giả cùng đón xem để cảm nhận hành trình kiến tạo hạnh phúc, nơi mỗi bước đi đều góp phần làm nên một Việt Nam thịnh vượng và nhân ái.\n\nTalkshow \"Kiến tạo Đất nước – Tự hào Việt Nam\" là chuỗi chương trình chính luận – truyền cảm hứng do Cổng Thông tin điện tử Chính phủ, HTV9 và VCCorp phối hợp thực hiện, đơn vị đồng hành chiến lược Masterise Group, đơn vị đồng hành Ngân hàng TMCP Quân đội (MB). Chương trình tôn vinh những nhân vật, câu chuyện và sáng kiến tiêu biểu, phản ánh sự đồng hành giữa Nhà nước – doanh nghiệp – cộng đồng trong hành trình xây dựng một Việt Nam hiện đại, hội nhập và hạnh phúc.\n\nLà một trong Top 5 ngân hàng hàng đầu Việt Nam, MB tiên phong trong chuyển đổi số, đổi mới sáng tạo và phát triển bền vững, hướng tới mang lại giá trị thiết thực cho khách hàng, xã hội và đất nước. Mời quý khán giả tiếp tục đón xem các số tiếp theo của \"Kiến tạo Đất nước – Tự hào Việt Nam\" cùng những câu chuyện truyền cảm hứng từ MB và các doanh nghiệp Việt.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Trần Thành Nam",
+          "Ông",
+          "Phạm Như Ánh"
+        ],
+        "ORG": [
+          "Báo cáo Hạnh phúc Thế giới",
+          "Cổng Thông tin điện tử Chính phủ",
+          "HTV9",
+          "VCCorp",
+          "Ngân hàng TMCP Quân đội",
+          "MB",
+          "Trường Đại học Giáo dục",
+          "ĐHQGHN",
+          "Hội Khoa học Tâm lý học – Giáo dục học Việt Nam",
+          "Cổng Thông tin",
+          "Masterise Group"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Đông Nam Á",
+          "Singapore",
+          "Nam"
+        ],
+        "DATE": [
+          "4/11/2025"
+        ],
+        "TECH": [],
+        "JOB_ROLE": [
+          "Tổng Giám đốc",
+          "Ba"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Với “lá chắn công nghệ”, MB đang bảo vệ 35 triệu khách hàng như thế nào?",
+      "content": "Mỗi năm, hàng chục nghìn người Việt trở thành nạn nhân của lừa đảo, họ không chỉ mất tiền mà còn mất niềm tin vào không gian số. Vì vậy, xây dựng một Việt Nam số an toàn và đáng tin cậy không chỉ là nhiệm vụ của các cơ quan chức năng, mà còn là trách nhiệm chung của toàn bộ hệ thống tài chính – ngân hàng và bản thân mỗi người dân.\n\nVà đó cũng chính là thông điệp trọng tâm được lan tỏa tại tọa đàm “An ninh tài chính trong kỷ nguyên số”, trong khuôn khổ chương trình “Kiến tạo Đất nước – Tự hào Việt Nam” do VCCorp và HTV9 phối hợp tổ chức sản xuất.\n\nVới sự tham gia của hai khách mời, ông Vũ Duy Hiền, Phó Tổng Thư ký kiêm Chánh Văn phòng Hiệp hội An ninh mạng Quốc gia và ông Vũ Thành Trung, Phó Chủ tịch HĐQT Ngân hàng TMCP Quân đội (MB), buổi tọa đàm đã mang đến cho khán giả nhiều góc nhìn chuyên sâu về an ninh tài chính trong thời đại số — nơi công nghệ không chỉ mở ra cơ hội phát triển kinh tế mà còn kéo theo những rủi ro ngày càng tinh vi.\n\nTheo thống kê của Cục An ninh mạng và Phòng, chống tội phạm sử dụng công nghệ cao, 8 tháng năm 2025, Việt Nam ghi nhận hơn 1.500 vụ lừa đảo qua mạng, tăng 65% so với cùng kỳ năm 2024, với thiệt hại ước tính hơn 1.660 tỷ đồng. Hơn 4.500 tên miền độc hại đã được phát hiện với các thủ đoạn ngày một tinh vi như deepfake, lừa đảo crypto, chiếm đoạt OTP, giả danh cơ quan công an hoặc ngân hàng...Sư gia tăng về cả số lượng và quy mô của tội phạm mạng  đe dọa niềm tin số và quá trình chuyển đổi số quốc gia.\n\nHiện nay, trung bình cứ 220 người dùng smartphone thì có một người từng bị lừa đảo trên không gian mạng. Điều đó cho thấy nhận thức người dùng vẫn là “điểm yếu” trong hệ sinh thái tài chính số. Khi người dân chưa đủ kỹ năng nhận diện rủi ro, mọi công nghệ bảo mật dù tiên tiến đến đâu cũng khó phát huy hiệu quả.\n\nÔng Vũ Duy Hiền nhấn mạnh: “Nhận thức chính là lá chắn quan trọng nhất bảo vệ người dân trên không gian số”. Chính vì vậy, người dân cần chủ động hơn trong việc tự bảo vệ thông tin cá nhân và tuân thủ các nguyên tắc an toàn cơ bản khi giao dịch trực tuyến.\n\nTuy nhiên, cũng cần thẳng thắn nhìn nhận rằng, các cơ quan quản lý, doanh nghiệp và tổ chức tài chính tại Việt Nam còn đang thiếu hụt nghiêm trọng nguồn nhân lực an ninh mạng trình độ cao. Ngoài ra, sự phối hợp giữa các cơ quan, ngân hàng và doanh nghiệp công nghệ vẫn chưa có sự đồng bộ, khiến việc chia sẻ thông tin và xử lý sự cố an ninh mạng chưa thật sự hiệu quả. Khung pháp lý về an ninh mạng hiện nay cũng chưa theo kịp tốc độ phát triển của tội phạm công nghệ cao, dẫn đến việc điều tra, xử lý, răn đe còn nhiều khó khăn.\n\nChính vì vậy, bên cạnh ý thức tự bảo vệ mình của người dân chiếm vai trò chủ đạo, ông Vũ Duy Hiền cho rằng cần có thêm sự chung tay của cả hệ thống tài chính – ngân hàng.“Lá chắn từ ngân hàng” – Cuộc chạy đua 24/7 với tội phạm mạng\n\nNhận thức rõ trách nhiệm bảo vệ khách hàng trước mọi nguy cơ mất an toàn trên không gian mạng, ông Vũ Thành Trung – Phó Chủ tịch HĐQT Ngân hàng TMCP Quân đội (MB), đơn vị tiên phong triển khai bộ giải pháp App Protection nhằm bảo vệ người dùng trong môi trường giao dịch trực tuyến, khẳng định: “Với quy mô khoảng 35 triệu người dùng, áp lực của MB không chỉ là bảo vệ, mà còn phải ‘chiến thắng tốc độ’ trong cuộc đua 24/7 với tội phạm mạng. Chúng tôi xác định chiến lược ‘0% rủi ro’, không cho phép bất kỳ sự cố nào xảy ra”.\n\nKhông chỉ củng cố hàng rào phòng thủ, MB còn áp dụng “Tư duy ngược” – tự mô phỏng các kịch bản lừa đảo, “tự đánh chính mình”, thậm chí từng qua mặt cả lãnh đạo cấp cao, để liên tục tìm ra và vá các lỗ hổng bảo mật. Bên cạnh đó, MB đầu tư mạnh vào năng lực chuyên gia, đảm bảo đội ngũ luôn có đủ \"kháng thể số\" để bảo vệ khách hàng một cách kiên định nhất.\n\nÔng Vũ Thành Trung nhấn mạnh, với các trường hợp lừa đảo ngoài hệ thống ngân hàng, đánh vào sự cả tin, thiếu nhận thức của khách hàng: “Không thể chỉ nói lỗi 100%  thuộc về người dùng. Ở MB, chúng tôi tư duy rằng đồng hành và bảo vệ khách hàng khỏi các rủi ro này cũng là một trong những nhiệm vụ quan trọng của ngân hàng”.\n\nHiện MB đã tập trung triển khai các biện pháp phòng ngừa chủ động, có thể kể đến như Ứng dụng trí tuệ nhân tạo (AI) để phân tích hành vi người dùng và phát hiện bất thường, hay Tích hợp tính năng rà quét phần mềm độc hại để chủ động ngăn chặn các mối đe dọa tiềm ẩn.\n\nBên cạnh đó, MB còn chú trọng đến việc cân bằng giữa yếu tố an toàn và trải nghiệm người dùng. Một ứng dụng ngân hàng số không chỉ hoạt động mượt mà, thân thiện mà còn phải được tích hợp các lớp bảo vệ đa tầng, bao gồm cả nhận diện giọng nói, hình ảnh, sinh trắc học, mã hóa dữ liệu và các công nghệ xác thực nâng cao khác.\n\nNgoài ra, ông Trung đề cập tới tầm quan trọng của việc chia sẻ dữ liệu liên ngân hàng. Khi một tài khoản, thiết bị hoặc địa chỉ IP bị xác định có hành vi gian lận, dữ liệu đó cần được chia sẻ kịp thời để ngăn tội phạm tái phạm ở các tổ chức khác. “Chúng ta phải chủ động ngăn chặn, chứ không chỉ phản ứng sau khi thiệt hại đã xảy ra”, ông khẳng định.\n\nHướng đến một quốc gia số an toàn, đáng tin cậy\n\nĐể Việt Nam trở thành quốc gia số an toàn và bền vững, theo ông Vũ Duy Hiền – Phó Tổng Thư ký Hiệp hội An ninh mạng Quốc gia, yếu tố tiên quyết là an ninh mạng phải song hành cùng chuyển đổi số. “Không thể có chuyển đổi số thành công nếu thiếu an ninh mạng. Một hệ thống vận hành nhanh hơn, thuận tiện hơn nhưng thiếu kiểm soát sẽ tiềm ẩn nguy cơ khủng khiếp, và chi phí khắc phục hậu quả luôn cao gấp nhiều lần chi phí phòng ngừa,” ông nhấn mạnh.\n\nTheo ông Hiền, trên tiến trình phát triển kinh tế số, Việt Nam cần sớm hoàn thiện hành lang pháp lý linh hoạt và đủ mạnh, vừa bắt kịp diễn biến phức tạp của tội phạm công nghệ cao, vừa khuyến khích đổi mới sáng tạo. Đây là nền tảng để các tổ chức tài chính, doanh nghiệp công nghệ có thể phát triển bền vững trong môi trường số.\n\nCùng với đó, ngành tài chính – ngân hàng được xem là “mặt trận” trọng yếu trong công tác bảo mật. Việc đầu tư cho hạ tầng công nghệ và an toàn thông tin cần được đặt ngang hàng với phát triển sản phẩm và trải nghiệm khách hàng. Thực tế cho thấy, ngân sách dành cho bảo mật tại nhiều tổ chức vẫn còn hạn chế – có nơi chưa đến 10% tổng đầu tư công nghệ – trong khi đây chính là yếu tố cốt lõi đảm bảo niềm tin của người dùng.\n\nSong song với công nghệ và chính sách, nâng cao nhận thức cộng đồng là “mảnh ghép” cuối cùng nhưng không kém phần quan trọng. Hiệp hội An ninh mạng Quốc gia hiện đang triển khai nhiều chương trình truyền thông và đào tạo, giúp người dân nhận diện lừa đảo, hiểu rủi ro và biết cách tự bảo vệ mình trong môi trường số.\n\nTừ góc nhìn của doanh nghiệp, ông Vũ Thành Trung – Phó Chủ tịch HĐQT Ngân hàng TMCP Quân đội (MB) cho rằng yếu tố quyết định nằm ở sự phối hợp chặt chẽ giữa ba chủ thể: Nhà nước – Doanh nghiệp – Người dân. Nhà nước giữ vai trò kiến tạo, đặt ra các tiêu chuẩn an ninh mạng cao cấp và cơ chế phản ứng nhanh. Doanh nghiệp – đặc biệt là các ngân hàng – là tuyến đầu triển khai và đầu tư công nghệ, bảo vệ dữ liệu và tiền bạc của người dân. Cùng với đó, nhận thức người dùng là yếu tố không thể thiếu, là cầu nối đưa các giải pháp bảo mật đến với cuộc sống.\n\nÔng khẳng định: “Khi có sự đồng lòng và chia sẻ trách nhiệm giữa ba bên - với sự dẫn dắt của Nhà nước và sự chủ động của Doanh nghiệp - chúng ta sẽ xây dựng được Kháng thể Số Quốc gia vững mạnh, đưa Việt Nam trở thành quốc gia số an toàn, đáng tin cậy và thịnh vượng trong kỷ nguyên công nghệ”\n\nTalkshow “Kiến tạo Đất nước – Tự hào Việt Nam” là chuỗi chương trình chính luận – truyền cảm hứng do Cổng Thông tin điện tử Chính phủ, HTV9 và VCCorp phối hợp thực hiện, đơn vị đồng hành chiến lược Masterise Group, đơn vị đồng hành Ngân hàng TMCP Quân đội (MB). Chương trình tôn vinh những nhân vật, câu chuyện và sáng kiến tiêu biểu, phản ánh sự đồng hành giữa Nhà nước – doanh nghiệp – cộng đồng trong hành trình xây dựng một Việt Nam hiện đại, hội nhập và hạnh phúc.\n\nLà một trong Top 5 ngân hàng hàng đầu Việt Nam, MB tiên phong trong chuyển đổi số, đổi mới sáng tạo và phát triển bền vững, hướng tới mang lại giá trị thiết thực cho khách hàng, xã hội và đất nước. Mời quý khán giả tiếp tục đón xem các số tiếp theo của “Kiến tạo Đất nước – Tự hào Việt Nam” cùng những câu chuyện truyền cảm hứng từ MB và các doanh nghiệp Việt.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Vũ Duy Hiền",
+          "Vũ Thành Trung",
+          "Trung",
+          "Hiền"
+        ],
+        "ORG": [
+          "MB",
+          "VCCorp",
+          "HTV9",
+          "Hiệp hội An ninh mạng Quốc gia",
+          "Ngân hàng TMCP Quân đội",
+          "Cục An ninh mạng và",
+          "Cổng Thông tin điện",
+          "Masterise Group"
+        ],
+        "LOC": [
+          "Nam",
+          "Việt Nam"
+        ],
+        "DATE": [
+          "năm 2025",
+          "năm 2024"
+        ],
+        "TECH": [
+          "AI",
+          "trí tuệ nhân tạo"
+        ],
+        "JOB_ROLE": [
+          "ba"
+        ],
+        "SALARY": [
+          "35 triệu",
+          "1.500",
+          "1.660",
+          "4.500"
+        ]
+      }
+    },
+    {
+      "title": "Khi một dòng code cứu được mạng người: Câu chuyện về nền tảng cứu hộ \"chạy\" chỉ sau 4 giờ vibe coding",
+      "content": "Khi mạng xã hội tràn ngập lời cầu cứu\n\nĐêm 7/10, hoàn lưu bão Matmo gây mưa lớn kéo dài, đẩy nhiều khu vực của Thái Nguyên vào tình trạng ngập lụt nghiêm trọng. Nước lên nhanh, nhiều hộ dân bị cô lập. Trên mạng xã hội, hàng loạt bài đăng cầu cứu xuất hiện dồn dập trong các nhóm cộng đồng, kêu gọi tìm người thân hoặc gửi định vị để được cứu hộ.\n\nTuy nhiên, thông tin bị phân mảnh, trùng lặp và thiếu hệ thống. Điều này khiến lực lượng cứu hộ gặp khó khăn trong việc xác định khu vực ưu tiên và điều phối nguồn lực. Trong bối cảnh ấy, Nguyễn Thị Mai Anh, cựu sinh viên Đại học FPT, cùng hai người bạn là Từ Tất Huân, kỹ sư dữ liệu và Đặng Long, lập trình viên, quyết định tự mình tạo ra một công cụ cứu người.\n\n4 giờ dựng nền tảng cứu hộ giữa đêm lũ\n\nTận dụng sẵn hệ thống xử lý dữ liệu từ một dự án trước đó, nhóm nhanh chóng bắt tay vào việc. Họ viết lại các luồng logic, nâng cấp server, thêm các bộ lọc dữ liệu và tích hợp AI để tự động trích xuất thông tin từ mạng xã hội.\n\nChị Mai Anh phụ trách phần gọi API, tối ưu pipeline dữ liệu; anh Huân đảm nhận logic xử lý và chuẩn hóa; anh Long phát triển giao diện bản đồ. Chỉ sau 4 tiếng làm việc liên tục xuyên đêm, nền tảng thongtincuuho.org đã ra đời.\n\nDữ liệu cộng đồng được biến thành \"bản đồ sinh tử\"\n\nCơ chế hoạt động của hệ thống được thiết kế để xử lý khối lượng lớn dữ liệu hỗn loạn:\n\n- Tự động thu thập dữ liệu: Crawler quét các nhóm mạng xã hội, bài đăng cầu cứu có từ khóa liên quan.\n\n- AI trích xuất thông tin: Phân tích và lọc ra địa chỉ, số điện thoại, mô tả tình trạng, đồng thời loại bỏ nội dung trùng lặp hoặc sai lệch.\n\n- Heatmap trực quan: Các điểm cần cứu trợ được hiển thị trên bản đồ theo thời gian thực, màu sắc thể hiện mức độ khẩn cấp.\n\nThay vì phải lướt qua hàng trăm bài đăng rời rạc, đội cứu hộ giờ đây có thể nhìn thấy rõ khu vực ưu tiên, mô tả tình trạng và liên hệ nhanh chóng chỉ bằng một bản đồ duy nhất.\n\nTừ \"ứng dụng nhỏ\" thành công cụ cứu người\n\nChỉ sau chưa đầy 24 giờ ra mắt, thongtincuuho.org đã thu hút gần 3.000 người sử dụng và lan tỏa nhanh chóng trên mạng xã hội. Từ chỗ chỉ hỗ trợ Thái Nguyên, nền tảng nhanh chóng mở rộng phạm vi tới Bắc Giang, Lạng Sơn, Bắc Ninh, Cao Bằng và Hà Nội, những địa phương cũng chịu ảnh hưởng từ hoàn lưu bão.\n\nNgười dân có thể gửi yêu cầu cứu hộ bằng cách điền form trực tiếp trên website hoặc để lại bình luận trên bài đăng để hệ thống tự động thu thập. Mỗi điểm hiển thị bao gồm địa chỉ, tình trạng cụ thể và thời gian cập nhật, giúp đội cứu hộ có thể lọc và sắp xếp theo mức độ khẩn cấp.\n\nDù đạt hiệu quả tức thời, nhóm phát triển cũng nhấn mạnh những giới hạn rõ ràng:\n\n- Dữ liệu chưa được xác thực: Thông tin thu thập từ cộng đồng có thể sai lệch, trùng lặp hoặc lỗi thời.\n\n- Chưa tích hợp chính thức với hệ thống nhà nước: Hiện nền tảng chưa kết nối trực tiếp với đầu mối cứu hộ 112 hay Ban chỉ huy PCTT địa phương.\n\n- Bài toán bảo mật: Dữ liệu cứu hộ thường chứa số điện thoại và địa chỉ nhạy cảm, đòi hỏi chính sách lưu trữ và xoá bỏ cẩn trọng.\n\nDẫu vậy, nhóm vẫn đang tiếp tục cải tiến, chuyển bản đồ sang nền tảng Việt Map để giảm chi phí và tăng tốc độ, mở API cho tổ chức cứu trợ, và chuẩn hóa quy trình thu thập dữ liệu để có thể triển khai nhanh tại bất kỳ địa phương nào.\n\n\"Không cần là lập trình viên để tạo ra khác biệt\"\n\n\"Chúng tôi chọn giải pháp đơn giản nhất, tận dụng công nghệ sẵn có để tạo ra tác động nhanh nhất trong tình huống khẩn cấp\", chị Mai Anh chia sẻ.\n\nTừng tham gia dự án cứu trợ trong thời kỳ COVID-19, chị hiểu rõ từng phút giây có thể là ranh giới giữa sống và chết. \"Khi đọc những lời cầu cứu, mình đau lòng lắm. Nhưng chính điều đó là động lực để làm nhanh hơn, chính xác hơn.\"\n\nVới chị, công nghệ không phải đặc quyền của lập trình viên: \"Chỉ cần hiểu dữ liệu vận hành thế nào và có mong muốn giúp đỡ, ai cũng có thể tạo ra sự khác biệt.\"\n\nTừ vài dòng code viết giữa đêm, thongtincuuho.org cho thấy sức mạnh thật sự của công nghệ khi đặt đúng chỗ: không phải để \"khoe\" kỹ thuật, mà để cứu người. Và hơn cả, câu chuyện này là minh chứng rằng, trong khủng hoảng, một hệ thống dữ liệu tốt có thể trở thành nhịp cầu sống còn giữa tiếng kêu cứu và bàn tay cứu hộ.\n\nNền tảng hiện vẫn đang hoạt động và tiếp nhận thông tin cứu trợ tại địa chỉ: thongtincuuho.org. Người dân được khuyến cáo chỉ cung cấp thông tin chính xác, cập nhật và đồng thời liên hệ đường dây nóng 112 để phối hợp cùng cơ quan chức năng.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Nguyễn Thị Mai Anh",
+          "Từ Tất Huân",
+          "Đặng Long",
+          "Mai Anh",
+          "Huân",
+          "Long"
+        ],
+        "ORG": [
+          "Đại học FPT"
+        ],
+        "LOC": [
+          "Thái Nguyên",
+          "Bắc Giang",
+          "Lạng Sơn",
+          "Bắc Ninh",
+          "Cao Bằng",
+          "Hà Nội"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "API"
+        ],
+        "JOB_ROLE": [
+          "kỹ sư dữ liệu",
+          "lập trình viên"
+        ],
+        "SALARY": [
+          "3.000"
+        ]
+      }
+    },
+    {
+      "title": "Facebook đang dần “video hóa”",
+      "content": "Meta đang thực hiện một loạt thay đổi lớn nhằm biến Facebook trở thành nền tảng video hấp dẫn hơn, trong nỗ lực cạnh tranh trực tiếp với TikTok. Mới đây, công ty đã công bố tính năng “friend bubbles” (bong bóng bạn bè) và cải tiến hệ thống đề xuất nội dung cho Reels, đánh dấu bước đi tiếp theo trong chiến lược “video hóa” Facebook.\n\nTheo Meta, công cụ đề xuất nội dung mới của Facebook có khả năng “học sở thích của người dùng nhanh hơn và hiển thị nhiều Reels mới, phù hợp hơn”. Cùng với đó, nền tảng này hiện hiển thị nhiều video được đăng trong cùng ngày hơn, tăng khoảng 50% số Reels đến từ các nhà sáng tạo mà người dùng xem trong thời điểm thực.\n\nĐiểm nhấn đáng chú ý nhất là “friend bubbles” - bong bóng nhỏ xuất hiện ở góc trái bên dưới video Reels, cho biết khi nào một người bạn của bạn đã bấm thích video đó. Người dùng có thể nhấn vào bong bóng để mở ngay cuộc trò chuyện riêng với bạn bè về video đang xem. Meta cho biết: “Việc nhìn thấy lượt thích từ bạn bè luôn là cốt lõi của trải nghiệm Facebook, và chúng tôi đang phát triển thêm những tính năng - như bong bóng - để đưa nền tảng trở lại với bản chất ban đầu.”\n\nBên cạnh đó, Meta cũng cho biết thời gian người dùng dành cho video trên Facebook đã tăng hơn 20% so với cùng kỳ năm ngoái, nhờ các cải tiến trong hệ thống xếp hạng nội dung. Trong báo cáo gần nhất, công ty cũng xác nhận rằng toàn bộ video trên Facebook sẽ được chuyển đổi sang định dạng Reels, đồng thời loại bỏ giới hạn thời lượng video để mở rộng khả năng sáng tạo cho người dùng.\n\nTừ đầu năm nay, CEO Mark Zuckerberg nhiều lần khẳng định mong muốn “đưa Facebook trở lại những giá trị nguyên bản”, và việc tập trung vào video ngắn đang được xem là bước đi trọng tâm trong chiến lược tái sinh nền tảng mạng xã hội này.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Mark Zuckerberg"
+        ],
+        "ORG": [
+          "Meta"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [],
+        "JOB_ROLE": [
+          "CEO"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Từ khuyến mãi tới thói quen: Vì sao \"đổ tiền ưu đãi\" vẫn không giữ được Gen Z?",
+      "content": "Trong vài năm qua, thị trường tài chính tiêu dùng Việt Nam đi rất nhanh đến \"mặc định số\": nửa đầu năm 2025 đã ghi nhận hơn 12 tỷ giao dịch không tiền mặt, gần chạm ngưỡng 17,7 tỷ của cả năm 2024, một tốc độ cho thấy thanh toán qua ứng dụng, mã QR và ví điện tử đã đi vào nhịp sống thường ngày.\n\nNhưng chính khi mọi thứ \"lên app\", một nghịch lý lộ rõ: người dùng, đặc biệt là Gen Z, không còn ở lại chỉ vì khuyến mãi. Họ tải ứng dụng, mở tài khoản, tận dụng ưu đãi... rồi rời đi khi hết khuyến mãi hoặc khi trải nghiệm thiếu mượt. Ở quy mô toàn cầu, hiện tượng \"bỏ dở giữa chừng\" ngày càng phổ biến: 68% người dùng từng bỏ ngang hồ sơ dịch vụ tài chính vì quy trình số rườm rà, chứng tỏ khuyến mãi chỉ giải quyết được \"khúc đầu\" còn sự gắn bó phụ thuộc chủ yếu vào hành trình sử dụng.\n\n\"Mình có ba thẻ hoàn tiền, nhưng đến cuối tháng không nhớ còn nợ ở đâu,\" Ngọc A. (22 tuổi, Q.10, TP.HCM) kể. Câu chuyện nghe tưởng nhỏ nhưng phản chiếu đúng \"điểm đau\" của người dùng trẻ: hành vi tài chính bị đứt quãng, bị dẫn dắt bởi ưu đãi ngắn hạn thay vì một trải nghiệm nhất quán giúp họ hình thành thói quen quản lý tiền bạc. Khi có vấn đề, OTP chậm, biểu phí mập mờ hay một tính năng quan trọng bị \"ẩn\" quá sâu, họ ngừng dùng và hiếm khi quay lại.\n\nThực tế là sự thiếu kiên nhẫn ấy đang gia tăng trên nền thị trường số hoá nhanh: thanh toán không tiền mặt bùng nổ kéo theo tiêu chuẩn về tốc độ, sự đơn giản và minh bạch cũng bị đẩy lên cao tương ứng.\n\nTừ \"ưu đãi\" sang thói quen: UX tốt tạo hành vi mới như thế nào?\n\nĐiểm xuất phát của mọi chiến dịch vẫn là khuyến mãi, nhưng thứ quyết định vòng đời người dùng là \"đường ray\" để hành vi tự lặp lại: tiết kiệm định kỳ không cần nhắc, trả góp đúng hạn không phải nhớ, bám ngân sách theo nhóm chi tiêu thay vì \"đến cuối tháng mới soi\". Khi các \"đường ray\" này được thiết kế rõ ràng và dễ dùng, chi phí tinh thần của người dùng giảm mạnh và thói quen được tích lũy qua từng ngày. Nghiên cứu quốc tế về onboarding cho thấy tỷ lệ bỏ dở đã leo từ 40% lên 68% trong vài năm gần đây; nghĩa là nếu không dọn sạch \"ma sát\" ở từng bước, mọi ưu đãi phía trước cũng khó biến thành sử dụng thực sự.\n\nTrong bối cảnh ấy, Vikki Digital Bank và HDBank đang đưa ra hai con đường khác nhau để đi đến cùng một đích là \"thói quen\". Vikki Digital Bank đặt cược vào việc giảm gánh nặng vi mô, cắt nhỏ quyết định và làm phẳng điểm đau hàng ngày. HDBank lại chọn \"bọc kín\" hành trình, gom các nhu cầu rời rạc vào một hệ sinh thái tài chính liền mạch để người dùng không phải \"nhảy app\". Hai hướng đi này, nếu làm đúng, đều chuyển trọng tâm từ \"ưu đãi\" sang \"nuôi thói quen\".\n\nVới Vikki Digital Bank, chiếc thẻ tín dụng VikkiGO là ví dụ dễ thấy về cách chuyển \"chi lớn\" thành dòng tiền đều và dễ kiểm soát. Thẻ miễn phí thường niên, cho phép chuyển đổi trả góp 0% lãi với giao dịch từ 2 triệu đồng và kỳ hạn linh hoạt 3-6 tháng; phí chuyển đổi được tính một lần vào kỳ sao kê đầu, giúp người dùng dự đoán chi phí ngay từ đầu thay vì bị \"đánh úp\" cuối kỳ.\n\nỞ tầng bảo mật và tiện dụng, Vikki Digital Bank ẩn mã bảo mật trên thẻ cứng (chỉ xem sau khi xác thực trong app), hỗ trợ Apple Pay để mỗi giao dịch dùng \"mã số ảo\" (token) thay cho số thẻ thật, và cho phép quét QR PromptPay tại Thái Lan, một chuỗi tối ưu nhằm bớt thao tác, bớt rủi ro và bớt... phải nhớ. Kết quả về mặt tiếp nhận cũng là một tín hiệu tích cực: chỉ trong năm tháng sau tái định vị, Vikki Digital Bank vượt một triệu lượt tải và 600.000 tài khoản mới.\n\nVới HDBank, chiến lược nằm ở việc biến ứng dụng ngân hàng thành một \"điểm đến\" đủ rộng cho cả chi tiêu ngắn hạn lẫn nhu cầu phòng vệ và tích lũy dài hạn: từ tài khoản thanh toán, tiết kiệm, tín dụng đến bảo hiểm và đầu tư. Khi các mảnh ghép này vận hành trong một hệ sinh thái thống nhất, người dùng ít phải chuyển nền tảng và dữ liệu hơn, hành vi vì thế cũng liên tục hơn. Bức tranh nửa đầu 2025 cho thấy sức nặng của kênh số trong tăng trưởng: digital chiếm 75% lượng khách hàng mới quý II, còn 94% giao dịch cá nhân đã diễn ra trực tuyến, những con số cho thấy \"đường ray\" đang được đặt đúng chỗ thay vì chỉ đẩy thêm ưu đãi.\n\nMột điểm chung đáng chú ý là cả hai đều tham gia chương trình thẻ đồng thương hiệu (co-badged) NAPAS × Mastercard, sáng kiến lần đầu tại Việt Nam với sáu ngân hàng tham gia, giúp một chiếc thẻ có thể đi giữa mạng lưới nội địa hơn 650.000 điểm chấp nhận và mạng lưới quốc tế hơn 150 triệu điểm. Về mặt trải nghiệm, đó là một \"đường ray\" hạ tầng: người dùng ít phải mang nhiều thẻ và ít gặp cảnh \"mạng này quẹt được, mạng kia không\".\n\nVì sao cách tiếp cận này trúng \"điểm đau\" của Gen Z?\n\nGen Z không thiếu lựa chọn; họ chỉ thiếu lý do để ở lại. Họ không chờ để \"học cách dùng app\", và cũng không muốn \"nghĩ quá nhiều\" mỗi khi chi tiêu hay trả nợ. \"Tôi chấp nhận lãi kém một chút, miễn là mọi thứ rõ ràng, minh bạch và tự động,\" Minh T. (28 tuổi, Q.7, TP.HCM) chia sẻ.\n\nVikki Digital Bank giải quyến vấn đề bằng cách cắt nhỏ gánh nặng nhận thức, từ việc biết trước chi phí trả góp đến việc không phải lo lộ thông tin thẻ mỗi lần thanh toán. HDBank giải bài toán bằng việc nối mạch nhu cầu, để cùng một nơi đáp ứng trọn vòng đời tài chính, từ chi tiêu hằng ngày đến bảo vệ và tích lũy. Cả hai, theo những dữ kiện thị trường hiện có, đều đang đặt \"đường ray thói quen\" lên trước \"đốt tiền ưu đãi\", cách tiếp cận hợp lý trong một thị trường mà bỏ dở quy trình đang tăng, còn thanh toán số thì bùng nổ.\n\nKhuyến mãi tạo \"cú nổ\" ngắn hạn, nhưng chỉ trải nghiệm đủ mượt và đủ thông minh mới lặp lại được hành vi, từ đó sinh ra thói quen. Khi \"đường ray thói quen\" đã đặt đúng, người dùng sẽ ở lại vì cảm giác ít phải nghĩ, ít phải nhớ và ít rủi ro hơn. Tinh thần đó cũng là điều Better Choice Awards 2025 tìm kiếm ở nhóm các hạng mục của Consumer Finance Awards: không chỉ đơn thuần là thu hút người dùng, mà còn nuôi dưỡng thói quen tài chính tốt cho người Việt.\n\nCổng bình chọn sắp khép lại; nếu bạn tin những nỗ lực \"từ khuyến mãi đến thói quen\" là con đường đúng, truy cập Betterchoice.vn để bình chọn cho hạng mục ưa thích.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Ngọc A",
+          "Minh T"
+        ],
+        "ORG": [
+          "Vikki Digital Bank",
+          "HDBank",
+          "NAPAS Mastercard",
+          "Bank"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Q. 10",
+          "TP. HCM",
+          "Thái Lan",
+          "Q. 7"
+        ],
+        "DATE": [
+          "quý II",
+          "năm 2025",
+          "năm 2024"
+        ],
+        "TECH": [],
+        "JOB_ROLE": [
+          "ba"
+        ],
+        "SALARY": [
+          "2 triệu đồng",
+          "150 triệu",
+          "600.000",
+          "650.000"
+        ]
+      }
+    },
+    {
+      "title": "Viettel Money vs HDBank: \"Phổ cập\" và \"đột phá\", ai xứng đáng lên ngôi ở hạng mục Hệ sinh thái tài chính?",
+      "content": "Mùa giải Better Choice Awards năm nay ở nhóm \"Hệ sinh thái tài chính\" đặt ra hai câu hỏi then chốt của thị trường Việt Nam: làm thế nào để tài chính số thật sự đến với số đông (Toàn diện xuất sắc), và công nghệ đổi trải nghiệm đến mức thuyết phục người dùng bỏ thói quen cũ (Đột phá ấn tượng). Viettel Money và HDBank là hai đại diện tiêu biểu cho hai chiến lược trái chiều: bao phủ - bao trùm so kè với kiến trúc - liền mạch.\n\nHệ sinh thái tài chính toàn diện xuất sắc: \"Phổ cập\" thắng bằng độ phủ và dịch vụ thiết yếu\n\nNếu \"toàn diện\" được hiểu là dễ tiếp cận cho đa dạng nhóm người dùng và đủ bề rộng dịch vụ, Viettel Money hiện nắm nhiều điểm cộng hữu hình.\n\nKhác với cách tiếp cận thuần ngân hàng số, Viettel Money xuất phát từ nền tảng viễn thông để mở rộng dịch vụ tài chính số đến tận vùng nông thôn, miền núi, nơi ngân hàng truyền thống khó bám rễ. Quan trọng hơn, thay vì dừng ở chuyển tiền hay thanh toán đơn lẻ, nền tảng đang mở rộng sang loạt dịch vụ thiết yếu: thanh toán điện, nước, Internet, học phí, y tế, hành chính công. Các liên kết nổi bật gồm kết nối tài khoản an sinh xã hội với VNeID, tích hợp thanh toán trực tiếp trên cổng dịch vụ công như I-Hanoi, Hue-S, hay triển khai liên kết tài khoản giao thông trên ePass. Những mắt xích này biến Viettel Money thành \"cửa ngõ thanh toán số\" gắn với nhịp sống hàng ngày của hàng chục triệu người.\n\nỨng dụng hiện cung cấp hơn 350 dịch vụ, trải từ thanh toán, tiết kiệm, bảo hiểm số đến đầu tư trực tuyến. Tất cả được thiết kế theo triết lý: hạ thấp rào cản, đưa dịch vụ tài chính vào ngữ cảnh đời sống quen thuộc nhất. Đây chính là định nghĩa \"toàn diện\" trong bối cảnh Việt Nam, không chỉ nhiều dịch vụ, mà phải chạm được cả những nhóm ít có điều kiện tiếp cận ngân hàng.\n\nYếu tố pháp lý và vận hành của Viettel Money cũng \"chắc chân\" khi có giấy phép trung gian thanh toán 57/GP-NHNN (22/07/2020) và bối cảnh gia hạn thí điểm Mobile Money (NQ 87/NQ-CP, 15/04/2025), lớp đệm cần thiết để mở rộng quy mô bao trùm.\n\nPhía HDBank, hệ sinh thái số \"bộ ba\" Digital Core - Di HDBank - Di HDBiz cũng phủ rộng nhóm cá nhân và doanh nghiệp, nhưng vẫn giả định người dùng đã có tài khoản ngân hàng và hành vi số căn bản. Ở tiêu chí \"phổ cập & bao trùm\", Viettel Money chiếm lợi thế nhờ đánh thẳng vào các nhu cầu thiết yếu và đa dạng của đại đa số, đặc biệt nhóm người dùng chưa quen với sản phẩm ngân hàng truyền thống.\n\nHệ sinh thái tài chính có đột phá ấn tượng: \"Kiến trúc + trải nghiệm\" thắng bằng tốc độ và liền mạch\n\nỞ chiều \"đột phá\", HDBank đưa ra một bức tranh công nghệ rất giàu chi tiết kỹ thuật: QR liên ngân hàng (NAPAS 24/7), Apple Pay & Google Pay tích hợp trực tiếp, sinh trắc học, Soft-OTP, tokenization, cộng thêm lớp tương tác Voice-to-Action/Voice OTT và chatbot. Bản chất đây là \"đột phá phương thức\": giảm quy trình xuống chỉ còn 1-2 thao tác, vừa mượt vừa an toàn, đúng tinh thần \"seamless access for all\" (ai cũng dùng được)\n\nSong song là đổi mới kiến trúc: core cloud-native, microservices, container hóa (Docker/Kubernetes), giúp hệ thống mở rộng gấp đôi lưu lượng trong thời gian ngắn mà không đánh đổi hiệu năng. Đây là \"đột phá bền\" vì chạm tới tầng vận hành, cho phép ngân hàng rút ngắn thời gian đưa sản phẩm mới ra thị trường, tăng độ ổn định ở quy mô lớn.\n\nNgoài ra, HDBank còn thử nghiệm Banking-as-a-Platform và Agent Banking, đưa ngân hàng đến ngay trong ứng dụng đối tác hoặc mô hình hybrid tại quầy. Đây là \"đột phá thầm lặng\": tái định nghĩa điểm chạm và hành trình của khách hàng thay vì buộc họ phải chủ động tìm đến ngân hàng.\n\nPhía Viettel Money, điểm mới đáng chú ý là nỗ lực tích hợp AI cho cá nhân hóa trải nghiệm và bảo mật, nhưng cách tiếp cận \"đột phá\" ở đây nghiêng nhiều về phổ cập xã hội hơn là tái định nghĩa trải nghiệm số. Nếu tiêu chí chấm giải ưu tiên mức liền mạch - an toàn - nhanh chóng trong giao dịch, HDBank nổi bật hơn nhờ stack công nghệ hiện đại và khả năng bám sát thói quen smartphone-first của người Việt.\n\nCuộc so kè Viettel Money và HDBank ở nhóm giải Hệ sinh thái tài chính năm nay không phải \"hơn thua\" trên cùng một trục, mà là hai cực chiến lược. Viettel Money đi theo hướng phổ cập bằng dịch vụ thiết yếu, kéo đông đảo người Việt, kể cả chưa quen ngân hàng, vào tài chính số. HDBank lại đẩy chuẩn mực trải nghiệm, biến giao dịch thành thao tác liền mạch, an toàn đến mức \"quên là đang dùng ngân hàng\".\n\nỞ hạng mục Toàn diện xuất sắc, lợi thế nghiêng về Viettel Money nhờ triết lý \"đi từ nhu cầu thiết yếu của số đông\". Còn ở Đột phá ấn tượng, HDBank nổi bật với kiến trúc và trải nghiệm, đưa ngân hàng số Việt Nam tiệm cận chuẩn quốc tế. Hai lát cắt này cho thấy thị trường tài chính số đang cùng lúc chạy trên hai đường ray: mở rộng vòng tròn tiếp cận và nâng tầm trải nghiệm. Người dùng cuối, từ công nhân nông thôn đến dân văn phòng thành thị, mới chính là bên hưởng lợi nhiều nhất từ cuộc cạnh tranh này.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "HDBank",
+          "S",
+          "NHNN",
+          "HDBiz",
+          "NAPAS",
+          "Viettel Money",
+          "Viettel"
+        ],
+        "LOC": [
+          "Việt Nam"
+        ],
+        "DATE": [
+          "22/07/2020",
+          "15/04/2025"
+        ],
+        "TECH": [
+          "AI",
+          "microservices",
+          "Docker",
+          "Kubernetes"
+        ],
+        "JOB_ROLE": [
+          "ba"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Doanh nghiệp sử dụng Bizfly Cloud Database để tăng tốc độ truy xuất và vận hành ổn định",
+      "content": "Đây không chỉ là vấn đề kỹ thuật mà còn gây thiệt hại chi phí trực tiếp từ nhiều khía cạnh: nhân viên dịch vụ khách hàng không thể truy cập thông tin khách hàng nhanh chóng, đội ngũ bán hàng bỏ lỡ cơ hội, người quản lý thiếu dữ liệu thời gian thực để ra quyết định tức thì.\n\nMột doanh nghiệp dược lớn là khách hàng của Bizfly Cloud quản lý hàng triệu bản ghi dữ liệu liên quan đến: Danh mục sản phẩm & nguyên liệu; Hồ sơ nghiên cứu & thử nghiệm lâm sàng; Hệ thống phân phối và đơn hàng từ nhà thuốc trên toàn quốc. Ban đầu, doanh nghiệp quyết định tự build hệ thống database trên máy chủ vật lý để quản lý.\n\nTuy nhiên, trong quá trình vận hành, database của công ty dược ghi nhận các vấn đề phát sinh về tốc độ xử lý chậm trễ. Khi số lượng nhà thuốc truy cập để đặt đơn hàng tăng, database phản hồi chậm. Một truy vấn báo cáo tồn kho mất tới 10–15 giây để trả kết quả. Để duy trì tốc độ, công ty buộc phải nâng cấp server vật lý từ 8 CPU – 32GB RAM lên 16 CPU – 64GB RAM. Cuối cùng dẫn đến chi phí phần cứng và vận hành ngày càng phình to, trong khi hiệu quả không đáp ứng nhu cầu lẫn kỳ vọng.\n\nNguyên nhân gây hiệu suất thấp cho cơ sở dữ liệu thường bắt nguồn từ hạn chế về tài nguyên. Database có thể đang chạy trên phần cứng đã lỗi thời hoặc đơn giản là hiệu năng không đủ mạnh để xử lý khối lượng công việc hiện tại. Có thể lấy ví dụ như việc cố gắng chạy một trò chơi điện tử hiện đại trên một chiếc máy tính cũ đã sử dụng hàng chục năm. Về mặt kỹ thuật là có thể, nhưng không phải là tối ưu.\n\nĐể database có thể vận hành trơn tru, sẽ cần tối ưu các thông số phức tạp như: Buffer pool, query cache, index strategy, connection pool, parallel query, replication, tối ưu storage engine (InnoDB, MyISAM, RocksDB...) đòi hỏi nhiều kinh nghiệm và thời gian thử nghiệm. Đối với doanh nghiệp không có đội ngũ DBA (Database Administrator) chuyên sâu thì việc tối ưu này sẽ rất khó khăn. Kết quả là DB tự build nhiều khi chỉ chạy \"nguyên bản\" như khi cài từ package (MySQL, PostgreSQL, SQL Server...).\n\nCùng với đó, một vấn đề mà các doanh nghiệp khi tự triển khai Database cũng thường xuyên gặp phải là sự cố gián đoạn. Mỗi đợt khuyến mãi, lượng đơn hàng tăng đột biến khiến database bị treo. Có lần server vật lý hỏng ổ cứng dẫn đến hệ thống bán hàng gián đoạn 5 tiếng, gây thiệt hại doanh thu và mất uy tín với các đối tác. Việc bảo trì, nâng cấp buộc phải downtime, ảnh hưởng trực tiếp đến hoạt động kinh doanh.\n\nKhi tự build, database thường chạy trực tiếp trên 1 server vật lý hoặc 1 VPS thuê ngoài. Các môi trường này ít hỗ trợ sẵn tính năng mở rộng như clustering hay replication tự động. Muốn triển khai các tính năng nâng cao (sharding, failover, load balancing) thì cần phải tự setup thủ công, vừa phức tạp vừa rủi ro.\n\nVới hạ tầng vật lý khi muốn mở rộng, không thể chỉ thao tác vài click để tăng tài nguyên, mà cần mua thiết bị mới, lắp đặt và di chuyển dữ liệu. Việc này tạo ra 2 trở ngại phổ biến là các doanh nghiệp chi tiêu quá mức cho phần cứng mà họ không sử dụng hết, hoặc gặp khó khăn về vấn đề nguồn lực không sẵn sàng do việc nâng cấp quá tốn kém hoặc mất thời gian.\n\nDoanh nghiệp dược sau khi chuyển sang Bizfly Cloud Database đã cải thiện vấn đề hiệu suất và thậm chí còn giúp tiết kiệm chi phí sử dụng Database. Với cùng khối lượng truy xuất, hệ thống BFC chỉ cần cấu hình thấp hơn nhưng vẫn xử lý nhanh hơn cấu hình 16 CPU – 64GB RAM mà doanh nghiệp đã nâng cấp. Báo cáo tồn kho chạy trong dưới 2 giây, thay vì 10–15 giây.\n\nNền tảng Bizfly Cloud Database đã được đội ngũ chuyên gia BFC phát triển và tối ưu toàn bộ, cung cấp sẵn sàng cho doanh nghiệp một DB mạnh mẽ. Doanh nghiệp không mất công xây dựng nền tảng, không cần quản trị và vận hành phức tạp, chỉ cần đưa cơ sở dữ liệu vào để chạy. BFC Database tương thích tốt với tất cả các chuẩn cơ sở dữ liệu tiêu biểu: MariaDB (MySQL compatible), MongoDB, Redis, PostgreSQL…\n\nBên cạnh đó, một trong những yếu tố quyết định giúp doanh nghiệp ứng dụng Bizfly Cloud Database là khả năng tích hợp Load Balancer, Auto Scale, Kafka để tối ưu hiệu năng khi có lượng truy vấn lớn và tối ưu chi phí sử dụng. Khi lượng đơn hàng tăng đột biến, đồng nghĩa với việc truy cập tăng mạnh mẽ, hệ thống scale-out tự động, bổ sung thêm node DB. Kết hợp với LB tự động phân bổ truy vấn đến nhiều node DB nhằm đảm bảo không node nào bị quá tải, giúp hệ thống xử lý mượt mà, ổn định.. Khi thời gian cao điểm đã qua, tài nguyên được scale-in để tối ưu chi phí.\n\nKhi tích hợp Kafka vào DB, các sự kiện lớn (order, update kho hàng, thanh toán) sẽ được đưa vào Kafka queue để xử lý bất đồng bộ. Từ đó giúp giảm tải tức thì cho DB, tránh hiện tượng \"thắt cổ chai\" khi hàng nghìn người đặt hàng cùng lúc. Việc này cũng giúp đảm bảo dữ liệu không mất mát, xử lý theo thứ tự chuẩn xác.\n\nBFC Database cũng đồng thời giảm thiểu sự cố và những ảnh hưởng từ sự cố tới doanh nghiệp. Dữ liệu được nhân bản trên nhiều node, do đó không lo hỏng phần cứng gây downtime. Đồng thời việc bảo trì, nâng cấp diễn ra mượt mà, không gián đoạn dịch vụ.\n\nĐộc giả quan tâm dùng thử Bizfly Cloud Database và nhận ưu đãi hấp dẫn có thể truy cập tại: https://bizflycloud.vn/cloud-database",
+      "is_relevant": true,
+      "entities": {
+        "PER": [],
+        "ORG": [
+          "BFC"
+        ],
+        "LOC": [],
+        "DATE": [],
+        "TECH": [
+          "SQL",
+          "https",
+          "MySQL",
+          "PostgreSQL",
+          "MariaDB",
+          "MongoDB",
+          "Redis",
+          "Kafka"
+        ],
+        "JOB_ROLE": [
+          "DBA",
+          "Database Administrator"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Facebook bỗng dưng \"đào mộ\" tính năng này: Người bảo cũng tiện, kẻ bảo \"vô dụng, ai mướn?\"",
+      "content": "Facebook hiện tại đã tràn ngập reaction, emoji, sticker, story reply và hàng loạt cách \"mở lời\" khác, việc mạng xã hội này bất ngờ đưa Poke trở lại khiến không ít người bất ngờ. Về bản chất, Poke chỉ là một cú chạm không kèm thông điệp. Không nội dung, không ngữ cảnh, chỉ là \"ê, tớ đây\". Nếu xét ở góc nhìn sản phẩm, câu hỏi đáng đặt ra là: Poke mang lại giá trị gì khác biệt so với những công cụ giao tiếp vốn đã quá đủ trên Facebook?\n\nVới một số người dùng, Poke giống như \"cú gõ cửa\" tối giản. Thay vì nhắn một tin \"Hi\" có thể bị hiểu nhầm là tán tỉnh, Poke giữ sự mơ hồ vừa đủ để người nhận tự lựa chọn cách phản hồi. Tính năng này cũng diễn ra trong im lặng, không hiện trên News Feed, vì vậy không gây áp lực phải phản hồi công khai. Đặc biệt, sau một thời gian dài im lặng, Poke có thể là tín hiệu nhẹ nhàng để nối lại liên lạc, giống như lời nhắc \"mình vẫn ở đây\".\n\nỨng dụng Facebook thay nút 3 chấm bằng nút \"Chọc\" - Ảnh chụp màn hình\n\nChị Minh N., 27 tuổi, nhân viên marketing ở Hà Nội cho rằng: \"Đi làm về mệt, nhiều khi chỉ muốn báo hiệu là vẫn nhớ. Poke đúng liều, không kéo người ta vào cuộc trò chuyện dài dòng.\" Trong khi đó, Phương L., 22 tuổi, sinh viên tại TP.HCM, lại thấy nó an toàn hơn: \"Nhắn 'hello' dễ bị hiểu nhầm. Poke thì giống gõ cửa... ai muốn mở thì mở, hay đơn giản mình muốn chủ động nhưng không phải lên tiếng trước\".\n\nThực tế thì tính năng Chọc này chưa bao giờ biến mất, chỉ là Facebook \"giấu\" hơi kỹ và người dùng thì cũng chả mấy ai tìm tính năng này để dùng - Ảnh chụp màn hình\n\nỞ chiều ngược lại, nhiều ý kiến cho rằng Poke là tính năng vô dụng, tức không có nội dung thực sự. Người nhận buộc phải đoán mục đích, dễ dẫn tới hiểu nhầm hoặc bỏ qua. Trong khi đó, hệ sinh thái hiện nay đã có quá nhiều lựa chọn tương tự nhưng tinh tế hơn: từ reaction vào tin nhắn, gửi emoji, tới nhấn \"wave\" (vẫy tay) trong chat. Giá trị cộng thêm của Poke vì thế trở nên mờ nhạt.\n\nQuan trọng hơn, Poke có thể bị lạm dụng. Với những tài khoản lạ hoặc quan hệ không cân bằng, một cú chọc có thể trở thành hành động phiền toái. \"Có thời thấy buồn cười, nhưng 2025 rồi còn chọc nhau làm gì... nhắn thẳng cho rõ,\" anh Đức H., 31 tuổi, kỹ sư phần mềm tại Đà Nẵng chia sẻ. Còn Thảo M., 24 tuổi, nhân viên chăm sóc khách hàng ở Hải Phòng, thẳng thắn: \"Bị người lạ ấn chọc thấy hơi creepy. Không biết người ta muốn gì, mà cũng ngại block.\"\n\nKhông ít trường hợp éo le như này xảy ra khi vô tình ấn Chọc đối phương mà không thể hoàn tác được - Ảnh chụp màn hình\n\nMeta từng thừa nhận lượng người dùng Poke đã tăng vọt sau khi làm nó dễ tiếp cận hơn. Đặc biệt, hơn một nửa lượt poke đến từ nhóm 18-29 tuổi, lớp người dùng vốn không gắn bó với \"thời hoàng kim\" của tính năng này. Ở góc độ chiến lược, Poke dường như là một phép thử để xem Gen Z có hứng thú với dạng tương tác nhẹ nhàng, riêng tư hay không.\n\nNhưng đặt dưới lăng kính phản biện, khó có thể coi Poke là lời giải cho bài toán \"chất lượng tương tác\" mà Facebook đang đối mặt. Nó có thể tăng tần suất chạm vào ứng dụng, nhưng không chắc tạo ra chiều sâu đối thoại. Nói cách khác, Poke mang nhiều màu sắc hoài niệm hơn là một cải tiến thực sự cho trải nghiệm xã hội.\n\nPoke trở lại không sai, chỉ là khó chứng minh sự cần thiết trong bối cảnh hiện tại. Nó có thể đóng vai trò \"cú gõ cửa\" lịch sự trong một số tình huống thân quen. Nhưng nếu mục tiêu là tăng giá trị kết nối, người dùng, nhất là người dùng Việt sẽ vẫn cần nhiều hơn một nút \"ê, tớ đây\". Và với những ai lờ đi cú chọc ấy, câu trả lời đã quá rõ ràng.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Minh N",
+          "Phương L",
+          "Đức H",
+          "Thảo M"
+        ],
+        "ORG": [],
+        "LOC": [
+          "Hà Nội",
+          "TP. HCM",
+          "Đà Nẵng",
+          "Hải Phòng"
+        ],
+        "DATE": [],
+        "TECH": [],
+        "JOB_ROLE": [
+          "kỹ sư phần mềm"
+        ],
+        "SALARY": []
+      }
+    },
+    {
+      "title": "Hé lộ danh sách những chuyên gia sẽ “cầm cân nảy mực” tại Better Choice Awards: Từ chuyên gia đầu ngành, chủ doanh nghiệp đến những KOL hàng đầu",
+      "content": "Better Choice Awards (BCA) 2025 đang dần trở thành một trong những sự kiện công nghệ và tiêu dùng được chờ đợi nhất trong năm. Là giải thưởng quy mô quốc gia, BCA hướng đến việc tôn vinh những sản phẩm và dịch vụ sáng tạo, mang lại giá trị thực tế và bền vững cho cộng đồng.\n\nĐiểm khác biệt của BCA so với nhiều giải thưởng khác nằm ở cơ chế bình chọn. Người tiêu dùng vẫn là trung tâm, nhưng song song với đó là sự góp mặt của Hội đồng Thẩm định - là đội ngũ những nhà quản lý, chuyên gia học thuật, doanh nhân và các gương mặt có sức ảnh hưởng trong cộng đồng công nghệ. Chính họ sẽ là những người “cầm cân nảy mực”, mang đến cái nhìn toàn diện để lựa chọn ra những sản phẩm xứng đáng nhất.\n\nTrong một giải thưởng tầm vóc quốc gia thì tính minh bạch và công bằng luôn là nguyên tắc cốt lõi. Hội đồng Thẩm định chính là nhân tố đảm bảo nguyên tắc đó.\n\nSự có mặt của những tên tuổi uy tín từ nhiều lĩnh vực giúp kết quả phản ánh đúng nhu cầu xã hội và bám sát xu hướng công nghệ. Với doanh nghiệp, sự công nhận từ hội đồng là minh chứng mạnh mẽ cho năng lực sáng tạo và khả năng cạnh tranh.\n\nCòn với người tiêu dùng, giải thưởng trở nên đáng tin cậy hơn vì được kiểm chứng bởi những con người có chuyên môn, kinh nghiệm và uy tín. Nhờ vậy, BCA không chỉ dừng ở việc trao giải, mà còn góp phần định hình xu hướng, khuyến khích đổi mới sáng tạo và tạo giá trị cho cộng đồng.\n\nÔng từng giữ nhiều chức vụ quan trọng trong bộ máy quản lý kinh tế vĩ mô của đất nước bao gồm Nguyên Phó Trưởng Ban Kinh tế Trung ương, Cựu Chủ tịch Hội đồng quản lý Quỹ Phát triển doanh nghiệp nhỏ và vừa, là người có nhiều đóng góp trong việc xây dựng chính sách phát triển kinh tế - xã hội.\n\nChuyên gia hàng đầu về công nghệ hóa học và năng lượng, ông đã tham gia nhiều công trình nghiên cứu lớn về năng lượng sạch, phát triển bền vững và chuyển đổi xanh.\n\nÔng được xếp hạng trong top các nhà khoa học công nghệ thông tin có tầm ảnh hưởng trên thế giới theo hệ thống Scopus và Google Scholar, ông nổi bật với nhiều công trình ứng dụng trí tuệ nhân tạo vào y tế, giáo dục và kinh tế. Các nghiên cứu của ông thường xuyên được đăng tải trên những tạp chí khoa học quốc tế uy tín.\n\nNhà khoa học trẻ gắn bó với lĩnh vực vật liệu xanh, ông góp phần xây dựng nền tảng cho các sản phẩm thân thiện với môi trường, hướng đến nền kinh tế tuần hoàn. Những nghiên cứu của ông nhận được sự quan tâm lớn từ cộng đồng khoa học và doanh nghiệp trong lĩnh vực vật liệu mới.\n\nÔng được biết đến như một “cầu nối” giữa Chính phủ, doanh nghiệp và cộng đồng khởi nghiệp sáng tạo. Với vai trò lãnh đạo NIC, ông đã góp phần xây dựng môi trường thuận lợi để các startup công nghệ Việt Nam tiếp cận nguồn lực quốc tế.\n\nHọc giả quốc tế có nhiều công trình nghiên cứu được trích dẫn rộng rãi, bà mang đến góc nhìn so sánh đa chiều giữa Việt Nam và thế giới, đặc biệt trong quá trình chuyển đổi công nghệ và phát triển giáo dục.\n\nMột trong những gương mặt trẻ nổi bật trong giới học thuật quốc tế, ông từng tham gia giảng dạy và nghiên cứu tại Đại học Cambridge (Anh). Hiện nay, với vai trò giảng viên tại VinUni, ông góp phần đưa tinh thần toàn cầu hóa và chuẩn quốc tế vào hệ sinh thái giáo dục - nghiên cứu tại Việt Nam.\n\nĐược mệnh danh là “ông trùm khởi nghiệp công nghệ”, ông là người sáng lập hệ sinh thái NextTech với hàng chục công ty công nghệ trải rộng từ thương mại điện tử, fintech đến logistics. Ông còn được khán giả biết đến rộng rãi qua chương trình Shark Tank Việt Nam, nơi ông đầu tư và cố vấn cho nhiều startup tiềm năng.\n\nLà tiến sĩ tốt nghiệp Đại học California, Berkeley (Mỹ), ông đã đưa công nghệ phân tích gen ứng dụng trí tuệ nhân tạo về Việt Nam, biến Genetica trở thành startup tiên phong trong lĩnh vực gene-tech tại Đông Nam Á.\n\nMột trong những gương mặt nữ nổi bật trong giới đầu tư, bà từng tham gia hỗ trợ hàng loạt startup công nghệ Việt Nam từ giai đoạn sơ khai. Với kinh nghiệm quốc tế, bà giúp kết nối startup nội địa với các quỹ đầu tư lớn trong khu vực.\n\nĐược cộng đồng startup gọi là “bà đỡ” của các công ty công nghệ non trẻ, bà Vy Lê cùng quỹ Do Ventures đã đầu tư vào nhiều doanh nghiệp nổi bật tại Việt Nam. Với hơn 15 năm kinh nghiệm trong ngành, bà là nhân tố thúc đẩy làn sóng đổi mới sáng tạo trong khu vực.\n\nÔng là chuyên gia tiên phong trong chiến lược “AI First - AI Driven”, góp phần đưa trí tuệ nhân tạo vào bộ giải pháp quản trị doanh nghiệp và tài chính kế toán. Ông cũng được biết đến là người định hướng chiến lược chuyển đổi số cho nhiều doanh nghiệp Việt Nam.\n\nNữ doanh nhân có nhiều năm kinh nghiệm quốc tế trong lĩnh vực quy hoạch đô thị thông minh và nông nghiệp số. Với enCity và enFarm, bà mang đến những giải pháp phát triển bền vững cho thành phố và cộng đồng nông dân.\n\nMột gương mặt quen thuộc với giới trẻ, Schannel - kênh YouTube do anh sáng lập - hiện có gần 4 triệu người đăng ký, trở thành cộng đồng công nghệ và giải trí hàng đầu Việt Nam. Anh là đại diện tiêu biểu cho thế hệ nhà sáng tạo nội dung trẻ đầy nhiệt huyết.\n\nReviewer công nghệ trẻ thu hút sự chú ý mạnh mẽ trên TikTok và YouTube với gần 4 triệu lượt theo dõi. Với phong cách dí dỏm, gần gũi, anh là gương mặt tiêu biểu trong nhóm KOL trẻ ảnh hưởng đến thói quen tiêu dùng công nghệ của giới trẻ.\n\nReviewer nổi tiếng với phong cách hài hước, duyên dáng, các video review công nghệ của anh luôn đạt lượng xem cao. Anh hiện có hơn 2 triệu người theo dõi trên nền tảng Youtube và 8.4 triệu lượt theo dõi trên nền tảng TikTok, được người xem yêu thích bởi sự gần gũi và dễ tiếp cận.\n\nReviewer kỳ cựu với hơn 2 triệu lượt theo dõi trên kênh chính và 350 nghìn lượt theo dõi trên kênh Youtube cá nhân, anh là một trong những gương mặt tiên phong trong mảng review smartphone và thiết bị công nghệ. Với hơn 10 năm hoạt động, anh giữ vai trò quan trọng trong cộng đồng công nghệ Việt Nam.\n\nMột trong “Hội Tứ hoàng” Streamer thế hệ đầu, từng là một trong những cái tên dẫn đầu trên nền tảng Twitch và Facebook Gaming. Với lối trò chuyện duyên dáng, hài hước, anh sở hữu hàng triệu người theo dõi. Ngoài ra, Pew Pew còn lấn sân sang kinh doanh, khẳng định hình ảnh đa năng trong giới trẻ.\n\nReviewer công nghệ uy tín với kiến thức chuyên sâu về smartphone, laptop và thiết bị âm thanh. Các video phân tích chi tiết của anh thường được cộng đồng yêu công nghệ tham khảo trước khi lựa chọn sản phẩm, giúp anh xây dựng được tệp khán giả trung thành.\n\nĐiểm nổi bật nhất của Hội đồng Thẩm định Better Choice Awards 2025 chính là sự đa dạng về nghề nghiệp, chuyên môn. Những nhà quản lý mang đến góc nhìn vĩ mô và định hướng phát triển dài hạn. Giới học thuật, nghiên cứu cung cấp chiều sâu chuyên môn, dự báo xu hướng công nghệ. Doanh nhân và nhà đầu tư đem lại trải nghiệm thực tiễn, tính khả thi trong thương mại hóa sản phẩm. Trong khi đó, các KOL công nghệ phản ánh trực tiếp cảm nhận và nhu cầu thực tế của người tiêu dùng.\n\nSự kết hợp này tạo nên một hội đồng cân bằng, khách quan và toàn diện. Nó bảo đảm rằng các sản phẩm và dịch vụ được lựa chọn không chỉ đạt chất lượng về kỹ thuật, mà còn thực sự hữu ích, phù hợp với đời sống, có tác động tích cực đến cộng đồng.\n\nSự hiện diện của họ không chỉ mang lại tính công bằng, minh bạch, mà còn góp phần thúc đẩy đổi mới sáng tạo, khuyến khích phát triển bền vững. Người tiêu dùng hoàn toàn có thể kỳ vọng rằng, những sản phẩm được vinh danh tại BCA 2025 sẽ là những lựa chọn xứng đáng nhất, đúng như tinh thần “Better Choice - Lựa chọn tốt hơn”.",
+      "is_relevant": true,
+      "entities": {
+        "PER": [
+          "Vy Lê",
+          "Pew Pew"
+        ],
+        "ORG": [
+          "BCA",
+          "Ban Kinh tế Trung ương",
+          "Quỹ Phát triển doanh nghiệp nhỏ và",
+          "NIC",
+          "Đại học Cambridge",
+          "VinUni",
+          "NextTech",
+          "Đại học California",
+          "Do Ventures",
+          "enCity",
+          "enFarm",
+          "Schannel"
+        ],
+        "LOC": [
+          "Việt Nam",
+          "Anh",
+          "Berkeley",
+          "Mỹ",
+          "Đông Nam Á"
+        ],
+        "DATE": [],
+        "TECH": [
+          "AI",
+          "trí tuệ nhân tạo"
+        ],
+        "JOB_ROLE": [],
+        "SALARY": [
+          "4 triệu",
+          "2 triệu",
+          "8.4 triệu"
+        ]
+      }
+    }
+  ]
+}

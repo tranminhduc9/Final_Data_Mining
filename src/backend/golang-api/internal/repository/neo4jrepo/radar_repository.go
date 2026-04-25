@@ -157,6 +157,44 @@ func (r *RadarRepository) GetTop4Industries(ctx context.Context) ([]domain.Radar
 	return trends, nil
 }
 
+func (r *RadarRepository) GetTop10Keywords(ctx context.Context) ([]domain.RadarKeywordCount, error) {
+	session := r.DB.Driver.NewSession(ctx, neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: r.DB.Database,
+	})
+	defer session.Close(ctx)
+
+	query := `
+		MATCH (t:Technology)<-[:REQUIRES]-(j:Job)
+		WHERE t.name IS NOT NULL
+		RETURN t.name AS keyword, count(j) AS job_count
+		ORDER BY job_count DESC
+		LIMIT 10
+	`
+
+	result, err := session.Run(ctx, query, nil)
+	if err != nil {
+		return nil, fmt.Errorf("neo4j query top10: %w", err)
+	}
+
+	var counts []domain.RadarKeywordCount
+	for result.Next(ctx) {
+		rec := result.Record()
+		keyword, _ := rec.Get("keyword")
+		jobCount, _ := rec.Get("job_count")
+		counts = append(counts, domain.RadarKeywordCount{
+			Keyword:  toString(keyword),
+			JobCount: toInt(jobCount),
+		})
+	}
+
+	if err := result.Err(); err != nil {
+		return nil, fmt.Errorf("neo4j result top10: %w", err)
+	}
+
+	return counts, nil
+}
+
 func (r *RadarRepository) SearchByKeywords(ctx context.Context, keywords []string, months int) ([]domain.RadarSearchPoint, error) {
 	session := r.DB.Driver.NewSession(ctx, neo4j.SessionConfig{
 		AccessMode:   neo4j.AccessModeRead,

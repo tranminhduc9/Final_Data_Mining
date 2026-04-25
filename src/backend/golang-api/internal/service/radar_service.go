@@ -23,6 +23,13 @@ func (s *RadarService) GetTop4(ctx context.Context) ([]domain.RadarTrend, error)
 	return s.radarRepo.GetTop4Industries(ctx)
 }
 
+func (s *RadarService) GetTop10(ctx context.Context) ([]domain.RadarKeywordCount, error) {
+	if s.radarRepo == nil {
+		return nil, fmt.Errorf("neo4j unavailable")
+	}
+	return s.radarRepo.GetTop10Keywords(ctx)
+}
+
 func (s *RadarService) Search(ctx context.Context, keywords []string, months int) ([]domain.RadarSearchPoint, error) {
 	if s.radarRepo == nil {
 		return nil, fmt.Errorf("neo4j unavailable")

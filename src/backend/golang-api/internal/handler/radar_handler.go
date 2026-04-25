@@ -78,5 +78,10 @@ func (h *RadarHandler) ExportCSV(c *gin.Context) {
 }
 
 func (h *RadarHandler) Top10(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "radar top10 endpoint not implemented yet"})
+	counts, err := h.radarService.GetTop10(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to fetch top10: " + err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": counts})
 }

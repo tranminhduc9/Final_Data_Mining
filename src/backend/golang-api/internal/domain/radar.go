@@ -15,3 +15,8 @@ type RadarSearchPoint struct {
 	Month    int            `json:"month"`
 	Keywords map[string]int `json:"keywords"`
 }
+
+type RadarKeywordCount struct {
+	Keyword  string `json:"keyword"`
+	JobCount int    `json:"job_count"`
+}

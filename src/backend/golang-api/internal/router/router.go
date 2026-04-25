@@ -34,12 +34,15 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	authHandler := handler.NewAuthHandler(authService)
 
 	var radarRepo *neo4jrepo.RadarRepository
+	var compareRepo *neo4jrepo.CompareRepository
 	if neo4jDB != nil {
 		radarRepo = neo4jrepo.NewRadarRepository(neo4jDB)
+		compareRepo = neo4jrepo.NewCompareRepository(neo4jDB)
 	}
 	radarService := service.NewRadarService(radarRepo)
 	radarHandler := handler.NewRadarHandler(radarService)
-	compareHandler := handler.NewCompareHandler()
+	compareService := service.NewCompareService(compareRepo)
+	compareHandler := handler.NewCompareHandler(compareService)
 	graphHandler := handler.NewGraphHandler()
 	chatHandler := handler.NewChatHandler()
 

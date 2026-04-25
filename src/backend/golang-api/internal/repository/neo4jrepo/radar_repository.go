@@ -3,6 +3,7 @@ package neo4jrepo
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
@@ -130,6 +131,78 @@ func (r *RadarRepository) GetTop4Industries(ctx context.Context) ([]domain.Radar
 	}
 
 	return trends, nil
+}
+
+func (r *RadarRepository) SearchByKeywords(ctx context.Context, keywords []string, months int) ([]domain.RadarSearchPoint, error) {
+	session := r.DB.Driver.NewSession(ctx, neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: r.DB.Database,
+	})
+	defer session.Close(ctx)
+
+	cutoff := time.Now().AddDate(0, -months, 0).Format("2006-01-02")
+
+	query := `
+		UNWIND $keywords AS kw
+		MATCH (j:Job)
+		WHERE j.title IS NOT NULL
+		  AND j.posted_date IS NOT NULL
+		  AND datetime(j.posted_date) >= datetime($cutoff)
+		  AND toLower(j.title) CONTAINS toLower(kw)
+		WITH kw,
+		     date(datetime(j.posted_date)).year  AS year,
+		     date(datetime(j.posted_date)).month AS month,
+		     j
+		RETURN year, month, kw AS keyword, count(j) AS job_count
+		ORDER BY year, month, keyword
+	`
+
+	result, err := session.Run(ctx, query, map[string]interface{}{
+		"keywords": keywords,
+		"cutoff":   cutoff,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("neo4j query search: %w", err)
+	}
+
+	type monthKey struct{ year, month int }
+	pointMap := map[monthKey]*domain.RadarSearchPoint{}
+	var order []monthKey
+
+	for result.Next(ctx) {
+		rec := result.Record()
+
+		yearVal, _ := rec.Get("year")
+		monthVal, _ := rec.Get("month")
+		keywordVal, _ := rec.Get("keyword")
+		countVal, _ := rec.Get("job_count")
+
+		y := toInt(yearVal)
+		m := toInt(monthVal)
+		k := toString(keywordVal)
+		c := toInt(countVal)
+
+		key := monthKey{y, m}
+		if _, ok := pointMap[key]; !ok {
+			pointMap[key] = &domain.RadarSearchPoint{
+				Year:     y,
+				Month:    m,
+				Keywords: make(map[string]int),
+			}
+			order = append(order, key)
+		}
+		pointMap[key].Keywords[k] = c
+	}
+
+	if err := result.Err(); err != nil {
+		return nil, fmt.Errorf("neo4j result search: %w", err)
+	}
+
+	points := make([]domain.RadarSearchPoint, 0, len(order))
+	for _, key := range order {
+		points = append(points, *pointMap[key])
+	}
+	return points, nil
 }
 
 func toInt(v interface{}) int {

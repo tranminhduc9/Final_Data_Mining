@@ -87,11 +87,22 @@ func (r *RadarRepository) GetTop4Industries(ctx context.Context) ([]domain.Radar
 		  count(
 		    CASE WHEN datetime(j.posted_date) < datetime({year: date().year, month: date().month, day: 1})
 		    THEN 1 END
-		  ) AS jobs_before_this_month
+		  ) AS jobs_before_this_month,
+		  count(
+		    CASE WHEN datetime(j.posted_date) >= datetime({year: date().year, month: date().month, day: 1})
+		    THEN 1 END
+		  ) AS jobs_this_month,
+		  count(
+		    CASE WHEN datetime(j.posted_date) >= datetime({year: date().year, month: date().month, day: 1}) - duration({months: 1})
+		      AND datetime(j.posted_date) < datetime({year: date().year, month: date().month, day: 1})
+		    THEN 1 END
+		  ) AS jobs_last_month
 		WHERE industry_group <> 'Khác'
 		RETURN industry_group AS industry,
-		       total_jobs     AS job_count,
-		       jobs_before_this_month
+		       total_jobs            AS job_count,
+		       jobs_before_this_month,
+		       jobs_this_month,
+		       jobs_last_month
 		ORDER BY total_jobs DESC
 		LIMIT 4
 	`, classifyIndustry)
@@ -108,9 +119,13 @@ func (r *RadarRepository) GetTop4Industries(ctx context.Context) ([]domain.Radar
 		industry, _ := rec.Get("industry")
 		jobCount, _ := rec.Get("job_count")
 		jobsBefore, _ := rec.Get("jobs_before_this_month")
+		jobsThis, _ := rec.Get("jobs_this_month")
+		jobsLast, _ := rec.Get("jobs_last_month")
 
 		total := toInt(jobCount)
 		before := toInt(jobsBefore)
+		thisMonth := toInt(jobsThis)
+		lastMonth := toInt(jobsLast)
 
 		var growthRate *float64
 		if before > 0 {
@@ -118,11 +133,20 @@ func (r *RadarRepository) GetTop4Industries(ctx context.Context) ([]domain.Radar
 			growthRate = &g
 		}
 
+		var momRate *float64
+		if lastMonth > 0 {
+			m := float64(thisMonth-lastMonth) / float64(lastMonth) * 100
+			momRate = &m
+		}
+
 		trends = append(trends, domain.RadarTrend{
 			Industry:        toString(industry),
 			JobCount:        total,
 			JobsToLastMonth: before,
 			GrowthRate:      growthRate,
+			JobsThisMonth:   thisMonth,
+			JobsLastMonth:   lastMonth,
+			MoMRate:         momRate,
 		})
 	}
 

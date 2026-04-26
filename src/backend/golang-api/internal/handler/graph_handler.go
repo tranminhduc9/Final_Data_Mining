@@ -21,6 +21,16 @@ func (h *GraphHandler) Index(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{"message": "graph page endpoint not implemented yet"})
 }
 
+// Explore godoc
+// @Summary      Explore knowledge graph starting from keyword nodes
+// @Tags         graph
+// @Produce      json
+// @Param        keywords  query  []string  true   "Keywords (Technology or Skill names)"  collectionFormat(multi)
+// @Param        depth     query  int       false  "Traversal depth: 1 or 2 (default 1)"
+// @Success      200 {object} dto.GraphExploreResponse
+// @Failure      400 {object} dto.ErrorResponse
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /graph/explore [get]
 func (h *GraphHandler) Explore(c *gin.Context) {
 	var keywords []string
 	seen := map[string]bool{}

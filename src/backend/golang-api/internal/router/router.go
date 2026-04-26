@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/config"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/handler"
@@ -29,7 +31,10 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 
 	jwtMiddleware := middleware.NewJWTMiddleware(cfg.JWTSecret)
 
-	userRepo := postgres.NewUserRepository(db)
+	var userRepo *postgres.UserRepository
+	if db != nil {
+		userRepo = postgres.NewUserRepository(db)
+	}
 	authService := service.NewAuthService(jwtMiddleware, userRepo)
 	authHandler := handler.NewAuthHandler(authService)
 
@@ -48,6 +53,8 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	graphService := service.NewGraphService(graphRepo)
 	graphHandler := handler.NewGraphHandler(graphService)
 	chatHandler := handler.NewChatHandler()
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

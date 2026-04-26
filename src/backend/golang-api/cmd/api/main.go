@@ -1,9 +1,20 @@
+// @title           Final Data Mining API
+// @version         1.0
+// @description     Backend API for Final Data Mining project — radar, compare, graph, auth, chat endpoints.
+// @host            localhost:8080
+// @BasePath        /api/v1
+// @securityDefinitions.apikey BearerAuth
+// @in              header
+// @name            Authorization
+// @description     Type "Bearer " followed by your access token.
+
 package main
 
 import (
 	"context"
 	"log"
 
+	_ "github.com/techpulsevn/final-data-mining/golang-api/docs"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/config"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/router"
@@ -19,9 +30,11 @@ func main() {
 
 	db, err := database.NewPostgres(ctx, cfg.PostgresConnectionString)
 	if err != nil {
-		log.Fatalf("connect postgres: %v", err)
+		log.Printf("WARNING: postgres unavailable — auth/chat features disabled: %v", err)
+	} else {
+		defer db.Close()
+		log.Println("postgres connected")
 	}
-	defer db.Close()
 
 	neo4jDB, err := database.NewNeo4j(ctx, cfg.Neo4jURI, cfg.Neo4jUsername, cfg.Neo4jPassword, cfg.Neo4jDatabase)
 	if err != nil {

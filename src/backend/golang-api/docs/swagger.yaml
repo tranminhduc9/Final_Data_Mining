@@ -1,0 +1,467 @@
+basePath: /api/v1
+definitions:
+  domain.CompareMonthlyCount:
+    properties:
+      job_count:
+        type: integer
+      month:
+        type: integer
+      year:
+        type: integer
+    type: object
+  domain.CompareResult:
+    properties:
+      growth_rate:
+        type: number
+      job_count:
+        type: integer
+      keyword:
+        type: string
+      mom_rate:
+        type: number
+      monthly:
+        items:
+          $ref: '#/definitions/domain.CompareMonthlyCount'
+        type: array
+      yoy_rate:
+        type: number
+    type: object
+  domain.GraphEdge:
+    properties:
+      id:
+        type: string
+      properties:
+        additionalProperties: true
+        type: object
+      source:
+        type: string
+      target:
+        type: string
+      type:
+        type: string
+    type: object
+  domain.GraphNode:
+    properties:
+      id:
+        type: string
+      labels:
+        items:
+          type: string
+        type: array
+      properties:
+        additionalProperties: true
+        type: object
+    type: object
+  domain.GraphResult:
+    properties:
+      centers:
+        description: IDs of center nodes (matching keywords)
+        items:
+          type: string
+        type: array
+      edges:
+        items:
+          $ref: '#/definitions/domain.GraphEdge'
+        type: array
+      nodes:
+        items:
+          $ref: '#/definitions/domain.GraphNode'
+        type: array
+    type: object
+  domain.RadarKeywordCount:
+    properties:
+      job_count:
+        type: integer
+      keyword:
+        type: string
+    type: object
+  domain.RadarSearchPoint:
+    properties:
+      keywords:
+        additionalProperties:
+          type: integer
+        type: object
+      month:
+        type: integer
+      year:
+        type: integer
+    type: object
+  domain.RadarTrend:
+    properties:
+      growth_rate:
+        type: number
+      industry:
+        type: string
+      job_count:
+        type: integer
+      jobs_last_month:
+        type: integer
+      jobs_this_month:
+        type: integer
+      jobs_to_last_month:
+        type: integer
+      mom_rate:
+        description: nil nếu tháng trước không có job nào
+        type: number
+    type: object
+  dto.AuthResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      message:
+        type: string
+      refresh_token:
+        type: string
+      token_type:
+        type: string
+    type: object
+  dto.CompareSearchResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.CompareResult'
+        type: array
+    type: object
+  dto.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  dto.GraphExploreResponse:
+    properties:
+      data:
+        $ref: '#/definitions/domain.GraphResult'
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.MeResponse:
+    properties:
+      email:
+        type: string
+      role:
+        type: string
+      user_id:
+        type: string
+    type: object
+  dto.RadarSearchResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.RadarSearchPoint'
+        type: array
+    type: object
+  dto.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.Top4Response:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.RadarTrend'
+        type: array
+    type: object
+  dto.Top10Response:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.RadarKeywordCount'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Backend API for Final Data Mining project — radar, compare, graph,
+    auth, chat endpoints.
+  title: Final Data Mining API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Login with email and password
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout (invalidates client-side token)
+      tags:
+      - auth
+  /auth/me:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MeResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current authenticated user info
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Refresh token payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Refresh access token
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Register payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - auth
+  /compare/search:
+    get:
+      parameters:
+      - collectionFormat: multi
+        description: Keywords (repeat or comma-separated)
+        in: query
+        items:
+          type: string
+        name: keywords
+        required: true
+        type: array
+      - description: 'Time window: 3, 6, 12, 24 (default 6)'
+        in: query
+        name: months
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CompareSearchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: 'Compare keywords: growth_rate, mom_rate, yoy_rate, monthly breakdown'
+      tags:
+      - compare
+  /graph/explore:
+    get:
+      parameters:
+      - collectionFormat: multi
+        description: Keywords (Technology or Skill names)
+        in: query
+        items:
+          type: string
+        name: keywords
+        required: true
+        type: array
+      - description: 'Traversal depth: 1 or 2 (default 1)'
+        in: query
+        name: depth
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GraphExploreResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Explore knowledge graph starting from keyword nodes
+      tags:
+      - graph
+  /radar/search:
+    get:
+      parameters:
+      - collectionFormat: multi
+        description: Keywords (repeat or comma-separated)
+        in: query
+        items:
+          type: string
+        name: keywords
+        required: true
+        type: array
+      - description: 'Time window in months: 3, 6, 12, 24 (default 6)'
+        in: query
+        name: months
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.RadarSearchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Monthly job counts per keyword over a time window
+      tags:
+      - radar
+  /radar/top4:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Top4Response'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Top 4 technologies by job count with growth metrics
+      tags:
+      - radar
+  /radar/top10:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Top10Response'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Top 10 technologies by total job count
+      tags:
+      - radar
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer " followed by your access token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

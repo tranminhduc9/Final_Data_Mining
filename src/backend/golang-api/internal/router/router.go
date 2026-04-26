@@ -8,6 +8,7 @@ import (
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/database"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/handler"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/middleware"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/neo4jrepo"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/postgres"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
@@ -32,9 +33,20 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	authService := service.NewAuthService(jwtMiddleware, userRepo)
 	authHandler := handler.NewAuthHandler(authService)
 
-	radarHandler := handler.NewRadarHandler()
-	compareHandler := handler.NewCompareHandler()
-	graphHandler := handler.NewGraphHandler()
+	var radarRepo *neo4jrepo.RadarRepository
+	var compareRepo *neo4jrepo.CompareRepository
+	var graphRepo *neo4jrepo.GraphRepository
+	if neo4jDB != nil {
+		radarRepo = neo4jrepo.NewRadarRepository(neo4jDB)
+		compareRepo = neo4jrepo.NewCompareRepository(neo4jDB)
+		graphRepo = neo4jrepo.NewGraphRepository(neo4jDB)
+	}
+	radarService := service.NewRadarService(radarRepo)
+	radarHandler := handler.NewRadarHandler(radarService)
+	compareService := service.NewCompareService(compareRepo)
+	compareHandler := handler.NewCompareHandler(compareService)
+	graphService := service.NewGraphService(graphRepo)
+	graphHandler := handler.NewGraphHandler(graphService)
 	chatHandler := handler.NewChatHandler()
 
 	r.GET("/health", func(c *gin.Context) {

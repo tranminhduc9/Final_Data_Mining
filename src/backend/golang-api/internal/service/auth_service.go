@@ -16,7 +16,10 @@ const (
 	refreshTokenTTL = 7 * 24 * time.Hour
 )
 
-var ErrInvalidCredentials = errors.New("invalid credentials")
+var (
+	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrDatabaseUnavailable = errors.New("database unavailable")
+)
 
 type AuthService struct {
 	jwtMiddleware *middleware.JWTMiddleware
@@ -28,6 +31,9 @@ func NewAuthService(jwtMiddleware *middleware.JWTMiddleware, userRepo *postgres.
 }
 
 func (s *AuthService) Register(ctx context.Context, email, password, fullName string) (dto.AuthResponse, error) {
+	if s.userRepo == nil {
+		return dto.AuthResponse{}, ErrDatabaseUnavailable
+	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return dto.AuthResponse{}, err
@@ -42,6 +48,9 @@ func (s *AuthService) Register(ctx context.Context, email, password, fullName st
 }
 
 func (s *AuthService) Login(ctx context.Context, email, password string) (dto.AuthResponse, error) {
+	if s.userRepo == nil {
+		return dto.AuthResponse{}, ErrDatabaseUnavailable
+	}
 	user, err := s.userRepo.FindByEmail(ctx, email)
 	if err != nil {
 		if errors.Is(err, postgres.ErrNotFound) {

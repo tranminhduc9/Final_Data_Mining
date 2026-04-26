@@ -21,6 +21,13 @@ func (h *RadarHandler) Index(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{"message": "radar page endpoint not implemented yet"})
 }
 
+// Top4 godoc
+// @Summary      Top 4 technologies by job count with growth metrics
+// @Tags         radar
+// @Produce      json
+// @Success      200 {object} dto.Top4Response
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /radar/top4 [get]
 func (h *RadarHandler) Top4(c *gin.Context) {
 	trends, err := h.radarService.GetTop4(c.Request.Context())
 	if err != nil {
@@ -30,6 +37,16 @@ func (h *RadarHandler) Top4(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": trends})
 }
 
+// Search godoc
+// @Summary      Monthly job counts per keyword over a time window
+// @Tags         radar
+// @Produce      json
+// @Param        keywords  query  []string  true   "Keywords (repeat or comma-separated)"  collectionFormat(multi)
+// @Param        months    query  int       false  "Time window in months: 3, 6, 12, 24 (default 6)"
+// @Success      200 {object} dto.RadarSearchResponse
+// @Failure      400 {object} dto.ErrorResponse
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /radar/search [get]
 func (h *RadarHandler) Search(c *gin.Context) {
 	// Collect keywords — supports repeated params and comma-separated values
 	var keywords []string
@@ -77,6 +94,13 @@ func (h *RadarHandler) ExportCSV(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{"message": "radar export csv endpoint not implemented yet"})
 }
 
+// Top10 godoc
+// @Summary      Top 10 technologies by total job count
+// @Tags         radar
+// @Produce      json
+// @Success      200 {object} dto.Top10Response
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /radar/top10 [get]
 func (h *RadarHandler) Top10(c *gin.Context) {
 	counts, err := h.radarService.GetTop10(c.Request.Context())
 	if err != nil {

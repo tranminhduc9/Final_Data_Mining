@@ -21,6 +21,16 @@ func (h *CompareHandler) Index(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{"message": "compare page endpoint not implemented yet"})
 }
 
+// Search godoc
+// @Summary      Compare keywords: growth_rate, mom_rate, yoy_rate, monthly breakdown
+// @Tags         compare
+// @Produce      json
+// @Param        keywords  query  []string  true   "Keywords (repeat or comma-separated)"  collectionFormat(multi)
+// @Param        months    query  int       false  "Time window: 3, 6, 12, 24 (default 6)"
+// @Success      200 {object} dto.CompareSearchResponse
+// @Failure      400 {object} dto.ErrorResponse
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /compare/search [get]
 func (h *CompareHandler) Search(c *gin.Context) {
 	var keywords []string
 	seen := map[string]bool{}

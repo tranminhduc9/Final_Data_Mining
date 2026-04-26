@@ -6,13 +6,9 @@ services:
     container_name: techpulse-golang-api
     env_file:
       - ./.env
-    environment:
-      PYTHON_AI_BASE_URL: http://python-api:8001
     ports:
       - "8080:8080"
     restart: unless-stopped
-    depends_on:
-      - python-api
 
   python-api:
     build:
@@ -24,3 +20,5 @@ services:
     ports:
       - "8001:8001"
     restart: unless-stopped
+    profiles:
+      - full

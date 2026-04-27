@@ -35,9 +35,14 @@
         "DATE": [
           "22-2024",
           "năm 2025",
-          "năm 2026"
+          "năm 2026",
+          "1/7",
+          "24/7"
         ],
-        "TECH": [],
+        "TECH": [
+          "Ransomware",
+          "Zero Trust"
+        ],
         "JOB_ROLE": [],
         "SALARY": []
       }
@@ -108,6 +113,9 @@
         ],
         "TECH": [
           "AI",
+          "IoT",
+          "NVR",
+          "VMS",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -135,7 +143,8 @@
         ],
         "DATE": [],
         "TECH": [
-          "AI"
+          "AI",
+          "Kaspersky"
         ],
         "JOB_ROLE": [
           "Giám đốc Điều hành"
@@ -154,10 +163,15 @@
         ],
         "ORG": [],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "24/7"
+        ],
         "TECH": [
           "AI",
-          "chatbot"
+          "apk",
+          "Pig Butchering",
+          "chatbot",
+          "Deepfake"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -176,10 +190,15 @@
           "PC"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "Thứ hai",
+          "24/7"
+        ],
         "TECH": [
           "AI",
-          "chatbot"
+          "Pig Butchering",
+          "chatbot",
+          "Zero Trust"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -235,10 +254,12 @@
         "DATE": [
           "năm 2016",
           "năm 2023",
-          "năm 2024"
+          "năm 2024",
+          "thu 5"
         ],
         "TECH": [
           "AI",
+          "HBM",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -275,7 +296,9 @@
           "Mỹ",
           "Israel"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ 3"
+        ],
         "TECH": [
           "AI"
         ],
@@ -300,9 +323,12 @@
         "LOC": [],
         "DATE": [
           "23-2024",
-          "21-2022"
+          "21-2022",
+          "Thứ hai"
         ],
-        "TECH": [],
+        "TECH": [
+          "Kaspersky"
+        ],
         "JOB_ROLE": [],
         "SALARY": []
       }
@@ -337,10 +363,13 @@
         "LOC": [],
         "DATE": [
           "1/7/2024",
-          "năm 2024"
+          "năm 2024",
+          "thứ hai"
         ],
         "TECH": [
           "AI",
+          "QR",
+          "Deepfake",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -383,7 +412,8 @@
         ],
         "DATE": [],
         "TECH": [
-          "AI"
+          "AI",
+          "IoT"
         ],
         "JOB_ROLE": [
           "ba"
@@ -428,12 +458,19 @@
         "LOC": [
           "Việt Nam"
         ],
-        "DATE": [],
+        "DATE": [
+          "15/11"
+        ],
         "TECH": [
           "AI",
+          "QR",
+          "IoT",
           "Trí tuệ nhân tạo",
+          "deepfake",
           "ChatGPT",
-          "học máy"
+          "ransomware",
+          "học máy",
+          "Zero Trust"
         ],
         "JOB_ROLE": [
           "Tổng Giám đốc",
@@ -473,7 +510,8 @@
           "Lào"
         ],
         "DATE": [
-          "năm 2024"
+          "năm 2024",
+          "15/11"
         ],
         "TECH": [],
         "JOB_ROLE": [],
@@ -500,9 +538,11 @@
         "LOC": [
           "châu Phi"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ ba"
+        ],
         "TECH": [
-          "Android"
+          "APK"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -523,7 +563,10 @@
           "TP. HCM"
         ],
         "DATE": [],
-        "TECH": [],
+        "TECH": [
+          "OTP",
+          "QR"
+        ],
         "JOB_ROLE": [
           "ba"
         ],
@@ -550,6 +593,8 @@
         ],
         "TECH": [
           "AI",
+          "DDoS",
+          "deepfake",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -636,7 +681,10 @@
           "năm 2024"
         ],
         "TECH": [
-          "AI"
+          "AI",
+          "EDR",
+          "SOC",
+          "Cisco"
         ],
         "JOB_ROLE": [
           "Giám đốc Công nghệ",
@@ -670,7 +718,7 @@
         ],
         "TECH": [
           "AI",
-          "Android",
+          "Malwarebytes",
           "AI tạo sinh"
         ],
         "JOB_ROLE": [],
@@ -730,8 +778,7 @@
         "DATE": [],
         "TECH": [
           "AI",
-          "trí tuệ nhân tạo",
-          "Android"
+          "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [],
         "SALARY": [
@@ -792,7 +839,8 @@
         ],
         "LOC": [],
         "DATE": [
-          "17/2024"
+          "17/2024",
+          "1/7"
         ],
         "TECH": [],
         "JOB_ROLE": [],
@@ -823,11 +871,14 @@
         ],
         "DATE": [
           "năm 2024",
-          "năm 2030"
+          "năm 2030",
+          "22/5"
         ],
         "TECH": [
           "AI",
-          "Trí tuệ nhân tạo"
+          "Trí tuệ nhân tạo",
+          "ransomware",
+          "Zero Trust"
         ],
         "JOB_ROLE": [
           "ba"
@@ -858,9 +909,13 @@
           "Việt Nam"
         ],
         "DATE": [
-          "50/2024"
+          "50/2024",
+          "01/07"
         ],
-        "TECH": [],
+        "TECH": [
+          "PAD",
+          "deepfake"
+        ],
         "JOB_ROLE": [],
         "SALARY": []
       }
@@ -892,6 +947,9 @@
         ],
         "TECH": [
           "AI",
+          "VPN",
+          "2FA",
+          "Kaspersky",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -935,7 +993,9 @@
           "thành phố Bà Vẹt",
           "tỉnh Svay Riêng"
         ],
-        "DATE": [],
+        "DATE": [
+          "25/1"
+        ],
         "TECH": [],
         "JOB_ROLE": [],
         "SALARY": [
@@ -1031,14 +1091,19 @@
           "năm 2025",
           "năm 2015",
           "năm 2024",
-          "năm 2016"
+          "năm 2016",
+          "24/7"
         ],
         "TECH": [
           "AI",
+          "SOC",
           "AWS",
           "Machine Learning",
+          "Proofpoint",
+          "Imperva",
           "Azure",
-          "Google Cloud"
+          "Google Cloud",
+          "trung tâm dữ liệu"
         ],
         "JOB_ROLE": [
           "ba"

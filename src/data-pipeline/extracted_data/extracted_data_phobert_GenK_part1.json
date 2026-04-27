@@ -96,7 +96,9 @@
         ],
         "TECH": [
           "AI",
+          "Apple Silicon",
           "mô hình ngôn ngữ",
+          "Siri",
           "Gemini"
         ],
         "JOB_ROLE": [
@@ -141,7 +143,11 @@
           "AI",
           "Anthropic",
           "Claude",
+          "Figma",
+          "Claude Code",
+          "Project Glasswing",
           "Cloudflare",
+          "Cursor",
           "mô hình ngôn ngữ"
         ],
         "JOB_ROLE": [
@@ -169,7 +175,9 @@
           "OpenAI"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "thứ ba"
+        ],
         "TECH": [
           "AI",
           "LLM",
@@ -245,12 +253,17 @@
           "năm 2024",
           "năm 2023",
           "năm 2026",
-          "năm 2025"
+          "năm 2025",
+          "1/4"
         ],
         "TECH": [
           "AI",
-          "Android",
-          "trí tuệ nhân tạo"
+          "OTP",
+          "2FA",
+          "Deepfake",
+          "Kaspersky",
+          "trí tuệ nhân tạo",
+          "Fortinet"
         ],
         "JOB_ROLE": [],
         "SALARY": [
@@ -285,6 +298,7 @@
           "Claude",
           "AI agent",
           "Anthropic",
+          "Agents SDK",
           "TypeScript",
           "Python"
         ],
@@ -320,6 +334,7 @@
         "TECH": [
           "AI",
           "GPU",
+          "trung tâm dữ liệu",
           "OpenAI",
           "Anthropic",
           "Claude",
@@ -384,6 +399,7 @@
           "chatbot",
           "Claude",
           "tác nhân AI",
+          "OpenClaw",
           "Anthropic"
         ],
         "JOB_ROLE": [
@@ -445,8 +461,7 @@
         ],
         "TECH": [
           "AI",
-          "iOS",
-          "Android"
+          "vibe-coding"
         ],
         "JOB_ROLE": [
           "Giám đốc điều hành"
@@ -483,13 +498,18 @@
           "Ngày 14 tháng 4",
           "tháng 2",
           "tháng 1",
-          "năm 2026"
+          "năm 2026",
+          "16/4"
         ],
         "TECH": [
           "AI",
           "API",
           "Anthropic",
-          "Claude"
+          "Figma",
+          "Claude Mythos",
+          "Claude",
+          "Claude Opus",
+          "Claude Code"
         ],
         "JOB_ROLE": [
           "CEO"
@@ -563,12 +583,14 @@
           "năm 2009",
           "năm 2023",
           "Năm 2009",
-          "năm 2022"
+          "năm 2022",
+          "thứ hai"
         ],
         "TECH": [
           "AI",
           "ChatGPT",
           "trí tuệ nhân tạo",
+          "Siri",
           "OpenAI"
         ],
         "JOB_ROLE": [
@@ -656,7 +678,9 @@
           "Meta"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "thứ ba"
+        ],
         "TECH": [
           "AI",
           "AI tạo sinh"
@@ -694,6 +718,7 @@
         ],
         "TECH": [
           "AI",
+          "OpenClaw",
           "Copilot",
           "tác nhân AI",
           "Anthropic",
@@ -772,12 +797,14 @@
         ],
         "DATE": [
           "năm 2024",
-          "năm 2025"
+          "năm 2025",
+          "thứ Hai"
         ],
         "TECH": [
           "AI",
           "AGI",
           "trí tuệ nhân tạo",
+          "trung tâm dữ liệu",
           "OpenAI"
         ],
         "JOB_ROLE": [
@@ -805,7 +832,9 @@
         "LOC": [
           "Thái Bình Dương"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ Tư"
+        ],
         "TECH": [
           "AI",
           "GPU",
@@ -873,7 +902,8 @@
           "AI",
           "trí tuệ nhân tạo",
           "mô hình ngôn ngữ",
-          "ChatGPT"
+          "ChatGPT",
+          "Physical AI"
         ],
         "JOB_ROLE": [
           "ba"
@@ -923,7 +953,7 @@
         "TECH": [
           "AI",
           "trí tuệ nhân tạo",
-          "Spark",
+          "Muse Spark",
           "OpenAI",
           "Anthropic",
           "Llama",
@@ -931,7 +961,7 @@
           "Claude",
           "tác nhân AI",
           "Gemini",
-          "Android"
+          "Siri"
         ],
         "JOB_ROLE": [
           "CEO",
@@ -984,7 +1014,9 @@
           "ChatGPT",
           "chatbot",
           "OpenAI",
-          "Anthropic"
+          "Sora",
+          "Anthropic",
+          "Claude Code"
         ],
         "JOB_ROLE": [
           "CEO",
@@ -1021,7 +1053,8 @@
           "năm 2027"
         ],
         "TECH": [
-          "AI"
+          "AI",
+          "TurboQuant"
         ],
         "JOB_ROLE": [
           "Giám đốc điều hành"
@@ -1083,8 +1116,10 @@
           "AI",
           "mô hình ngôn ngữ",
           "trí tuệ nhân tạo",
-          "Spark",
-          "Chatbot"
+          "Muse Spark",
+          "Chatbot",
+          "OpenClaw",
+          "trung tâm dữ liệu"
         ],
         "JOB_ROLE": [
           "CEO"
@@ -1148,12 +1183,14 @@
         "LOC": [],
         "DATE": [
           "ngày 8 tháng 3",
-          "tháng 3"
+          "tháng 3",
+          "thứ Sáu"
         ],
         "TECH": [
           "AI",
-          "Claude",
+          "Claude Code",
           "GitHub",
+          "Claude",
           "Anthropic"
         ],
         "JOB_ROLE": [],
@@ -1190,7 +1227,8 @@
         "DATE": [],
         "TECH": [
           "AI",
-          "GPU"
+          "GPU",
+          "SAP"
         ],
         "JOB_ROLE": [
           "ba"
@@ -1238,11 +1276,14 @@
           "Trung Đông",
           "Anthropic"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ Sáu"
+        ],
         "TECH": [
           "AI",
           "Anthropic",
-          "Claude",
+          "Claude Mythos",
+          "Cisco",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -1316,7 +1357,7 @@
           "AI",
           "Anthropic",
           "Linux",
-          "Claude"
+          "Claude Mythos"
         ],
         "JOB_ROLE": [
           "CEO"
@@ -1350,13 +1391,15 @@
         ],
         "DATE": [
           "ngày 8 tháng 4 năm 2026",
-          "năm 2026"
+          "năm 2026",
+          "thứ Tư",
+          "thứ Năm",
+          "thứ 5",
+          "8/4"
         ],
         "TECH": [
           "AI",
-          "Spark",
-          "iOS",
-          "Android",
+          "Muse Spark",
           "Llama",
           "ChatGPT",
           "OpenAI",
@@ -1427,7 +1470,8 @@
         "DATE": [],
         "TECH": [
           "AI",
-          "GPU"
+          "GPU",
+          "vibe coding"
         ],
         "JOB_ROLE": [
           "ba",
@@ -1450,7 +1494,9 @@
           "năm 2026"
         ],
         "TECH": [
-          "AI"
+          "AI",
+          "DLSS 5",
+          "ray tracing"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -1530,6 +1576,8 @@
           "OpenAI",
           "ChatGPT",
           "mô hình ngôn ngữ",
+          "GPT-4o",
+          "GPT-5.3",
           "Claude",
           "Gemini",
           "Grok",
@@ -1561,12 +1609,16 @@
           "Trung Quốc",
           "phương Tây"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ ba"
+        ],
         "TECH": [
           "AI",
           "API",
+          "Trinity Large Thinking",
           "AI agent",
           "Anthropic",
+          "OpenClaw",
           "OpenAI",
           "Llama",
           "Apache"
@@ -1669,10 +1721,13 @@
           "4/3/2026",
           "năm 2025",
           "năm 2030",
-          "năm 2024"
+          "năm 2024",
+          "19/3"
         ],
         "TECH": [
           "AI",
+          "FCC",
+          "trung tâm dữ liệu",
           "Trí tuệ nhân tạo",
           "OpenAI",
           "Oracle",
@@ -1720,13 +1775,15 @@
           "tháng 4",
           "năm 2025",
           "năm 2033",
-          "năm 2026"
+          "năm 2026",
+          "thứ Tư",
+          "thứ ba"
         ],
         "TECH": [
           "AI",
           "API",
           "GPT",
-          "Spark",
+          "Muse Spark",
           "trí tuệ nhân tạo",
           "OpenAI",
           "Anthropic",
@@ -1772,15 +1829,20 @@
           "trái đất"
         ],
         "DATE": [
-          "Tháng 11"
+          "Tháng 11",
+          "thứ ba"
         ],
         "TECH": [
           "AI",
           "GPT",
           "SSH",
           "Anthropic",
-          "Claude",
+          "Project Glasswing",
+          "Claude Mythos",
+          "GPT-5.4",
           "Gemini",
+          "Claude Code",
+          "Cisco",
           "Linux"
         ],
         "JOB_ROLE": [
@@ -1819,7 +1881,8 @@
         "DATE": [],
         "TECH": [
           "AI",
-          "OpenAI"
+          "OpenAI",
+          "trung tâm dữ liệu"
         ],
         "JOB_ROLE": [
           "Giám đốc điều hành",
@@ -1884,9 +1947,9 @@
         "DATE": [],
         "TECH": [
           "AI",
-          "iOS",
-          "Gemini",
-          "Android"
+          "Google AI Edge Eloquent",
+          "SuperWhisper",
+          "Gemini"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -1906,14 +1969,19 @@
         "LOC": [],
         "DATE": [
           "tháng 4",
-          "tháng 2"
+          "tháng 2",
+          "thứ ba"
         ],
         "TECH": [
           "AI",
           "trí tuệ nhân tạo",
           "Anthropic",
+          "OpenClaw",
+          "Claude Opus",
           "Claude",
-          "Spark"
+          "Claude Code",
+          "Spark",
+          "vibe coding"
         ],
         "JOB_ROLE": [
           "lập trình viên",
@@ -2002,7 +2070,9 @@
           "GitHub"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "thứ ba"
+        ],
         "TECH": [
           "AI",
           "Copilot",
@@ -2036,9 +2106,10 @@
         ],
         "TECH": [
           "AI",
+          "CI/CD",
           "GitHub",
           "GitHub Actions",
-          "Claude"
+          "Claude Code"
         ],
         "JOB_ROLE": [
           "sa",
@@ -2078,7 +2149,9 @@
           "AI",
           "GPT",
           "trí tuệ nhân tạo",
+          "Gemini 3",
           "Gemini",
+          "GPT-5.2",
           "OpenAI",
           "Claude",
           "Anthropic",
@@ -2138,9 +2211,13 @@
         "TECH": [
           "AI",
           "GPU",
+          "Gemma 4",
+          "agentic AI",
           "Spark",
           "tác nhân AI",
-          "AI agent"
+          "AI agent",
+          "Tensor",
+          "checkpoint"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -2187,15 +2264,23 @@
         "LOC": [],
         "DATE": [
           "31/3/2026",
-          "năm 2026"
+          "năm 2026",
+          "thứ hai",
+          "thứ ba",
+          "Thứ hai",
+          "Thứ ba",
+          "31/3"
         ],
         "TECH": [
           "AI",
-          "Claude",
+          "Claude Code",
+          "Cursor",
           "GitHub",
           "Copilot",
-          "Gemini",
-          "Anthropic"
+          "Gemini CLI",
+          "Anthropic",
+          "Claude",
+          "Claude Opus"
         ],
         "JOB_ROLE": [
           "Ba"
@@ -2221,7 +2306,9 @@
           "Viện Công nghệ Massachusetts"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "thứ hai"
+        ],
         "TECH": [
           "AI",
           "ChatGPT",
@@ -2251,14 +2338,18 @@
           "Brussels"
         ],
         "DATE": [
-          "31/3/2026"
+          "31/3/2026",
+          "thứ hai",
+          "31/3"
         ],
         "TECH": [
           "AI",
           "Anthropic",
-          "Claude",
+          "Constitutional AI",
+          "Claude Code",
           "Linux",
-          "Python"
+          "Python",
+          "Claude"
         ],
         "JOB_ROLE": [
           "lập trình viên"
@@ -2284,14 +2375,19 @@
         "LOC": [],
         "DATE": [
           "tháng 11",
-          "31/3/2026"
+          "31/3/2026",
+          "5/10",
+          "8/10",
+          "31/3"
         ],
         "TECH": [
           "AI",
           "API",
-          "Claude",
+          "Claude Code",
           "Anthropic",
           "TypeScript",
+          "Claude",
+          "vibe coding",
           "GitHub"
         ],
         "JOB_ROLE": [
@@ -2471,6 +2567,7 @@
         ],
         "TECH": [
           "AI",
+          "IoT",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [],
@@ -2492,7 +2589,8 @@
         "LOC": [],
         "DATE": [],
         "TECH": [
-          "AI"
+          "AI",
+          "OCR"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -2516,15 +2614,18 @@
         ],
         "LOC": [],
         "DATE": [
-          "tháng 6"
+          "tháng 6",
+          "thứ ba"
         ],
         "TECH": [
           "AI",
           "TPU",
-          "iOS",
+          "Siri",
           "AI agent",
           "chatbot",
-          "Gemini"
+          "Foundation Models",
+          "Gemini",
+          "Gemini 3"
         ],
         "JOB_ROLE": [
           "quản lý sản phẩm",
@@ -2589,6 +2690,7 @@
         ],
         "TECH": [
           "AI",
+          "HBM",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [],
@@ -2618,6 +2720,8 @@
         "TECH": [
           "AI",
           "GPU",
+          "TurboQuant",
+          "KV cache",
           "DeepSeek"
         ],
         "JOB_ROLE": [],
@@ -2657,17 +2761,20 @@
         ],
         "DATE": [
           "tháng 2",
-          "năm 2026"
+          "năm 2026",
+          "20/3"
         ],
         "TECH": [
           "AI",
           "AGI",
           "LLM",
+          "MOE",
           "trí tuệ nhân tạo",
           "DeepSeek",
           "mô hình ngôn ngữ",
           "chatbot",
           "AI agent",
+          "OpenClaw",
           "Claude",
           "Anthropic"
         ],
@@ -2707,11 +2814,13 @@
         ],
         "LOC": [],
         "DATE": [
-          "năm 2032"
+          "năm 2032",
+          "thứ hai"
         ],
         "TECH": [
           "AI",
           "LLM",
+          "LPU",
           "trí tuệ nhân tạo",
           "OpenAI",
           "Anthropic",
@@ -2746,11 +2855,15 @@
         ],
         "LOC": [],
         "DATE": [
-          "năm 2026"
+          "năm 2026",
+          "thứ Tư",
+          "thứ hai"
         ],
         "TECH": [
           "AI",
           "GPU",
+          "HBM",
+          "TurboQuant",
           "ChatGPT",
           "Gemini",
           "tác nhân AI"
@@ -2818,7 +2931,9 @@
         "DATE": [],
         "TECH": [
           "AI",
-          "GPU"
+          "GPU",
+          "AI Factory",
+          "agentic AI"
         ],
         "JOB_ROLE": [
           "lập trình viên"
@@ -2868,10 +2983,12 @@
         ],
         "DATE": [
           "1/7/2026",
-          "năm 2026"
+          "năm 2026",
+          "24/7"
         ],
         "TECH": [
           "AI",
+          "AI Streamer",
           "AI Agent",
           "Machine Learning"
         ],
@@ -2909,8 +3026,11 @@
         "DATE": [],
         "TECH": [
           "AI",
+          "agentic AI",
           "AI agent",
-          "chatbot"
+          "chatbot",
+          "AI-First",
+          "AI Factory"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -2937,14 +3057,16 @@
         "DATE": [
           "tháng 9",
           "tháng 11",
-          "năm 2024"
+          "năm 2024",
+          "thứ Hai",
+          "thứ Ba"
         ],
         "TECH": [
           "AI",
           "AGI",
           "API",
           "OpenAI",
-          "iOS"
+          "Sora"
         ],
         "JOB_ROLE": [
           "Ba",
@@ -2988,6 +3110,7 @@
         "TECH": [
           "AI",
           "LLM",
+          "OCR",
           "API",
           "mô hình ngôn ngữ",
           "OpenAI",
@@ -3049,12 +3172,16 @@
         "PER": [],
         "ORG": [],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "thứ hai"
+        ],
         "TECH": [
           "AI",
           "GPU",
           "LLM",
-          "mô hình ngôn ngữ"
+          "MoE",
+          "mô hình ngôn ngữ",
+          "Mixture of Experts"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -3090,6 +3217,7 @@
         "TECH": [
           "AI",
           "VBA",
+          "OpenClaw",
           "AI Agent",
           "Tác nhân AI",
           "AI tạo sinh",
@@ -3125,12 +3253,17 @@
         "DATE": [
           "năm 2026",
           "năm 2025",
-          "năm 2028"
+          "năm 2028",
+          "Thứ hai"
         ],
         "TECH": [
           "AI",
           "API",
-          "AI Agent"
+          "CRM",
+          "OpenClaw",
+          "AI Agent",
+          "Salesforce",
+          "Siri"
         ],
         "JOB_ROLE": [
           "lập trình viên"
@@ -3156,6 +3289,8 @@
         "DATE": [],
         "TECH": [
           "AI",
+          "HBM",
+          "Atlas 350",
           "mô hình ngôn ngữ"
         ],
         "JOB_ROLE": [],
@@ -3187,6 +3322,7 @@
         "TECH": [
           "AI",
           "trí tuệ nhân tạo",
+          "frame generation",
           "machine learning"
         ],
         "JOB_ROLE": [],
@@ -3214,6 +3350,7 @@
         "TECH": [
           "AI",
           "GPU",
+          "Physical AI",
           "trí tuệ nhân tạo",
           "AI tạo sinh"
         ],

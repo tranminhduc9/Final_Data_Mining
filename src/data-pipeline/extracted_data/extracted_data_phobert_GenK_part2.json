@@ -53,7 +53,11 @@
           "77/2025"
         ],
         "TECH": [
-          "Android"
+          "APK",
+          "ADB",
+          "OTP",
+          "QR",
+          "sideloading"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -134,6 +138,9 @@
         ],
         "TECH": [
           "AI",
+          "OCR",
+          "GDPR",
+          "reCAPTCHA",
           "học máy"
         ],
         "JOB_ROLE": [],
@@ -189,6 +196,8 @@
         ],
         "TECH": [
           "AI",
+          "DLSS 5",
+          "ray tracing",
           "Deep Learning"
         ],
         "JOB_ROLE": [],
@@ -228,9 +237,11 @@
           "ChatGPT",
           "OpenAI",
           "trí tuệ nhân tạo",
+          "AI washing",
           "tác nhân AI",
           "AI Agent",
-          "Anthropic"
+          "Anthropic",
+          "trung tâm dữ liệu"
         ],
         "JOB_ROLE": [
           "sa",
@@ -308,14 +319,16 @@
         ],
         "DATE": [
           "tháng 5",
-          "tháng 4"
+          "tháng 4",
+          "30/1"
         ],
         "TECH": [
           "AI",
           "TPU",
           "GPU",
           "trí tuệ nhân tạo",
-          "Google Cloud"
+          "Google Cloud",
+          "Tensor"
         ],
         "JOB_ROLE": [
           "kỹ sư phần mềm",
@@ -341,7 +354,9 @@
           "năm 2026"
         ],
         "TECH": [
-          "https"
+          "https",
+          "OTP",
+          "VNeID"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -360,7 +375,9 @@
         ],
         "LOC": [],
         "DATE": [],
-        "TECH": [],
+        "TECH": [
+          "OTP"
+        ],
         "JOB_ROLE": [],
         "SALARY": []
       }
@@ -380,7 +397,9 @@
           "Forbes"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "23/12"
+        ],
         "TECH": [],
         "JOB_ROLE": [],
         "SALARY": [
@@ -449,11 +468,15 @@
           "Hà Nội"
         ],
         "DATE": [
-          "năm 2030"
+          "năm 2030",
+          "17/12"
         ],
         "TECH": [
           "AI",
-          "AI tạo sinh"
+          "IPv6",
+          "DNS",
+          "AI tạo sinh",
+          "deepfake"
         ],
         "JOB_ROLE": [],
         "SALARY": [
@@ -487,7 +510,11 @@
           "Việt Nam",
           "Sheraton Hanoi Hotel"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ hai",
+          "thứ ba",
+          "17/12"
+        ],
         "TECH": [
           "AI"
         ],
@@ -557,6 +584,7 @@
         ],
         "TECH": [
           "AI",
+          "Mau",
           "Gemini",
           "DeepSeek",
           "Grok",
@@ -580,7 +608,9 @@
           "AppleInsider"
         ],
         "LOC": [],
-        "DATE": [],
+        "DATE": [
+          "15/12"
+        ],
         "TECH": [],
         "JOB_ROLE": [],
         "SALARY": []
@@ -624,7 +654,8 @@
         "LOC": [],
         "DATE": [],
         "TECH": [
-          "AI"
+          "AI",
+          "Content Credentials"
         ],
         "JOB_ROLE": [],
         "SALARY": []
@@ -648,8 +679,12 @@
           "Mỹ",
           "Singapore"
         ],
-        "DATE": [],
+        "DATE": [
+          "thứ hai",
+          "18/11"
+        ],
         "TECH": [
+          "DDoS",
           "AWS",
           "Cloudflare",
           "ChatGPT",
@@ -691,7 +726,10 @@
           "Nam"
         ],
         "DATE": [
-          "4/11/2025"
+          "4/11/2025",
+          "thứ 2",
+          "thứ Ba",
+          "thứ Năm"
         ],
         "TECH": [],
         "JOB_ROLE": [
@@ -728,10 +766,13 @@
         ],
         "DATE": [
           "năm 2025",
-          "năm 2024"
+          "năm 2024",
+          "24/7"
         ],
         "TECH": [
           "AI",
+          "OTP",
+          "deepfake",
           "trí tuệ nhân tạo"
         ],
         "JOB_ROLE": [
@@ -769,7 +810,9 @@
           "Cao Bằng",
           "Hà Nội"
         ],
-        "DATE": [],
+        "DATE": [
+          "7/10"
+        ],
         "TECH": [
           "AI",
           "API"
@@ -830,7 +873,10 @@
           "năm 2025",
           "năm 2024"
         ],
-        "TECH": [],
+        "TECH": [
+          "QR",
+          "OTP"
+        ],
         "JOB_ROLE": [
           "ba"
         ],
@@ -862,10 +908,14 @@
         ],
         "DATE": [
           "22/07/2020",
-          "15/04/2025"
+          "15/04/2025",
+          "24/7"
         ],
         "TECH": [
           "AI",
+          "VNeID",
+          "QR",
+          "OTP",
           "microservices",
           "Docker",
           "Kubernetes"

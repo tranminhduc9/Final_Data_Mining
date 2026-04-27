@@ -34,6 +34,7 @@
         "TECH": [
           "AI",
           "trí tuệ nhân tạo",
+          "trung tâm dữ liệu",
           "OpenAI",
           "Oracle"
         ],
@@ -123,7 +124,8 @@
           "Năm 2025",
           "năm 2025",
           "năm 2024",
-          "năm 2010"
+          "năm 2010",
+          "thứ 5"
         ],
         "TECH": [],
         "JOB_ROLE": [],
@@ -166,13 +168,19 @@
           "năm 2017",
           "năm 2027",
           "năm 2026",
-          "năm 2001"
+          "năm 2001",
+          "thứ 2",
+          "Thứ 2",
+          "Thứ 3",
+          "Thứ 4",
+          "thứ 3"
         ],
         "TECH": [
           "AI",
           "trí tuệ nhân tạo",
           "Claude",
-          "Gemini"
+          "Gemini",
+          "Siri"
         ],
         "JOB_ROLE": [
           "CEO"
@@ -204,10 +212,19 @@
         ],
         "DATE": [
           "năm 2030",
-          "năm 2026"
+          "năm 2026",
+          "thứ 6"
         ],
         "TECH": [
-          "AI"
+          "AI",
+          "Data Center",
+          "trung tâm dữ liệu",
+          "AI Data Center",
+          "public cloud",
+          "private cloud",
+          "sovereign cloud",
+          "AI Readiness",
+          "hybrid cloud"
         ],
         "JOB_ROLE": [
           "CEO"
@@ -235,7 +252,8 @@
         "LOC": [],
         "DATE": [
           "tháng 9",
-          "năm 2001"
+          "năm 2001",
+          "1/9"
         ],
         "TECH": [],
         "JOB_ROLE": [
@@ -307,6 +325,7 @@
         "DATE": [],
         "TECH": [
           "AI",
+          "Salesforce",
           "tác nhân AI",
           "Anthropic",
           "OpenAI"
@@ -329,9 +348,12 @@
         "LOC": [
           "Việt Nam"
         ],
-        "DATE": [],
+        "DATE": [
+          "17/4"
+        ],
         "TECH": [
-          "AI"
+          "AI",
+          "IoT"
         ],
         "JOB_ROLE": [
           "ba"

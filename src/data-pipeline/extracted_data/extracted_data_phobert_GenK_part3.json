@@ -122,11 +122,14 @@
           "năm 2021",
           "năm 2025",
           "năm 2026",
-          "năm 2008"
+          "năm 2008",
+          "thứ ba"
         ],
         "TECH": [
           "GPU",
-          "AI"
+          "AI",
+          "SoC",
+          "HBM"
         ],
         "JOB_ROLE": [
           "CEO",
@@ -177,7 +180,9 @@
         ],
         "TECH": [
           "AI",
-          "trí tuệ nhân tạo"
+          "HBM",
+          "trí tuệ nhân tạo",
+          "trung tâm dữ liệu"
         ],
         "JOB_ROLE": [
           "ba"

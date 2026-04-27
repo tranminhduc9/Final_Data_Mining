@@ -31,6 +31,11 @@ type RawEdge struct {
 	Props    map[string]interface{}
 }
 
+type RawPath struct {
+	Nodes []RawNode
+	Edges []RawEdge
+}
+
 // FindCenterNodes returns one Technology or Skill node per keyword.
 func (r *GraphRepository) FindCenterNodes(ctx context.Context, keywords []string) ([]RawNode, error) {
 	session := r.DB.Driver.NewSession(ctx, neo4j.SessionConfig{
@@ -68,6 +73,57 @@ func (r *GraphRepository) FindCenterNodes(ctx context.Context, keywords []string
 		return nil, fmt.Errorf("neo4j find centers result: %w", err)
 	}
 	return nodes, nil
+}
+
+// FindRoadPath finds the shortest undirected path (max 6 hops) between two Technology/Skill
+// nodes matched by keyword. Among all shortest paths, prefers the one passing through a Company.
+func (r *GraphRepository) FindRoadPath(ctx context.Context, keyword1, keyword2 string) (*RawPath, error) {
+	session := r.DB.Driver.NewSession(ctx, neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: r.DB.Database,
+	})
+	defer session.Close(ctx)
+
+	query := `
+		MATCH (start)
+		WHERE (start:Technology OR start:Skill) AND toLower(start.name) CONTAINS toLower($keyword1)
+		WITH start LIMIT 1
+		MATCH (end)
+		WHERE (end:Technology OR end:Skill) AND toLower(end.name) CONTAINS toLower($keyword2)
+		WITH start, end LIMIT 1
+		MATCH p = allShortestPaths((start)-[*..6]-(end))
+		WITH p, size([n IN nodes(p) WHERE n:Company]) AS companyCount
+		ORDER BY companyCount DESC
+		LIMIT 1
+		RETURN p
+	`
+	result, err := session.Run(ctx, query, map[string]interface{}{
+		"keyword1": keyword1,
+		"keyword2": keyword2,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("neo4j road analysis: %w", err)
+	}
+
+	if result.Next(ctx) {
+		rec := result.Record()
+		if pVal, _ := rec.Get("p"); pVal != nil {
+			if path, ok := pVal.(dbtype.Path); ok {
+				raw := &RawPath{}
+				for _, node := range path.Nodes {
+					raw.Nodes = append(raw.Nodes, RawNode{ID: node.Id, Labels: node.Labels, Props: node.Props})
+				}
+				for _, rel := range path.Relationships {
+					raw.Edges = append(raw.Edges, RawEdge{ID: rel.Id, Type: rel.Type, SourceID: rel.StartId, TargetID: rel.EndId, Props: rel.Props})
+				}
+				return raw, nil
+			}
+		}
+	}
+	if err := result.Err(); err != nil {
+		return nil, fmt.Errorf("neo4j road analysis result: %w", err)
+	}
+	return nil, nil // no path found
 }
 
 // ExploreByKeywordAndLocation finds a center Technology by keyword, then returns

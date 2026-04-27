@@ -80,6 +80,38 @@ func (h *GraphHandler) Explore(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
+// RoadAnalysis godoc
+// @Summary      Find shortest path between two Technology/Skill nodes
+// @Description  Uses undirected shortest path (max 6 hops). Among all shortest paths, prefers one that passes through a Company node. Returns ordered nodes and edges.
+// @Tags         graph
+// @Produce      json
+// @Param        from  query  string  true  "Start keyword (Technology or Skill name)"
+// @Param        to    query  string  true  "End keyword (Technology or Skill name)"
+// @Success      200 {object} dto.RoadAnalysisResponse
+// @Failure      400 {object} dto.ErrorResponse
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /graph/road_analysis [get]
+func (h *GraphHandler) RoadAnalysis(c *gin.Context) {
+	from := strings.TrimSpace(c.Query("from"))
+	to := strings.TrimSpace(c.Query("to"))
+	if from == "" || to == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "from and to are required"})
+		return
+	}
+	if from == to {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "from and to must be different"})
+		return
+	}
+
+	result, err := h.graphService.RoadAnalysis(c.Request.Context(), from, to)
+	if err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "road analysis failed: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": result})
+}
+
 func (h *GraphHandler) Filter(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{"message": "graph filter endpoint not implemented yet"})
 }

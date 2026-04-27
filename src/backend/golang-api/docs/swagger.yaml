@@ -104,6 +104,24 @@ definitions:
         description: nil nếu tháng trước không có job nào
         type: number
     type: object
+  domain.RoadAnalysisResult:
+    properties:
+      edges:
+        description: ordered, with actual relationship direction
+        items:
+          $ref: '#/definitions/domain.GraphEdge'
+        type: array
+      found:
+        type: boolean
+      length:
+        description: number of hops (edges)
+        type: integer
+      nodes:
+        description: ordered from start to end
+        items:
+          $ref: '#/definitions/domain.GraphNode'
+        type: array
+    type: object
   dto.AuthResponse:
     properties:
       access_token:
@@ -182,6 +200,11 @@ definitions:
     - confirm_password
     - email
     - password
+    type: object
+  dto.RoadAnalysisResponse:
+    properties:
+      data:
+        $ref: '#/definitions/domain.RoadAnalysisResult'
     type: object
   dto.Top4Response:
     properties:
@@ -400,6 +423,40 @@ paths:
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       summary: Explore knowledge graph starting from keyword nodes
+      tags:
+      - graph
+  /graph/road_analysis:
+    get:
+      description: Uses undirected shortest path (max 6 hops). Among all shortest
+        paths, prefers one that passes through a Company node. Returns ordered nodes
+        and edges.
+      parameters:
+      - description: Start keyword (Technology or Skill name)
+        in: query
+        name: from
+        required: true
+        type: string
+      - description: End keyword (Technology or Skill name)
+        in: query
+        name: to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.RoadAnalysisResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Find shortest path between two Technology/Skill nodes
       tags:
       - graph
   /radar/search:

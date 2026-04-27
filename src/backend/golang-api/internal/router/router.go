@@ -98,6 +98,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		graph := api.Group("/graph")
 		{
 			graph.GET("/explore", graphHandler.Explore)
+			graph.GET("/road_analysis", graphHandler.RoadAnalysis)
 			graph.GET("/filter", graphHandler.Filter)
 		}
 

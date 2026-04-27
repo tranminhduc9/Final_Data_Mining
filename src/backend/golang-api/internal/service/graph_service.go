@@ -107,6 +107,46 @@ func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int
 	return result, nil
 }
 
+func (s *GraphService) RoadAnalysis(ctx context.Context, keyword1, keyword2 string) (*domain.RoadAnalysisResult, error) {
+	if s.graphRepo == nil {
+		return nil, fmt.Errorf("neo4j unavailable")
+	}
+
+	rawPath, err := s.graphRepo.FindRoadPath(ctx, keyword1, keyword2)
+	if err != nil {
+		return nil, err
+	}
+	if rawPath == nil {
+		return &domain.RoadAnalysisResult{Found: false, Nodes: []domain.GraphNode{}, Edges: []domain.GraphEdge{}}, nil
+	}
+
+	nodes := make([]domain.GraphNode, 0, len(rawPath.Nodes))
+	for _, n := range rawPath.Nodes {
+		nodes = append(nodes, domain.GraphNode{
+			ID:         strconv.FormatInt(n.ID, 10),
+			Labels:     n.Labels,
+			Properties: sanitizeNodeProps(n.Labels, n.Props),
+		})
+	}
+	edges := make([]domain.GraphEdge, 0, len(rawPath.Edges))
+	for _, e := range rawPath.Edges {
+		edges = append(edges, domain.GraphEdge{
+			ID:         strconv.FormatInt(e.ID, 10),
+			Type:       e.Type,
+			Source:     strconv.FormatInt(e.SourceID, 10),
+			Target:     strconv.FormatInt(e.TargetID, 10),
+			Properties: e.Props,
+		})
+	}
+
+	return &domain.RoadAnalysisResult{
+		Found:  true,
+		Length: len(rawPath.Edges),
+		Nodes:  nodes,
+		Edges:  edges,
+	}, nil
+}
+
 func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location string) (*domain.GraphResult, error) {
 	if s.graphRepo == nil {
 		return nil, fmt.Errorf("neo4j unavailable")

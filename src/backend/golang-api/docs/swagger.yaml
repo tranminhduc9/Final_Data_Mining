@@ -169,6 +169,8 @@ definitions:
     type: object
   dto.RegisterRequest:
     properties:
+      confirm_password:
+        type: string
       email:
         type: string
       full_name:
@@ -177,6 +179,7 @@ definitions:
         minLength: 8
         type: string
     required:
+    - confirm_password
     - email
     - password
     type: object

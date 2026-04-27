@@ -674,10 +674,14 @@ const docTemplate = `{
         "dto.RegisterRequest": {
             "type": "object",
             "required": [
+                "confirm_password",
                 "email",
                 "password"
             ],
             "properties": {
+                "confirm_password": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },

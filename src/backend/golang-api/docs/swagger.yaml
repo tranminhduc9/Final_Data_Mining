@@ -374,10 +374,16 @@ paths:
         name: keywords
         required: true
         type: array
-      - description: 'Traversal depth: 1 or 2 (default 1)'
+      - description: 'Traversal depth: 1 or 2 (default 1). Ignored when location is
+          set.'
         in: query
         name: depth
         type: integer
+      - description: Filter by company location (partial, case-insensitive). When
+          set, requires exactly one keyword.
+        in: query
+        name: location
+        type: string
       produces:
       - application/json
       responses:

@@ -26,7 +26,8 @@ func (h *GraphHandler) Index(c *gin.Context) {
 // @Tags         graph
 // @Produce      json
 // @Param        keywords  query  []string  true   "Keywords (Technology or Skill names)"  collectionFormat(multi)
-// @Param        depth     query  int       false  "Traversal depth: 1 or 2 (default 1)"
+// @Param        depth     query  int       false  "Traversal depth: 1 or 2 (default 1). Ignored when location is set."
+// @Param        location  query  string    false  "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword."
 // @Success      200 {object} dto.GraphExploreResponse
 // @Failure      400 {object} dto.ErrorResponse
 // @Failure      503 {object} dto.ErrorResponse
@@ -45,6 +46,21 @@ func (h *GraphHandler) Explore(c *gin.Context) {
 	}
 	if len(keywords) == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "keywords is required"})
+		return
+	}
+
+	location := strings.TrimSpace(c.Query("location"))
+	if location != "" {
+		if len(keywords) != 1 {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "exactly one keyword is required when location filter is used"})
+			return
+		}
+		result, err := h.graphService.ExploreByLocation(c.Request.Context(), keywords[0], location)
+		if err != nil {
+			c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to explore graph: " + err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"data": result})
 		return
 	}
 

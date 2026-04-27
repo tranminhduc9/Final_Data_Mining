@@ -286,8 +286,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Traversal depth: 1 or 2 (default 1)",
+                        "description": "Traversal depth: 1 or 2 (default 1). Ignored when location is set.",
                         "name": "depth",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword.",
+                        "name": "location",
                         "in": "query"
                     }
                 ],

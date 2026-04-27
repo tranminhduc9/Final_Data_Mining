@@ -107,6 +107,108 @@ func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int
 	return result, nil
 }
 
+func (s *GraphService) RoadAnalysis(ctx context.Context, keyword1, keyword2 string) (*domain.RoadAnalysisResult, error) {
+	if s.graphRepo == nil {
+		return nil, fmt.Errorf("neo4j unavailable")
+	}
+
+	rawPath, err := s.graphRepo.FindRoadPath(ctx, keyword1, keyword2)
+	if err != nil {
+		return nil, err
+	}
+	if rawPath == nil {
+		return &domain.RoadAnalysisResult{Found: false, Nodes: []domain.GraphNode{}, Edges: []domain.GraphEdge{}}, nil
+	}
+
+	nodes := make([]domain.GraphNode, 0, len(rawPath.Nodes))
+	for _, n := range rawPath.Nodes {
+		nodes = append(nodes, domain.GraphNode{
+			ID:         strconv.FormatInt(n.ID, 10),
+			Labels:     n.Labels,
+			Properties: sanitizeNodeProps(n.Labels, n.Props),
+		})
+	}
+	edges := make([]domain.GraphEdge, 0, len(rawPath.Edges))
+	for _, e := range rawPath.Edges {
+		edges = append(edges, domain.GraphEdge{
+			ID:         strconv.FormatInt(e.ID, 10),
+			Type:       e.Type,
+			Source:     strconv.FormatInt(e.SourceID, 10),
+			Target:     strconv.FormatInt(e.TargetID, 10),
+			Properties: e.Props,
+		})
+	}
+
+	return &domain.RoadAnalysisResult{
+		Found:  true,
+		Length: len(rawPath.Edges),
+		Nodes:  nodes,
+		Edges:  edges,
+	}, nil
+}
+
+func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location string) (*domain.GraphResult, error) {
+	if s.graphRepo == nil {
+		return nil, fmt.Errorf("neo4j unavailable")
+	}
+
+	searchTerms := ExpandLocationSearchTerms(location)
+	centerID, rawNodes, rawEdges, err := s.graphRepo.ExploreByKeywordAndLocation(ctx, keyword, searchTerms)
+	if err != nil {
+		return nil, err
+	}
+
+	if centerID == -1 {
+		return &domain.GraphResult{Centers: []string{}, Nodes: []domain.GraphNode{}, Edges: []domain.GraphEdge{}}, nil
+	}
+
+	nodeMap := make(map[int64]*domain.GraphNode)
+	edgeMap := make(map[int64]*domain.GraphEdge)
+
+	addNode := func(raw neo4jrepo.RawNode) {
+		if _, exists := nodeMap[raw.ID]; exists {
+			return
+		}
+		nodeMap[raw.ID] = &domain.GraphNode{
+			ID:         strconv.FormatInt(raw.ID, 10),
+			Labels:     raw.Labels,
+			Properties: sanitizeNodeProps(raw.Labels, raw.Props),
+		}
+	}
+	addEdge := func(raw neo4jrepo.RawEdge) {
+		if _, exists := edgeMap[raw.ID]; exists {
+			return
+		}
+		edgeMap[raw.ID] = &domain.GraphEdge{
+			ID:         strconv.FormatInt(raw.ID, 10),
+			Type:       raw.Type,
+			Source:     strconv.FormatInt(raw.SourceID, 10),
+			Target:     strconv.FormatInt(raw.TargetID, 10),
+			Properties: raw.Props,
+		}
+	}
+
+	for _, n := range rawNodes {
+		addNode(n)
+	}
+	for _, e := range rawEdges {
+		addEdge(e)
+	}
+
+	result := &domain.GraphResult{
+		Centers: []string{strconv.FormatInt(centerID, 10)},
+		Nodes:   make([]domain.GraphNode, 0, len(nodeMap)),
+		Edges:   make([]domain.GraphEdge, 0, len(edgeMap)),
+	}
+	for _, n := range nodeMap {
+		result.Nodes = append(result.Nodes, *n)
+	}
+	for _, e := range edgeMap {
+		result.Edges = append(result.Edges, *e)
+	}
+	return result, nil
+}
+
 // sanitizeNodeProps removes heavy fields (e.g. Article.content) to keep the response lean.
 func sanitizeNodeProps(labels []string, props map[string]interface{}) map[string]interface{} {
 	if props == nil {

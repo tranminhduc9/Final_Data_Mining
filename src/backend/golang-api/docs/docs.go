@@ -286,8 +286,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Traversal depth: 1 or 2 (default 1)",
+                        "description": "Traversal depth: 1 or 2 (default 1). Ignored when location is set.",
                         "name": "depth",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword.",
+                        "name": "location",
                         "in": "query"
                     }
                 ],
@@ -296,6 +302,54 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.GraphExploreResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/graph/road_analysis": {
+            "get": {
+                "description": "Uses undirected shortest path (max 6 hops). Among all shortest paths, prefers one that passes through a Company node. Returns ordered nodes and edges.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "graph"
+                ],
+                "summary": "Find shortest path between two Technology/Skill nodes",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start keyword (Technology or Skill name)",
+                        "name": "from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "End keyword (Technology or Skill name)",
+                        "name": "to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.RoadAnalysisResponse"
                         }
                     },
                     "400": {
@@ -573,6 +627,32 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.RoadAnalysisResult": {
+            "type": "object",
+            "properties": {
+                "edges": {
+                    "description": "ordered, with actual relationship direction",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.GraphEdge"
+                    }
+                },
+                "found": {
+                    "type": "boolean"
+                },
+                "length": {
+                    "description": "number of hops (edges)",
+                    "type": "integer"
+                },
+                "nodes": {
+                    "description": "ordered from start to end",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.GraphNode"
+                    }
+                }
+            }
+        },
         "dto.AuthResponse": {
             "type": "object",
             "properties": {
@@ -674,10 +754,14 @@ const docTemplate = `{
         "dto.RegisterRequest": {
             "type": "object",
             "required": [
+                "confirm_password",
                 "email",
                 "password"
             ],
             "properties": {
+                "confirm_password": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -687,6 +771,14 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "minLength": 8
+                }
+            }
+        },
+        "dto.RoadAnalysisResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.RoadAnalysisResult"
                 }
             }
         },

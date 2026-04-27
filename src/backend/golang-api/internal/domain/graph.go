@@ -19,3 +19,10 @@ type GraphResult struct {
 	Nodes   []GraphNode `json:"nodes"`
 	Edges   []GraphEdge `json:"edges"`
 }
+
+type RoadAnalysisResult struct {
+	Found  bool        `json:"found"`
+	Length int         `json:"length"` // number of hops (edges)
+	Nodes  []GraphNode `json:"nodes"`  // ordered from start to end
+	Edges  []GraphEdge `json:"edges"`  // ordered, with actual relationship direction
+}

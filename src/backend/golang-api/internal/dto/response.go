@@ -28,6 +28,10 @@ type GraphExploreResponse struct {
 	Data domain.GraphResult `json:"data"`
 }
 
+type RoadAnalysisResponse struct {
+	Data domain.RoadAnalysisResult `json:"data"`
+}
+
 // --- Generic error ---
 
 type ErrorResponse struct {

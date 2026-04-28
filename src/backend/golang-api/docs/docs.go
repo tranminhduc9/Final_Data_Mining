@@ -195,6 +195,108 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/settings": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Get all feature flags and maintenance settings",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.SettingsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/settings/{key}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Update a feature flag or maintenance setting",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Setting key: maintenance_web | maintenance_mobile | feature_graph",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New value (true or false)",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateSettingRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/users": {
             "get": {
                 "security": [
@@ -869,6 +971,25 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/status": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "system"
+                ],
+                "summary": "Public system status (maintenance flags, feature toggles)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.StatusResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1305,6 +1426,31 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SettingsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "dto.StatusResponse": {
+            "type": "object",
+            "properties": {
+                "feature_graph": {
+                    "type": "boolean"
+                },
+                "maintenance_mobile": {
+                    "type": "boolean"
+                },
+                "maintenance_web": {
+                    "type": "boolean"
+                }
+            }
+        },
         "dto.Top10Response": {
             "type": "object",
             "properties": {
@@ -1335,6 +1481,21 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/domain.KeywordCount"
                     }
+                }
+            }
+        },
+        "dto.UpdateSettingRequest": {
+            "type": "object",
+            "required": [
+                "value"
+            ],
+            "properties": {
+                "value": {
+                    "type": "string",
+                    "enum": [
+                        "true",
+                        "false"
+                    ]
                 }
             }
         },

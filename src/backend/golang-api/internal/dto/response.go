@@ -58,6 +58,18 @@ type ListUsersResponse struct {
 	Data []UserItem `json:"data"`
 }
 
+// --- Settings / Status ---
+
+type StatusResponse struct {
+	MaintenanceWeb    bool `json:"maintenance_web"`
+	MaintenanceMobile bool `json:"maintenance_mobile"`
+	FeatureGraph      bool `json:"feature_graph"`
+}
+
+type SettingsResponse struct {
+	Data map[string]string `json:"data"`
+}
+
 // --- Generic error ---
 
 type ErrorResponse struct {

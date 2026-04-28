@@ -1,5 +1,9 @@
 package dto
 
+type UpdateSettingRequest struct {
+	Value string `json:"value" binding:"required,oneof=true false"`
+}
+
 type AlterUserRequest struct {
 	FullName string `json:"full_name" binding:"required"`
 	Email    string `json:"email"     binding:"required,email"`

@@ -288,6 +288,22 @@ definitions:
       data:
         $ref: '#/definitions/domain.RoadAnalysisResult'
     type: object
+  dto.SettingsResponse:
+    properties:
+      data:
+        additionalProperties:
+          type: string
+        type: object
+    type: object
+  dto.StatusResponse:
+    properties:
+      feature_graph:
+        type: boolean
+      maintenance_mobile:
+        type: boolean
+      maintenance_web:
+        type: boolean
+    type: object
   dto.Top4Response:
     properties:
       data:
@@ -308,6 +324,16 @@ definitions:
         items:
           $ref: '#/definitions/domain.KeywordCount'
         type: array
+    type: object
+  dto.UpdateSettingRequest:
+    properties:
+      value:
+        enum:
+        - "true"
+        - "false"
+        type: string
+    required:
+    - value
     type: object
   dto.UserItem:
     properties:
@@ -438,6 +464,70 @@ paths:
       security:
       - BearerAuth: []
       summary: Number of unique visitors today
+      tags:
+      - admin
+  /admin/settings:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SettingsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all feature flags and maintenance settings
+      tags:
+      - admin
+  /admin/settings/{key}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 'Setting key: maintenance_web | maintenance_mobile | feature_graph'
+        in: path
+        name: key
+        required: true
+        type: string
+      - description: New value (true or false)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSettingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a feature flag or maintenance setting
       tags:
       - admin
   /admin/users:
@@ -877,6 +967,18 @@ paths:
       summary: Top 10 technologies by total job count
       tags:
       - radar
+  /status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StatusResponse'
+      summary: Public system status (maintenance flags, feature toggles)
+      tags:
+      - system
 securityDefinitions:
   BearerAuth:
     description: 'Enter: Bearer {token}'

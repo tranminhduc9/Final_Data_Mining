@@ -32,6 +32,44 @@ type RoadAnalysisResponse struct {
 	Data domain.RoadAnalysisResult `json:"data"`
 }
 
+// --- Admin ---
+
+type CountResponse struct {
+	Data int `json:"data"`
+}
+
+type MonthlyVisitsResponse struct {
+	Data []domain.MonthlyVisit `json:"data"`
+}
+
+type TopKeywordsResponse struct {
+	Data []domain.KeywordCount `json:"data"`
+}
+
+type UserItem struct {
+	ID       string `json:"id"`
+	FullName string `json:"full_name"`
+	Email    string `json:"email"`
+	Role     string `json:"role"`
+	Status   string `json:"status"`
+}
+
+type ListUsersResponse struct {
+	Data []UserItem `json:"data"`
+}
+
+// --- Settings / Status ---
+
+type StatusResponse struct {
+	MaintenanceWeb    bool `json:"maintenance_web"`
+	MaintenanceMobile bool `json:"maintenance_mobile"`
+	FeatureGraph      bool `json:"feature_graph"`
+}
+
+type SettingsResponse struct {
+	Data map[string]string `json:"data"`
+}
+
 // --- Generic error ---
 
 type ErrorResponse struct {

@@ -68,6 +68,21 @@ definitions:
           $ref: '#/definitions/domain.GraphNode'
         type: array
     type: object
+  domain.KeywordCount:
+    properties:
+      count:
+        type: integer
+      keyword:
+        type: string
+    type: object
+  domain.MonthlyVisit:
+    properties:
+      count:
+        type: integer
+      month:
+        description: '"YYYY-MM"'
+        type: string
+    type: object
   domain.RadarKeywordCount:
     properties:
       job_count:
@@ -122,6 +137,28 @@ definitions:
           $ref: '#/definitions/domain.GraphNode'
         type: array
     type: object
+  dto.AlterUserRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      role:
+        enum:
+        - admin
+        - user
+        type: string
+      status:
+        enum:
+        - active
+        - blocked
+        type: string
+    required:
+    - email
+    - full_name
+    - role
+    - status
+    type: object
   dto.AuthResponse:
     properties:
       access_token:
@@ -142,6 +179,11 @@ definitions:
           $ref: '#/definitions/domain.CompareResult'
         type: array
     type: object
+  dto.CountResponse:
+    properties:
+      data:
+        type: integer
+    type: object
   dto.ErrorResponse:
     properties:
       message:
@@ -151,6 +193,39 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/domain.GraphResult'
+    type: object
+  dto.InsertUserRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      role:
+        enum:
+        - admin
+        - user
+        type: string
+      status:
+        enum:
+        - active
+        - blocked
+        type: string
+    required:
+    - email
+    - full_name
+    - password
+    - role
+    - status
+    type: object
+  dto.ListUsersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.UserItem'
+        type: array
     type: object
   dto.LoginRequest:
     properties:
@@ -170,6 +245,13 @@ definitions:
         type: string
       user_id:
         type: string
+    type: object
+  dto.MonthlyVisitsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.MonthlyVisit'
+        type: array
     type: object
   dto.RadarSearchResponse:
     properties:
@@ -206,6 +288,22 @@ definitions:
       data:
         $ref: '#/definitions/domain.RoadAnalysisResult'
     type: object
+  dto.SettingsResponse:
+    properties:
+      data:
+        additionalProperties:
+          type: string
+        type: object
+    type: object
+  dto.StatusResponse:
+    properties:
+      feature_graph:
+        type: boolean
+      maintenance_mobile:
+        type: boolean
+      maintenance_web:
+        type: boolean
+    type: object
   dto.Top4Response:
     properties:
       data:
@@ -220,6 +318,36 @@ definitions:
           $ref: '#/definitions/domain.RadarKeywordCount'
         type: array
     type: object
+  dto.TopKeywordsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.KeywordCount'
+        type: array
+    type: object
+  dto.UpdateSettingRequest:
+    properties:
+      value:
+        enum:
+        - "true"
+        - "false"
+        type: string
+    required:
+    - value
+    type: object
+  dto.UserItem:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: string
+      role:
+        type: string
+      status:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -228,6 +356,321 @@ info:
   title: Final Data Mining API
   version: "1.0"
 paths:
+  /admin/dashboard/monthly-visits:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MonthlyVisitsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Unique visitor count per month for the last 4 months
+      tags:
+      - admin
+  /admin/dashboard/searches-today:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Number of searches performed today
+      tags:
+      - admin
+  /admin/dashboard/top-keywords:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TopKeywordsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Top 4 most searched keywords of all time
+      tags:
+      - admin
+  /admin/dashboard/user-count:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Total registered user accounts
+      tags:
+      - admin
+  /admin/dashboard/visits-today:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Number of unique visitors today
+      tags:
+      - admin
+  /admin/settings:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SettingsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all feature flags and maintenance settings
+      tags:
+      - admin
+  /admin/settings/{key}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 'Setting key: maintenance_web | maintenance_mobile | feature_graph'
+        in: path
+        name: key
+        required: true
+        type: string
+      - description: New value (true or false)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSettingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a feature flag or maintenance setting
+      tags:
+      - admin
+  /admin/users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ListUsersResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all users (admins first)
+      tags:
+      - admin
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New user payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.InsertUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.UserItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new user account
+      tags:
+      - admin
+  /admin/users/{id}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a user account
+      tags:
+      - admin
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated user data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AlterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a user's information
+      tags:
+      - admin
   /auth/login:
     post:
       consumes:
@@ -524,9 +967,21 @@ paths:
       summary: Top 10 technologies by total job count
       tags:
       - radar
+  /status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StatusResponse'
+      summary: Public system status (maintenance flags, feature toggles)
+      tags:
+      - system
 securityDefinitions:
   BearerAuth:
-    description: Type "Bearer " followed by your access token.
+    description: 'Enter: Bearer {token}'
     in: header
     name: Authorization
     type: apiKey

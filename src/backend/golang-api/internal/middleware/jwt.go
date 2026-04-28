@@ -91,6 +91,44 @@ func (m *JWTMiddleware) RequireAuth() gin.HandlerFunc {
 	}
 }
 
+func (m *JWTMiddleware) RequireAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "missing authorization header"})
+			return
+		}
+
+		parts := strings.SplitN(authHeader, " ", 2)
+		if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "invalid authorization header"})
+			return
+		}
+
+		claims, err := m.ParseClaims(parts[1])
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "invalid or expired token"})
+			return
+		}
+
+		if tokenType, _ := claims["token_type"].(string); tokenType != TokenTypeAccess {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "access token required"})
+			return
+		}
+
+		role := toString(claims["role"])
+		if role != "admin" {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"message": "admin access required"})
+			return
+		}
+
+		c.Set(ContextUserIDKey, toString(claims["sub"]))
+		c.Set(ContextEmailKey, toString(claims["email"]))
+		c.Set(ContextRoleKey, role)
+		c.Next()
+	}
+}
+
 func toString(value interface{}) string {
 	if str, ok := value.(string); ok {
 		return str

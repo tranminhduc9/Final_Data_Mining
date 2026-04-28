@@ -18,6 +18,7 @@ type Config struct {
 	Neo4jUsername            string
 	Neo4jPassword            string
 	Neo4jDatabase            string
+	AllowedOrigins           []string
 }
 
 func Load() (*Config, error) {
@@ -36,6 +37,7 @@ func Load() (*Config, error) {
 		Neo4jUsername:            getEnv("NEO4J_USERNAME", ""),
 		Neo4jPassword:            getEnv("NEO4J_PASSWORD", ""),
 		Neo4jDatabase:            getEnv("NEO4J_DATABASE", ""),
+		AllowedOrigins:           parseOrigins(getEnv("ALLOWED_ORIGINS", "*")),
 	}
 
 	if cfg.PostgresConnectionString == "" {
@@ -43,6 +45,20 @@ func Load() (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+func parseOrigins(raw string) []string {
+	var origins []string
+	for _, o := range strings.Split(raw, ",") {
+		o = strings.TrimSpace(o)
+		if o != "" {
+			origins = append(origins, o)
+		}
+	}
+	if len(origins) == 0 {
+		return []string{"*"}
+	}
+	return origins
 }
 
 func getEnv(key, fallback string) string {

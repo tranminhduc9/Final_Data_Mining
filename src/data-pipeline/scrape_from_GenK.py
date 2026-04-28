@@ -11,13 +11,14 @@ from datetime import datetime
 
 driver = webdriver.Chrome()
 
-source_url = "https://genk.vn/ai.chn" # 100
-
-#source_url = "https://genk.vn/internet.chn" #100
-
-#source_url = "https://genk.vn/do-choi-so.chn" # 50
-
-#source_url = "https://genk.vn/tin-ict.chn" # 50
+# part = 1
+# source_url = "https://genk.vn/ai.chn" 
+# part = 2
+# source_url = "https://genk.vn/internet.chn" 
+# part = 3
+# source_url = "https://genk.vn/do-choi-so.chn" 
+part = 4
+source_url = "https://genk.vn/tin-ict.chn" 
 
 
 driver.get(source_url)
@@ -148,7 +149,14 @@ for idx, post in enumerate(posts_info):
 driver.quit()
 
 os.makedirs("raw_data", exist_ok=True)
-output_file = os.path.join("raw_data", "raw_data_GenK.json")
+if part == 1:
+    output_file = os.path.join("raw_data", "raw_data_GenK_part1.json")
+elif part == 2:
+    output_file = os.path.join("raw_data", "raw_data_GenK_part2.json")
+elif part == 3:
+    output_file = os.path.join("raw_data", "raw_data_GenK_part3.json")
+else:
+    output_file = os.path.join("raw_data", "raw_data_GenK_part4.json")
 with open(output_file, "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
 

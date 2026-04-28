@@ -12,7 +12,7 @@ from datetime import datetime
 driver = webdriver.Chrome()
 
 source_url = "https://vnexpress.net/khoa-hoc-cong-nghe/ai"
-num_pages = 3  
+num_pages = 10  
 driver.get(source_url)
 
 source_platform = driver.find_element(By.CSS_SELECTOR, "a.logo").get_attribute("title")

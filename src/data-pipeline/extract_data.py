@@ -8,7 +8,7 @@ PIPELINE:
   1. Đọc các file `filtered_data_*.json` (hoặc danh sách file được truyền vào)
      Cấu trúc file: { "source_platform", "source_url", "scraped_at",
                       "post_detail": [ { "title", "content", "is_relevant" } ] }
-  2. Chỉ giữ lại các bài có `is_relevant = true` (hoặc chuỗi "True")
+  2. Chỉ giữ lại các bài có `is_relevant = true`
   3. Gộp `title + content`, đưa qua model NER tiếng Việt (ORG / PER / LOC)
   4. Lưu TRỰC TIẾP danh sách thực thể mà model trả ra vào field `entities`
      cho từng bài, với mỗi phần tử có dạng:
@@ -100,6 +100,10 @@ DATE_PATTERNS = [
     r"Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4})\b",
     # năm YYYY đứng theo sau từ 'năm' hoặc 'year'
     r"\b(?:n[aă]m|year)\s+((?:19|20)\d{2})\b",
+    # Thứ trong tuần (thứ 2 → thứ 7, thứ Hai → thứ Bảy)
+    r"\b(Th[ứu]\s+(?:[2-7]|Hai|Ba|Tư|Năm|Sáu|B[aả]y))\b",
+    # Ngày lễ cụ thể: 30/4, 2/9, 1/5, 1/1
+    r"\b(\d{1,2}/\d{1,2}(?:\s*[,và&]\s*\d{1,2}/\d{1,2})*)\b",
 ]
 
 # Biên dịch sẵn, flag IGNORECASE để bắt cả viết hoa/thường
@@ -118,7 +122,20 @@ TECH_ABBREVS_CASE_SENSITIVE = {
 TECH_ABBREVS = {
     "AWS", "GCP", "CSS", "PHP", "SQL", "VBA", "SAS", "ELK", "SVN",
     "API", "SDK", "IDE", "RPC", "ORM", "JWT", "SSH", "HTTP", "HTTPS",
-    "REST", "SOAP", "HTML", "XML", "JSON", "YAML", "gRPC", "LLM", "GPT"
+    "REST", "SOAP", "HTML", "XML", "JSON", "YAML", "gRPC", "LLM", "GPT",
+    "SIP", "RTP", "VPN", "ETL", "ERP", "CRM", "MES", "IoT", "WAF",
+    "SAP", "BGP", "OSPF", "VLAN", "NAT", "DNS", "DHCP", "TCP", "UDP",
+    "OCR", "STT", "TTS", "RAG", "NLP", "MLOps", "CI/CD", "OLAP", "DWH",
+    "SIEM", "EDR", "HSM", "IDS", "IPS", "SSE",
+    # Cybersecurity & networking (từ DT)
+    "DDoS", "MPC", "KYC", "SOC", "PAD", "SoC", "NVR", "VMS",
+    "OTP", "2FA", "APK", "NFC", "ADB", "QR",
+    "IPv4", "IPv6", "5G", "4G", "eSIM",
+    "ROM", "CCCD", "VNeID",
+    # Từ VN-EP
+    "MoE", "LPU", "ICI", "SRAM", "HBM", "EEG",
+    "C2PA", "GDPR", "FCC", "CISO", "FAIR",
+    "MAU", "DAU"
 }
 
 # Từ / cụm dài hơn – dùng lookbehind/lookahead (không phân biệt HOA/thường)
@@ -129,6 +146,23 @@ TECH_KEYWORDS: List[str] = [
     "Trí tuệ nhân tạo", "Machine Learning", "Deep Learning", "Generative AI",
     "GenAI", "AI tạo sinh", "Mô hình ngôn ngữ", "Học máy", "Chatbot",
     "AI Agent", "Tác nhân AI", "Computer Vision",
+    # AI sản phẩm thêm từ DT
+    "Apple Intelligence", "Siri", "Sora", "Claude Code", "Claude Mythos",
+    "Cursor AI", "Odoo", "AI Workplace Service",
+    "Deepfake", "GhostChat", "Anatsa", "Stealerium",
+    "Ransomware", "Infostealer", "Spyware",
+    # Bảo mật & nền tảng
+    "Zero Trust", "iVerify", "Lookout", "Kaspersky", "Malwarebytes",
+    "Zscaler", "Proofpoint", "BreachForums", "nTrust",
+    "iCallme", "Verichains", "IDMerit",
+    "Watering hole", "SIM swap", "Pig Butchering",
+    # Chip & phần cứng
+    "Snapdragon", "Tensor", "Apple Silicon", "Qualcomm",
+    "chip quang tử", "qubit",
+    # Mạng & hạ tầng
+    "Data Center", "AI Data Center", "Trung tâm dữ liệu",
+    "Public Cloud", "Private Cloud", "Hybrid Cloud",
+    "AI Readiness", "AI-First",
     "Python", "Java", "JavaScript", "TypeScript",
     "Golang", "Rust", "Kotlin", "Swift", "Scala", "Ruby", "PHP",
     "Perl", "Dart", "Lua", "Groovy", "Elixir", "Erlang", "Haskell",
@@ -144,8 +178,6 @@ TECH_KEYWORDS: List[str] = [
     "Flask", "FastAPI", "Spring Boot", "Spring", "SpringBoot",
     "Laravel", "Symfony", "Rails", "Ruby on Rails", "ASP.NET", ".NET",
     "Gin", "Echo", "Fiber",
-    # Mobile
-    "Android", "iOS", "Flutter", "React Native", "Xamarin", "Ionic",
     # Database / Datastore
     "MySQL", "PostgreSQL", "MariaDB", "SQLite", "MSSQL", "SQL Server",
     "Oracle", "MongoDB", "Redis", "Cassandra", "DynamoDB", "Elasticsearch",
@@ -174,12 +206,60 @@ TECH_KEYWORDS: List[str] = [
     "BigQuery", "Redshift",
     # Testing
     "JUnit", "pytest", "Selenium", "Cypress", "Playwright", "Jest",
-    "Mocha", "Jasmine", "Postman",
+    "Mocha", "Jasmine", "Postman", "JMeter", "Appium", "RestAssured",
     # Protocols / tools
-    "RESTful", "GraphQL", "WebSocket",
-    "RabbitMQ", "ActiveMQ", "ZeroMQ", "Nginx", "Apache", "Tomcat",
+    "RESTful", "GraphQL", "WebSocket", "WebRTC", "VoIP",
+    "RabbitMQ", "ActiveMQ", "ZeroMQ", "NATS", "Nginx", "Apache", "Tomcat",
     "Microservices", "Serverless", "Linux", "Unix", "Windows Server",
-    "Agile", "Scrum", "Jira", "Confluence",
+    "Agile", "Scrum", "Jira", "Confluence", "Trello", "Asana",
+    "FreeSWITCH", "Asterisk", "Genesys",
+    # MLOps / AI infra
+    "MLflow", "Kubeflow", "Airflow", "DVC", "Feast",
+    "FAISS", "Qdrant", "Milvus", "pgvector", "Pinecone",
+    "AutoML", "Vertex AI", "SageMaker",
+    # BI / Data tools
+    "Power BI", "Tableau", "Looker", "Metabase", "Grafana",
+    "Mixpanel", "Google Analytics", "Amplitude",
+    "Pentaho", "Talend", "Informatica", "dbt",
+    # Frontend extras
+    "Redux", "Zustand", "Recoil", "MobX", "Pinia", "Vuex",
+    "Styled Components", "Emotion", "Ant Design", "Element Plus", "Vuetify",
+    "D3.js", "Recharts", "TradingView", "Chart.js",
+    # Security tools
+    "Splunk", "QRadar", "Trellix", "Symantec", "Trend Micro",
+    "Fortinet", "PaloAlto", "CheckPoint", "Imperva", "F5",
+    "SonicWALL", "Barracuda", "Cisco", "Juniper", "Aruba",
+    # 3D / Design tools
+    "Blender", "Cinema4D", "Unity", "Unreal", "SketchUp",
+    "Revit", "Rhino", "3ds Max", "V-Ray", "Lumion", "Enscape",
+    "Substance 3D", "Figma", "Adobe Photoshop", "Adobe Illustrator",
+    "Adobe Premiere", "After Effects", "InDesign", "CapCut",
+    # Enterprise systems
+    "SAP ERP", "Oracle ERP", "Salesforce", "ServiceNow", "n8n",
+    "Power Automate", "Zapier",
+    # AI Models & Products (từ GenK)
+    "Muse Spark", "TurboQuant", "Gemma 4", "DLSS 5", "OpenClaw",
+    "Atlas 350", "Agents SDK", "Project Glasswing", "Constitutional AI",
+    "Trinity Large Thinking", "Claude Opus",
+    "Gemini CLI", "Google AI Edge Eloquent", "WisperFlow", "SuperWhisper",
+    # Khái niệm AI/Tech (từ GenK)
+    "agentic AI", "Physical AI", "vibe-coding", "vibe coding",
+    "KV cache", "frame generation", "ray tracing",
+    "sideloading", "AI Factory", "AI inference", "AI reasoning",
+    "Sovereign Cloud",
+    "reCAPTCHA", "AI streamer",
+    # Mô hình AI mới (từ VN-EP)
+    "GPT-5.4", "GPT-5.3", "GPT-5.2", "GPT-4o",
+    "Gemini 3", "Gemini 3 Flash", "Gemini 3.1 Flash", "Gemini 2.5",
+    "Nano Banana", "Nano Banana Pro", "Personal Intelligence",
+    "Images 2.0", "TurboDiffusion", "NeMoClaw",
+    "Mixture of Experts", "Mô hình hỗn hợp chuyên gia",
+    # Khái niệm & kỹ thuật (từ VN-EP)
+    "AI washing", "C2PA", "Content Credentials", "peer preservation",
+    "adversarial poetry", "Predictive AI", "Foundation Models",
+    "GDPR", "Model Extraction", "Grokipedia",
+    "Iceberg Index", "exaflop", "petaflop",
+    "Cursor", "Claude Code",
 ]
 
 # Regex cho viết tắt ngắn: dùng \b thật sự
@@ -241,6 +321,22 @@ JOB_ROLE_KEYWORDS: List[str] = [
     "Nhà khoa học dữ liệu", "Kiến trúc sư phần mềm",
     "Quản lý sản phẩm", "Quản lý dự án IT",
     "Nhà thiết kế UI", "Nhà thiết kế UX", "Nhà thiết kế giao diện",
+    # Roles phổ biến trong data TopCV
+    "Penetration Tester", "Pentest Engineer",
+    "VoIP Engineer", "Telephony Engineer", "Network Security Engineer",
+    "Pre-Sale Engineer", "Pre-Sales Engineer",
+    "Creative Designer", "Graphic Designer", "Art Designer",
+    "UI/UX Researcher", "Motion Designer", "3D Designer",
+    "IT Helpdesk", "IT Coordinator", "IT Specialist",
+    "Senior AI Engineer", "Junior AI Engineer",
+    "Manual Tester", "Automation Tester",
+    "BrSE", "Fresher Developer", "Fresher Engineer",
+    "DevOps/Cloud Engineer", "Cloud DevOps Engineer",
+    "SAP Consultant", "ERP Consultant",
+    "Data Lake Engineer", "MLOps Engineer",
+    "Lập Trình Viên", "Kỹ Thuật Viên", "Chuyên Viên IT",
+    "Nhân Viên IT", "Nhân Viên Triển Khai",
+    "Trưởng Phòng", "Giám Đốc Công Nghệ",
     # Viết tắt phổ biến
     "CEO", "CTO", "CIO", "CPO", "CDO", "COO", "CFO",
     "VP", "GM", "PM", "PO", "BA", "SA", "DBA",
@@ -256,21 +352,32 @@ _JOB_ROLE_PATTERN = re.compile(
 
 # ----- SALARY: regex nhận diện mức lương -----
 SALARY_PATTERNS = [
-    # Dạng "X - Y triệu", "X – Y triệu", "từ X đến Y triệu"
+    # Dạng "X - Y triệu", "X – Y triệu"
     r"\b(\d+(?:[,.]\d+)?\s*[-–]\s*\d+(?:[,.]\d+)?\s*tri[eệ]u(?:\s*VNĐ|\s*VND|\s*đồng)?)\b",
     # Dạng "X triệu", "X,X triệu"
     r"\b(\d+(?:[,.]\d+)?\s*tri[eệ]u(?:\s*VNĐ|\s*VND|\s*đồng)?)\b",
-    # Dạng "upto X$", "up to X USD", "up to $X"
-    r"\b(up\s*to\s*\$?\d+(?:[,.]\d+)?(?:\s*USD|\s*VND|\s*VNĐ)?)\b",
+    # Dạng "upto/up to X triệu" hoặc "upto X VNĐ" (viết liền hoặc cách)
+    r"\b(upto\s+\d+(?:[,.]\d+)?(?:M|\s*tri[eệ]u|\s*VNĐ|\s*VND)?)\b",
+    r"\b(up\s+to\s+\$?\d+(?:[,.]\d+)?(?:[,.]\d{3})*(?:\s*USD|\s*VND|\s*VNĐ|\s*tri[eệ]u)?)\b",
+    # Dạng "từ X triệu", "từ X đến Y triệu"
+    r"\b(t[ừu]\s+\d+(?:[,.]\d+)?(?:\s*đến\s+\d+(?:[,.]\d+)?)?\s*tri[eệ]u(?:\s*VNĐ|\s*VND)?)\b",
     # Dạng "$X,XXX - $Y,XXX" hoặc "$X,XXX+"
     r"(\$\d{1,3}(?:,\d{3})*(?:\s*[-–]\s*\$\d{1,3}(?:,\d{3})*)?(?:\+)?(?:\s*USD|\s*VND|\s*VNĐ)?)",
     # Dạng số lớn: "10,000,000 VNĐ" hoặc "10.000.000đ"
     r"\b(\d{1,3}(?:[,.]\d{3})+(?:\s*VNĐ|\s*VND|\s*đồng|đ)?)\b",
+    # Dạng "XY$ / tháng", "X$ / tháng" (lương USD nhỏ lẻ)
+    r"\b(\d+(?:[,.]\d+)?\s*\$\s*/\s*tháng)\b",
+    # Dạng "$X,XXX - $Y,XXX" và "$X - Y"
+    r"(\$\s*\d{1,4}(?:\s*[-–]\s*\$?\s*\d{1,4})?(?:\s*USD|\s*VND)?)",
+    # Dạng "X tháng lương/năm" (gói thu nhập)
+    r"\b(\d{1,2}\s*(?:–|-)?\s*\d{0,2}\s*tháng\s+lương(?:/năm)?)\b",
     # Dạng "lương X triệu", "thu nhập X triệu", "mức lương X triệu"
-    r"\b(?:lương|thu\s+nhập|mức\s+lương|salary)\s+(\d+(?:[,.]\d+)?(?:\s*[-–]\s*\d+(?:[,.]\d+)?)?\s*(?:tri[eệ]u|nghìn|USD|VNĐ|VND)?)\b",
+    r"\b(?:lương|thu\s+nhập|mức\s+lương|salary|income)\s+(\d+(?:[,.]\d+)?(?:\s*[-–]\s*\d+(?:[,.]\d+)?)?\s*(?:tri[eệ]u|nghìn|USD|VNĐ|VND)?)\b",
     # Dạng cụm "lương thương lượng", "lương cạnh tranh", "lương hấp dẫn"
-    r"\b(lương\s+(?:thương\s+lượng|cạnh\s+tranh|hấp\s+dẫn|theo\s+năng\s+lực|thoả\s+thuận))\b",
+    r"\b(lương\s+(?:thương\s+lượng|cạnh\s+tranh|hấp\s+dẫn|theo\s+năng\s+lực|thoả\s+thuận|thỏa\s+thuận))\b",
+    r"\b(thu\s+nhập\s+(?:cạnh\s+tranh|hấp\s+dẫn|theo\s+năng\s+lực))\b",
     r"\b(salary\s+(?:negotiable|competitive|attractive))\b",
+    r"\b(competitive\s+salary(?:\s+range)?)\b",
 ]
 
 _SALARY_REGEXES = [re.compile(p, re.IGNORECASE) for p in SALARY_PATTERNS]
@@ -695,4 +802,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

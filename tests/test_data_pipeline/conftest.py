@@ -6,12 +6,22 @@ class FakeElement:
     def __init__(self, text="", attrs=None):
         self.text = text
         self._attrs = attrs or {}
+        self._elements = {}
 
     def get_attribute(self, key):
         return self._attrs.get(key, "")
 
     def is_displayed(self):
         return True
+
+    def find_elements(self, by, selector):
+        return self._elements.get(selector, [])
+
+    def find_element(self, by, selector):
+        elements = self.find_elements(by, selector)
+        if elements:
+            return elements[0]
+        raise NoSuchElementException(f"Element not found: {selector}")
 
 
 class DummyWait:
@@ -51,7 +61,12 @@ def install_fake_selenium(monkeypatch, fake_driver):
     chrome_options_mod.Options = Options
 
     by_mod = types.ModuleType("selenium.webdriver.common.by")
-    by_mod.By = types.SimpleNamespace(CSS_SELECTOR="css selector", ID="id")
+    by_mod.By = types.SimpleNamespace(
+        CSS_SELECTOR="css selector", 
+        ID="id",
+        CLASS_NAME="class name",
+        TAG_NAME="tag name"
+    )
 
     ui_mod = types.ModuleType("selenium.webdriver.support.ui")
     ui_mod.WebDriverWait = DummyWait

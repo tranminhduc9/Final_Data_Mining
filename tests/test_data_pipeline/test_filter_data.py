@@ -128,12 +128,19 @@ def test_preprocess_title_handles_ner_and_normalization(monkeypatch):
         "ner",
         lambda _text: [
             ("OpenAI", "Np", "B-NP", "B-ORG"),
+            ("Microsoft", "Np", "I-NP", "I-ORG"),
             ("Ha Noi", "Np", "B-NP", "B-LOC"),
+            ("Sam", "Np", "B-NP", "B-PER"),
+            ("Altman", "Np", "I-NP", "I-PER"),
         ],
     )
     monkeypatch.setattr(filter_data, "word_tokenize", lambda text, format="text": text)
 
-    out = filter_data.preprocess_title("OpenAI tăng 12% tại Ha Noi năm 2026")
+    out = filter_data.preprocess_title("OpenAI Microsoft tại Ha Noi cùng Sam Altman tăng 12% năm 2026")
+
+    # Check that original entities are replaced and "name" exists
+    assert all(word not in out for word in ["OpenAI", "Microsoft", "Sam", "Altman"])
+    assert "name" in out
 
     assert "name" in out
     assert "loc" in out
@@ -197,13 +204,30 @@ def test_filter_json_file_returns_empty_for_no_posts(monkeypatch, tmp_path):
     assert filter_data.filter_json_file(str(in_file)) == ""
 
 
-def test_main_handles_no_input_files(monkeypatch, tmp_path):
+def test_main_processes_files(monkeypatch, tmp_path):
     filter_data = _load_filter_data(monkeypatch)
-
-    monkeypatch.setattr(filter_data.glob, "glob", lambda _pattern: [])
-    monkeypatch.setattr(filter_data, "RAW_DATA_DIR", str(tmp_path))
-
+    
+    # Create two raw files
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
+    (raw_dir / "raw_data_1.json").write_text(json.dumps({"post_detail": []}))
+    (raw_dir / "raw_data_2.json").write_text(json.dumps({"post_detail": []}))
+    
+    monkeypatch.setattr(filter_data, "RAW_DATA_DIR", str(raw_dir))
+    monkeypatch.setattr(filter_data, "FILTERED_DATA_DIR", str(tmp_path / "filtered"))
+    
+    processed = []
+    def mock_filter(path):
+        processed.append(Path(path).name)
+        return ""
+    
+    monkeypatch.setattr(filter_data, "filter_json_file", mock_filter)
+    
     filter_data.main()
+    
+    assert "raw_data_1.json" in processed
+    assert "raw_data_2.json" in processed
+    assert len(processed) == 2
 
 
 def test_preprocess_title_returns_empty_for_invalid_inputs(monkeypatch):
@@ -275,3 +299,80 @@ def test_filter_json_file_marks_all_non_it_false(monkeypatch, tmp_path):
     out = json.loads(Path(out_path).read_text(encoding="utf-8"))
 
     assert [p["is_relevant"] for p in out["post_detail"]] == [False, False, False]
+
+
+def test_predict_one_returns_true_when_pred_label_is_one(monkeypatch):
+    """Test predict_one returns (True, confidence) when model predicts label 1 (IT)."""
+    filter_data = _load_filter_data(monkeypatch)
+
+    class _ArgMaxResultOne:
+        def item(self):
+            return 1
+
+    class _ProbVector:
+        def __getitem__(self, idx):
+            class _Scalar:
+                def item(self):
+                    return 0.95
+            return _Scalar()
+
+    class _SoftmaxResultOne:
+        def __getitem__(self, idx):
+            return _ProbVector()
+
+    torch_mod = sys.modules["torch"]
+    monkeypatch.setattr(torch_mod, "argmax", lambda *_a, **_k: _ArgMaxResultOne())
+    monkeypatch.setattr(torch_mod, "softmax", lambda *_a, **_k: _SoftmaxResultOne())
+
+    is_it, confidence = filter_data.predict_one("Data Engineer với Python")
+
+    assert is_it is True
+    assert confidence == 0.95
+
+
+def test_predict_one_returns_false_when_pred_label_is_zero(monkeypatch):
+    """Test predict_one returns (False, confidence) when model predicts label 0 (Non-IT)."""
+    filter_data = _load_filter_data(monkeypatch)
+
+    class _ArgMaxResultZero:
+        def item(self):
+            return 0
+
+    class _ProbVector:
+        def __getitem__(self, idx):
+            class _Scalar:
+                def item(self):
+                    return 0.88
+            return _Scalar()
+
+    class _SoftmaxResultZero:
+        def __getitem__(self, idx):
+            return _ProbVector()
+
+    torch_mod = sys.modules["torch"]
+    monkeypatch.setattr(torch_mod, "argmax", lambda *_a, **_k: _ArgMaxResultZero())
+    monkeypatch.setattr(torch_mod, "softmax", lambda *_a, **_k: _SoftmaxResultZero())
+
+    is_it, confidence = filter_data.predict_one("Tin tức thế giới")
+
+    assert is_it is False
+    assert confidence == 0.88
+
+
+def test_filter_json_file_malformed_json(tmp_path, monkeypatch):
+    """Test filter_json_file with malformed JSON input."""
+    import json
+    import pytest
+    from pathlib import Path
+    
+    root = Path(__file__).resolve().parents[2]
+    file_path = root / "src/data-pipeline/filter_data.py"
+    spec = importlib.util.spec_from_file_location("filter_data_malformed", file_path)
+    module = importlib.util.module_from_spec(spec)
+    _install_fake_classifier_dependencies(monkeypatch)
+    spec.loader.exec_module(module)
+    
+    input_file = tmp_path / "raw_data_bad.json"
+    input_file.write_text("{ invalid json }", encoding="utf-8")
+    with pytest.raises(json.JSONDecodeError):
+        module.filter_json_file(str(input_file))

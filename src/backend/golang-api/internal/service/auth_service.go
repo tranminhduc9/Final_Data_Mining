@@ -17,8 +17,9 @@ const (
 )
 
 var (
-	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrInvalidCredentials  = errors.New("invalid credentials")
 	ErrDatabaseUnavailable = errors.New("database unavailable")
+	ErrAccountBlocked      = errors.New("account is blocked")
 )
 
 type AuthService struct {
@@ -61,6 +62,10 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (dto.Au
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {
 		return dto.AuthResponse{}, ErrInvalidCredentials
+	}
+
+	if user.Status == "blocked" {
+		return dto.AuthResponse{}, ErrAccountBlocked
 	}
 
 	return s.buildTokenPair(user.ID, user.Email, user.Role)

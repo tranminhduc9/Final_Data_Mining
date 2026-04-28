@@ -172,6 +172,13 @@ definitions:
       data:
         $ref: '#/definitions/domain.GraphResult'
     type: object
+  dto.ListUsersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.UserItem'
+        type: array
+    type: object
   dto.LoginRequest:
     properties:
       email:
@@ -253,6 +260,17 @@ definitions:
         items:
           $ref: '#/definitions/domain.KeywordCount'
         type: array
+    type: object
+  dto.UserItem:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      role:
+        type: string
+      status:
+        type: string
     type: object
 host: localhost:8080
 info:
@@ -370,6 +388,28 @@ paths:
       security:
       - BearerAuth: []
       summary: Number of unique visitors today
+      tags:
+      - admin
+  /admin/users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ListUsersResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all users (admins first)
       tags:
       - admin
   /auth/login:

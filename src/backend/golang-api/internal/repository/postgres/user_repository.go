@@ -29,9 +29,9 @@ func (r *UserRepository) Create(ctx context.Context, email, passwordHash, fullNa
 	err := r.DB.Pool.QueryRow(ctx,
 		`INSERT INTO users (email, password_hash, full_name)
 		 VALUES ($1, $2, $3)
-		 RETURNING id, email, full_name, subscription_tier, role`,
+		 RETURNING id, email, full_name, subscription_tier, role, status`,
 		email, passwordHash, fullName,
-	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.Role)
+	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.Role, &u.Status)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
@@ -45,10 +45,10 @@ func (r *UserRepository) Create(ctx context.Context, email, passwordHash, fullNa
 func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var u domain.User
 	err := r.DB.Pool.QueryRow(ctx,
-		`SELECT id, email, full_name, subscription_tier, password_hash, role
+		`SELECT id, email, full_name, subscription_tier, password_hash, role, status
 		 FROM users WHERE email = $1`,
 		email,
-	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.PasswordHash, &u.Role)
+	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.PasswordHash, &u.Role, &u.Status)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound
@@ -61,10 +61,10 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*domain
 func (r *UserRepository) FindByID(ctx context.Context, id string) (*domain.User, error) {
 	var u domain.User
 	err := r.DB.Pool.QueryRow(ctx,
-		`SELECT id, email, full_name, subscription_tier, role
+		`SELECT id, email, full_name, subscription_tier, role, status
 		 FROM users WHERE id = $1`,
 		id,
-	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.Role)
+	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.Role, &u.Status)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound
@@ -72,4 +72,26 @@ func (r *UserRepository) FindByID(ctx context.Context, id string) (*domain.User,
 		return nil, fmt.Errorf("find user by id: %w", err)
 	}
 	return &u, nil
+}
+
+func (r *UserRepository) ListAll(ctx context.Context) ([]domain.User, error) {
+	rows, err := r.DB.Pool.Query(ctx,
+		`SELECT id, email, full_name, role, status
+		 FROM users
+		 ORDER BY CASE WHEN role = 'admin' THEN 0 ELSE 1 END, email ASC`,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("list users: %w", err)
+	}
+	defer rows.Close()
+
+	users := []domain.User{}
+	for rows.Next() {
+		var u domain.User
+		if err := rows.Scan(&u.ID, &u.Email, &u.FullName, &u.Role, &u.Status); err != nil {
+			return nil, fmt.Errorf("list users scan: %w", err)
+		}
+		users = append(users, u)
+	}
+	return users, rows.Err()
 }

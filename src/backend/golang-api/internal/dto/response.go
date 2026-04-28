@@ -46,6 +46,17 @@ type TopKeywordsResponse struct {
 	Data []domain.KeywordCount `json:"data"`
 }
 
+type UserItem struct {
+	FullName string `json:"full_name"`
+	Email    string `json:"email"`
+	Role     string `json:"role"`
+	Status   string `json:"status"`
+}
+
+type ListUsersResponse struct {
+	Data []UserItem `json:"data"`
+}
+
 // --- Generic error ---
 
 type ErrorResponse struct {

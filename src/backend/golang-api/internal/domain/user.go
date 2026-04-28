@@ -6,5 +6,6 @@ type User struct {
 	FullName         string `json:"full_name"`
 	SubscriptionTier string `json:"subscription_tier"`
 	Role             string `json:"role"`
+	Status           string `json:"status"`
 	PasswordHash     string `json:"-"`
 }

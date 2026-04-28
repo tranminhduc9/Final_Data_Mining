@@ -4,15 +4,18 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/dto"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/postgres"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 )
 
 type AdminHandler struct {
 	analyticsService *service.AnalyticsService
+	userRepo         *postgres.UserRepository
 }
 
-func NewAdminHandler(analyticsService *service.AnalyticsService) *AdminHandler {
-	return &AdminHandler{analyticsService: analyticsService}
+func NewAdminHandler(analyticsService *service.AnalyticsService, userRepo *postgres.UserRepository) *AdminHandler {
+	return &AdminHandler{analyticsService: analyticsService, userRepo: userRepo}
 }
 
 // DashboardUserCount godoc
@@ -103,4 +106,35 @@ func (h *AdminHandler) DashboardTopKeywords(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": keywords})
+}
+
+// ListUsers godoc
+// @Summary      List all users (admins first)
+// @Tags         admin
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} dto.ListUsersResponse
+// @Failure      401 {object} dto.ErrorResponse
+// @Failure      403 {object} dto.ErrorResponse
+// @Router       /admin/users [get]
+func (h *AdminHandler) ListUsers(c *gin.Context) {
+	if h.userRepo == nil {
+		c.JSON(http.StatusOK, dto.ListUsersResponse{Data: []dto.UserItem{}})
+		return
+	}
+	users, err := h.userRepo.ListAll(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	items := make([]dto.UserItem, len(users))
+	for i, u := range users {
+		items[i] = dto.UserItem{
+			FullName: u.FullName,
+			Email:    u.Email,
+			Role:     u.Role,
+			Status:   u.Status,
+		}
+	}
+	c.JSON(http.StatusOK, dto.ListUsersResponse{Data: items})
 }

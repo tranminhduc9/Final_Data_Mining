@@ -52,7 +52,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	authHandler := handler.NewAuthHandler(authService)
 
 	analyticsService := service.NewAnalyticsService(analyticsRepo)
-	adminHandler := handler.NewAdminHandler(analyticsService)
+	adminHandler := handler.NewAdminHandler(analyticsService, userRepo)
 
 	var radarRepo *neo4jrepo.RadarRepository
 	var compareRepo *neo4jrepo.CompareRepository
@@ -139,6 +139,8 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		admin := api.Group("/admin")
 		admin.Use(jwtMiddleware.RequireAdmin())
 		{
+			admin.GET("/users", adminHandler.ListUsers)
+
 			dashboard := admin.Group("/dashboard")
 			{
 				dashboard.GET("/user-count", adminHandler.DashboardUserCount)

@@ -39,16 +39,16 @@ func Analytics(svc AnalyticsRecorder) gin.HandlerFunc {
 func trackSearchKeywords(c *gin.Context, path string, svc AnalyticsRecorder) {
 	switch path {
 	case "/api/v1/radar/search":
-		if kw := c.Query("keyword"); kw != "" {
+		for _, kw := range parseKeywords(c) {
 			go svc.RecordSearch(context.Background(), kw, "radar")
 		}
 	case "/api/v1/compare/search":
-		if kw := c.Query("keyword"); kw != "" {
+		for _, kw := range parseKeywords(c) {
 			go svc.RecordSearch(context.Background(), kw, "compare")
 		}
 	case "/api/v1/graph/explore":
-		if kws := c.QueryArray("keywords"); len(kws) > 0 && kws[0] != "" {
-			go svc.RecordSearch(context.Background(), kws[0], "graph_explore")
+		for _, kw := range parseKeywords(c) {
+			go svc.RecordSearch(context.Background(), kw, "graph_explore")
 		}
 	case "/api/v1/graph/road_analysis":
 		if from := c.Query("from"); from != "" {
@@ -58,4 +58,20 @@ func trackSearchKeywords(c *gin.Context, path string, svc AnalyticsRecorder) {
 			go svc.RecordSearch(context.Background(), to, "road_analysis")
 		}
 	}
+}
+
+// parseKeywords mirrors the dedup logic used in radar/compare/graph handlers.
+func parseKeywords(c *gin.Context) []string {
+	seen := map[string]bool{}
+	var result []string
+	for _, raw := range c.QueryArray("keywords") {
+		for _, kw := range strings.Split(raw, ",") {
+			kw = strings.TrimSpace(kw)
+			if kw != "" && !seen[kw] {
+				seen[kw] = true
+				result = append(result, kw)
+			}
+		}
+	}
+	return result
 }

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
@@ -16,44 +15,91 @@ func NewAdminHandler(analyticsService *service.AnalyticsService) *AdminHandler {
 	return &AdminHandler{analyticsService: analyticsService}
 }
 
-// Stats godoc
-// @Summary      Get admin dashboard stats
-// @Description  Returns total users, unique visits today, and search count today
+// DashboardUserCount godoc
+// @Summary      Total registered user accounts
 // @Tags         admin
 // @Security     BearerAuth
 // @Produce      json
-// @Success      200 {object} dto.AdminStatsResponse
+// @Success      200 {object} dto.CountResponse
 // @Failure      401 {object} dto.ErrorResponse
 // @Failure      403 {object} dto.ErrorResponse
-// @Router       /admin/stats [get]
-func (h *AdminHandler) Stats(c *gin.Context) {
-	stats, err := h.analyticsService.GetStats(c.Request.Context())
+// @Router       /admin/dashboard/user-count [get]
+func (h *AdminHandler) DashboardUserCount(c *gin.Context) {
+	count, err := h.analyticsService.GetUserCount(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to fetch stats: " + err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": stats})
+	c.JSON(http.StatusOK, gin.H{"data": count})
 }
 
-// TopKeywords godoc
-// @Summary      Get top searched keywords (all time)
+// DashboardVisitsToday godoc
+// @Summary      Number of unique visitors today
 // @Tags         admin
 // @Security     BearerAuth
 // @Produce      json
-// @Param        limit  query  int  false  "Number of results (default 10, max 100)"
+// @Success      200 {object} dto.CountResponse
+// @Failure      401 {object} dto.ErrorResponse
+// @Failure      403 {object} dto.ErrorResponse
+// @Router       /admin/dashboard/visits-today [get]
+func (h *AdminHandler) DashboardVisitsToday(c *gin.Context) {
+	count, err := h.analyticsService.GetVisitsToday(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": count})
+}
+
+// DashboardSearchesToday godoc
+// @Summary      Number of searches performed today
+// @Tags         admin
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} dto.CountResponse
+// @Failure      401 {object} dto.ErrorResponse
+// @Failure      403 {object} dto.ErrorResponse
+// @Router       /admin/dashboard/searches-today [get]
+func (h *AdminHandler) DashboardSearchesToday(c *gin.Context) {
+	count, err := h.analyticsService.GetSearchesToday(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": count})
+}
+
+// DashboardMonthlyVisits godoc
+// @Summary      Unique visitor count per month for the last 4 months
+// @Tags         admin
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} dto.MonthlyVisitsResponse
+// @Failure      401 {object} dto.ErrorResponse
+// @Failure      403 {object} dto.ErrorResponse
+// @Router       /admin/dashboard/monthly-visits [get]
+func (h *AdminHandler) DashboardMonthlyVisits(c *gin.Context) {
+	visits, err := h.analyticsService.GetMonthlyVisits(c.Request.Context(), 4)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": visits})
+}
+
+// DashboardTopKeywords godoc
+// @Summary      Top 4 most searched keywords of all time
+// @Tags         admin
+// @Security     BearerAuth
+// @Produce      json
 // @Success      200 {object} dto.TopKeywordsResponse
 // @Failure      401 {object} dto.ErrorResponse
 // @Failure      403 {object} dto.ErrorResponse
-// @Router       /admin/top-keywords [get]
-func (h *AdminHandler) TopKeywords(c *gin.Context) {
-	limit, err := strconv.Atoi(c.DefaultQuery("limit", "10"))
-	if err != nil || limit <= 0 || limit > 100 {
-		limit = 10
-	}
-
-	keywords, err := h.analyticsService.GetTopKeywords(c.Request.Context(), limit)
+// @Router       /admin/dashboard/top-keywords [get]
+func (h *AdminHandler) DashboardTopKeywords(c *gin.Context) {
+	keywords, err := h.analyticsService.GetTopKeywords(c.Request.Context(), 4)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to fetch top keywords: " + err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": keywords})

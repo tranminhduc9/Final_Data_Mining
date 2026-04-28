@@ -68,6 +68,21 @@ definitions:
           $ref: '#/definitions/domain.GraphNode'
         type: array
     type: object
+  domain.KeywordCount:
+    properties:
+      count:
+        type: integer
+      keyword:
+        type: string
+    type: object
+  domain.MonthlyVisit:
+    properties:
+      count:
+        type: integer
+      month:
+        description: '"YYYY-MM"'
+        type: string
+    type: object
   domain.RadarKeywordCount:
     properties:
       job_count:
@@ -142,6 +157,11 @@ definitions:
           $ref: '#/definitions/domain.CompareResult'
         type: array
     type: object
+  dto.CountResponse:
+    properties:
+      data:
+        type: integer
+    type: object
   dto.ErrorResponse:
     properties:
       message:
@@ -170,6 +190,13 @@ definitions:
         type: string
       user_id:
         type: string
+    type: object
+  dto.MonthlyVisitsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.MonthlyVisit'
+        type: array
     type: object
   dto.RadarSearchResponse:
     properties:
@@ -220,6 +247,13 @@ definitions:
           $ref: '#/definitions/domain.RadarKeywordCount'
         type: array
     type: object
+  dto.TopKeywordsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.KeywordCount'
+        type: array
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -228,6 +262,116 @@ info:
   title: Final Data Mining API
   version: "1.0"
 paths:
+  /admin/dashboard/monthly-visits:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MonthlyVisitsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Unique visitor count per month for the last 4 months
+      tags:
+      - admin
+  /admin/dashboard/searches-today:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Number of searches performed today
+      tags:
+      - admin
+  /admin/dashboard/top-keywords:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TopKeywordsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Top 4 most searched keywords of all time
+      tags:
+      - admin
+  /admin/dashboard/user-count:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Total registered user accounts
+      tags:
+      - admin
+  /admin/dashboard/visits-today:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Number of unique visitors today
+      tags:
+      - admin
   /auth/login:
     post:
       consumes:
@@ -526,7 +670,7 @@ paths:
       - radar
 securityDefinitions:
   BearerAuth:
-    description: Type "Bearer " followed by your access token.
+    description: 'Enter: Bearer {token}'
     in: header
     name: Authorization
     type: apiKey

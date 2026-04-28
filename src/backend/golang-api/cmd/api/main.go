@@ -6,7 +6,7 @@
 // @securityDefinitions.apikey BearerAuth
 // @in              header
 // @name            Authorization
-// @description     Type "Bearer " followed by your access token.
+// @description     Enter: Bearer {token}
 
 package main
 

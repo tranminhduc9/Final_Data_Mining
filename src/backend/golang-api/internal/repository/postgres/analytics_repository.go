@@ -33,25 +33,62 @@ func (r *AnalyticsRepository) RecordSearch(ctx context.Context, keyword, endpoin
 	return err
 }
 
-func (r *AnalyticsRepository) GetStats(ctx context.Context) (*domain.AdminStats, error) {
-	today := time.Now().UTC().Format("2006-01-02")
-	var stats domain.AdminStats
+func (r *AnalyticsRepository) GetUserCount(ctx context.Context) (int, error) {
+	var count int
+	err := r.DB.Pool.QueryRow(ctx, `SELECT COUNT(*) FROM users`).Scan(&count)
+	return count, err
+}
 
-	if err := r.DB.Pool.QueryRow(ctx, `SELECT COUNT(*) FROM users`).Scan(&stats.TotalUsers); err != nil {
-		return nil, fmt.Errorf("count users: %w", err)
-	}
-	if err := r.DB.Pool.QueryRow(ctx,
-		`SELECT COUNT(*) FROM page_visits WHERE visit_date = $1`, today,
-	).Scan(&stats.VisitsToday); err != nil {
-		return nil, fmt.Errorf("count visits: %w", err)
-	}
-	if err := r.DB.Pool.QueryRow(ctx,
-		`SELECT COUNT(*) FROM keyword_searches WHERE searched_at::date = $1`, today,
-	).Scan(&stats.SearchesToday); err != nil {
-		return nil, fmt.Errorf("count searches: %w", err)
-	}
+func (r *AnalyticsRepository) GetVisitsToday(ctx context.Context) (int, error) {
+	var count int
+	err := r.DB.Pool.QueryRow(ctx,
+		`SELECT COUNT(*) FROM page_visits WHERE visit_date = CURRENT_DATE`,
+	).Scan(&count)
+	return count, err
+}
 
-	return &stats, nil
+func (r *AnalyticsRepository) GetSearchesToday(ctx context.Context) (int, error) {
+	var count int
+	err := r.DB.Pool.QueryRow(ctx,
+		`SELECT COUNT(*) FROM keyword_searches WHERE searched_at::date = CURRENT_DATE`,
+	).Scan(&count)
+	return count, err
+}
+
+// GetMonthlyVisits returns unique visitor counts per month for the last `months` months.
+func (r *AnalyticsRepository) GetMonthlyVisits(ctx context.Context, months int) ([]domain.MonthlyVisit, error) {
+	rows, err := r.DB.Pool.Query(ctx, `
+		SELECT
+			TO_CHAR(gs.month, 'YYYY-MM') AS month,
+			COUNT(DISTINCT pv.ip_address) AS count
+		FROM generate_series(
+			DATE_TRUNC('month', CURRENT_DATE) - $1 * INTERVAL '1 month',
+			DATE_TRUNC('month', CURRENT_DATE),
+			INTERVAL '1 month'
+		) AS gs(month)
+		LEFT JOIN page_visits pv
+			ON pv.visit_date >= gs.month::date
+			AND pv.visit_date < (gs.month + INTERVAL '1 month')::date
+		GROUP BY gs.month
+		ORDER BY gs.month ASC
+	`, months-1)
+	if err != nil {
+		return nil, fmt.Errorf("monthly visits: %w", err)
+	}
+	defer rows.Close()
+
+	var results []domain.MonthlyVisit
+	for rows.Next() {
+		var mv domain.MonthlyVisit
+		if err := rows.Scan(&mv.Month, &mv.Count); err != nil {
+			return nil, err
+		}
+		results = append(results, mv)
+	}
+	if results == nil {
+		results = []domain.MonthlyVisit{}
+	}
+	return results, rows.Err()
 }
 
 func (r *AnalyticsRepository) GetTopKeywords(ctx context.Context, limit int) ([]domain.KeywordCount, error) {

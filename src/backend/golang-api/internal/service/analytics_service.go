@@ -30,11 +30,32 @@ func (s *AnalyticsService) RecordSearch(ctx context.Context, keyword, endpoint s
 	_ = s.repo.RecordSearch(ctx, keyword, endpoint)
 }
 
-func (s *AnalyticsService) GetStats(ctx context.Context) (*domain.AdminStats, error) {
+func (s *AnalyticsService) GetUserCount(ctx context.Context) (int, error) {
 	if s.repo == nil {
-		return &domain.AdminStats{}, nil
+		return 0, nil
 	}
-	return s.repo.GetStats(ctx)
+	return s.repo.GetUserCount(ctx)
+}
+
+func (s *AnalyticsService) GetVisitsToday(ctx context.Context) (int, error) {
+	if s.repo == nil {
+		return 0, nil
+	}
+	return s.repo.GetVisitsToday(ctx)
+}
+
+func (s *AnalyticsService) GetSearchesToday(ctx context.Context) (int, error) {
+	if s.repo == nil {
+		return 0, nil
+	}
+	return s.repo.GetSearchesToday(ctx)
+}
+
+func (s *AnalyticsService) GetMonthlyVisits(ctx context.Context, months int) ([]domain.MonthlyVisit, error) {
+	if s.repo == nil {
+		return []domain.MonthlyVisit{}, nil
+	}
+	return s.repo.GetMonthlyVisits(ctx, months)
 }
 
 func (s *AnalyticsService) GetTopKeywords(ctx context.Context, limit int) ([]domain.KeywordCount, error) {

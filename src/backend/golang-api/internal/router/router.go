@@ -139,8 +139,14 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		admin := api.Group("/admin")
 		admin.Use(jwtMiddleware.RequireAdmin())
 		{
-			admin.GET("/stats", adminHandler.Stats)
-			admin.GET("/top-keywords", adminHandler.TopKeywords)
+			dashboard := admin.Group("/dashboard")
+			{
+				dashboard.GET("/user-count", adminHandler.DashboardUserCount)
+				dashboard.GET("/visits-today", adminHandler.DashboardVisitsToday)
+				dashboard.GET("/searches-today", adminHandler.DashboardSearchesToday)
+				dashboard.GET("/monthly-visits", adminHandler.DashboardMonthlyVisits)
+				dashboard.GET("/top-keywords", adminHandler.DashboardTopKeywords)
+			}
 		}
 	}
 

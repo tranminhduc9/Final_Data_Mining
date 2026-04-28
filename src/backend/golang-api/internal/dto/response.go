@@ -34,8 +34,12 @@ type RoadAnalysisResponse struct {
 
 // --- Admin ---
 
-type AdminStatsResponse struct {
-	Data domain.AdminStats `json:"data"`
+type CountResponse struct {
+	Data int `json:"data"`
+}
+
+type MonthlyVisitsResponse struct {
+	Data []domain.MonthlyVisit `json:"data"`
 }
 
 type TopKeywordsResponse struct {

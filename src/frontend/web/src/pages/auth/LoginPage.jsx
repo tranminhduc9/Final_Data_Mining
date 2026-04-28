@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginMock } from '../../api/authService';
+import { loginUser } from '../../api/authService';
 import './Auth.css';
 
 export default function LoginPage() {
@@ -16,12 +16,15 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            // NOTE: Tương lai đổi thành API thực loginUser
-            const res = await loginMock(email, password);
-            if (res.status === 'success') {
-                localStorage.setItem('auth_token', res.data.access_token);
-                // Redirect tới Dashboard hệ thống
-                navigate('/dashboard'); 
+            const res = await loginUser({ email, password });
+            if (res.access_token) {
+                localStorage.setItem('access_token', res.access_token);
+                if (res.refresh_token) {
+                    localStorage.setItem('refresh_token', res.refresh_token);
+                }
+                navigate('/dashboard');
+            } else {
+                setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
             }
         } catch (err) {
             setError('Đăng nhập thất bại. Vui lòng thử lại.');

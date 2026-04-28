@@ -25,8 +25,8 @@ export default function RegisterPage() {
 
         try {
             // NOTE: Thay bằng API thực: registerUser (khi backend có sẵn)
-            const res = await registerMock({ name, email, password });
-            if (res.status === 'success') {
+            const res = await registerMock({ full_name: name, email, password, confirm_password: confirmPwd });
+            if (res.status === 'success' || res.access_token) {
                 alert('Khởi tạo tài khoản thành công! Vui lòng đăng nhập.');
                 navigate('/login'); 
             }

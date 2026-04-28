@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { logoutUser } from '../../api/authService';
 import './Header.css';
 
 const navItems = [
@@ -12,6 +13,19 @@ const navItems = [
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+        } catch (_) {
+            // Bỏ qua lỗi server, vẫn logout phía client
+        } finally {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            navigate('/login');
+        }
+    };
 
     useEffect(() => {
         function handleClick(e) {
@@ -76,7 +90,7 @@ export default function Header() {
                                 </button>
                                 <div className="dropdown-divider" />
 
-                                <button className="dropdown-item danger">
+                                <button className="dropdown-item danger" onClick={handleLogout}>
                                     <span>Đăng xuất</span>
                                 </button>
                             </div>

@@ -1,1 +1,36 @@
 /PROMPT
+
+# Env files (chứa secret, không commit)
+.env
+.env.local
+.env.*.local
+
+# Data export (có thể rất lớn)
+data/export/
+data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Models cache (rất nặng, không commit)
+.cache/
+/models/
+
+# macOS
+.DS_Store
+
+# Tài liệu nội bộ
+*.pdf

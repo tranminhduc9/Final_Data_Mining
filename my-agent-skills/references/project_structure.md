@@ -1,34 +1,42 @@
-# Cấu trúc Dự án (Project Structure)
+# Cấu trúc Dự án TechPulse VN
 
-Thư mục này đại diện cho kiến trúc dự án thuần Frontend (Monorepo), tập trung hoàn toàn vào nền tảng Web và Mobile.
+Dự án được tổ chức theo mô hình Modular Monorepo, với toàn bộ source code nằm trong thư mục `src/`.
 
 ## 🌳 Sơ đồ cây (Directory Tree)
 
-Project/
-├── app/                    # Ứng dụng Mobile (React Native / Expo)
-│   ├── assets/             # Hình ảnh, icon, font
-│   ├── components/         # Các UI component tái sử dụng
-│   ├── constants/          # Định nghĩa hằng số, màu sắc, theme
-│   ├── hooks/              # Custom React Hooks
-│   ├── services/           # Các hàm fetch API
-│   ├── app.json            # Cấu hình chung cho Expo project
-│   └── package.json        # Khai báo dependency chính cho Mobile
+```text
+TechPulse-VN/
+├── 📂 src/                          # SOURCE CODE CHÍNH
+│   ├── 📂 frontend/                 # Phân hệ Frontend
+│   │   ├── 📂 web/                  # Next.js 15 Web Dashboard
+│   │   └── 📂 app/                  # Expo Mobile App
+│   │
+│   ├── 📂 backend/                  # [Blueprint] FastAPI Server
+│   ├── 📂 ai-rag-core/              # [Blueprint] Graph RAG Engine
+│   ├── 📂 data-pipeline/            # [Blueprint] Crawlers & ETL
+│   ├── 📂 database/                 # [Blueprint] Neo4j Schema & Migrations
+│   ├── 📂 shared/                   # Code & Types dùng chung
+│   ├── 📂 scripts/                  # Automation scripts
+│   └── 📂 docs/                     # Tài liệu kỹ thuật hệ thống
 │
-├── web/                    # Ứng dụng Web Dashboard (React / Vite)
-│   ├── public/             # Static files (favicon, icon)
-│   ├── src/                # SOURCE CODE CHÍNH CỦA ỨNG DỤNG WEB
-│   ├── Dockerfile          # Khai báo đóng gói Nginx cho Web
-│   ├── docker-compose.yml  # Triển khai Web bằng Docker
-│   ├── package.json        # Khai báo dependency chính cho Web
-│   └── vite.config.js      # Cấu hình đóng gói Web bundler
-│
-└── my-agent-skills/        # Thư mục kỹ năng và hướng dẫn cho AI
+├── 📂 my-agent-skills/              # Kỹ năng và hướng dẫn cho AI Agent
+├── 📂 tests/                        # Hệ thống kiểm thử
+├── 📂 docs/                         # Tài liệu dự án cấp cao (Root level)
+└── README.md                        # Tổng quan dự án
+```
 
 ## 📍 Hướng dẫn điều hướng cho AI (Navigation Rules)
 
-1. **Khi được yêu cầu "Xử lý/Tạo màn hình trên Mobile":**
-   - Chỉ hoạt động trong phạm vi thư mục `/app`.
-   - Vận dụng Expo Routing và UI styling cơ bản của React Native.
-2. **Khi được yêu cầu "Xử lý logic, vẽ biểu đồ trên Web Dashboard":**
-   - Chỉ hoạt động trong phạm vi thư mục `/web/src`.
-   - Cài đặt thư viện bằng `npm install --save <tên_thu_vien>` ngay bên trong thư mục `/web/`.
+1. **Phát triển Web Dashboard:**
+   - Hoạt động tại: `src/frontend/web/`.
+   - Sử dụng Next.js 15 App Router.
+   - Cài đặt thư viện: Chạy `npm install` tại đúng thư mục `src/frontend/web/`.
+
+2. **Phát triển Mobile App:**
+   - Hoạt động tại: `src/frontend/app/`.
+   - Sử dụng Expo & React Native.
+   - Các màn hình chính nằm trong `src/frontend/app/app/`.
+
+3. **Hiểu biết về hệ thống:**
+   - Các folder đánh dấu `[Blueprint]` hiện chỉ chứa file `__init__.py` mô tả kiến trúc.
+   - Luôn đọc `__init__.py` trong từng folder để hiểu nhiệm vụ của module đó trước khi hỗ trợ.

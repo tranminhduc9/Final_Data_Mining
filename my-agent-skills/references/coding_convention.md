@@ -1,11 +1,22 @@
 # Quy chuẩn viết code (Coding Convention)
 
-## 1. Ứng dụng Web (React/Vite)
-- **Component:** Bắt buộc viết Functional Component và sử dụng Hooks.
-- **Styling:** Tuân thủ theo cấu hình hiện tại, có thể dùng CSS thuần hoặc các framework tương ứng đã được cài đặt. 
-- **Giao tiếp API:** Nếu có kết nối dữ liệu ngoại vi, tạo các file service riêng trong `src/services/` dùng `axios` hoặc `fetch`. Không fetch API trực tiếp tại UI Component để dễ maintain.
+## 1. Web Dashboard (Next.js 15)
+- **App Router**: Sử dụng cấu trúc thư mục `app/` cho điều hướng.
+- **Components**: 
+  - Ưu tiên Server Components cho các phần fetch dữ liệu.
+  - Sử dụng Client Components (`'use client'`) cho các phần tương tác UI.
+- **Styling**: Sử dụng Tailwind CSS. Tuân thủ thiết kế hiện đại, premium (vibrant colors, glassmorphism, animations).
+- **Icons**: Sử dụng `lucide-react`.
+- **Data Fetching**: Sử dụng `fetch` API tích hợp sẵn của Next.js với các cơ chế caching phù hợp.
 
-## 2. Ứng dụng Mobile (React Native/Expo)
-- **Component:** Sử dụng App Router của Expo (thư mục `app/` cho điều hướng). Các UI Component dùng chung (Button, Card,...) phải được tách riêng ra `components/`.
-- **Styling:** Sử dụng `StyleSheet.create` mặc định của React Native.
-- **Data Visualization:** Nếu áp dụng biểu đồ, sử dụng thư viện đã cài đặt như `react-native-chart-kit`.
+## 2. Mobile App (Expo / React Native)
+- **Structure**: Sử dụng `expo-router` (thư mục `app/`).
+- **Components**: Tách biệt UI logic và Business logic. Các component dùng chung đặt trong `components/`.
+- **Styling**: Sử dụng `NativeWind` (nếu có) hoặc `StyleSheet` chuẩn.
+- **Assets**: Quản lý ảnh, font trong thư mục `assets/`.
+
+## 3. Quy chuẩn chung cho Agent
+- **Clean Code**: Đặt tên biến, hàm rõ nghĩa (tiếng Anh).
+- **Documentation**: Viết JSDoc cho các hàm phức tạp.
+- **Type Safety**: Luôn sử dụng TypeScript, định nghĩa Interface/Type rõ ràng, tránh dùng `any`.
+- **Error Handling**: Sử dụng Try-Catch và thông báo lỗi thân thiện với người dùng.

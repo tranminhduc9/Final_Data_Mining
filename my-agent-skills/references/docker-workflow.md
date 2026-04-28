@@ -1,8 +1,19 @@
 # Quy trình làm việc với Docker
 
-Dự án này là dự án thuần Frontend. Thư mục `web/` có cung cấp cấu hình `Dockerfile` và `docker-compose.yml` để build và chạy ứng dụng web qua Nginx (dành cho môi trường staging/production). Không hề có container cho Backend hay Database cục bộ.
+Trong giai đoạn hiện tại, Docker chủ yếu được sử dụng để đóng gói và triển khai phân hệ **Web Dashboard**.
 
-## ⚠️ Lưu ý cho AI Agent khi sử dụng Docker:
-1. **Mục đích sử dụng:** Docker trong dự án này chỉ nhằm mục đích dựng static files và phục vụ bằng Web Server tĩnh (Nginx) cho thư mục `/web`.
-2. **Quá trình Development:** Khi phát triển, tuyệt đối khuyên người dùng hoặc trực tiếp dùng `npm run dev` ở thư mục local thay vì dùng Docker để giữ được tính năng Hot-Reloading của Vite.
-3. **Tuyệt đối bỏ qua Backend:** Không đề xuất các cấu hình port database hay cài đặt backend Python trong container.
+## 🏗️ Cấu hình Docker hiện có
+
+1. **Web Dashboard Docker:**
+   - **Vị trí**: `src/frontend/web/Dockerfile`
+   - **Cơ chế**: Build project Next.js và phục vụ thông qua Nginx.
+   - **Compose**: `src/frontend/web/docker-compose.yml`
+
+2. **Các thành phần khác**:
+   - Hiện chưa có Dockerfile cho các module Backend/AI vì đang ở giai đoạn thiết kế.
+
+## ⚠️ Lưu ý cho AI Agent:
+
+1. **Phát triển Local**: Luôn ưu tiên dùng `npm run dev` tại `src/frontend/web` hoặc `src/frontend/app` để tận dụng Hot-Reload. Chỉ dùng Docker khi cần kiểm tra việc đóng gói (build production).
+2. **Path Context**: Khi chạy lệnh Docker, hãy đảm bảo `cd` vào đúng thư mục chứa `Dockerfile`.
+3. **Môi trường**: Kiểm tra các biến môi trường trong `.env` của từng phân hệ trước khi khởi chạy Docker.

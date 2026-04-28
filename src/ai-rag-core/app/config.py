@@ -1,0 +1,76 @@
+from functools import lru_cache
+from pathlib import Path
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# .env nằm ở project root (2 cấp trên file này)
+_ENV_FILE = Path(__file__).parent.parent.parent.parent / ".env"
+
+
+class Settings(BaseSettings):
+    # Neo4j AuraDB (cloud)
+    neo4j_uri: str
+    neo4j_username: str = "neo4j"
+    neo4j_password: str
+
+    # Neo4j Local (dev)
+    neo4j_local_uri: str = "bolt://localhost:7687"
+    neo4j_local_username: str = "neo4j"
+    neo4j_local_password: str = "localpassword"
+
+    # Chọn local hay AuraDB — đặt USE_LOCAL_NEO4J=true trong .env khi dev
+    use_local_neo4j: bool = False
+
+    # Gemini
+    gemini_api_key: str
+
+    # PostgreSQL
+    postgres_host: str = "localhost"
+    postgres_port: int = 5432
+    postgres_db: str = "techpulse"
+    postgres_user: str = "postgres"
+    postgres_password: str = "postgres"
+
+    # Redis
+    redis_url: str = "redis://localhost:6379"
+
+    # Model
+    embedding_model: str = "intfloat/multilingual-e5-base"
+    reranker_model: str = "BAAI/bge-reranker-v2-m3"
+    llm_model: str = "gemini-2.5-flash"
+    embedding_dim: int = 768
+
+    # Neo4j vector index name
+    neo4j_vector_index: str = "article_embedding_index"
+
+    # Secret để crawler gọi trigger embed (đặt giá trị ngẫu nhiên trong .env)
+    embed_secret: str = "changeme"
+
+    model_config = SettingsConfigDict(
+        env_file=str(_ENV_FILE),
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+    @property
+    def active_neo4j_uri(self) -> str:
+        return self.neo4j_local_uri if self.use_local_neo4j else self.neo4j_uri
+
+    @property
+    def active_neo4j_username(self) -> str:
+        return self.neo4j_local_username if self.use_local_neo4j else self.neo4j_username
+
+    @property
+    def active_neo4j_password(self) -> str:
+        return self.neo4j_local_password if self.use_local_neo4j else self.neo4j_password
+
+    @property
+    def postgres_dsn(self) -> str:
+        return (
+            f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}"
+            f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+        )
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()

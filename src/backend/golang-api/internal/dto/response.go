@@ -32,6 +32,16 @@ type RoadAnalysisResponse struct {
 	Data domain.RoadAnalysisResult `json:"data"`
 }
 
+// --- Admin ---
+
+type AdminStatsResponse struct {
+	Data domain.AdminStats `json:"data"`
+}
+
+type TopKeywordsResponse struct {
+	Data []domain.KeywordCount `json:"data"`
+}
+
 // --- Generic error ---
 
 type ErrorResponse struct {

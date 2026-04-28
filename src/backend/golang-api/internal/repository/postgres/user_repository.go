@@ -29,9 +29,9 @@ func (r *UserRepository) Create(ctx context.Context, email, passwordHash, fullNa
 	err := r.DB.Pool.QueryRow(ctx,
 		`INSERT INTO users (email, password_hash, full_name)
 		 VALUES ($1, $2, $3)
-		 RETURNING id, email, full_name, subscription_tier`,
+		 RETURNING id, email, full_name, subscription_tier, role`,
 		email, passwordHash, fullName,
-	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier)
+	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.Role)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
@@ -45,10 +45,10 @@ func (r *UserRepository) Create(ctx context.Context, email, passwordHash, fullNa
 func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var u domain.User
 	err := r.DB.Pool.QueryRow(ctx,
-		`SELECT id, email, full_name, subscription_tier, password_hash
+		`SELECT id, email, full_name, subscription_tier, password_hash, role
 		 FROM users WHERE email = $1`,
 		email,
-	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.PasswordHash)
+	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.PasswordHash, &u.Role)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound
@@ -61,10 +61,10 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*domain
 func (r *UserRepository) FindByID(ctx context.Context, id string) (*domain.User, error) {
 	var u domain.User
 	err := r.DB.Pool.QueryRow(ctx,
-		`SELECT id, email, full_name, subscription_tier
+		`SELECT id, email, full_name, subscription_tier, role
 		 FROM users WHERE id = $1`,
 		id,
-	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier)
+	).Scan(&u.ID, &u.Email, &u.FullName, &u.SubscriptionTier, &u.Role)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound

@@ -43,11 +43,16 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	jwtMiddleware := middleware.NewJWTMiddleware(cfg.JWTSecret)
 
 	var userRepo *postgres.UserRepository
+	var analyticsRepo *postgres.AnalyticsRepository
 	if db != nil {
 		userRepo = postgres.NewUserRepository(db)
+		analyticsRepo = postgres.NewAnalyticsRepository(db)
 	}
 	authService := service.NewAuthService(jwtMiddleware, userRepo)
 	authHandler := handler.NewAuthHandler(authService)
+
+	analyticsService := service.NewAnalyticsService(analyticsRepo)
+	adminHandler := handler.NewAdminHandler(analyticsService)
 
 	var radarRepo *neo4jrepo.RadarRepository
 	var compareRepo *neo4jrepo.CompareRepository
@@ -78,6 +83,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	})
 
 	api := r.Group("/api/v1")
+	api.Use(middleware.Analytics(analyticsService))
 	{
 		api.GET("/health", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
@@ -128,6 +134,13 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 			chat.POST("/session", chatHandler.CreateSession)
 			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)
 			chat.POST("/session/:session_id/messages", chatHandler.PostMessage)
+		}
+
+		admin := api.Group("/admin")
+		admin.Use(jwtMiddleware.RequireAdmin())
+		{
+			admin.GET("/stats", adminHandler.Stats)
+			admin.GET("/top-keywords", adminHandler.TopKeywords)
 		}
 	}
 

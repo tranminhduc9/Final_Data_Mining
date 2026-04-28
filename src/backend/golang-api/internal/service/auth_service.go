@@ -63,7 +63,7 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (dto.Au
 		return dto.AuthResponse{}, ErrInvalidCredentials
 	}
 
-	return s.buildTokenPair(user.ID, user.Email, "user")
+	return s.buildTokenPair(user.ID, user.Email, user.Role)
 }
 
 func (s *AuthService) Refresh(ctx context.Context, refreshToken string) (dto.AuthResponse, error) {

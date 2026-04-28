@@ -140,6 +140,9 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		admin.Use(jwtMiddleware.RequireAdmin())
 		{
 			admin.GET("/users", adminHandler.ListUsers)
+			admin.POST("/users", adminHandler.InsertUser)
+			admin.PUT("/users/:id", adminHandler.AlterUser)
+			admin.DELETE("/users/:id", adminHandler.DeleteUser)
 
 			dashboard := admin.Group("/dashboard")
 			{

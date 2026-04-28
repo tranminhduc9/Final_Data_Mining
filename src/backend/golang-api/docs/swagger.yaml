@@ -137,6 +137,28 @@ definitions:
           $ref: '#/definitions/domain.GraphNode'
         type: array
     type: object
+  dto.AlterUserRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      role:
+        enum:
+        - admin
+        - user
+        type: string
+      status:
+        enum:
+        - active
+        - blocked
+        type: string
+    required:
+    - email
+    - full_name
+    - role
+    - status
+    type: object
   dto.AuthResponse:
     properties:
       access_token:
@@ -171,6 +193,32 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/domain.GraphResult'
+    type: object
+  dto.InsertUserRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      role:
+        enum:
+        - admin
+        - user
+        type: string
+      status:
+        enum:
+        - active
+        - blocked
+        type: string
+    required:
+    - email
+    - full_name
+    - password
+    - role
+    - status
     type: object
   dto.ListUsersResponse:
     properties:
@@ -266,6 +314,8 @@ definitions:
       email:
         type: string
       full_name:
+        type: string
+      id:
         type: string
       role:
         type: string
@@ -410,6 +460,125 @@ paths:
       security:
       - BearerAuth: []
       summary: List all users (admins first)
+      tags:
+      - admin
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New user payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.InsertUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.UserItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new user account
+      tags:
+      - admin
+  /admin/users/{id}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a user account
+      tags:
+      - admin
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated user data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AlterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a user's information
       tags:
       - admin
   /auth/login:

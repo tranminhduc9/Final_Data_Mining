@@ -676,7 +676,21 @@ def ner_json_file_phobert(input_path: str) -> str:
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    posts = data.get("post_detail", [])
+    # --- Nhận diện định dạng ---
+    if isinstance(data, list):
+        # Format mới: array trực tiếp (job_descriptions)
+        fmt = "array"
+        posts = data
+    elif isinstance(data, dict):
+        # Format cũ: object với key "post_detail" (VN-EP, DanTri...)
+        fmt = "object"
+        posts = data.get("post_detail", [])
+    else:
+        print("  Định dạng JSON không hợp lệ.")
+        return ""
+
+    print(f"Định dạng phát hiện: {'array trực tiếp' if fmt == 'array' else 'object (post_detail)'}")
+
     total = len(posts)
     relevant_indices = [i for i, p in enumerate(posts) if p.get("is_relevant") is True]
 
@@ -690,11 +704,31 @@ def ner_json_file_phobert(input_path: str) -> str:
     print("\n[Bước] Chạy NER model tiếng Việt (trả về list entities thô)...")
     all_entities: List[List[dict]] = []
     for i, post in enumerate(relevant_posts):
-        text = f"{post.get('title', '')}. {post.get('content', '')}".strip()
+        if fmt == "array":
+            # Format mới: title = job_title, content = job_description + benefits + requirements
+            title_raw = post.get("job_title", "")
+            content_raw = " ".join(filter(None, [
+                post.get("job_description", "") or "",
+                post.get("benefits", "") or "",
+                post.get("requirements", "") or "",
+            ]))
+        else:
+            # Format cũ: title = title, content = content (fallback sang job fields nếu trống)
+            title_raw = post.get("title", "")
+            content_raw = post.get("content", "")
+            # if not title_raw and not content_raw:
+            #     title_raw = post.get("job_title", "")
+            #     content_raw = " ".join(filter(None, [
+            #         post.get("job_description", "") or "",
+            #         post.get("benefits", "") or "",
+            #         post.get("requirements", "") or "",
+            #     ]))
+
+        text = f"{title_raw}. {content_raw}".strip(". ").strip()
         ents = extract_entities_ner(text)
         all_entities.append(ents)
 
-        title = post.get("title", "")[:45]
+        title = title_raw[:45]
 
         # Tóm tắt nhanh số lượng từng nhóm thực thể cho log
         grouped = group_entities(ents)
@@ -710,15 +744,21 @@ def ner_json_file_phobert(input_path: str) -> str:
 
     # Output chỉ giữ lại bài có is_relevant=true (đã có entities)
     output_posts = [posts[i] for i in relevant_indices]
-    data_out = {k: v for k, v in data.items() if k != "post_detail"}
-    data_out["post_detail"] = output_posts
+
+    if fmt == "array":
+        # Format mới: giữ nguyên cấu trúc array
+        data_out = output_posts
+    else:
+        # Format cũ: giữ nguyên wrapper object, thay post_detail
+        data_out = {k: v for k, v in data.items() if k != "post_detail"}
+        data_out["post_detail"] = output_posts
 
     # Lưu output vào thư mục extracted_data_phobert với tên dạng extracted_data_phobert_XXX.json
     os.makedirs(EXTRACTED_DATA_DIR, exist_ok=True)
     base_name = os.path.basename(input_path)
 
     if base_name.startswith("filtered_data_"):
-        suffix = base_name[len("filtered_data_") :]
+        suffix = base_name[len("filtered_data_"):]
     else:
         suffix = base_name
 

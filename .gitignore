@@ -1,1 +1,11 @@
 /PROMPT
+
+.venv/
+
+__pycache__/
+
+*.pyc
+
+src/backend/.env
+.claude/settings.local.json
+.mcp.json

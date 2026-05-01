@@ -19,23 +19,28 @@ async def get_user_context(user_id: str) -> dict | None:
     Trả về None nếu user không tồn tại hoặc chưa có profile.
     """
     factory = get_session_factory()
-    async with factory() as session:
-        result = await session.execute(
-            text("""
-                SELECT
-                    u.id            AS user_id,
-                    u.full_name     AS full_name,
-                    p.job_role      AS job_role,
-                    p.technologies  AS technologies,
-                    p.location      AS location,
-                    p.bio           AS bio
-                FROM users u
-                LEFT JOIN user_profile p ON p.user_id = u.id
-                WHERE u.id = :user_id
-            """),
-            {"user_id": user_id},
-        )
-        row = result.mappings().first()
+    try:
+        async with factory() as session:
+            result = await session.execute(
+                text("""
+                    SELECT
+                        u.id            AS user_id,
+                        u.full_name     AS full_name,
+                        p.job_role      AS job_role,
+                        p.technologies  AS technologies,
+                        p.location      AS location,
+                        p.bio           AS bio
+                    FROM users u
+                    LEFT JOIN user_profile p ON p.user_id = u.id
+                    WHERE u.id = :user_id
+                """),
+                {"user_id": user_id},
+            )
+            row = result.mappings().first()
+    except Exception as e:
+        # user_profile có thể chưa được tạo, hoặc DB lỗi — không fail RAG
+        print(f"[WARN] get_user_context fallback: {e}")
+        return None
 
     if row is None:
         return None

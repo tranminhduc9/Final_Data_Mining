@@ -28,7 +28,7 @@ class ChatResponse(BaseModel):
 
 
 class ChatMessageItem(BaseModel):
-    id:      int
+    id:      uuid.UUID
     role:    str
     content: str
 

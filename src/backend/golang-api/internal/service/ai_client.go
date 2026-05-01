@@ -53,7 +53,7 @@ type ChatResponse struct {
 }
 
 type ChatMessageItem struct {
-	ID      int    `json:"id"`
+	ID      string `json:"id"`
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }

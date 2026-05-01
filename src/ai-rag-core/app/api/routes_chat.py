@@ -61,7 +61,7 @@ async def list_session_messages(
     db: AsyncSession = Depends(get_session),
 ) -> list[ChatMessageItem]:
     """Trả lịch sử message của 1 session theo thứ tự thời gian (id tăng dần)."""
-    stmt = select(ChatMessage).where(ChatMessage.session_id == session_id).order_by(ChatMessage.id.asc())
+    stmt = select(ChatMessage).where(ChatMessage.session_id == session_id).order_by(ChatMessage.created_at.asc())
     result = await db.execute(stmt)
     rows = result.scalars().all()
     return [ChatMessageItem(id=m.id, role=m.role, content=m.content) for m in rows]

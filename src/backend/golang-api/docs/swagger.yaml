@@ -348,6 +348,72 @@ definitions:
       status:
         type: string
     type: object
+  handler.CreateSessionResponse:
+    properties:
+      created_at:
+        type: string
+      session_id:
+        type: string
+    type: object
+  handler.IndexResponse:
+    properties:
+      neo4j:
+        type: boolean
+      rag:
+        type: string
+      status:
+        type: string
+    type: object
+  handler.PostMessageRequest:
+    properties:
+      query:
+        maxLength: 2000
+        minLength: 1
+        type: string
+    required:
+    - query
+    type: object
+  service.ChatMessageItem:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      role:
+        type: string
+    type: object
+  service.ChatResponse:
+    properties:
+      answer:
+        type: string
+      entities:
+        items:
+          type: string
+        type: array
+      job_titles:
+        items:
+          type: string
+        type: array
+      query:
+        type: string
+      session_id:
+        type: string
+      sources:
+        items:
+          $ref: '#/definitions/service.SourceItem'
+        type: array
+    type: object
+  service.SourceItem:
+    properties:
+      published_date:
+        type: string
+      rerank_score:
+        type: number
+      source:
+        type: string
+      title:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -796,6 +862,159 @@ paths:
       summary: Register a new user
       tags:
       - auth
+  /chat:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.IndexResponse'
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Health check của RAG service (proxy)
+      tags:
+      - chatbot
+  /chat/session:
+    post:
+      description: Generate UUIDv4 cho session. RAG service sẽ tự upsert vào DB khi
+        nhận message đầu tiên.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CreateSessionResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Tạo session chat mới
+      tags:
+      - chatbot
+  /chat/session/{session_id}/messages:
+    get:
+      parameters:
+      - description: Session UUID
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/service.ChatMessageItem'
+            type: array
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy lịch sử message của 1 session
+      tags:
+      - chatbot
+    post:
+      consumes:
+      - application/json
+      description: Proxy POST /chat sang RAG service. Trả full response (không stream).
+      parameters:
+      - description: Session UUID
+        in: path
+        name: session_id
+        required: true
+        type: string
+      - description: Câu hỏi
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.PostMessageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.ChatResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Gửi message (non-stream)
+      tags:
+      - chatbot
+  /chat/session/{session_id}/messages/stream:
+    post:
+      consumes:
+      - application/json
+      description: 'Proxy POST /chat/stream sang RAG. SSE events: `token` (data=text
+        chunk), `done` (data=JSON metadata: answer, session_id, sources, entities,
+        job_titles, query).'
+      parameters:
+      - description: Session UUID
+        in: path
+        name: session_id
+        required: true
+        type: string
+      - description: Câu hỏi
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.PostMessageRequest'
+      produces:
+      - text/event-stream
+      responses:
+        "200":
+          description: SSE stream
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Gửi message và stream câu trả lời (SSE)
+      tags:
+      - chatbot
   /compare/search:
     get:
       parameters:

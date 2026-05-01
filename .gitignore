@@ -44,3 +44,5 @@ __pycache__/
 src/backend/.env
 .claude/settings.local.json
 .mcp.json
+
+.claude/

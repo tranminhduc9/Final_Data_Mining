@@ -24,6 +24,8 @@ type Config struct {
 func Load() (*Config, error) {
 	_ = godotenv.Load(".env")
 	_ = godotenv.Load("../.env")
+	_ = godotenv.Load("../../.env")
+	_ = godotenv.Load("../../../.env") // root khi chạy từ src/backend/golang-api
 	_ = godotenv.Load(".env.example")
 	_ = godotenv.Load("../.env.example")
 
@@ -31,7 +33,7 @@ func Load() (*Config, error) {
 		AppEnv:                   getEnv("APP_ENV", "development"),
 		Port:                     getEnv("PORT", "8080"),
 		PostgresConnectionString: normalize(getEnv("PostgreSQL_CONNECTION_STRING", "")),
-		PythonAIBaseURL:          getEnv("PYTHON_AI_BASE_URL", "http://localhost:8001"),
+		PythonAIBaseURL:          getEnv("PYTHON_AI_BASE_URL", "http://localhost:8000"),
 		JWTSecret:                getEnv("JWT_SECRET", "change-this-in-production"),
 		Neo4jURI:                 getEnv("NEO4J_URI", ""),
 		Neo4jUsername:            getEnv("NEO4J_USERNAME", ""),

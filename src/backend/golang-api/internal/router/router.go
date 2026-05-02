@@ -73,7 +73,8 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	compareHandler := handler.NewCompareHandler(compareService)
 	graphService := service.NewGraphService(graphRepo)
 	graphHandler := handler.NewGraphHandler(graphService)
-	chatHandler := handler.NewChatHandler()
+	aiClient := service.NewAIClient(cfg.PythonAIBaseURL)
+	chatHandler := handler.NewChatHandler(aiClient)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -147,6 +148,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 			chat.POST("/session", chatHandler.CreateSession)
 			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)
 			chat.POST("/session/:session_id/messages", chatHandler.PostMessage)
+			chat.POST("/session/:session_id/messages/stream", chatHandler.PostMessageStream)
 		}
 
 		admin := api.Group("/admin")

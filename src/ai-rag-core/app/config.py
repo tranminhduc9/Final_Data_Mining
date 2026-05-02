@@ -65,10 +65,17 @@ class Settings(BaseSettings):
 
     @property
     def postgres_dsn(self) -> str:
+        # asyncpg dùng `ssl=require` qua connect_args; query string `?sslmode=...` không có hiệu lực.
+        # Ta để URL sạch và bật SSL khi host không phải local.
         return (
             f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}"
             f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
         )
+
+    @property
+    def postgres_requires_ssl(self) -> bool:
+        host = (self.postgres_host or "").lower()
+        return host not in {"localhost", "127.0.0.1", "postgres", "techpulse-postgres"}
 
 
 @lru_cache

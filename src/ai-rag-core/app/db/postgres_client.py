@@ -14,11 +14,15 @@ def get_engine():
     global _engine
     if _engine is None:
         settings = get_settings()
+        connect_args: dict = {}
+        if settings.postgres_requires_ssl:
+            connect_args["ssl"] = True
         _engine = create_async_engine(
             settings.postgres_dsn,
             pool_size=10,
             max_overflow=20,
             echo=False,
+            connect_args=connect_args,
         )
     return _engine
 

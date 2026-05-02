@@ -27,6 +27,12 @@ class ChatResponse(BaseModel):
     query:      str
 
 
+class ChatMessageItem(BaseModel):
+    id:      uuid.UUID
+    role:    str
+    content: str
+
+
 # ── Session ───────────────────────────────────────────────────────────────────
 
 class SessionCreate(BaseModel):

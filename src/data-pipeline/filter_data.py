@@ -148,6 +148,10 @@ def filter_json_file(input_path):
     Đọc file raw JSON, chạy model phân loại tiêu đề,
     gán nhãn is_relevant (true/false) cho mỗi bài,
     ghi ra file filtered_data_*.json.
+
+    Hỗ trợ 2 định dạng:
+      - Format cũ (VN-EP, DanTri...): JSON object có key "post_detail" chứa list bài.
+      - Format mới (job_descriptions...): JSON array trực tiếp các object bài.
     """
     print(f"\n{'=' * 55}")
     print(f"Đang xử lý: {os.path.basename(input_path)}")
@@ -156,21 +160,39 @@ def filter_json_file(input_path):
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    posts = data.get("post_detail", [])
+    # --- Nhận diện định dạng ---
+    if isinstance(data, list):
+        # Format mới: array trực tiếp
+        fmt = "array"
+        posts = data
+    elif isinstance(data, dict):
+        # Format cũ: object với key "post_detail"
+        fmt = "object"
+        posts = data.get("post_detail", [])
+    else:
+        print("  Định dạng JSON không hợp lệ.")
+        return ""
+
+    print(f"Định dạng phát hiện: {'array trực tiếp' if fmt == 'array' else 'object (post_detail)'}")
     print(f"Tổng số bài: {len(posts)}")
 
     if not posts:
         print("  Không có bài nào để xử lý.")
         return ""
 
-    titles = [post.get("title", "") for post in posts]
+    titles = [post.get("title") or post.get("job_title") or "" for post in posts]
 
     print(f"Đang phân loại {len(titles)} tiêu đề...")
     print(f"  (Tiền xử lý: NER + word_tokenize + normalize)")
 
     # Classify và in kết quả từng bài
+    # Nếu title là null/rỗng → mặc định gán False, không chạy model
     predictions = []
     for i, title in enumerate(titles):
+        if not title or not title.strip():
+            predictions.append(False)
+            print(f"  [{i + 1:3d}] ✗ Non-IT  (—  ) | [KHÔNG CÓ TIÊU ĐỀ]")
+            continue
         is_it, conf = predict_one(title)
         predictions.append(is_it)
         mark = "✓" if is_it else "✗"
@@ -184,7 +206,7 @@ def filter_json_file(input_path):
     # Thống kê
     relevant_count = sum(predictions)
 
-    # Ghi file output
+    # Ghi file output (giữ nguyên cấu trúc gốc)
     output_path = _resolve_output_path(input_path)
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

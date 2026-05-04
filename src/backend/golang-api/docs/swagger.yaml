@@ -139,9 +139,10 @@ definitions:
     type: object
   dto.AlterUserRequest:
     properties:
-      email:
-        type: string
       full_name:
+        type: string
+      password:
+        minLength: 8
         type: string
       role:
         enum:
@@ -154,7 +155,6 @@ definitions:
         - blocked
         type: string
     required:
-    - email
     - full_name
     - role
     - status
@@ -726,10 +726,6 @@ paths:
             $ref: '#/definitions/dto.ErrorResponse'
         "404":
           description: Not Found
-          schema:
-            $ref: '#/definitions/dto.ErrorResponse'
-        "409":
-          description: Conflict
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       security:

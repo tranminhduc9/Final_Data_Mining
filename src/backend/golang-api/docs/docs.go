@@ -458,12 +458,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dto.ErrorResponse"
                         }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
-                        }
                     }
                 }
             },
@@ -1441,17 +1435,17 @@ const docTemplate = `{
         "dto.AlterUserRequest": {
             "type": "object",
             "required": [
-                "email",
                 "full_name",
                 "role",
                 "status"
             ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
                 "full_name": {
                     "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
                 },
                 "role": {
                     "type": "string",

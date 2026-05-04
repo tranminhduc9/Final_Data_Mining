@@ -23,12 +23,13 @@ var (
 )
 
 type AuthService struct {
-	jwtMiddleware *middleware.JWTMiddleware
-	userRepo      *postgres.UserRepository
+	jwtMiddleware  *middleware.JWTMiddleware
+	userRepo       *postgres.UserRepository
+	profileRepo    *postgres.UserProfileRepository
 }
 
-func NewAuthService(jwtMiddleware *middleware.JWTMiddleware, userRepo *postgres.UserRepository) *AuthService {
-	return &AuthService{jwtMiddleware: jwtMiddleware, userRepo: userRepo}
+func NewAuthService(jwtMiddleware *middleware.JWTMiddleware, userRepo *postgres.UserRepository, profileRepo *postgres.UserProfileRepository) *AuthService {
+	return &AuthService{jwtMiddleware: jwtMiddleware, userRepo: userRepo, profileRepo: profileRepo}
 }
 
 func (s *AuthService) Register(ctx context.Context, email, password, fullName string) (dto.AuthResponse, error) {
@@ -43,6 +44,10 @@ func (s *AuthService) Register(ctx context.Context, email, password, fullName st
 	user, err := s.userRepo.Create(ctx, email, string(hash), fullName)
 	if err != nil {
 		return dto.AuthResponse{}, err
+	}
+
+	if s.profileRepo != nil {
+		_, _ = s.profileRepo.CreateProfile(ctx, user.ID)
 	}
 
 	return s.buildTokenPair(user.ID, user.Email, "user")

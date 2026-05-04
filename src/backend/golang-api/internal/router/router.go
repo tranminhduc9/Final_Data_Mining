@@ -43,15 +43,18 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	jwtMiddleware := middleware.NewJWTMiddleware(cfg.JWTSecret)
 
 	var userRepo *postgres.UserRepository
+	var userProfileRepo *postgres.UserProfileRepository
 	var analyticsRepo *postgres.AnalyticsRepository
 	var settingsRepo *postgres.SettingsRepository
 	if db != nil {
 		userRepo = postgres.NewUserRepository(db)
+		userProfileRepo = postgres.NewUserProfileRepository(db)
 		analyticsRepo = postgres.NewAnalyticsRepository(db)
 		settingsRepo = postgres.NewSettingsRepository(db)
 	}
-	authService := service.NewAuthService(jwtMiddleware, userRepo)
+	authService := service.NewAuthService(jwtMiddleware, userRepo, userProfileRepo)
 	authHandler := handler.NewAuthHandler(authService)
+	userHandler := handler.NewUserHandler(userRepo, userProfileRepo)
 
 	analyticsService := service.NewAnalyticsService(analyticsRepo)
 	adminHandler := handler.NewAdminHandler(analyticsService, userRepo)
@@ -149,6 +152,13 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)
 			chat.POST("/session/:session_id/messages", chatHandler.PostMessage)
 			chat.POST("/session/:session_id/messages/stream", chatHandler.PostMessageStream)
+		}
+
+		user := api.Group("/user")
+		user.Use(jwtMiddleware.RequireAuth())
+		{
+			user.GET("/profile", userHandler.GetProfile)
+			user.PUT("/profile", userHandler.UpdateProfile)
 		}
 
 		admin := api.Group("/admin")

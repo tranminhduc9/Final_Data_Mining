@@ -139,9 +139,10 @@ definitions:
     type: object
   dto.AlterUserRequest:
     properties:
-      email:
-        type: string
       full_name:
+        type: string
+      password:
+        minLength: 8
         type: string
       role:
         enum:
@@ -154,7 +155,6 @@ definitions:
         - blocked
         type: string
     required:
-    - email
     - full_name
     - role
     - status
@@ -188,6 +188,13 @@ definitions:
     properties:
       message:
         type: string
+    type: object
+  dto.GetProfileResponse:
+    properties:
+      profile:
+        $ref: '#/definitions/dto.ProfileData'
+      user:
+        $ref: '#/definitions/dto.ProfileUserData'
     type: object
   dto.GraphExploreResponse:
     properties:
@@ -252,6 +259,28 @@ definitions:
         items:
           $ref: '#/definitions/domain.MonthlyVisit'
         type: array
+    type: object
+  dto.ProfileData:
+    properties:
+      bio:
+        type: string
+      job_role:
+        type: string
+      location:
+        type: string
+      technologies:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.ProfileUserData:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: string
     type: object
   dto.RadarSearchResponse:
     properties:
@@ -324,6 +353,33 @@ definitions:
         items:
           $ref: '#/definitions/domain.KeywordCount'
         type: array
+    type: object
+  dto.UpdateProfileRequest:
+    properties:
+      bio:
+        type: string
+      full_name:
+        type: string
+      job_role:
+        type: string
+      location:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      technologies:
+        items:
+          type: string
+        type: array
+    required:
+    - full_name
+    type: object
+  dto.UpdateProfileResponse:
+    properties:
+      profile:
+        $ref: '#/definitions/dto.ProfileData'
+      user:
+        $ref: '#/definitions/dto.ProfileUserData'
     type: object
   dto.UpdateSettingRequest:
     properties:
@@ -726,10 +782,6 @@ paths:
             $ref: '#/definitions/dto.ErrorResponse'
         "404":
           description: Not Found
-          schema:
-            $ref: '#/definitions/dto.ErrorResponse'
-        "409":
-          description: Conflict
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       security:
@@ -1198,6 +1250,62 @@ paths:
       summary: Public system status (maintenance flags, feature toggles)
       tags:
       - system
+  /user/profile:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current user's profile information
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Updated profile data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UpdateProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update current user's profile information
+      tags:
+      - user
 securityDefinitions:
   BearerAuth:
     description: 'Enter: Bearer {token}'

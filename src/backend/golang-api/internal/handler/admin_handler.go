@@ -201,7 +201,6 @@ func (h *AdminHandler) InsertUser(c *gin.Context) {
 // @Failure      401 {object} dto.ErrorResponse
 // @Failure      403 {object} dto.ErrorResponse
 // @Failure      404 {object} dto.ErrorResponse
-// @Failure      409 {object} dto.ErrorResponse
 // @Router       /admin/users/{id} [put]
 func (h *AdminHandler) AlterUser(c *gin.Context) {
 	id := c.Param("id")
@@ -214,14 +213,20 @@ func (h *AdminHandler) AlterUser(c *gin.Context) {
 		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "database unavailable"})
 		return
 	}
-	user, err := h.userRepo.UpdateUser(c.Request.Context(), id, req.FullName, req.Email, req.Role, req.Status)
+	var passwordHash *string
+	if req.Password != nil {
+		hash, err := bcrypt.GenerateFromPassword([]byte(*req.Password), bcrypt.DefaultCost)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to hash password"})
+			return
+		}
+		s := string(hash)
+		passwordHash = &s
+	}
+	user, err := h.userRepo.UpdateUser(c.Request.Context(), id, req.FullName, passwordHash, req.Role, req.Status)
 	if err != nil {
 		if errors.Is(err, postgres.ErrNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"message": "user not found"})
-			return
-		}
-		if errors.Is(err, postgres.ErrEmailTaken) {
-			c.JSON(http.StatusConflict, gin.H{"message": "email already registered"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})

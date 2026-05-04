@@ -92,21 +92,18 @@ func (r *UserRepository) CreateFull(ctx context.Context, email, passwordHash, fu
 	return &u, nil
 }
 
-func (r *UserRepository) UpdateUser(ctx context.Context, id, fullName, email, role, status string) (*domain.User, error) {
+func (r *UserRepository) UpdateUser(ctx context.Context, id, fullName string, passwordHash *string, role, status string) (*domain.User, error) {
 	var u domain.User
 	err := r.DB.Pool.QueryRow(ctx,
-		`UPDATE users SET full_name=$2, email=$3, role=$4, status=$5
+		`UPDATE users SET full_name=$2, role=$3, status=$4,
+		 password_hash = COALESCE($5, password_hash)
 		 WHERE id=$1
 		 RETURNING id, email, full_name, role, status`,
-		id, fullName, email, role, status,
+		id, fullName, role, status, passwordHash,
 	).Scan(&u.ID, &u.Email, &u.FullName, &u.Role, &u.Status)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound
-		}
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return nil, ErrEmailTaken
 		}
 		return nil, fmt.Errorf("update user: %w", err)
 	}

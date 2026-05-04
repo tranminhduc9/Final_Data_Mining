@@ -5,10 +5,10 @@ type UpdateSettingRequest struct {
 }
 
 type AlterUserRequest struct {
-	FullName string `json:"full_name" binding:"required"`
-	Email    string `json:"email"     binding:"required,email"`
-	Role     string `json:"role"      binding:"required,oneof=admin user"`
-	Status   string `json:"status"    binding:"required,oneof=active blocked"`
+	FullName string  `json:"full_name" binding:"required"`
+	Password *string `json:"password"  binding:"omitempty,min=8"`
+	Role     string  `json:"role"      binding:"required,oneof=admin user"`
+	Status   string  `json:"status"    binding:"required,oneof=active blocked"`
 }
 
 type InsertUserRequest struct {

@@ -47,6 +47,16 @@ async def answer(query: str, user_id: str | None = None) -> dict:
         if candidates else []
     )
 
+    # 2b. Nếu graph trống (query mơ hồ, không có entity) và threshold lọc hết bài
+    #     → dùng top-3 bài điểm cao nhất + đánh dấu low_confidence để Gemini thận trọng
+    has_graph_data = bool(graph_data.get("jobs") or graph_data.get("companies"))
+    low_confidence = False
+    if not top_articles and not has_graph_data and candidates:
+        top_articles   = sorted(
+            candidates, key=lambda x: x.get("rerank_score", 0), reverse=True
+        )[:3]
+        low_confidence = True
+
     # 3. Fallback: không có cả article lẫn job data
     if not top_articles and not graph_data.get("jobs") and not graph_data.get("companies"):
         return {
@@ -59,7 +69,10 @@ async def answer(query: str, user_id: str | None = None) -> dict:
 
     # 4. Build prompt (ghép cả 3 nguồn)
     user_blk = build_user_block(user_ctx) if user_ctx else ""
-    messages = build_messages(query, top_articles, graph_data, user_block=user_blk)
+    messages = build_messages(
+        query, top_articles, graph_data,
+        user_block=user_blk, low_confidence=low_confidence,
+    )
 
     # 5. Gọi Gemini
     answer_text = await generate(messages)

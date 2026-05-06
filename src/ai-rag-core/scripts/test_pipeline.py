@@ -26,6 +26,8 @@ TEST_QUERIES = [
     "Lương kỹ sư phần mềm ở Việt Nam hiện tại ra sao?",
     "Công việc Python developer lương bao nhiêu?",
     "Tôi muốn tìm việc Data Engineer dùng Kafka và Spark",
+    "tôi muốn học lập trình web",
+    "FPT tuyển kỹ sư phần mềm không?",
 ]
 
 

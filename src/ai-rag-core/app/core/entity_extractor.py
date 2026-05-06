@@ -1,14 +1,23 @@
 """
-Trích xuất entities từ câu hỏi của user bằng dictionary + regex (không dùng LLM).
-Ported từ src/data-pipeline/extract_data.py.
+Trích xuất entities từ câu hỏi của user.
+
+Chiến lược kết hợp:
+  1. Dictionary + regex  → TECH (ngôn ngữ, framework, tool), JOB_ROLE (chức danh)
+  2. NER model (NlpHust/ner-vietnamese-electra-base) → ORG (tên công ty), LOC (địa điểm)
 
 Trả về:
   - technologies: tên tech / framework / ngôn ngữ lập trình / kỹ năng IT
   - job_titles:   vị trí / chức danh công việc IT
+  - companies:    tên công ty được nhắc đến trong câu hỏi
+  - locations:    địa điểm / tỉnh thành được nhắc đến
 """
 
 import re
+from functools import lru_cache
 from typing import List
+
+import torch
+from transformers import AutoModelForTokenClassification, AutoTokenizer, pipeline as hf_pipeline
 
 # ==========================================
 # TECH DICTIONARIES
@@ -206,6 +215,65 @@ _JOB_ROLE_PATTERN = re.compile(
 )
 
 # ==========================================
+# NER MODEL (ORG / LOC)
+# ==========================================
+
+NER_MODEL_NAME = "NlpHust/ner-vietnamese-electra-base"
+
+
+@lru_cache(maxsize=1)
+def get_ner_pipeline():
+    """Load NER model một lần, cache lại. Dùng GPU nếu có."""
+    tokenizer = AutoTokenizer.from_pretrained(NER_MODEL_NAME)
+    model = AutoModelForTokenClassification.from_pretrained(NER_MODEL_NAME)
+    return hf_pipeline(
+        "ner",
+        model=model,
+        tokenizer=tokenizer,
+        aggregation_strategy="simple",
+        device=0 if torch.cuda.is_available() else -1,
+    )
+
+
+def _extract_ner(text: str) -> dict:
+    """
+    Chạy NER model trên câu hỏi ngắn, trích xuất:
+      - ORG / ORGANIZATION → companies
+      - LOC / LOCATION     → locations
+    """
+    if not text.strip():
+        return {"companies": [], "locations": []}
+
+    try:
+        results = get_ner_pipeline()(text)
+    except Exception:
+        return {"companies": [], "locations": []}
+
+    companies: List[str] = []
+    locations: List[str] = []
+    seen_companies: set = set()
+    seen_locations: set = set()
+
+    for ent in results:
+        label = (ent.get("entity_group") or ent.get("entity") or "").upper()
+        word  = ent.get("word", "").strip()
+        if not word:
+            continue
+        if "ORG" in label or "ORGANIZATION" in label:
+            key = word.lower()
+            if key not in seen_companies:
+                seen_companies.add(key)
+                companies.append(word)
+        elif "LOC" in label or "LOCATION" in label:
+            key = word.lower()
+            if key not in seen_locations:
+                seen_locations.add(key)
+                locations.append(word)
+
+    return {"companies": companies, "locations": locations}
+
+
+# ==========================================
 # EXTRACTION FUNCTIONS
 # ==========================================
 
@@ -237,13 +305,22 @@ def _extract_job_roles(text: str) -> List[str]:
 
 def extract_query_entities(query: str) -> dict:
     """
-    Trích xuất technologies và job_titles từ câu hỏi user
-    bằng dictionary + regex (không cần LLM / API).
+    Trích xuất entities từ câu hỏi user bằng 2 chiến lược kết hợp:
+      - Dictionary + regex → technologies, job_titles
+      - NER model          → companies (ORG), locations (LOC)
 
     Trả về:
-      {"technologies": [...], "job_titles": [...]}
+      {
+        "technologies": [...],
+        "job_titles":   [...],
+        "companies":    [...],   # tên công ty (từ NER)
+        "locations":    [...],   # địa điểm (từ NER)
+      }
     """
+    ner = _extract_ner(query)
     return {
         "technologies": _extract_tech(query),
         "job_titles":   _extract_job_roles(query),
+        "companies":    ner["companies"],
+        "locations":    ner["locations"],
     }

@@ -12,16 +12,19 @@ def build_messages(
     articles: list[dict],
     graph_data: dict | None = None,
     user_block: str = "",
+    low_confidence: bool = False,
 ) -> list[dict]:
     """
     Ghép context từ article + graph data + user profile thành messages cho LangChain / Gemini.
 
-    articles:   list[dict] — top-5 article sau rerank
-    graph_data: dict       — kết quả từ graph_search() (jobs, companies, related_tech)
-    user_block: str        — output của retriever_user.build_user_block() (rỗng nếu anonymous)
+    articles:        list[dict] — top-5 article sau rerank
+    graph_data:      dict       — kết quả từ graph_search() (jobs, companies, related_tech)
+    user_block:      str        — output của retriever_user.build_user_block() (rỗng nếu anonymous)
+    low_confidence:  bool       — True khi articles dưới threshold (query mơ hồ, không có entity)
+                                  → thêm cảnh báo vào prompt để Gemini không suy diễn bừa
     Trả về: [{"role": "system", ...}, {"role": "user", ...}]
     """
-    context_block     = _build_context_block(articles)
+    context_block     = _build_context_block(articles, low_confidence=low_confidence)
     job_context_block = _build_job_context_block(graph_data or {})
 
     rag_template = _load("rag_template.txt")
@@ -38,8 +41,11 @@ def build_messages(
     ]
 
 
-def _build_context_block(articles: list[dict]) -> str:
-    """Định dạng article thành block đánh số [1], [2], ... cho LLM trích dẫn."""
+def _build_context_block(articles: list[dict], low_confidence: bool = False) -> str:
+    """Định dạng article thành block đánh số [1], [2], ... cho LLM trích dẫn.
+
+    Khi low_confidence=True, thêm cảnh báo để Gemini không suy diễn từ bài không liên quan.
+    """
     if not articles:
         return "(Không có bài viết liên quan nào được tìm thấy.)"
 
@@ -55,7 +61,18 @@ def _build_context_block(articles: list[dict]) -> str:
         date_str = f" ({str(date)[:10]})" if date else ""
         blocks.append(f"[{i}] {title}{date_str}\n{content}")
 
-    return "\n\n".join(blocks)
+    result = "\n\n".join(blocks)
+
+    if low_confidence:
+        result = (
+            "⚠️ Lưu ý: Các bài viết dưới đây có độ liên quan THẤP với câu hỏi "
+            "(không tìm thấy bài khớp trực tiếp). "
+            "Chỉ sử dụng nếu có thông tin thực sự liên quan; "
+            "nếu không đủ, hãy nói rõ thay vì suy diễn.\n\n"
+            + result
+        )
+
+    return result
 
 
 def _build_job_context_block(graph_data: dict) -> str:

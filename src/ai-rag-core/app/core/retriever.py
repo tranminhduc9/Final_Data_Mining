@@ -1,9 +1,11 @@
+import asyncio
+
 from app.db.neo4j_client import run_query
 from app.core.embedder import embed_query
 from app.config import get_settings
 
 
-async def vector_search(query: str, top_k: int = 20) -> list[dict]:
+async def vector_search(query: str, top_k: int = 10) -> list[dict]:
     """
     Embed câu hỏi → tìm Article gần nhất bằng Neo4j vector index.
     Trả về list dict: {id, title, content, source, published_date, sentiment_score, score}
@@ -15,7 +17,8 @@ async def vector_search(query: str, top_k: int = 20) -> list[dict]:
     - id = elementId() của Neo4j vì node không có property `id`
     """
     settings = get_settings()
-    query_vector = embed_query(query)
+    loop = asyncio.get_event_loop()
+    query_vector = await loop.run_in_executor(None, embed_query, query)
 
     cypher = """
     CALL db.index.vector.queryNodes($index_name, $top_k, $embedding)

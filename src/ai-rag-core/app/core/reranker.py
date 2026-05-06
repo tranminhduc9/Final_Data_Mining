@@ -12,10 +12,16 @@ def get_reranker() -> CrossEncoder:
     return CrossEncoder(settings.reranker_model)
 
 
+RERANK_SCORE_THRESHOLD = 0.01
+
+
 def rerank(query: str, candidates: list[dict], top_k: int = 5) -> list[dict]:
     """
     Nhận query + danh sách candidate article từ vector search,
     trả về top_k article được rerank lại theo relevance score thực sự.
+
+    Chỉ giữ lại các article có rerank_score >= RERANK_SCORE_THRESHOLD (0.01)
+    để tránh đưa bài không liên quan vào prompt.
 
     candidates: list[dict] với keys: id, title, content, source, published_date, sentiment_score, score
     Trả về: list[dict] tương tự, thêm key `rerank_score`, sắp xếp giảm dần.
@@ -25,7 +31,6 @@ def rerank(query: str, candidates: list[dict], top_k: int = 5) -> list[dict]:
 
     model = get_reranker()
 
-    # CrossEncoder nhận cặp (query, passage) — dùng title + content làm passage
     pairs = [
         (query, _build_passage(c))
         for c in candidates
@@ -37,7 +42,9 @@ def rerank(query: str, candidates: list[dict], top_k: int = 5) -> list[dict]:
         candidate["rerank_score"] = float(score)
 
     reranked = sorted(candidates, key=lambda x: x["rerank_score"], reverse=True)
-    return reranked[:top_k]
+
+    filtered = [a for a in reranked if a["rerank_score"] >= RERANK_SCORE_THRESHOLD]
+    return filtered[:top_k]
 
 
 def _build_passage(candidate: dict, max_chars: int = 1000) -> str:

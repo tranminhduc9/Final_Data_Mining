@@ -376,3 +376,27 @@ def test_filter_json_file_malformed_json(tmp_path, monkeypatch):
     input_file.write_text("{ invalid json }", encoding="utf-8")
     with pytest.raises(json.JSONDecodeError):
         module.filter_json_file(str(input_file))
+
+
+def test_filter_json_file_handles_array_format_and_job_title(monkeypatch, tmp_path):
+    """Test filter_json_file with the new array format and job_title field."""
+    filter_data = _load_filter_data(monkeypatch)
+
+    payload = [
+        {"job_title": "IT Guru", "content": "x"},
+        {"job_title": "HR Manager", "content": "y"},
+    ]
+    in_file = tmp_path / "raw_data_array.json"
+    in_file.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    monkeypatch.setattr(filter_data, "FILTERED_DATA_DIR", str(tmp_path / "filtered"))
+    seq = iter([(True, 0.9), (False, 0.8)])
+    monkeypatch.setattr(filter_data, "predict_one", lambda _t: next(seq))
+
+    out_path = filter_data.filter_json_file(str(in_file))
+    out = json.loads(Path(out_path).read_text(encoding="utf-8"))
+
+    assert isinstance(out, list)
+    assert out[0]["is_relevant"] is True
+    assert out[1]["is_relevant"] is False
+    assert out[0]["job_title"] == "IT Guru"

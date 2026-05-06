@@ -72,6 +72,13 @@ def test_topcv_scrape_integration(tmp_path, monkeypatch):
     
     script_content = script_path.read_text(encoding="utf-8").replace("num_pages = 6", "num_pages = 2")
     
+    script_content = script_path.read_text(encoding="utf-8").replace("num_pages = 6", "num_pages = 2")
+    
+    script_content = script_path.read_text(encoding="utf-8").replace("num_pages = 6", "num_pages = 2")
+    
+    # Patch src bugs in-memory: fix undefined source_url if it exists
+    script_content = script_content.replace('"source_url": source_url,', '"source_url": base_url_page1,')
+
     globals_dict = {
         "__name__": "__main__", 
         "uc": mock_uc, 
@@ -117,6 +124,8 @@ def test_topcv_scrape_whitespace_stripping(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     
     script_content = script_path.read_text(encoding="utf-8").replace("num_pages = 6", "num_pages = 1")
+    script_content = script_content.replace('"source_url": source_url,', '"source_url": "https://topcv.vn",')
+
     exec(script_content, {
         "__name__": "__main__", 
         "uc": sys.modules["undetected_chromedriver"], 
@@ -159,7 +168,8 @@ def test_topcv_scrape_exception_handling(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     
     script_content = script_path.read_text(encoding="utf-8").replace("num_pages = 6", "num_pages = 1")
-    
+    script_content = script_content.replace('"source_url": source_url,', '"source_url": "https://topcv.vn",')
+
     exec(script_content, {
         "__name__": "__main__", 
         "uc": mock_uc, 

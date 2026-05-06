@@ -150,3 +150,100 @@ def test_full_pipeline_flow(tmp_path, monkeypatch):
     assert final_data["post_detail"][0]["is_relevant"] is True
     assert "Sam Altman" in final_data["post_detail"][0]["entities"]["PER"]
     assert "Python" in final_data["post_detail"][0]["entities"]["TECH"]
+
+
+@pytest.mark.integration
+def test_full_pipeline_array_flow(tmp_path, monkeypatch):
+    """
+    Test pipeline flow with new array format:
+    1. Provide raw_data_Array.json (direct list)
+    2. Filter -> filtered_data_Array.json (direct list)
+    3. Extract -> extracted_data_phobert_Array.json (direct list)
+    """
+    root = Path(__file__).resolve().parents[2]
+    
+    # Setup directories
+    raw_dir = tmp_path / "raw_data"
+    filtered_dir = tmp_path / "filtered_data"
+    extracted_dir = tmp_path / "extracted_data"
+    raw_dir.mkdir()
+    
+    # Create raw array file
+    raw_file = raw_dir / "raw_data_Array.json"
+    raw_file.write_text(json.dumps([
+        {"job_title": "AI Expert", "job_description": "Working with Python", "benefits": "High pay", "requirements": "PhD"}
+    ], ensure_ascii=False), encoding="utf-8")
+    
+    # Setup mocks (same as test_full_pipeline_flow)
+    # ... assuming they are already set in sys.modules or we reuse them
+    # For this test, we need to ensure the mocks are active
+    
+    # --- 1. FILTER ---
+    filter_script = root / "src" / "data-pipeline" / "filter_data.py"
+    
+    # Mock PhoBERT loading in filter_data
+    transformers_mod = types.ModuleType("transformers")
+    transformers_mod.AutoModelForSequenceClassification = types.SimpleNamespace(from_pretrained=lambda _: types.SimpleNamespace(eval=lambda: None, to=lambda _: None))
+    transformers_mod.AutoTokenizer = types.SimpleNamespace(from_pretrained=lambda _: lambda *a, **k: types.SimpleNamespace(to=lambda _: {}))
+    monkeypatch.setitem(sys.modules, "transformers", transformers_mod)
+
+    # Mock torch and underthesea if needed
+    torch_mod = types.ModuleType("torch")
+    torch_mod.cuda = types.SimpleNamespace(is_available=lambda: False)
+    torch_mod.device = lambda n: n
+    class NoGrad:
+        def __enter__(self): pass
+        def __exit__(self, *a): pass
+    torch_mod.no_grad = lambda: NoGrad()
+    monkeypatch.setitem(sys.modules, "torch", torch_mod)
+    
+    uts_mod = types.ModuleType("underthesea")
+    uts_mod.word_tokenize = lambda t, format=None: t
+    uts_mod.ner = lambda t: []
+    monkeypatch.setitem(sys.modules, "underthesea", uts_mod)
+
+    spec = importlib.util.spec_from_file_location("filter_mod_array", filter_script)
+    filter_mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(filter_mod)
+    
+    monkeypatch.setattr(filter_mod, "RAW_DATA_DIR", str(raw_dir))
+    monkeypatch.setattr(filter_mod, "FILTERED_DATA_DIR", str(filtered_dir))
+    
+    # Mock predict_one for filter
+    monkeypatch.setattr(filter_mod, "predict_one", lambda _: (True, 0.99))
+    
+    filter_mod.main()
+    
+    filtered_file = filtered_dir / "filtered_data_Array.json"
+    assert filtered_file.exists()
+    filtered_data = json.loads(filtered_file.read_text(encoding="utf-8"))
+    assert isinstance(filtered_data, list)
+    assert filtered_data[0]["is_relevant"] is True
+    
+    # --- 2. EXTRACT ---
+    extract_script = root / "src" / "data-pipeline" / "extract_data.py"
+    
+    # Mock NER loading in extract_data
+    transformers_mod.pipeline = lambda *a, **k: lambda text: []
+    transformers_mod.AutoModelForTokenClassification = types.SimpleNamespace(from_pretrained=lambda _: None)
+
+    spec = importlib.util.spec_from_file_location("extract_mod_array", extract_script)
+    extract_mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(extract_mod)
+    
+    # Mock NER for extract
+    def mock_extract_ner(text):
+        return [{"entity": "Python", "label": "TECH", "score": 1.0}]
+    
+    monkeypatch.setattr(extract_mod, "extract_entities_ner", mock_extract_ner)
+    monkeypatch.setattr(extract_mod, "FILTERED_DATA_DIR", str(filtered_dir))
+    monkeypatch.setattr(extract_mod, "EXTRACTED_DATA_DIR", str(extracted_dir))
+    monkeypatch.setattr(sys, "argv", ["extract_data.py", "--dir", str(filtered_dir)])
+    
+    extract_mod.main()
+    
+    extracted_file = extracted_dir / "extracted_data_phobert_Array.json"
+    assert extracted_file.exists()
+    extracted_data = json.loads(extracted_file.read_text(encoding="utf-8"))
+    assert isinstance(extracted_data, list)
+    assert "Python" in extracted_data[0]["entities"]["TECH"]

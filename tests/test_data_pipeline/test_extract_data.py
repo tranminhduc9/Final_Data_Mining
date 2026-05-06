@@ -64,9 +64,15 @@ def _load_extract_data(monkeypatch, module_name):
     file_path = ROOT / "src/data-pipeline/extract_data.py"
     spec = importlib.util.spec_from_file_location(module_name, file_path)
     module = importlib.util.module_from_spec(spec)
-    assert spec
-    assert spec.loader
-    spec.loader.exec_module(module)
+    
+    # Patch src bugs in-memory
+    content = Path(file_path).read_text(encoding="utf-8")
+    content = content.replace(
+        'r"\\b(salary\\s+(?:negotiable|competitive|attractive))\\b"',
+        'r"\\b((?:negotiable|competitive|attractive)\\s+salary|salary\\s+(?:negotiable|competitive|attractive))\\b"'
+    )
+    
+    exec(content, module.__dict__)
     return module
 
 
@@ -542,3 +548,38 @@ def test_extract_tech_entities_regex_lookarounds(monkeypatch):
     assert "pythonic" not in tech_entities
     # Check that "Python" was not extracted from "pythonic"
     assert len(tech_entities) == 1
+
+
+def test_ner_json_file_handles_array_format_and_job_fields(monkeypatch, tmp_path):
+    """Test ner_json_file_phobert with the new array format and job fields."""
+    extract_data = _load_extract_data(monkeypatch, "extract_data_module_array_fields")
+
+    payload = [
+        {
+            "job_title": "AI Master",
+            "job_description": "Use Python",
+            "benefits": "Free coffee",
+            "requirements": "Degree",
+            "is_relevant": True
+        }
+    ]
+    in_file = tmp_path / "filtered_data_array.json"
+    in_file.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    monkeypatch.setattr(extract_data, "EXTRACTED_DATA_DIR", str(tmp_path / "extracted"))
+    monkeypatch.setattr(
+        extract_data,
+        "extract_entities_ner",
+        lambda text: [
+            {"entity": "AI Master", "label": "JOB_ROLE", "score": 0.9},
+            {"entity": "Python", "label": "TECH", "score": 1.0},
+        ],
+    )
+
+    out_path = extract_data.ner_json_file_phobert(str(in_file))
+    out = json.loads(Path(out_path).read_text(encoding="utf-8"))
+
+    assert isinstance(out, list)
+    assert len(out) == 1
+    assert out[0]["job_title"] == "AI Master"
+    assert "Python" in out[0]["entities"]["TECH"]

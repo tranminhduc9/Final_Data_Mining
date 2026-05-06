@@ -1,4 +1,5 @@
 import asyncio
+from functools import partial
 
 from app.core.retriever import vector_search
 from app.core.retriever_graph import graph_search
@@ -29,7 +30,7 @@ async def answer(query: str, user_id: str | None = None) -> dict:
     """
     # 1. Chạy song song: vector search + graph traversal + user profile
     gather_tasks = [
-        vector_search(query, top_k=20),
+        vector_search(query, top_k=10),
         graph_search(query),
     ]
     if user_id:
@@ -39,8 +40,12 @@ async def answer(query: str, user_id: str | None = None) -> dict:
         candidates, graph_data = await asyncio.gather(*gather_tasks)
         user_ctx = None
 
-    # 2. Rerank article (nếu có)
-    top_articles = rerank(query, candidates, top_k=5) if candidates else []
+    # 2. Rerank trong thread pool (CPU-bound, tránh block event loop)
+    loop = asyncio.get_event_loop()
+    top_articles = (
+        await loop.run_in_executor(None, partial(rerank, query, candidates, 5))
+        if candidates else []
+    )
 
     # 3. Fallback: không có cả article lẫn job data
     if not top_articles and not graph_data.get("jobs") and not graph_data.get("companies"):

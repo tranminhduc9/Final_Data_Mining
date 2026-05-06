@@ -1,56 +1,10 @@
-import json
-import re
-
-from langchain_google_genai import ChatGoogleGenerativeAI
-
-from app.config import get_settings
+from app.core.entity_extractor import extract_query_entities
 from app.db.neo4j_client import run_query
-
-
-async def _extract_entities(query: str) -> dict:
-    """
-    Dùng Gemini trích xuất (1 call duy nhất):
-      - technologies: tên tech / framework / kỹ năng IT
-      - job_titles:   từ khoá vị trí công việc (nếu câu hỏi hỏi về nghề/lương)
-
-    Trả về dict, ví dụ:
-      {"technologies": ["Python"], "job_titles": ["kỹ sư phần mềm"]}
-    """
-    settings = get_settings()
-    llm = ChatGoogleGenerativeAI(
-        model=settings.llm_model,
-        google_api_key=settings.gemini_api_key,
-        temperature=0,
-    )
-
-    prompt = (
-        "Phân tích câu hỏi sau và trích xuất 2 loại thông tin:\n"
-        "1. technologies: tên công nghệ, ngôn ngữ lập trình, framework, kỹ năng IT\n"
-        "2. job_titles: từ khoá vị trí công việc IT (developer, engineer, analyst...)\n\n"
-        "Chỉ trả về JSON object, không giải thích. Nếu không có thì để list rỗng.\n"
-        'Ví dụ: {"technologies": ["Python", "Django"], "job_titles": ["backend developer"]}\n\n'
-        f"Câu hỏi: {query}"
-    )
-
-    response = await llm.ainvoke(prompt)
-    text = response.content.strip()
-
-    match = re.search(r"\{.*?\}", text, re.DOTALL)
-    if match:
-        try:
-            result = json.loads(match.group())
-            return {
-                "technologies": [e for e in result.get("technologies", []) if isinstance(e, str)],
-                "job_titles":   [e for e in result.get("job_titles", []) if isinstance(e, str)],
-            }
-        except json.JSONDecodeError:
-            pass
-    return {"technologies": [], "job_titles": []}
 
 
 async def graph_search(query: str) -> dict:
     """
-    Trích entity từ query (1 Gemini call) → graph traversal trên Job / Company / Technology.
+    Trích entity từ query (local dictionary + regex, không dùng LLM) → graph traversal trên Job / Company / Technology.
 
     Trả về dict:
     {
@@ -61,7 +15,7 @@ async def graph_search(query: str) -> dict:
         "related_tech": list[dict],  # tech liên quan qua RELATED_TO
     }
     """
-    extracted = await _extract_entities(query)
+    extracted = extract_query_entities(query)
     tech_entities = extracted["technologies"]
     job_title_kws  = extracted["job_titles"]
 

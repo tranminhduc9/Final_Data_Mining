@@ -50,7 +50,7 @@ class SkillNode:
 class CompanyNode:
     """Helper Company Node"""
     name: str
-    industry: str = "Technology"
+    field: str = "Technology"
     size: str = "Unknown"
     location: str = "Unknown"
     rating: float = 0.0
@@ -67,12 +67,12 @@ class CompanyNode:
 class JobNode:
     """Helper Job Node"""
     title: str
-    salary_min: float = 0
-    salary_max: float = 0
-    level: str = "Unknown"
+    description: str = ""
+    requirement: str = ""
+    benefit: str = ""
+    salary: str = ""  # Combined salary range as string
+    due_date: datetime = None
     source_url: str = ""
-    company_name: str = ""
-    posted_date: datetime = None
 
 logger = logging.getLogger(__name__)
 
@@ -167,14 +167,20 @@ class Neo4jJobImporter:
                         """
                         MERGE (c:Company {name: $name})
                         ON CREATE SET
-                            c.industry = $industry,
+                            c.field = $field,
                             c.size = $size,
                             c.location = $location,
                             c.rating = $rating
+                        ON MATCH SET
+                            c.location = CASE 
+                                WHEN c.location = "Unknown" OR c.location = "" 
+                                THEN $location 
+                                ELSE c.location 
+                            END
                         """,
                         parameters={
                             'name': company.name,
-                            'industry': company.industry,
+                            'field': company.field,
                             'size': company.size,
                             'location': company.location,
                             'rating': company.rating
@@ -195,21 +201,21 @@ class Neo4jJobImporter:
                         """
                         MERGE (j:Job {title: $title})
                         ON CREATE SET
-                            j.salary_min = $salary_min,
-                            j.salary_max = $salary_max,
-                            j.level = $level,
-                            j.source_url = $source_url,
-                            j.company_name = $company_name,
-                            j.posted_date = $posted_date
+                            j.description = $description,
+                            j.requirement = $requirement,
+                            j.benefit = $benefit,
+                            j.salary = $salary,
+                            j.due_date = $due_date,
+                            j.source_url = $source_url
                         """,
                         parameters={
                             'title': job.title,
-                            'salary_min': job.salary_min,
-                            'salary_max': job.salary_max,
-                            'level': job.level,
-                            'source_url': job.source_url,
-                            'company_name': job.company_name,
-                            'posted_date': job.posted_date.isoformat() if job.posted_date else None
+                            'description': job.description,
+                            'requirement': job.requirement,
+                            'benefit': job.benefit,
+                            'salary': job.salary,
+                            'due_date': job.due_date.isoformat() if job.due_date else None,
+                            'source_url': job.source_url
                         }
                     )
             logger.info(f"✅ Imported {len(jobs)} jobs")
@@ -302,6 +308,8 @@ class Neo4jJobImporter:
                             a.source = $source,
                             a.published_date = $published_date,
                             a.sentiment_score = $sentiment_score
+                        ON MATCH SET
+                            a.content = CASE WHEN a.content = "" OR a.content IS NULL THEN $content ELSE a.content END
                         """,
                         parameters={
                             'title': article.title,
@@ -358,6 +366,12 @@ class Neo4jJobImporter:
                             c.size = $size,
                             c.location = $location,
                             c.rating = $rating
+                        ON MATCH SET
+                            c.location = CASE 
+                                WHEN c.location = "Unknown" OR c.location = "" 
+                                THEN $location 
+                                ELSE c.location 
+                            END
                         """,
                         parameters={
                             'name': company.name,

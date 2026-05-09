@@ -17,6 +17,41 @@ from database_connection import Article, Job
 
 logger = logging.getLogger(__name__)
 
+# Source name mapping for display
+SOURCE_DISPLAY_NAMES = {
+    'GenK': 'GenK',
+    'DanTri': 'Dân Trí',
+    'Dân Trí': 'Dân Trí',
+    'VN-EP': 'VNExpress',
+    'VNExpress': 'VNExpress',
+    'topCV': 'TopCV',
+    'TopCV': 'TopCV',
+}
+
+def get_display_source(source: str) -> str:
+    """
+    Convert source code to display name.
+    
+    Examples:
+        '06_05_2026_GenK' -> 'GenK'
+        'DanTri' -> 'Dân Trí'
+        'VN-EP' -> 'VNExpress'
+        'topCV' -> 'TopCV'
+    """
+    if not source:
+        return 'Unknown'
+    
+    # If source contains date pattern (DD_MM_YYYY_SourceName), extract source name
+    import re
+    date_pattern = r'\d{2}_\d{2}_\d{4}_(.+)'
+    match = re.match(date_pattern, source)
+    if match:
+        source = match.group(1)
+    
+    # Look up display name
+    return SOURCE_DISPLAY_NAMES.get(source, source)
+
+
 class DataTransformer:
     """Transform extracted news data to Job Market schema"""
     
@@ -120,11 +155,11 @@ class DataTransformer:
         # Calculate sentiment
         sentiment_score = self._calculate_sentiment(title + " " + description)
         
-        # Create Article node
+        # Create Article node with transformed source name
         article = Article(
             title=title,
             content=description,
-            source=platform,
+            source=get_display_source(platform),
             published_date=published_date,
             sentiment_score=sentiment_score
         )
@@ -152,7 +187,7 @@ class DataTransformer:
         for org_name in entities.get('organizations', []):
             company = Company(
                 name=org_name,
-                industry="Technology",  # Default, can be enhanced
+                field="Technology",  # Default, can be enhanced
                 location="Unknown",  # Can be extracted from location entities
                 rating=sentiment_score
             )
@@ -251,7 +286,7 @@ class DataTransformer:
             'companies': [
                 {
                     'name': c.name,
-                    'industry': c.industry,
+                    'field': c.field,
                     'size': c.size,
                     'location': c.location,
                     'rating': c.rating

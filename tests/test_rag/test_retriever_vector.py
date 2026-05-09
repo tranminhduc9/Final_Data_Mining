@@ -24,5 +24,5 @@ async def test_vector_search_success(monkeypatch):
     
     # Kiểm tra tham số truyền vào run_query
     args, _ = mock_run_query.call_args
-    assert args[1]["top_k"] == 20
+    assert args[1]["top_k"] == 10
     assert "db.index.vector.queryNodes" in args[0]

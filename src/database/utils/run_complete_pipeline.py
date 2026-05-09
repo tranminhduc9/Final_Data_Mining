@@ -6,7 +6,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from multi_source_import_v3 import RelationshipBuilder, main
+from multi_source_import_v3 import RelationshipBuilder, find_latest_data_files
+from neo4j import GraphDatabase
+from neo4j_config import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_DATABASE
 
 if __name__ == "__main__":
     print("\n" + "="*70)
@@ -16,112 +18,31 @@ if __name__ == "__main__":
     # Define data paths
     base_path = Path(__file__).parent.parent.parent.parent
     data_dir = base_path / "src" / "data-pipeline"
-    extracted_dir = data_dir / "extracted_data_phobert"
-
-    news_paths = [
-        str(extracted_dir / "extracted_data_phobert_VN-EP.json"),
-        str(extracted_dir / "extracted_data_phobert_DT.json")
-    ]
-
-    # Support directory-based TopCV data sourcing
-    topcv_dir = data_dir / "extracted_data" / "topCV"
-    topcv_path = None
+    extracted_dir = data_dir / "extracted_data"
     
-    if topcv_dir.exists() and topcv_dir.is_dir():
-        # Find all JSON files (YYYY_MM_DD.json)
-        json_files = list(topcv_dir.glob("*.json"))
-        if json_files:
-            # Sort by filename (which is YYYY_MM_DD.json) to get the latest
-            latest_file = sorted(json_files)[-1]
-            topcv_path = str(latest_file)
-            print(f"📂 Found latest TopCV data: {latest_file.name}")
-        else:
-            # Fallback to old path
-            topcv_path = str(data_dir / "extracted_data_topCV" / "extracted_data_topCV.json")
+    # Use the new function to find latest data files (prioritizes today's files)
+    # Returns tuple: (news_paths, topcv_path)
+    news_paths, topcv_path = find_latest_data_files(extracted_dir)
+    
+    if not news_paths:
+        print(f"⚠️ Warning: No news files found in {extracted_dir}")
     else:
-        # Fallback to old path
-        topcv_path = str(data_dir / "extracted_data_topCV" / "extracted_data_topCV.json")
+        print(f"📂 Found {len(news_paths)} news data files")
+    
+    if topcv_path:
+        print(f"📂 Found TopCV data: {Path(topcv_path).name}")
+    else:
+        print(f"⚠️ Warning: No TopCV data found")
 
     # Run import pipeline
     importer = RelationshipBuilder()
     stats = importer.run_import_pipeline(news_paths, topcv_path)
 
-    # Create relationships
+    # Note: Relationships are now created within run_import_pipeline() using batch processing
+    # This avoids N+1 query problem and cross-product issues
     print("\n" + "="*70)
-    print("🚀 Creating Relationships in Neo4j")
+    print("🚀 Relationships created during import pipeline (batch processing)")
     print("="*70 + "\n")
-
-    from neo4j import GraphDatabase
-    from neo4j_config import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_DATABASE
-
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-
-    try:
-        with driver.session(database=NEO4J_DATABASE) as session:
-            print("1. Creating Job → Company relationships (HIRES_FOR)...")
-            result = session.run("""
-                MATCH (j:Job)
-                WHERE j.company_name IS NOT NULL AND j.company_name <> ''
-                MATCH (c:Company {name: j.company_name})
-                MERGE (j)-[:HIRES_FOR]->(c)
-                RETURN count(j) as rel_count
-            """)
-            record = result.single()
-            rel_count = record['rel_count'] if record else 0
-            print(f"   ✅ Created {rel_count} HIRES_FOR relationships")
-
-            print("\n2. Creating Job → Technology relationships (REQUIRES)...")
-            result = session.run("""
-                MATCH (j:Job)
-                MATCH (t:Technology)
-                WHERE t.name IN ['Python', 'Java', 'React', 'Node.js', 'Go', 'C#', 'SQL', 'MongoDB']
-                MERGE (j)-[:REQUIRES {is_mandatory: true, frequency: 1}]->(t)
-                RETURN count(j) as rel_count
-            """)
-            record = result.single()
-            rel_count = record['rel_count'] if record else 0
-            print(f"   ✅ Created {rel_count} REQUIRES relationships")
-
-            print("\n3. Creating Job → Skill relationships (REQUIRES)...")
-            result = session.run("""
-                MATCH (j:Job)
-                MATCH (s:Skill)
-                WHERE s.name IN ['Python', 'Java', 'React', 'JavaScript', 'SQL', 'Git']
-                MERGE (j)-[:REQUIRES {is_mandatory: true, frequency: 1}]->(s)
-                RETURN count(j) as rel_count
-            """)
-            record = result.single()
-            rel_count = record['rel_count'] if record else 0
-            print(f"   ✅ Created {rel_count} REQUIRES relationships")
-
-            print("\n4. Creating Company → Technology relationships (USES)...")
-            result = session.run("""
-                MATCH (c:Company)
-                MATCH (t:Technology)
-                WHERE t.name IN ['Python', 'Java', 'React', 'Node.js', 'AWS', 'Azure']
-                MERGE (c)-[:USES {frequency: 1}]->(t)
-                RETURN count(c) as rel_count
-            """)
-            record = result.single()
-            rel_count = record['rel_count'] if record else 0
-            print(f"   ✅ Created {rel_count} USES relationships")
-
-            print("\n5. Creating Article → Technology relationships (MENTIONS)...")
-            result = session.run("""
-                MATCH (a:Article)
-                MATCH (t:Technology)
-                WHERE t.name IN ['AI', 'Machine Learning', 'GPT', 'Docker', 'Kubernetes']
-                MERGE (a)-[:MENTIONS]->(t)
-                RETURN count(a) as rel_count
-            """)
-            record = result.single()
-            rel_count = record['rel_count'] if record else 0
-            print(f"   ✅ Created {rel_count} MENTIONS relationships")
-
-        print("\n✅ All relationships created successfully!")
-
-    finally:
-        driver.close()
 
     # Print final statistics
     print("\n" + "="*70)

@@ -24,7 +24,7 @@ class Technology:
 class Company:
     """Company Node"""
     name: str
-    industry: str  # Tech, Finance, Healthcare, etc.
+    field: str  # Tech, Finance, Healthcare, etc.
     size: str = "Unknown"  # Startup, SME, Enterprise
     location: str = "Unknown"
     rating: float = 0.0  # Based on sentiment from articles
@@ -36,15 +36,15 @@ class Company:
 class Job:
     """Job Node"""
     title: str
-    salary_min: Optional[float] = None
-    salary_max: Optional[float] = None
-    level: str = "Unknown"  # Entry, Mid, Senior
+    description: str = ""
+    requirement: str = ""
+    benefit: str = ""
+    salary: str = ""  # Combined salary range as string (e.g., "15-25 triệu", "Thoả thuận")
+    due_date: Optional[datetime] = None
     source_url: str = ""
-    company_name: str = ""  # Reference to Company
-    posted_date: Optional[datetime] = None
 
     def __hash__(self):
-        return hash((self.title.lower(), self.company_name.lower()))
+        return hash(self.title.lower())
 
 @dataclass
 class Article:

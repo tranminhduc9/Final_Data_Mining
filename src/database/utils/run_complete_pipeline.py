@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from multi_source_import_v3 import RelationshipBuilder, find_latest_data_files
+from import_multi_source import RelationshipBuilder, find_latest_data_files
 from neo4j import GraphDatabase
 from neo4j_config import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_DATABASE
 

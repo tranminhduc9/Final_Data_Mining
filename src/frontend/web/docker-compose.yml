@@ -1,0 +1,9 @@
+services:
+  data-mining-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-mining-frontend
+    ports:
+      - "5173:80"
+    restart: unless-stopped

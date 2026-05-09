@@ -1,0 +1,15 @@
+CONTEXT — Các bài viết liên quan:
+{context}
+
+---
+
+CONTEXT — Dữ liệu tuyển dụng (Job / Công ty):
+{job_context}
+
+---
+
+{user_block}
+
+CÂU HỎI: {query}
+
+Hãy trả lời câu hỏi trên dựa vào CONTEXT. Nếu có thông tin người dùng, hãy cá nhân hóa câu trả lời phù hợp với vai trò và kỹ năng của họ. Trích dẫn nguồn bằng [số thứ tự] sau mỗi thông tin sử dụng.

@@ -114,6 +114,7 @@ def grid_search(
 
             passed = (
                 metrics["n_clusters"] >= sel.require_min_clusters
+                and metrics["n_clusters"] <= sel.require_max_clusters
                 and metrics["noise_ratio"] <= sel.require_max_noise_ratio
             )
 

@@ -114,17 +114,27 @@ class ReduceDimParams(BaseModel):
     n_components: int = 32
 
 
+class NoiseFilterParams(BaseModel):
+    enabled: bool = False
+    min_job_count: int = 1          # loại tech có ít hơn N job
+    blocklist: list[str] = []       # tên cụ thể cần loại
+    heuristic_patterns: list[str] = []  # regex pattern — match → loại
+
+
 class FeatureParams(BaseModel):
     fastrp: FastRPParams
     node2vec: Node2VecParams
     pagerank: PageRankParams
     louvain: LouvainParams
+    noise_filter: NoiseFilterParams = NoiseFilterParams()
     use_name_embedding: bool = False  # True = luôn encode tên tech, bỏ qua article embedding
+    name_emb_pca_components: int = 0  # >0: giảm name_emb xuống N chiều bằng PCA trước khi concat
     article_embedding_aggregation: ArticleAggParams
     use_company_tfidf: bool = True
     use_job_tfidf: bool = True
     tfidf_min_df: int = 2
     tfidf_max_features: int = 500
+    feature_weights: dict[str, float] = {}  # nhân vào block sau scale: {"job_tfidf": 2.0, ...}
     scaler: Literal["standard", "minmax", "robust"] = "standard"
     reduce_dim: ReduceDimParams
 
@@ -150,6 +160,7 @@ class KMeansGrid(BaseModel):
 class SelectionParams(BaseModel):
     primary_metric: Literal["silhouette", "davies_bouldin", "calinski_harabasz"]
     require_min_clusters: int = 5
+    require_max_clusters: int = 9999  # không giới hạn mặc định
     require_max_noise_ratio: float = 0.6
 
 

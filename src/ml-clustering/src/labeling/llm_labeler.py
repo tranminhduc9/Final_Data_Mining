@@ -39,15 +39,17 @@ class ClusterLabel:
     Output cuối cùng cho 1 cụm.
 
     Fields:
-        cluster_id:   id cụm (int).
-        label:        tên ngắn (Tiếng Việt).
-        label_en:     tên ngắn (English).
-        description:  mô tả 1-2 câu.
-        domain:       domain chuẩn hoá (xem prompt).
-        confidence:   0..1.
-        outliers:     list tech không khớp chủ đề.
-        member_count: số thành viên cụm.
-        sample_techs: tech đại diện đã đưa vào prompt.
+        cluster_id:      id cụm (int).
+        label:           tên ngắn (Tiếng Việt).
+        label_en:        tên ngắn (English).
+        description:     mô tả 1-2 câu.
+        domain:          domain chuẩn hoá (xem prompt).
+        confidence:      0..1.
+        is_coherent:     False nếu cụm không có chủ đề rõ ràng (cần review).
+        coherence_reason: lý do nếu is_coherent=False.
+        outliers:        list tech không khớp chủ đề.
+        member_count:    số thành viên cụm.
+        sample_techs:    tech đại diện đã đưa vào prompt.
     """
     cluster_id: int
     label: str
@@ -55,6 +57,8 @@ class ClusterLabel:
     description: str
     domain: str
     confidence: float
+    is_coherent: bool
+    coherence_reason: str
     outliers: list[str]
     member_count: int
     sample_techs: list[str]
@@ -364,6 +368,7 @@ def label_all_clusters(
             )
             data = call_gemini(prompt, params, cache_dir=params.cache_dir)
             time.sleep(5)  # tránh rate limit Gemini (free tier ~10 RPM)
+            is_coherent = bool(data.get("is_coherent", True))
             label = ClusterLabel(
                 cluster_id=cluster_id,
                 label=data["label"],
@@ -371,18 +376,22 @@ def label_all_clusters(
                 description=data["description"],
                 domain=data["domain"],
                 confidence=float(data["confidence"]),
+                is_coherent=is_coherent,
+                coherence_reason=data.get("coherence_reason", ""),
                 outliers=list(data.get("outliers", [])),
                 member_count=len(members),
                 sample_techs=top_names,
             )
+            coherence_tag = "" if is_coherent else " ⚠️ INCOHERENT"
             logger.info(
-                "[{}/{}] Cluster {} → '{}' (domain={}, conf={:.2f})",
+                "[{}/{}] Cluster {} → '{}' (domain={}, conf={:.2f}){}",
                 cluster_ids.index(cluster_id) + 1,
                 len(cluster_ids),
                 cluster_id,
                 label.label,
                 label.domain,
                 label.confidence,
+                coherence_tag,
             )
         except Exception as exc:
             logger.error("Cluster {} thất bại: {}", cluster_id, exc)
@@ -393,6 +402,8 @@ def label_all_clusters(
                 description=str(exc),
                 domain="Other",
                 confidence=0.0,
+                is_coherent=False,
+                coherence_reason="Labeling failed",
                 outliers=[],
                 member_count=len(members),
                 sample_techs=top_names,

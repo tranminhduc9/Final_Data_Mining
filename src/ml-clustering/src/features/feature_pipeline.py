@@ -159,6 +159,14 @@ def build_feature_matrix(
     ct = ColumnTransformer(transformers, remainder="drop")
     X = ct.fit_transform(X).astype(np.float32)
 
+    # Áp dụng feature_weights — nhân từng block sau scale
+    if params.feature_weights:
+        for name, w in params.feature_weights.items():
+            if name in feature_groups and w != 1.0:
+                s, e = feature_groups[name]
+                X[:, s:e] *= w
+                logger.info("feature_weights: block '%s' × %.2f (cols %d..%d)", name, w, s, e - 1)
+
     # Thay NaN/Inf (do zero-variance columns → std=0) bằng 0 trước khi giảm chiều
     n_bad = np.isnan(X).sum() + np.isinf(X).sum()
     if n_bad > 0:

@@ -1,0 +1,26 @@
+Bạn là chuyên gia phân tích công nghệ tại Việt Nam. Tôi vừa phân cụm các công nghệ
+trong đồ thị tri thức TechPulse. Hãy đặt tên cho cụm dưới đây dựa trên đặc điểm
+chung của các thành viên.
+
+CỤM #{cluster_id} ({n_members} thành viên)
+
+Top thành viên (sắp theo độ trung tâm):
+{top_members}
+
+Các công ty hay dùng các tech này:
+{top_companies}
+
+Các vai trò công việc hay yêu cầu các tech này:
+{top_jobs}
+
+YÊU CẦU OUTPUT (JSON):
+{{
+  "label":       "<tên ngắn 2-5 từ, ưu tiên tiếng Việt nếu hợp ngữ cảnh>",
+  "label_en":    "<bản tiếng Anh ngắn>",
+  "description": "<mô tả 1-2 câu giải thích đặc trưng chung>",
+  "domain":      "<một trong: AI/ML | Web Frontend | Web Backend | Mobile | Data Engineering | DevOps/Cloud | Security | Database | Hardware | Soft Skills | Other>",
+  "confidence":  <float 0..1, mức tự tin>,
+  "outliers":    [<tên các tech KHÔNG khớp với chủ đề chung, để con người review>]
+}}
+
+Chỉ trả về JSON, không có markdown fence, không giải thích thêm.

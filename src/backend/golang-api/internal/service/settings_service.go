@@ -13,12 +13,14 @@ var validSettingKeys = map[string]bool{
 	"maintenance_web":    true,
 	"maintenance_mobile": true,
 	"feature_graph":      true,
+	"feature_rag":        true,
 }
 
 var settingDefaults = map[string]string{
 	"maintenance_web":    "false",
 	"maintenance_mobile": "false",
 	"feature_graph":      "true",
+	"feature_rag":        "true",
 }
 
 type SettingsService struct {

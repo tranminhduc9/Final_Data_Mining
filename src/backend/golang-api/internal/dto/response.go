@@ -64,6 +64,7 @@ type StatusResponse struct {
 	MaintenanceWeb    bool `json:"maintenance_web"`
 	MaintenanceMobile bool `json:"maintenance_mobile"`
 	FeatureGraph      bool `json:"feature_graph"`
+	FeatureRag        bool `json:"feature_rag"`
 }
 
 type SettingsResponse struct {

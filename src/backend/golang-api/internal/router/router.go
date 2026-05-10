@@ -147,6 +147,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		chat := api.Group("/chat")
 		chat.Use(jwtMiddleware.RequireAuth())
 		chat.Use(middleware.MaintenanceCheck(settingsService))
+		chat.Use(middleware.FeatureEnabled(settingsService, "feature_rag"))
 		{
 			chat.POST("/session", chatHandler.CreateSession)
 			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)

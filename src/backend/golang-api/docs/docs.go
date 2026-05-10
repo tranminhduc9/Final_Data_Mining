@@ -251,7 +251,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Setting key: maintenance_web | maintenance_mobile | feature_graph",
+                        "description": "Setting key: maintenance_web | maintenance_mobile | feature_graph | feature_rag",
                         "name": "key",
                         "in": "path",
                         "required": true
@@ -1808,6 +1808,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "feature_graph": {
+                    "type": "boolean"
+                },
+                "feature_rag": {
                     "type": "boolean"
                 },
                 "maintenance_mobile": {

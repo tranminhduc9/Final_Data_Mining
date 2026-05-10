@@ -33,6 +33,29 @@ async def graph_search(query: str) -> dict:
     companies_lower = [c.lower() for c in company_names]
     locations_lower = [l.lower() for l in locations]
 
+    # --- Job khớp CẢ title lẫn tech (ưu tiên cao nhất) ---
+    jobs_by_tech_and_title = await run_query(
+        """
+        UNWIND $keywords AS kw
+        MATCH (j:Job)-[:REQUIRES]->(t)
+        WHERE toLower(j.title) CONTAINS kw
+          AND (t:Technology OR t:Skill) AND toLower(t.name) IN $names
+        OPTIONAL MATCH (j)-[:HIRES_FOR]->(c:Company)
+        WITH DISTINCT j, c, collect(DISTINCT t.name)[..5] AS techs
+        RETURN
+            j.title       AS title,
+            j.salary      AS salary,
+            j.description AS description,
+            j.benefit     AS benefit,
+            j.requirement AS requirement,
+            techs         AS technology,
+            c.name        AS company,
+            c.location    AS location
+        LIMIT 20
+        """,
+        {"keywords": titles_lower, "names": names_lower},
+    ) if names_lower and titles_lower else []
+
     # --- Job theo tech/skill (REQUIRES relationship) ---
     jobs_by_tech = await run_query(
         """
@@ -41,15 +64,14 @@ async def graph_search(query: str) -> dict:
         OPTIONAL MATCH (j)-[:HIRES_FOR]->(c:Company)
         WITH DISTINCT j, t, c
         RETURN
-            j.title        AS title,
-            j.level        AS level,
-            j.salary_min   AS salary_min,
-            j.salary_max   AS salary_max,
-            j.posted_date  AS posted_date,
-            t.name         AS technology,
-            c.name         AS company,
-            c.location     AS location
-        ORDER BY j.posted_date DESC
+            j.title       AS title,
+            j.salary      AS salary,
+            j.description AS description,
+            j.benefit     AS benefit,
+            j.requirement AS requirement,
+            t.name        AS technology,
+            c.name        AS company,
+            c.location    AS location
         LIMIT 20
         """,
         {"names": names_lower},
@@ -65,15 +87,14 @@ async def graph_search(query: str) -> dict:
         OPTIONAL MATCH (j)-[:REQUIRES]->(t:Technology)
         WITH DISTINCT j, c, collect(DISTINCT t.name)[..3] AS techs
         RETURN
-            j.title        AS title,
-            j.level        AS level,
-            j.salary_min   AS salary_min,
-            j.salary_max   AS salary_max,
-            j.posted_date  AS posted_date,
-            techs          AS technology,
-            c.name         AS company,
-            c.location     AS location
-        ORDER BY j.posted_date DESC
+            j.title       AS title,
+            j.salary      AS salary,
+            j.description AS description,
+            j.benefit     AS benefit,
+            j.requirement AS requirement,
+            techs         AS technology,
+            c.name        AS company,
+            c.location    AS location
         LIMIT 20
         """,
         {"keywords": titles_lower},
@@ -88,15 +109,14 @@ async def graph_search(query: str) -> dict:
         OPTIONAL MATCH (j)-[:REQUIRES]->(t:Technology)
         WITH DISTINCT j, c, collect(DISTINCT t.name)[..3] AS techs
         RETURN
-            j.title        AS title,
-            j.level        AS level,
-            j.salary_min   AS salary_min,
-            j.salary_max   AS salary_max,
-            j.posted_date  AS posted_date,
-            techs          AS technology,
-            c.name         AS company,
-            c.location     AS location
-        ORDER BY j.posted_date DESC
+            j.title       AS title,
+            j.salary      AS salary,
+            j.description AS description,
+            j.benefit     AS benefit,
+            j.requirement AS requirement,
+            techs         AS technology,
+            c.name        AS company,
+            c.location    AS location
         LIMIT 15
         """,
         {"company_names": companies_lower},
@@ -111,24 +131,23 @@ async def graph_search(query: str) -> dict:
         OPTIONAL MATCH (j)-[:REQUIRES]->(t:Technology)
         WITH DISTINCT j, c, collect(DISTINCT t.name)[..3] AS techs
         RETURN
-            j.title        AS title,
-            j.level        AS level,
-            j.salary_min   AS salary_min,
-            j.salary_max   AS salary_max,
-            j.posted_date  AS posted_date,
-            techs          AS technology,
-            c.name         AS company,
-            c.location     AS location
-        ORDER BY j.posted_date DESC
+            j.title       AS title,
+            j.salary      AS salary,
+            j.description AS description,
+            j.benefit     AS benefit,
+            j.requirement AS requirement,
+            techs         AS technology,
+            c.name        AS company,
+            c.location    AS location
         LIMIT 15
         """,
         {"locations": locations_lower},
     ) if locations_lower else []
 
-    # Gộp tất cả nguồn, loại trùng theo title
+    # Gộp tất cả nguồn: ưu tiên kết quả khớp cả title lẫn tech
     seen = set()
     jobs = []
-    for j in jobs_by_tech + jobs_by_title + jobs_by_company + jobs_by_location:
+    for j in jobs_by_tech_and_title + jobs_by_title + jobs_by_tech + jobs_by_company + jobs_by_location:
         key = j.get("title", "")
         if key not in seen:
             seen.add(key)

@@ -328,6 +328,8 @@ definitions:
     properties:
       feature_graph:
         type: boolean
+      feature_rag:
+        type: boolean
       maintenance_mobile:
         type: boolean
       maintenance_web:
@@ -615,7 +617,8 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: 'Setting key: maintenance_web | maintenance_mobile | feature_graph'
+      - description: 'Setting key: maintenance_web | maintenance_mobile | feature_graph
+          | feature_rag'
         in: path
         name: key
         required: true

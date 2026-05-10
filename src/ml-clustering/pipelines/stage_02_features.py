@@ -72,6 +72,12 @@ def main(
     df_edges_tech_related      = load_parquet(snap_dir / "edges_tech_related_tech.parquet")
     logger.info("Snapshot loaded: {} techs, {} articles, {} jobs", len(df_tech), len(df_article), len(df_job))
 
+    # 2b. Noise filter — loại tech nodes không hợp lệ trước khi build features
+    if fp.noise_filter.enabled:
+        from src.features.noise_filter import filter_noise
+        df_tech = filter_noise(df_tech, df_edges_job_requires_tech, fp.noise_filter)
+        logger.info("Sau noise filter: {} techs còn lại", len(df_tech))
+
     # 3-6. GDS features — bỏ qua vì AuraDB yêu cầu session-based GDS API riêng
     # Chỉ dùng content embedding + graph stats + TF-IDF
     gds_features: dict = {}
@@ -89,10 +95,22 @@ def main(
         tech_ids = df_tech["tech_id"].tolist()
         embs = embed_tech_names_fallback(names)                      # (N, 768)
         embs = sk_normalize(embs, norm="l2")
-        content_emb = pd.DataFrame(embs, columns=EMB_COLS)
+        # Giảm chiều name_emb bằng PCA nếu được cấu hình
+        if fp.name_emb_pca_components > 0 and fp.name_emb_pca_components < EMB_DIM:
+            from sklearn.decomposition import PCA
+            pca = PCA(n_components=fp.name_emb_pca_components, random_state=42)
+            embs = pca.fit_transform(embs).astype(np.float32)
+            emb_cols_used = [f"article_emb_{i}" for i in range(fp.name_emb_pca_components)]
+            logger.info("PCA name_emb: {} → {} dims (explained var {:.1f}%)",
+                        EMB_DIM, fp.name_emb_pca_components,
+                        100 * pca.explained_variance_ratio_.sum())
+        else:
+            emb_cols_used = EMB_COLS
+
+        content_emb = pd.DataFrame(embs, columns=emb_cols_used)
         content_emb.insert(0, "tech_id", tech_ids)
         content_emb["content_n_articles"] = 0
-        logger.info("Name embedding xong: {} techs, {} dims", len(content_emb), EMB_DIM)
+        logger.info("Name embedding xong: {} techs, {} dims", len(content_emb), embs.shape[1])
     else:
         logger.info("Computing content embeddings (article aggregate)...")
         content_emb = aggregate_article_embeddings(

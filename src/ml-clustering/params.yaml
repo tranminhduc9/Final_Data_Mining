@@ -26,8 +26,52 @@ features:
     max_levels: 10
     top_k_communities: 20
 
+  # Noise filter — áp dụng trước khi build feature matrix
+  noise_filter:
+    enabled: true
+    min_job_count: 3           # loại tech xuất hiện trong < N job (quá hiếm → likely noise)
+    blocklist:                 # tên cụ thể cần loại thủ công
+      # Noise / từ không phải tech
+      - "Dau"
+      - "Mau"
+      - "CCCD"
+      - "openclaw"
+      - "enscape"
+      - "emotion"
+      - "fiber"
+      - "lookout"
+      - "Fair"
+      - "NVR"
+      - "Rhino"
+      - "FCC"
+      - "Mô Hình Ngôn Ngữ"
+      # Phần mềm thiết kế kiến trúc / 3D / game — không phải IT tech
+      - "Revit"
+      - "3ds Max"
+      - "3DS Max"
+      - "3Ds Max"
+      - "3Ds max"
+      - "3ds max"
+      - "Lumion"
+      - "Cinema4D"
+      - "Substance 3D"
+      - "Unity"
+      - "Unreal"
+      # Project management / collaboration tools — không phải tech stack
+      - "Trello"
+      - "Asana"
+      - "Confluence"
+      - "JIRA"
+      - "ServiceNow"
+      # Phần mềm chỉnh sửa video (đã có cluster riêng nếu muốn giữ, xoá nếu không)
+      - "Capcut"
+    heuristic_patterns:        # regex pattern (case-insensitive) — match → loại
+      - "^[a-z]{1,3}$"         # từ viết thường 1-3 ký tự (không phải Go, C, R)
+      - "^(an|theo|trong|bang|quan|ly|co|voi|cac|khi|tai|lam|va|hoac|duoc)$"  # tiếng Việt không dấu
+
   # Content
   use_name_embedding: true   # true = luôn dùng name embedding thay vì article
+  name_emb_pca_components: 64  # Giảm name_emb 768d → 64d trước khi concat, để job_tfidf chiếm ưu thế
   article_embedding_aggregation:
     enabled: true
     method: mean             # mean | weighted_by_recency
@@ -38,6 +82,12 @@ features:
   use_job_tfidf: true        # 98.1% tech có job → signal chính
   tfidf_min_df: 2
   tfidf_max_features: 500
+
+  # Feature weights — nhân vào block sau StandardScaler (1.0 = giữ nguyên)
+  feature_weights:
+    graph_stats: 1.0
+    content_emb: 0.5   # giảm ảnh hưởng name embedding
+    job_tfidf: 2.0     # tăng ảnh hưởng job TF-IDF — signal chính
 
   # Concat + scale
   scaler: "standard"         # standard | minmax | robust
@@ -68,8 +118,9 @@ clustering:
 
   selection:
     primary_metric: "silhouette"   # primary để tie-break
-    require_min_clusters: 5
-    require_max_noise_ratio: 0.3   # giảm xuống để ép chọn config ít noise hơn
+    require_min_clusters: 12
+    require_max_clusters: 25       # tránh quá nhiều cluster nhỏ không có nghĩa
+    require_max_noise_ratio: 0.5   # tối đa 50% noise — HDBSCAN thường có nhiều noise node
 
 mlflow:
   experiment_name: "tech_clustering_v1"

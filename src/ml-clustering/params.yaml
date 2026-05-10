@@ -1,0 +1,90 @@
+# Tham số toàn pipeline — DVC track file này.
+# Đổi giá trị ở đây + `dvc repro` sẽ chạy lại đúng các stage cần thiết.
+
+snapshot:
+  tag: "2026-05-10"          # nhãn snapshot, gắn vào path data/<tag>/
+  min_tech_degree: 1         # lọc Technology có degree < ngưỡng (đã thoả với inspect)
+
+features:
+  # GDS — Graph Embedding
+  fastrp:
+    enabled: false           # AuraDB yêu cầu session-based GDS API riêng
+    embedding_dim: 64
+    iteration_weights: [0.0, 1.0, 1.0, 1.0]
+    normalization_strength: 0.0
+  node2vec:
+    enabled: false
+    embedding_dim: 64
+    walk_length: 10
+    walks_per_node: 10
+  pagerank:
+    enabled: false           # tắt GDS, dùng content + TF-IDF thay thế
+    damping: 0.85
+    max_iter: 20
+  louvain:
+    enabled: false
+    max_levels: 10
+    top_k_communities: 20
+
+  # Content
+  use_name_embedding: true   # true = luôn dùng name embedding thay vì article
+  article_embedding_aggregation:
+    enabled: true
+    method: mean             # mean | weighted_by_recency
+    min_articles_per_tech: 1 # tech ít hơn -> zero vector
+
+  # Hand-crafted
+  use_company_tfidf: false   # chỉ 1.2% tech có company usage → noise
+  use_job_tfidf: true        # 98.1% tech có job → signal chính
+  tfidf_min_df: 2
+  tfidf_max_features: 500
+
+  # Concat + scale
+  scaler: "standard"         # standard | minmax | robust
+  reduce_dim:
+    enabled: true
+    method: "umap"           # umap | pca | none
+    n_components: 32
+
+clustering:
+  algorithm: "hdbscan"       # dbscan | hdbscan | kmeans
+
+  dbscan:
+    eps_grid: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0]
+    min_samples_grid: [3, 5, 7, 10]
+    metric: "euclidean"
+
+  hdbscan:
+    min_cluster_size_grid: [5, 6, 7, 8]
+    min_samples_grid: [1, 2, 3]
+    cluster_selection_method: "leaf"
+
+  kmeans:
+    n_clusters_grid: [20, 24, 28, 32, 36]
+    n_init: 10
+    random_state: 42
+
+  near_cluster_threshold: 0.70   # score tối thiểu để ghi nhận near cluster
+
+  selection:
+    primary_metric: "silhouette"   # primary để tie-break
+    require_min_clusters: 5
+    require_max_noise_ratio: 0.3   # giảm xuống để ép chọn config ít noise hơn
+
+mlflow:
+  experiment_name: "tech_clustering_v1"
+  tracking_uri: "sqlite:///mlruns.db"
+  registry_model_name: "tech_clusterer"
+
+labeling:
+  provider: "openai"              # "openai" | "gemini"
+  openai_model: "gpt-4o-mini"
+  gemini_model: "gemini-2.5-flash"
+  max_members_in_prompt: 25
+  temperature: 0.2
+  cache_dir: "data/labels/.llm_cache"
+
+writeback:
+  enabled: false             # bật khi đã chốt model & labels
+  apoc_batch_size: 500
+  clean_before_write: false  # xoá :BELONGS_TO|:NEAR_CLUSTER cũ trước khi ghi mới

@@ -12,7 +12,7 @@ def get_reranker() -> CrossEncoder:
     return CrossEncoder(settings.reranker_model)
 
 
-RERANK_SCORE_THRESHOLD = 0.01
+RERANK_SCORE_THRESHOLD = 0.40
 
 
 def rerank(query: str, candidates: list[dict], top_k: int = 5) -> list[dict]:
@@ -20,7 +20,7 @@ def rerank(query: str, candidates: list[dict], top_k: int = 5) -> list[dict]:
     Nhận query + danh sách candidate article từ vector search,
     trả về top_k article được rerank lại theo relevance score thực sự.
 
-    Chỉ giữ lại các article có rerank_score >= RERANK_SCORE_THRESHOLD (0.01)
+    Chỉ giữ lại các article có rerank_score >= RERANK_SCORE_THRESHOLD (0.40)
     để tránh đưa bài không liên quan vào prompt.
 
     candidates: list[dict] với keys: id, title, content, source, published_date, sentiment_score, score

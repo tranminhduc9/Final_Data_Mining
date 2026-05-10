@@ -40,7 +40,7 @@ async def answer_stream(query: str, user_id: str | None = None) -> AsyncIterator
     )
 
     # 2b. Nếu graph trống (query mơ hồ) và threshold lọc hết bài
-    #     → dùng top-3 bài điểm cao nhất + đánh dấu low_confidence để Gemini thận trọng
+    #     → dùng top-3 bài điểm cao nhất + đánh dấu low_confidence để LLM thận trọng
     has_graph_data = bool(graph_data.get("jobs") or graph_data.get("companies"))
     low_confidence = False
     if not top_articles and not has_graph_data and candidates:
@@ -70,7 +70,7 @@ async def answer_stream(query: str, user_id: str | None = None) -> AsyncIterator
         user_block=user_blk, low_confidence=low_confidence,
     )
 
-    # 5. Stream Gemini
+    # 5. Stream LLM
     chunks: list[str] = []
     async for chunk in generate_stream(messages):
         chunks.append(chunk)

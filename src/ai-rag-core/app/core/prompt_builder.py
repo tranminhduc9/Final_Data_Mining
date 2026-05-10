@@ -15,13 +15,13 @@ def build_messages(
     low_confidence: bool = False,
 ) -> list[dict]:
     """
-    Ghép context từ article + graph data + user profile thành messages cho LangChain / Gemini.
+    Ghép context từ article + graph data + user profile thành messages cho LLM.
 
     articles:        list[dict] — top-5 article sau rerank
     graph_data:      dict       — kết quả từ graph_search() (jobs, companies, related_tech)
     user_block:      str        — output của retriever_user.build_user_block() (rỗng nếu anonymous)
     low_confidence:  bool       — True khi articles dưới threshold (query mơ hồ, không có entity)
-                                  → thêm cảnh báo vào prompt để Gemini không suy diễn bừa
+                                  → thêm cảnh báo vào prompt để LLM không suy diễn bừa
     Trả về: [{"role": "system", ...}, {"role": "user", ...}]
     """
     context_block     = _build_context_block(articles, low_confidence=low_confidence)
@@ -44,7 +44,7 @@ def build_messages(
 def _build_context_block(articles: list[dict], low_confidence: bool = False) -> str:
     """Định dạng article thành block đánh số [1], [2], ... cho LLM trích dẫn.
 
-    Khi low_confidence=True, thêm cảnh báo để Gemini không suy diễn từ bài không liên quan.
+    Khi low_confidence=True, thêm cảnh báo để LLM không suy diễn từ bài không liên quan.
     """
     if not articles:
         return "(Không có bài viết liên quan nào được tìm thấy.)"
@@ -89,26 +89,26 @@ def _build_job_context_block(graph_data: dict) -> str:
     if jobs:
         parts.append("Tin tuyển dụng:")
         for j in jobs:
-            title    = j.get("title") or "N/A"
-            level    = j.get("level") or ""
-            tech     = j.get("technology") or ""
-            company  = j.get("company") or "N/A"
-            location = j.get("location") or ""
-            sal_min  = j.get("salary_min")
-            sal_max  = j.get("salary_max")
+            title       = j.get("title") or "N/A"
+            tech        = j.get("technology") or ""
+            company     = j.get("company") or "N/A"
+            location    = j.get("location") or ""
+            salary      = j.get("salary") or ""
+            description = j.get("description") or ""
+            requirement = j.get("requirement") or ""
+            benefit     = j.get("benefit") or ""
 
-            salary_str = ""
-            if sal_min and sal_max:
-                salary_str = f", lương {sal_min:,}–{sal_max:,} USD"
-            elif sal_min:
-                salary_str = f", lương từ {sal_min:,} USD"
-
-            level_str    = f" [{level}]" if level else ""
-            tech_str     = f" (yêu cầu {tech})" if tech else ""
+            salary_str  = f", lương {salary}" if salary else ""
+            tech_str    = f" (yêu cầu: {tech})" if tech else ""
             location_str = f", {location}" if location else ""
-            parts.append(
-                f"  - {title}{level_str}{tech_str} tại {company}{location_str}{salary_str}"
-            )
+            line = f"  - {title}{tech_str} tại {company}{location_str}{salary_str}"
+            if description:
+                line += f"\n    Mô tả: {description[:200]}..." if len(description) > 200 else f"\n    Mô tả: {description}"
+            if requirement:
+                line += f"\n    Yêu cầu: {requirement[:200]}..." if len(requirement) > 200 else f"\n    Yêu cầu: {requirement}"
+            if benefit:
+                line += f"\n    Phúc lợi: {benefit[:150]}..." if len(benefit) > 150 else f"\n    Phúc lợi: {benefit}"
+            parts.append(line)
 
     if companies:
         parts.append("\nCông ty đang dùng:")

@@ -20,8 +20,10 @@ class Settings(BaseSettings):
     # Chọn local hay AuraDB — đặt USE_LOCAL_NEO4J=true trong .env khi dev
     use_local_neo4j: bool = False
 
-    # Gemini
-    gemini_api_key: str
+    # LLM
+    gemini_api_key: str = ""
+    openai_api_key: str = ""
+    llm_provider: str = "openai"   # "openai" | "gemini"
 
     # PostgreSQL
     postgres_host: str = "localhost"
@@ -36,7 +38,7 @@ class Settings(BaseSettings):
     # Model
     embedding_model: str = "intfloat/multilingual-e5-base"
     reranker_model: str = "BAAI/bge-reranker-v2-m3"
-    llm_model: str = "gemini-2.5-flash"
+    llm_model: str = "gpt-4o-mini"
     embedding_dim: int = 768
 
     # Neo4j vector index name

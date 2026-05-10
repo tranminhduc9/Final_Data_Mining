@@ -81,7 +81,7 @@ async def run_timed(query: str) -> dict:
     t = time.perf_counter()
     answer_text = await generate(messages)
     t_gen = time.perf_counter() - t
-    print(f"[5] Gemini generate             : {_fmt(t_gen)}")
+    print(f"[5] LLM generate                : {_fmt(t_gen)}")
 
     total = t_entity + t_retrieve + t_rerank + t_prompt + t_gen
     print(f"\n    TOTAL                      : {_fmt(total)}")
@@ -112,7 +112,7 @@ async def run_timed(query: str) -> dict:
 
 
 async def main():
-    print("TEST PIPELINE RAG — local entity extractor (no Gemini for entities)")
+    print("TEST PIPELINE RAG — local entity extractor (no LLM for entities)")
 
     all_timings = []
     for query in TEST_QUERIES:

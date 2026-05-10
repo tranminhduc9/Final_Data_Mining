@@ -133,6 +133,38 @@ TECH_KEYWORDS: List[str] = [
 ]
 
 # ==========================================
+# COMPANY DICTIONARY (well-known VN IT companies)
+# ==========================================
+
+COMPANY_KEYWORDS: List[str] = [
+    # Tập đoàn lớn
+    "FPT", "VNG", "VNPT", "Viettel", "MoMo", "Momo",
+    "Vingroup", "VinAI", "VinBigData", "VinTech",
+    "Zalo", "ZaloPay", "VNPay", "VNPAY",
+    "Techcombank", "VPBank", "MB Bank", "ACB", "BIDV", "Vietcombank",
+    # Outsourcing / phần mềm
+    "TMA Solutions", "TMA", "NashTech", "Harvey Nash",
+    "KMS Technology", "KMS", "Axon Active", "Axon",
+    "Evolent Health", "Fossil", "Rikkeisoft", "Rikkei",
+    "Savvycom", "Tinh Van", "TinhVan", "Softline",
+    "Gameloft", "Ubisoft", "Nitro",
+    # Công ty tên thường gặp trong topCV
+    "CMC", "VNPT-IT", "Viettel Telecom", "Viettel Digital",
+    "Sun Asterisk", "Sun*", "Teamwork", "Base.vn", "Base",
+    "MindX", "Topdev", "TopCV", "VietnamWorks",
+    "OnPoint", "Shopee", "Lazada", "Tiki", "Sendo",
+    "VinID", "Be Group", "Grab", "Gojek",
+    "FPT Software", "FPT IS", "FPT Telecom", "FPT Shop",
+]
+
+_COMPANY_SORTED = sorted(COMPANY_KEYWORDS, key=len, reverse=True)
+_COMPANY_PATTERN = re.compile(
+    r"(?<![/\w])(" + "|".join(re.escape(c) for c in _COMPANY_SORTED) + r")(?![/\w])",
+    re.IGNORECASE,
+)
+
+
+# ==========================================
 # JOB_ROLE DICTIONARY
 # ==========================================
 
@@ -188,6 +220,35 @@ JOB_ROLE_KEYWORDS: List[str] = [
     "VP", "GM", "PM", "PO", "BA", "SA", "DBA",
     "SDE", "SWE", "QA", "QC",
 ]
+
+# ==========================================
+# INTENT → TECH/ROLE MAPPING
+# Các cụm từ mơ hồ không có trong dictionary → map sang tech/role cụ thể
+# ==========================================
+
+INTENT_TECH_MAP: dict[str, List[str]] = {
+    r"lập trình web|web development|phát triển web|học web": ["JavaScript", "HTML", "CSS", "React", "Node.js"],
+    r"lập trình mobile|mobile development|phát triển mobile|ứng dụng di động": ["React Native", "Flutter", "Android", "iOS", "Kotlin", "Swift"],
+    r"lập trình game|game development|phát triển game": ["Unity", "C#", "Unreal", "C++"],
+    r"bảo mật|an ninh mạng|cyber security|security": ["Security", "Cybersecurity"],
+    r"trí tuệ nhân tạo|học máy|học sâu": ["Python", "Machine Learning", "Deep Learning", "AI"],
+    r"dữ liệu lớn|big data": ["Hadoop", "Spark", "Kafka", "Hive"],
+    r"điện toán đám mây|cloud computing": ["AWS", "Azure", "Google Cloud", "Docker", "Kubernetes"],
+    r"devops|tự động hóa hạ tầng": ["Docker", "Kubernetes", "Jenkins", "CI/CD"],
+    r"blockchain|web3|tiền mã hóa|crypto": ["Solidity", "Ethereum", "Rust"],
+    r"embedded|nhúng|firmware|vi điều khiển": ["C", "C++", "RTOS", "Arduino"],
+}
+
+INTENT_ROLE_MAP: dict[str, List[str]] = {
+    r"lập trình web|web development|học web": ["Frontend Developer", "Backend Developer", "Full Stack Developer"],
+    r"lập trình mobile|mobile development": ["Mobile Developer", "iOS Developer", "Android Developer"],
+    r"làm game|game dev": ["Game Developer"],
+    r"\bdata\b|\bdữ liệu\b": ["Data Engineer", "Data Analyst", "Data Scientist"],
+    r"devops": ["DevOps Engineer"],
+    r"bảo mật|security": ["Security Engineer"],
+    r"ai|trí tuệ nhân tạo|học máy": ["AI Engineer", "ML Engineer"],
+}
+
 
 # ==========================================
 # COMPILE REGEX PATTERNS
@@ -303,24 +364,80 @@ def _extract_job_roles(text: str) -> List[str]:
     return result
 
 
+def _extract_companies_from_dict(text: str) -> List[str]:
+    seen: set = set()
+    result: List[str] = []
+    for m in _COMPANY_PATTERN.finditer(text):
+        kw = m.group()
+        key = kw.lower()
+        if key not in seen:
+            seen.add(key)
+            result.append(kw)
+    return result
+
+
+def _apply_intent_mapping(query: str, techs: List[str], roles: List[str]) -> tuple[List[str], List[str]]:
+    """
+    Bổ sung tech/role từ intent map — chỉ khi dictionary chưa extract được.
+    - Tech: bổ sung nếu techs rỗng (query không đề cập tech cụ thể)
+    - Role: bổ sung nếu roles rỗng (query không đề cập chức danh cụ thể)
+    """
+    q_lower = query.lower()
+
+    if not techs:
+        tech_seen: set = set()
+        for pattern, mapped_techs in INTENT_TECH_MAP.items():
+            if re.search(pattern, q_lower):
+                for t in mapped_techs:
+                    if t.lower() not in tech_seen:
+                        tech_seen.add(t.lower())
+                        techs.append(t)
+
+    if not roles:
+        role_seen: set = set()
+        for pattern, mapped_roles in INTENT_ROLE_MAP.items():
+            if re.search(pattern, q_lower):
+                for r in mapped_roles:
+                    if r.lower() not in role_seen:
+                        role_seen.add(r.lower())
+                        roles.append(r)
+
+    return techs, roles
+
+
 def extract_query_entities(query: str) -> dict:
     """
-    Trích xuất entities từ câu hỏi user bằng 2 chiến lược kết hợp:
-      - Dictionary + regex → technologies, job_titles
+    Trích xuất entities từ câu hỏi user bằng 3 chiến lược kết hợp:
+      - Dictionary + regex → technologies, job_titles, companies (well-known)
+      - Intent mapping     → bổ sung tech/role cho query mơ hồ ("lập trình web", "học AI"...)
       - NER model          → companies (ORG), locations (LOC)
 
     Trả về:
       {
         "technologies": [...],
         "job_titles":   [...],
-        "companies":    [...],   # tên công ty (từ NER)
-        "locations":    [...],   # địa điểm (từ NER)
+        "companies":    [...],
+        "locations":    [...],
       }
     """
     ner = _extract_ner(query)
+    dict_companies = _extract_companies_from_dict(query)
+
+    techs = _extract_tech(query)
+    roles = _extract_job_roles(query)
+    techs, roles = _apply_intent_mapping(query, techs, roles)
+
+    # Merge companies: dict ưu tiên trước (chính xác hơn), NER bổ sung
+    seen: set = {c.lower() for c in dict_companies}
+    merged_companies = list(dict_companies)
+    for c in ner["companies"]:
+        if c.lower() not in seen:
+            seen.add(c.lower())
+            merged_companies.append(c)
+
     return {
-        "technologies": _extract_tech(query),
-        "job_titles":   _extract_job_roles(query),
-        "companies":    ner["companies"],
+        "technologies": techs,
+        "job_titles":   roles,
+        "companies":    merged_companies,
         "locations":    ner["locations"],
     }

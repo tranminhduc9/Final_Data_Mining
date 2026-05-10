@@ -11,7 +11,7 @@ _RETRY_DELAY = 5  # seconds
 
 async def generate_stream(messages: list[dict]) -> AsyncIterator[str]:
     """
-    Stream câu trả lời từ Gemini theo từng chunk.
+    Stream câu trả lời từ LLM theo từng chunk.
     Tự retry khi gặp lỗi 503 (server bận) trước khi bắt đầu stream.
 
     messages: output của prompt_builder.build_messages()
@@ -40,7 +40,7 @@ async def generate_stream(messages: list[dict]) -> AsyncIterator[str]:
                 print(f"  [generator_stream] server bận, thử lại sau {_RETRY_DELAY}s (lần {attempt}/{_MAX_RETRIES})...")
                 await asyncio.sleep(_RETRY_DELAY)
             else:
-                raise RuntimeError(f"Gemini lỗi: {e}") from e
+                raise RuntimeError(f"LLM lỗi: {e}") from e
 
     if last_err:
-        raise RuntimeError(f"Gemini lỗi: {last_err}") from last_err
+        raise RuntimeError(f"LLM lỗi: {last_err}") from last_err

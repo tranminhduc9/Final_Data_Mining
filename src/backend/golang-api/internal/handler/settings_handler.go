@@ -30,6 +30,7 @@ func (h *SettingsHandler) Status(c *gin.Context) {
 			MaintenanceWeb:    false,
 			MaintenanceMobile: false,
 			FeatureGraph:      true,
+			FeatureRag:        true,
 		})
 		return
 	}
@@ -37,6 +38,7 @@ func (h *SettingsHandler) Status(c *gin.Context) {
 		MaintenanceWeb:    settings["maintenance_web"] == "true",
 		MaintenanceMobile: settings["maintenance_mobile"] == "true",
 		FeatureGraph:      settings["feature_graph"] != "false",
+		FeatureRag:        settings["feature_rag"] != "false",
 	})
 }
 
@@ -64,7 +66,7 @@ func (h *SettingsHandler) GetSettings(c *gin.Context) {
 // @Security     BearerAuth
 // @Accept       json
 // @Produce      json
-// @Param        key  path  string                   true  "Setting key: maintenance_web | maintenance_mobile | feature_graph"
+// @Param        key  path  string                   true  "Setting key: maintenance_web | maintenance_mobile | feature_graph | feature_rag"
 // @Param        body body  dto.UpdateSettingRequest  true  "New value (true or false)"
 // @Success      200 {object} map[string]string
 // @Failure      400 {object} dto.ErrorResponse
@@ -80,7 +82,7 @@ func (h *SettingsHandler) UpdateSetting(c *gin.Context) {
 	}
 	if err := h.settingsService.Set(c.Request.Context(), key, req.Value); err != nil {
 		if errors.Is(err, service.ErrInvalidSettingKey) {
-			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid setting key; valid keys: maintenance_web, maintenance_mobile, feature_graph"})
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid setting key; valid keys: maintenance_web, maintenance_mobile, feature_graph, feature_rag"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})

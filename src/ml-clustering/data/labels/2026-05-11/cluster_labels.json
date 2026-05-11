@@ -1,0 +1,493 @@
+{
+  "0": {
+    "cluster_id": 0,
+    "label": "Công Nghệ Dữ Liệu Lớn",
+    "label_en": "Big Data Technologies",
+    "description": "Cụm này bao gồm các công nghệ chủ chốt trong lĩnh vực dữ liệu lớn, hỗ trợ việc thu thập, lưu trữ và phân tích dữ liệu hiệu quả.",
+    "domain": "Data Engineering",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 5,
+    "sample_techs": [
+      "Scala",
+      "HBase",
+      "Neo4j",
+      "Hadoop",
+      "Spark"
+    ]
+  },
+  "1": {
+    "cluster_id": 1,
+    "label": "Công Nghệ Đám Mây",
+    "label_en": "Cloud Technologies",
+    "description": "Cụm này bao gồm các công nghệ chủ yếu liên quan đến phát triển và triển khai ứng dụng trong môi trường đám mây, sử dụng container và quy trình CI/CD.",
+    "domain": "DevOps/Cloud",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 6,
+    "sample_techs": [
+      "AWS",
+      "Docker",
+      "CI/CD",
+      "GCP",
+      "Azure",
+      "Kubernetes"
+    ]
+  },
+  "2": {
+    "cluster_id": 2,
+    "label": "Công cụ DevOps",
+    "label_en": "DevOps Tools",
+    "description": "Cụm công nghệ này bao gồm các công cụ chính trong lĩnh vực DevOps, hỗ trợ tự động hóa hạ tầng và quy trình phát triển phần mềm.",
+    "domain": "DevOps/Cloud",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 4,
+    "sample_techs": [
+      "Terraform",
+      "Ansible",
+      "ArgoCD",
+      "Jenkins"
+    ]
+  },
+  "3": {
+    "cluster_id": 3,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa các công nghệ giám sát hệ thống nhưng lại lẫn lộn với các vai trò lập trình viên .Net và ERP, dẫn đến sự rời rạc trong lĩnh vực.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.7,
+    "is_coherent": false,
+    "coherence_reason": "Sự hiện diện của các lập trình viên .Net và các công nghệ liên quan đến ERP không phù hợp với các công nghệ giám sát hệ thống và quản lý hạ tầng như Prometheus, Grafana, và ELK.",
+    "outliers": [
+      "Lập Trình Viên .Net (ASP.Net, Fintech) 5 Năm Kinh Nghiệm",
+      "Lập Trình Viên .Net (ASP.Net, Fintech) 3 Năm Kinh Nghiệm",
+      "Senior .Net Developer (C#, Lĩnh Vực Bank/Fintech/Ví Thanh Toán)",
+      "Backend Developer"
+    ],
+    "member_count": 4,
+    "sample_techs": [
+      "Prometheus",
+      "Grafana",
+      "Linux",
+      "ELK"
+    ]
+  },
+  "4": {
+    "cluster_id": 4,
+    "label": "Công cụ Kỹ thuật Dữ liệu",
+    "label_en": "Data Engineering Tools",
+    "description": "Cụm công nghệ này bao gồm các công cụ chính trong lĩnh vực kỹ thuật dữ liệu, hỗ trợ việc thu thập, xử lý và phân tích dữ liệu hiệu quả.",
+    "domain": "Data Engineering",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 4,
+    "sample_techs": [
+      "Apache Airflow",
+      "dbt",
+      "BigQuery",
+      "Apache Spark"
+    ]
+  },
+  "5": {
+    "cluster_id": 5,
+    "label": "Công Nghệ Web Frontend",
+    "label_en": "Web Frontend Technologies",
+    "description": "Cụm công nghệ này bao gồm các công cụ và ngôn ngữ chính để phát triển giao diện người dùng cho ứng dụng web, tập trung vào việc xây dựng trải nghiệm người dùng mượt mà và tương tác.",
+    "domain": "Web Frontend",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 4,
+    "sample_techs": [
+      "JavaScript",
+      "CSS",
+      "HTML",
+      "React"
+    ]
+  },
+  "6": {
+    "cluster_id": 6,
+    "label": "Công Nghệ Backend",
+    "label_en": "Backend Technologies",
+    "description": "Cụm công nghệ này bao gồm các công cụ và framework phổ biến trong phát triển ứng dụng backend, chủ yếu sử dụng Java và các hệ quản trị cơ sở dữ liệu khác nhau.",
+    "domain": "Web Backend",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 13,
+    "sample_techs": [
+      "Git",
+      "API",
+      "RESTful",
+      "SQL",
+      "MongoDB",
+      "MySQL",
+      "Redis",
+      "PostgreSQL",
+      "Java",
+      "Spring Boot",
+      "RabbitMQ",
+      "Spring",
+      "Kafka"
+    ]
+  },
+  "7": {
+    "cluster_id": 7,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa các công nghệ DevOps và phát triển web nhưng bị lẫn với các mô hình AI không liên quan, tạo ra sự lộn xộn trong lĩnh vực.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Llama và Mistral không thuộc lĩnh vực DevOps hay phát triển web, gây ra sự rời rạc trong cụm.",
+    "outliers": [
+      "Llama",
+      "Mistral"
+    ],
+    "member_count": 5,
+    "sample_techs": [
+      "Llama",
+      "Mistral",
+      "Nginx",
+      "Apache",
+      "Cisco"
+    ]
+  },
+  "8": {
+    "cluster_id": 8,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa đựng sự lộn xộn giữa các vai trò và công nghệ liên quan đến AI, Backend và Cloud, không thể xác định một lĩnh vực cụ thể nào.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Có sự xung đột giữa các vai trò AI và các vai trò Backend Development, không thể xác định một lĩnh vực chung rõ ràng.",
+    "outliers": [],
+    "member_count": 4,
+    "sample_techs": [
+      "Gemini",
+      "SSE",
+      "OpenAI",
+      "Anthropic"
+    ]
+  },
+  "9": {
+    "cluster_id": 9,
+    "label": "Công Nghệ Học Máy",
+    "label_en": "Machine Learning Technologies",
+    "description": "Cụm công nghệ này bao gồm các công cụ và thư viện phổ biến trong lĩnh vực học máy và học sâu, phục vụ cho việc phát triển các ứng dụng trí tuệ nhân tạo.",
+    "domain": "AI/ML",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 5,
+    "sample_techs": [
+      "TensorFlow",
+      "PyTorch",
+      "Machine Learning",
+      "Deep Learning",
+      "Hugging Face"
+    ]
+  },
+  "10": {
+    "cluster_id": 10,
+    "label": "Công Cụ Học Máy",
+    "label_en": "Machine Learning Tools",
+    "description": "Cụm công nghệ này bao gồm các công cụ và thuật toán phổ biến trong lĩnh vực học máy, phục vụ cho các nhà khoa học dữ liệu và kỹ sư AI trong việc phát triển mô hình và phân tích dữ liệu.",
+    "domain": "AI/ML",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 4,
+    "sample_techs": [
+      "XGBoost",
+      "Databricks",
+      "Transformers",
+      "LightGBM"
+    ]
+  },
+  "11": {
+    "cluster_id": 11,
+    "label": "Công Cụ Xử Lý Dữ Liệu",
+    "label_en": "Data Processing Tools",
+    "description": "Cụm này bao gồm các công cụ và công nghệ phục vụ cho việc xử lý và quản lý dữ liệu, phù hợp với vai trò của các kỹ sư dữ liệu và phát triển backend.",
+    "domain": "Data Engineering",
+    "confidence": 0.8,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 5,
+    "sample_techs": [
+      "Grok",
+      "Flink",
+      "Airflow",
+      "Gin",
+      "Echo"
+    ]
+  },
+  "12": {
+    "cluster_id": 12,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa các công nghệ không liên quan đến nhau, từ cơ sở dữ liệu đến phần cứng và AI, tạo ra sự lộn xộn trong việc xác định một mục tiêu chung.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.4,
+    "is_coherent": false,
+    "coherence_reason": "Xung đột miền giữa Firestore (Database), NFC (Hardware), WebRTC (Networking), và SageMaker (AI/ML).",
+    "outliers": [
+      "NFC"
+    ],
+    "member_count": 4,
+    "sample_techs": [
+      "Firestore",
+      "NFC",
+      "WebRTC",
+      "SageMaker"
+    ]
+  },
+  "13": {
+    "cluster_id": 13,
+    "label": "Công nghệ AI và NLP",
+    "label_en": "AI and NLP Technologies",
+    "description": "Cụm công nghệ này bao gồm các công cụ và mô hình phục vụ cho việc phát triển ứng dụng trí tuệ nhân tạo, đặc biệt là trong lĩnh vực xử lý ngôn ngữ tự nhiên.",
+    "domain": "AI/ML",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 6,
+    "sample_techs": [
+      "LLM",
+      "RAG",
+      "Keras",
+      "NLP",
+      "AI",
+      "LangChain"
+    ]
+  },
+  "14": {
+    "cluster_id": 14,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa các công nghệ không liên quan đến nhau, từ thiết kế giao diện đến phát triển backend và công nghệ dữ liệu, dẫn đến sự rời rạc trong cấu trúc.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.4,
+    "is_coherent": false,
+    "coherence_reason": "Xung đột miền giữa thiết kế giao diện, phát triển backend và công nghệ dữ liệu.",
+    "outliers": [
+      "Indesign",
+      "less"
+    ],
+    "member_count": 6,
+    "sample_techs": [
+      "Ant Design",
+      "Indesign",
+      "Serverless",
+      "less",
+      "Talend",
+      "LlamaIndex"
+    ]
+  },
+  "15": {
+    "cluster_id": 15,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed",
+    "description": "Cụm này chứa các công nghệ từ lĩnh vực viễn thông, IoT và AI, nhưng không thể tạo thành một bộ công cụ đồng nhất để giải quyết một bài toán cụ thể.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Sự kết hợp giữa công nghệ viễn thông (4G, 5G) và công nghệ dữ liệu (pgvector) không tạo thành một lĩnh vực chung rõ ràng. IoT có thể liên quan đến cả hai, nhưng không đủ để kết nối chúng thành một cụm đồng nhất.",
+    "outliers": [
+      "pgvector"
+    ],
+    "member_count": 4,
+    "sample_techs": [
+      "4G",
+      "5G",
+      "pgvector",
+      "IoT"
+    ]
+  },
+  "16": {
+    "cluster_id": 16,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa nhiều công nghệ không liên quan đến nhau, từ phát triển backend đến DevOps và các công nghệ khác, dẫn đến sự rời rạc và không đồng nhất.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.4,
+    "is_coherent": false,
+    "coherence_reason": "Xung đột miền giữa các công nghệ phát triển backend, DevOps và các công nghệ không liên quan như SASS và Sora.",
+    "outliers": [
+      "SASS",
+      "Sora"
+    ],
+    "member_count": 8,
+    "sample_techs": [
+      "SOAP",
+      "Gitlab CI",
+      "SIP",
+      "Appium",
+      "Puppet",
+      "IPS",
+      "SASS",
+      "Sora"
+    ]
+  },
+  "17": {
+    "cluster_id": 17,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa nhiều công nghệ không liên quan chặt chẽ đến nhau, bao gồm cả AI và các công nghệ khác như gRPC và InfluxDB, dẫn đến sự rời rạc trong lĩnh vực.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Sự kết hợp giữa các công nghệ AI và các công nghệ khác như gRPC và InfluxDB tạo ra xung đột miền, không thể tạo thành một stack công nghệ đồng nhất.",
+    "outliers": [
+      "gRPC",
+      "InfluxDB"
+    ],
+    "member_count": 10,
+    "sample_techs": [
+      "GPT",
+      "gRPC",
+      "Swift",
+      "GenAI",
+      "InfluxDB",
+      "AI tạo sinh",
+      "Google Cloud Platform",
+      "Generative AI",
+      "MLOps",
+      "RPA"
+    ]
+  },
+  "18": {
+    "cluster_id": 18,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa nhiều công nghệ từ các lĩnh vực khác nhau, không thể xác định một hướng đi chung, bao gồm cả các công nghệ không liên quan và từ viết tắt không rõ ràng.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Có sự xung đột giữa các công nghệ backend (C#, Ruby, Python) và các công nghệ không liên quan như DeepSeek và ActiveMQ, cùng với việc xuất hiện của các từ viết tắt không rõ ràng.",
+    "outliers": [
+      "DeepSeek",
+      "ActiveMQ"
+    ],
+    "member_count": 14,
+    "sample_techs": [
+      "KYC",
+      "JWT",
+      "Perl",
+      "jQuery",
+      "RPC",
+      "C#",
+      "QR",
+      "Express",
+      "K8s",
+      "Private Cloud",
+      "DVC",
+      "Ruby",
+      "ActiveMQ",
+      "DeepSeek"
+    ]
+  },
+  "19": {
+    "cluster_id": 19,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa nhiều công nghệ không liên quan đến nhau, từ phân tích dữ liệu, thiết kế đồ họa đến phát triển phần mềm, tạo ra sự lộn xộn trong việc xác định một lĩnh vực chung.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Xung đột miền giữa các công nghệ thuộc lĩnh vực Digital Marketing (Google Analytics), Graphic Design (Adobe Premiere, Adobe Illustrator) và Software Development (Google Cloud, React.js, Odoo).",
+    "outliers": [
+      "Adobe Premiere",
+      "Adobe Illustrator",
+      "Odoo"
+    ],
+    "member_count": 7,
+    "sample_techs": [
+      "Google Analytics",
+      "Adobe Premiere",
+      "Adobe Illustrator",
+      "Google Cloud",
+      "Odoo",
+      "Cloudflare",
+      "React.js"
+    ]
+  },
+  "20": {
+    "cluster_id": 20,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa các công nghệ liên quan đến quản lý doanh nghiệp nhưng bị xáo trộn bởi sự xuất hiện của GDPR, không tạo thành một bộ công cụ đồng nhất.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.6,
+    "is_coherent": false,
+    "coherence_reason": "Sự xuất hiện của GDPR tạo ra xung đột với các công nghệ khác như ERP và CRM, khiến cho cụm không thể hiện một mục tiêu chung rõ ràng.",
+    "outliers": [
+      "GDPR"
+    ],
+    "member_count": 6,
+    "sample_techs": [
+      "SAP",
+      "ERP",
+      "GDPR",
+      "CRM",
+      "Salesforce",
+      "SAP ERP"
+    ]
+  },
+  "21": {
+    "cluster_id": 21,
+    "label": "Cụm Hỗn Hợp / Nhiễu",
+    "label_en": "Mixed Cluster",
+    "description": "Cụm này chứa các công nghệ không liên quan chặt chẽ đến nhau, bao gồm thiết kế, phát triển API và xử lý dữ liệu, dẫn đến sự rời rạc trong việc xác định một lĩnh vực công nghệ chung.",
+    "domain": "Mixed/Noise",
+    "confidence": 0.4,
+    "is_coherent": false,
+    "coherence_reason": "Xung đột miền giữa thiết kế (Figma) và các công nghệ phát triển phần mềm (REST, ETL, IT).",
+    "outliers": [
+      "Figma"
+    ],
+    "member_count": 4,
+    "sample_techs": [
+      "Figma",
+      "REST",
+      "ETL",
+      "IT"
+    ]
+  },
+  "22": {
+    "cluster_id": 22,
+    "label": "Công nghệ Web Frontend",
+    "label_en": "Web Frontend Technologies",
+    "description": "Cụm công nghệ này tập trung vào phát triển ứng dụng web với Vue và các công nghệ liên quan, phù hợp cho các lập trình viên Fullstack và Frontend.",
+    "domain": "Web Frontend",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 5,
+    "sample_techs": [
+      "Vue",
+      "Postman",
+      "microservices",
+      "Vue.js",
+      "VueJS"
+    ]
+  }
+}

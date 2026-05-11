@@ -19,6 +19,12 @@ langchain-core==0.2.43
 langchain-google-genai==1.0.10
 google-generativeai==0.7.2
 
+# Evaluation (RAGAS)
+datasets==2.20.0
+ragas==0.1.16
+langchain-openai==0.1.25
+tiktoken==0.7.0
+
 # Embedding & reranking models
 sentence-transformers==3.0.1
 transformers==4.44.2

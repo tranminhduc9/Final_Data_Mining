@@ -422,6 +422,13 @@ definitions:
       status:
         type: string
     type: object
+  handler.ListSessionsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/handler.SessionItem'
+        type: array
+    type: object
   handler.PostMessageRequest:
     properties:
       query:
@@ -430,6 +437,15 @@ definitions:
         type: string
     required:
     - query
+    type: object
+  handler.SessionItem:
+    properties:
+      created_at:
+        type: string
+      session_id:
+        type: string
+      title:
+        type: string
     type: object
   service.ChatMessageItem:
     properties:
@@ -1068,6 +1084,34 @@ paths:
       security:
       - BearerAuth: []
       summary: Gửi message và stream câu trả lời (SSE)
+      tags:
+      - chatbot
+  /chat/sessions:
+    get:
+      description: Trả về toàn bộ session của user, sắp xếp theo thời gian tạo mới
+        nhất. Title có thể null nếu RAG chưa set.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ListSessionsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Lấy danh sách session chat của user hiện tại
       tags:
       - chatbot
   /compare/search:

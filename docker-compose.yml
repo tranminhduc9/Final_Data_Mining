@@ -56,6 +56,46 @@ services:
       - rag-service
     restart: unless-stopped
 
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.12.0
+    container_name: techpulse-mlflow
+    ports:
+      - "5001:5000"
+    volumes:
+      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core:/Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core
+    command:
+      - mlflow
+      - server
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --backend-store-uri
+      - sqlite:////Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core/mlflow.db
+      - --default-artifact-root
+      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core/mlruns
+    restart: unless-stopped
+
+  mlflow-clustering:
+    image: ghcr.io/mlflow/mlflow:v2.16.2
+    container_name: techpulse-mlflow-clustering
+    ports:
+      - "5002:5000"
+    volumes:
+      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering:/Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering
+    command:
+      - mlflow
+      - server
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --backend-store-uri
+      - sqlite:////Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering/mlruns.db
+      - --default-artifact-root
+      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering/mlruns
+    restart: unless-stopped
+
 volumes:
   neo4j_data:
   neo4j_logs:

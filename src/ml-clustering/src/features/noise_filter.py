@@ -20,10 +20,29 @@ logger = logging.getLogger(__name__)
 
 # Whitelist các tên kỹ thuật ngắn hợp lệ mà heuristic có thể nhầm
 _SHORT_TECH_WHITELIST = {
-    "c", "r", "go", "ai", "ml", "dl", "ui", "ux", "qa", "it",
-    "js", "ts", "sql", "api", "git", "ios", "rpa", "erp", "crm",
-    "llm", "rag", "nlp", "ocr", "etl", "dwh", "gpu", "cpu", "tpu",
+    # Ngôn ngữ & runtime
+    "c", "r", "go",
+    # AI/ML
+    "ai", "ml", "dl", "llm", "rag", "nlp", "ocr", "gpt",
+    # Frontend
+    "js", "ts", "css", "vue", "ios",
+    # Backend / DB
+    "sql", "api", "git", "net", "orm", "xml", "rpc", "gin",
+    # Data
+    "etl", "dwh", "dbt", "sas", "elk", "dvc",
+    # DevOps / Cloud
+    "aws", "gcp", "sdk", "ide", "svn",
+    # Hardware
+    "gpu", "cpu", "tpu", "npu", "iot", "nfc",
+    # Networking / Security
     "vpc", "vpn", "dns", "ssh", "tcp", "udp", "http", "rest",
+    "bgp", "nat", "sip", "sse", "rpc",
+    "soc", "ips", "waf", "ids", "jwt", "otp",
+    # Business / Other
+    "ui", "ux", "qa", "it", "rpa", "erp", "crm",
+    "stt", "qr", "kyc", "mes",
+    # Vendor / Platform
+    "sap", "php", "ios",
 }
 
 

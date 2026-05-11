@@ -28,6 +28,31 @@ from src.clustering.tuner import TrialResult
 
 logger = logging.getLogger(__name__)
 
+_MAX_PARAM_LEN = 500
+
+
+def _serialize_param_value(value: Any) -> str:
+    if isinstance(value, (dict, list)):
+        text = json.dumps(value, ensure_ascii=False)
+    else:
+        text = str(value)
+
+    if len(text) > _MAX_PARAM_LEN:
+        return text[: _MAX_PARAM_LEN - 3] + "..."
+    return text
+
+
+def _flatten_params(data: Any, prefix: str) -> dict[str, str]:
+    flat: dict[str, str] = {}
+    if isinstance(data, dict):
+        for key, value in data.items():
+            next_prefix = f"{prefix}.{key}" if prefix else str(key)
+            flat.update(_flatten_params(value, next_prefix))
+        return flat
+
+    flat[prefix] = _serialize_param_value(data)
+    return flat
+
 
 def _get_git_commit() -> str | None:
     try:
@@ -44,6 +69,14 @@ def init_mlflow(params: MLflowParams) -> None:
     mlflow.set_experiment(params.experiment_name)
     mlflow.sklearn.autolog(log_models=False, silent=True)
     logger.info("MLflow init: uri=%s experiment=%s", params.tracking_uri, params.experiment_name)
+
+
+def log_params_from_yaml(params_obj: Any, prefix: str = "cfg") -> None:
+    """Log toàn bộ config trong params.yaml theo dạng flattened keys."""
+    raw = params_obj.model_dump() if hasattr(params_obj, "model_dump") else params_obj
+    flat = _flatten_params(raw, prefix=prefix)
+    if flat:
+        mlflow.log_params(flat)
 
 
 @contextmanager

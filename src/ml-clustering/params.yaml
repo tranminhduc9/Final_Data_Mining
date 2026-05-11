@@ -2,7 +2,7 @@
 # Đổi giá trị ở đây + `dvc repro` sẽ chạy lại đúng các stage cần thiết.
 
 snapshot:
-  tag: "2026-05-10"          # nhãn snapshot, gắn vào path data/<tag>/
+  tag: "2026-05-11"          # nhãn snapshot, gắn vào path data/<tag>/
   min_tech_degree: 1         # lọc Technology có degree < ngưỡng (đã thoả với inspect)
 
 features:
@@ -43,6 +43,11 @@ features:
       - "Fair"
       - "NVR"
       - "Rhino"
+      - "FCC"
+      - "Mô Hình Ngôn Ngữ"
+      # Phần mềm thiết kế kiến trúc / 3D (không phải IT tech, ít job trong DB)
+      - "Cinema4D"
+      - "Substance 3D"
       - "FCC"
       - "Mô Hình Ngôn Ngữ"
       # Phần mềm thiết kế kiến trúc / 3D / game — không phải IT tech

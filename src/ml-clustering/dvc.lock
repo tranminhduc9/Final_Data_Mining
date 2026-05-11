@@ -1,0 +1,135 @@
+schema: '2.0'
+stages:
+  extract:
+    cmd: python -m pipelines.stage_01_extract --params params.yaml
+    deps:
+    - path: pipelines/stage_01_extract.py
+      hash: md5
+      md5: 8f4d56504fa1ee966e830ccb531fcf83
+      size: 3629
+    - path: src/data/neo4j_loader.py
+      hash: md5
+      md5: 566b98c2a144579e78249aba62c0547d
+      size: 12832
+    - path: src/data/snapshot.py
+      hash: md5
+      md5: 1e7b1d2843fd064aa17bcb779195e740
+      size: 7596
+    params:
+      params.yaml:
+        snapshot:
+          tag: '2026-05-11'
+          min_tech_degree: 1
+    outs:
+    - path: data/raw/snapshot_2026-05-11
+      hash: md5
+      md5: 124d416268d25ab6cda31b3b72f2a932.dir
+      size: 3183591
+      nfiles: 12
+  features:
+    cmd: python -m pipelines.stage_02_features --params params.yaml
+    deps:
+    - path: data/raw/snapshot_2026-05-11
+      hash: md5
+      md5: 124d416268d25ab6cda31b3b72f2a932.dir
+      size: 3183591
+      nfiles: 12
+    - path: pipelines/stage_02_features.py
+      hash: md5
+      md5: b223dd463d18010735b1ea7291304cd9
+      size: 8696
+    - path: src/features
+      hash: md5
+      md5: b3e44234188c882fae706333c2047a7a.dir
+      size: 94209
+      nfiles: 14
+    params:
+      params.yaml:
+        features:
+          fastrp:
+            enabled: false
+            embedding_dim: 64
+            iteration_weights:
+            - 0.0
+            - 1.0
+            - 1.0
+            - 1.0
+            normalization_strength: 0.0
+          node2vec:
+            enabled: false
+            embedding_dim: 64
+            walk_length: 10
+            walks_per_node: 10
+          pagerank:
+            enabled: false
+            damping: 0.85
+            max_iter: 20
+          louvain:
+            enabled: false
+            max_levels: 10
+            top_k_communities: 20
+          noise_filter:
+            enabled: true
+            min_job_count: 3
+            blocklist:
+            - Dau
+            - Mau
+            - CCCD
+            - openclaw
+            - enscape
+            - emotion
+            - fiber
+            - lookout
+            - Fair
+            - NVR
+            - Rhino
+            - FCC
+            - Mô Hình Ngôn Ngữ
+            - Revit
+            - 3ds Max
+            - 3DS Max
+            - 3Ds Max
+            - 3Ds max
+            - 3ds max
+            - Lumion
+            - Cinema4D
+            - Substance 3D
+            - Unity
+            - Unreal
+            - Trello
+            - Asana
+            - Confluence
+            - JIRA
+            - ServiceNow
+            - Capcut
+            heuristic_patterns:
+            - ^[a-z]{1,3}$
+            - ^(an|theo|trong|bang|quan|ly|co|voi|cac|khi|tai|lam|va|hoac|duoc)$
+          use_name_embedding: true
+          name_emb_pca_components: 64
+          article_embedding_aggregation:
+            enabled: true
+            method: mean
+            min_articles_per_tech: 1
+          use_company_tfidf: false
+          use_job_tfidf: true
+          tfidf_min_df: 2
+          tfidf_max_features: 500
+          feature_weights:
+            graph_stats: 1.0
+            content_emb: 0.5
+            job_tfidf: 2.0
+          scaler: standard
+          reduce_dim:
+            enabled: true
+            method: umap
+            n_components: 32
+        snapshot:
+          tag: '2026-05-11'
+          min_tech_degree: 1
+    outs:
+    - path: data/features/2026-05-11
+      hash: md5
+      md5: e2210c1d35e9002766037b3c288321a7.dir
+      size: 48434
+      nfiles: 3

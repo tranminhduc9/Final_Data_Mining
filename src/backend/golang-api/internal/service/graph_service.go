@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/domain"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/neo4jrepo"
@@ -17,7 +18,7 @@ func NewGraphService(graphRepo *neo4jrepo.GraphRepository) *GraphService {
 	return &GraphService{graphRepo: graphRepo}
 }
 
-func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int) (*domain.GraphResult, error) {
+func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int, minSalary float64) (*domain.GraphResult, error) {
 	if s.graphRepo == nil {
 		return nil, fmt.Errorf("neo4j unavailable")
 	}
@@ -104,6 +105,7 @@ func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int
 		result.Edges = append(result.Edges, *e)
 	}
 
+	filterBySalary(result, minSalary)
 	return result, nil
 }
 
@@ -147,7 +149,7 @@ func (s *GraphService) RoadAnalysis(ctx context.Context, keyword1, keyword2 stri
 	}, nil
 }
 
-func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location string) (*domain.GraphResult, error) {
+func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location string, minSalary float64) (*domain.GraphResult, error) {
 	if s.graphRepo == nil {
 		return nil, fmt.Errorf("neo4j unavailable")
 	}
@@ -206,7 +208,61 @@ func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location 
 	for _, e := range edgeMap {
 		result.Edges = append(result.Edges, *e)
 	}
+	filterBySalary(result, minSalary)
 	return result, nil
+}
+
+// parseSalaryMax extracts the upper bound from Vietnamese salary strings.
+// "Từ X triệu" → X  |  "X-Y triệu" → Y
+func parseSalaryMax(s string) (float64, bool) {
+	if idx := strings.Index(s, "triệu"); idx >= 0 {
+		s = strings.TrimSpace(s[:idx])
+	}
+	s = strings.TrimPrefix(strings.TrimPrefix(s, "Từ "), "từ ")
+	s = strings.TrimSpace(s)
+	if idx := strings.LastIndex(s, "-"); idx > 0 {
+		if v, err := strconv.ParseFloat(strings.TrimSpace(s[idx+1:]), 64); err == nil {
+			return v, true
+		}
+	}
+	if v, err := strconv.ParseFloat(s, 64); err == nil {
+		return v, true
+	}
+	return 0, false
+}
+
+func filterBySalary(result *domain.GraphResult, minSalary float64) {
+	if minSalary <= 0 {
+		return
+	}
+	removed := map[string]bool{}
+	kept := result.Nodes[:0]
+	for _, node := range result.Nodes {
+		isJob := false
+		for _, l := range node.Labels {
+			if l == "Job" {
+				isJob = true
+				break
+			}
+		}
+		if isJob {
+			sal, _ := node.Properties["salary"].(string)
+			max, ok := parseSalaryMax(sal)
+			if !ok || max < minSalary {
+				removed[node.ID] = true
+				continue
+			}
+		}
+		kept = append(kept, node)
+	}
+	result.Nodes = kept
+	filteredEdges := result.Edges[:0]
+	for _, e := range result.Edges {
+		if !removed[e.Source] && !removed[e.Target] {
+			filteredEdges = append(filteredEdges, e)
+		}
+	}
+	result.Edges = filteredEdges
 }
 
 // sanitizeNodeProps removes heavy fields (e.g. Article.content) to keep the response lean.

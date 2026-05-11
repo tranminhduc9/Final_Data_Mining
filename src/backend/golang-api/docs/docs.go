@@ -950,6 +950,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/chat/sessions": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Trả về toàn bộ session của user, sắp xếp theo thời gian tạo mới nhất. Title có thể null nếu RAG chưa set.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatbot"
+                ],
+                "summary": "Lấy danh sách session chat của user hiện tại",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ListSessionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/compare/search": {
             "get": {
                 "produces": [
@@ -1031,6 +1074,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword.",
                         "name": "location",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Minimum salary in triệu VND (e.g. 15). Filters Job nodes by upper salary bound. No effect when location filter is active.",
+                        "name": "min_salary",
                         "in": "query"
                     }
                 ],
@@ -1955,6 +2004,17 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.ListSessionsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler.SessionItem"
+                    }
+                }
+            }
+        },
         "handler.PostMessageRequest": {
             "type": "object",
             "required": [
@@ -1965,6 +2025,20 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 2000,
                     "minLength": 1
+                }
+            }
+        },
+        "handler.SessionItem": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },

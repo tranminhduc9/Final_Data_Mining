@@ -46,11 +46,13 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	var userProfileRepo *postgres.UserProfileRepository
 	var analyticsRepo *postgres.AnalyticsRepository
 	var settingsRepo *postgres.SettingsRepository
+	var chatSessionRepo *postgres.ChatSessionRepository
 	if db != nil {
 		userRepo = postgres.NewUserRepository(db)
 		userProfileRepo = postgres.NewUserProfileRepository(db)
 		analyticsRepo = postgres.NewAnalyticsRepository(db)
 		settingsRepo = postgres.NewSettingsRepository(db)
+		chatSessionRepo = postgres.NewChatSessionRepository(db)
 	}
 	authService := service.NewAuthService(jwtMiddleware, userRepo, userProfileRepo)
 	authHandler := handler.NewAuthHandler(authService)
@@ -77,7 +79,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	graphService := service.NewGraphService(graphRepo)
 	graphHandler := handler.NewGraphHandler(graphService)
 	aiClient := service.NewAIClient(cfg.PythonAIBaseURL)
-	chatHandler := handler.NewChatHandler(aiClient)
+	chatHandler := handler.NewChatHandler(aiClient, chatSessionRepo)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -149,6 +151,7 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		chat.Use(middleware.MaintenanceCheck(settingsService))
 		chat.Use(middleware.FeatureEnabled(settingsService, "feature_rag"))
 		{
+			chat.GET("/sessions", chatHandler.ListSessions)
 			chat.POST("/session", chatHandler.CreateSession)
 			chat.GET("/session/:session_id/messages", chatHandler.GetMessages)
 			chat.POST("/session/:session_id/messages", chatHandler.PostMessage)

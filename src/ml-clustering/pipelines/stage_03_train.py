@@ -135,6 +135,7 @@ def main(
         init_mlflow,
         log_best_run,
         log_feature_meta,
+        log_params_from_yaml,
         log_trial,
         parent_run,
         register_best_model,
@@ -165,6 +166,11 @@ def main(
             "n_techs":      meta.n_techs,
             "final_dim":    meta.final_dim,
         })
+
+        # Log full params.yaml (flattened) + file artifact
+        log_params_from_yaml(params_obj, prefix="cfg")
+        if Path(params).exists():
+            mlflow.log_artifact(params, artifact_path="input")
 
         # 3b. Log feature meta
         feat_meta_path = features_dir(tag) / "feature_meta.json"

@@ -1,41 +1,35 @@
-Bạn là chuyên gia phân tích công nghệ tại Việt Nam. Tôi vừa phân cụm các công nghệ
-trong đồ thị tri thức TechPulse. Hãy đặt tên và đánh giá chất lượng cụm dưới đây.
+Bạn là chuyên gia phân tích kiến trúc hệ thống và dữ liệu tại Việt Nam, nổi tiếng với sự khắt khe, tư duy rành mạch và không bao giờ gượng ép ghép nối các công nghệ không liên quan. 
+Nhiệm vụ của bạn là đánh giá và đặt tên cho các cụm công nghệ được trích xuất từ đồ thị tri thức TechPulse.
 
 CỤM #{cluster_id} ({n_members} thành viên)
-
-Top thành viên (sắp theo độ trung tâm):
+Top thành viên:
 {top_members}
-
-Các vai trò công việc hay yêu cầu các tech này:
+Vai trò/Job:
 {top_jobs}
 
 ---
-BƯỚC 1 — ĐÁNH GIÁ TÍNH HỢP LÝ (làm trước khi đặt tên):
+BƯỚC 1 — QUY TẮC ĐÁNH GIÁ SỰ ĐỒNG NHẤT (COHERENCE):
+Mô hình gom cụm thuật toán đôi khi sẽ tạo ra các "cụm rác" (dumping ground). Bạn BẮT BUỘC phải đặt "is_coherent": false nếu vi phạm MỘT TRONG các lỗi sau:
+1. Xung đột miền (Domain Mismatch): Các tech thuộc từ 3 lĩnh vực hoàn toàn khác nhau trở lên (VD: trộn lẫn Backend + Graphic Design + Networking).
+2. Tạp nham (Noise/Outliers): Chứa từ tiếng Việt vô nghĩa, từ viết tắt không phải công nghệ, hoặc có quá 3 công nghệ không ăn nhập gì với xu hướng chính của cụm.
+3. Rời rạc (Scattered): Không thể viết một mô tả kỹ thuật bao quát chung mà nghe hợp logic.
 
-Đặt is_coherent = false nếu cụm rơi vào BẤT KỲ trường hợp nào sau:
-  a) Các tech thuộc ≥ 3 lĩnh vực hoàn toàn khác nhau
-     Ví dụ xấu: [Apache Kafka, Adobe Photoshop, Spring Boot, DHCP] → networking + design + backend → incoherent
-  b) Hơn 40% thành viên là outlier thật sự (không liên quan gì đến phần còn lại)
-  c) Cụm chứa noise rõ ràng: từ tiếng Việt thường (Dau, Mau, An, Theo...), từ viết tắt không rõ nghĩa, tên riêng không phải tech
-  d) Không thể viết 1 câu mô tả bao quát được ≥ 60% thành viên một cách chính xác
+Chỉ cho phép is_coherent = true nếu cụm thực sự thể hiện một stack công nghệ, một bộ công cụ giải quyết chung một bài toán (VD: stack Web Frontend, stack Data Engineering).
 
-Đặt is_coherent = true CHỈ KHI phần lớn (≥ 60%) thành viên thuộc cùng 1-2 lĩnh vực liên quan.
-
-BƯỚC 2 — ĐẶT TÊN:
-- Nếu is_coherent = true: đặt tên phản ánh đúng chủ đề chính
-- Nếu is_coherent = false: đặt tên mô tả lỏng nhất có thể, thêm "(Mixed)" vào label_en
+BƯỚC 2 — QUY TẮC ĐẶT TÊN:
+- Nếu is_coherent = true: Đặt tên sắc bén, chuyên ngành.
+- Nếu is_coherent = false: Đặt tên là "Cụm Hỗn Hợp / Nhiễu", và mô tả rõ sự rời rạc.
 
 ---
-YÊU CẦU OUTPUT (JSON):
+YÊU CẦU OUTPUT CHUẨN JSON:
 {{
-  "label":            "<tên ngắn 2-5 từ tiếng Việt>",
-  "label_en":         "<tên tiếng Anh, thêm '(Mixed)' nếu is_coherent=false>",
-  "description":      "<mô tả 1-2 câu>",
-  "domain":           "<một trong: AI/ML | Web Frontend | Web Backend | Mobile | Data Engineering | DevOps/Cloud | Security | Database | Hardware | Soft Skills | Other>",
-  "confidence":       <float 0..1>,
-  "is_coherent":      <true hoặc false — theo đánh giá BƯỚC 1 ở trên>,
-  "coherence_reason": "<BẮT BUỘC nếu is_coherent=false: liệt kê cụ thể các tech lạc lõng và lý do>",
-  "outliers":         ["<tên tech không khớp chủ đề>"]
+  "step_1_analysis": "Viết nháp 1-2 câu phân tích xem các tech có xung đột lĩnh vực không. Bắt buộc phải viết trước khi chốt kết quả.",
+  "is_coherent": <true hoặc false dựa vào quy tắc BƯỚC 1>,
+  "coherence_reason": "Nếu is_coherent=false, liệt kê các tech lạc lõng hoặc chuỗi domain bị xung đột. Nếu true, để rỗng.",
+  "domain": "<Chọn 1: AI/ML | Web Frontend | Web Backend | Mobile | Data Engineering | DevOps/Cloud | Security | Database | Hardware | Soft Skills | Mixed/Noise | Other>",
+  "label": "Tên tiếng Việt, tối đa 5 từ. Nếu false, điền 'Cụm Hỗn Hợp / Nhiễu'",
+  "label_en": "Tên tiếng Anh. Nếu false, thêm hậu tố '(Mixed)'",
+  "description": "Mô tả 1-2 câu. Nếu false, mô tả sự lộn xộn của cụm này",
+  "outliers": ["Danh sách các tech gây nhiễu, nếu có"],
+  "confidence": <float 0.1 đến 1.0 đánh giá độ tự tin của cụm>
 }}
-
-Chỉ trả về JSON, không có markdown fence, không giải thích thêm.

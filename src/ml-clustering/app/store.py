@@ -11,12 +11,82 @@ Dùng singleton pattern: gọi `get_store()` ở bất kỳ đâu.
 from __future__ import annotations
 
 import json
+import os
 from functools import lru_cache
 from pathlib import Path
 
+import boto3
+from botocore.config import Config
+from botocore.exceptions import BotoCoreError, ClientError
 import pandas as pd
 
 from conf.config import DATA_DIR, load_params
+
+
+def _get_s3_settings() -> dict | None:
+    bucket = os.getenv("MLCLUSTER_S3_BUCKET")
+    if not bucket:
+        return None
+
+    prefix = os.getenv("MLCLUSTER_S3_PREFIX", "").strip("/")
+    cache_dir = os.getenv("MLCLUSTER_S3_CACHE_DIR", "")
+    endpoint_url = os.getenv("MLCLUSTER_S3_ENDPOINT_URL")
+    region = os.getenv("MLCLUSTER_S3_REGION")
+    access_key = os.getenv("MLCLUSTER_S3_ACCESS_KEY_ID")
+    secret_key = os.getenv("MLCLUSTER_S3_SECRET_ACCESS_KEY")
+    addressing_style = os.getenv("MLCLUSTER_S3_ADDRESSING_STYLE")
+
+    return {
+        "bucket": bucket,
+        "prefix": prefix,
+        "cache_dir": cache_dir,
+        "endpoint_url": endpoint_url,
+        "region": region,
+        "access_key": access_key,
+        "secret_key": secret_key,
+        "addressing_style": addressing_style,
+    }
+
+
+def _make_s3_client(settings: dict) -> boto3.client:
+    config = None
+    if settings.get("addressing_style"):
+        config = Config(s3={"addressing_style": settings["addressing_style"]})
+
+    return boto3.client(
+        "s3",
+        endpoint_url=settings.get("endpoint_url") or None,
+        region_name=settings.get("region") or None,
+        aws_access_key_id=settings.get("access_key") or None,
+        aws_secret_access_key=settings.get("secret_key") or None,
+        config=config,
+    )
+
+
+def _s3_key(prefix: str, rel_path: str) -> str:
+    if prefix:
+        return f"{prefix}/{rel_path}"
+    return rel_path
+
+
+def _local_path(cache_dir: str, rel_path: str) -> Path:
+    base = Path(cache_dir) if cache_dir else DATA_DIR
+    return base / rel_path
+
+
+def _ensure_s3_file(settings: dict, rel_path: str) -> Path:
+    local_path = _local_path(settings.get("cache_dir", ""), rel_path)
+    if local_path.exists():
+        return local_path
+
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    key = _s3_key(settings.get("prefix", ""), rel_path)
+    client = _make_s3_client(settings)
+    try:
+        client.download_file(settings["bucket"], key, str(local_path))
+    except (BotoCoreError, ClientError) as exc:
+        raise FileNotFoundError(f"S3 download failed: s3://{settings['bucket']}/{key}") from exc
+    return local_path
 
 
 class AppStore:
@@ -29,14 +99,26 @@ class AppStore:
         params = load_params()
         self.tag: str = params.snapshot.tag
 
+        s3_settings = _get_s3_settings()
+
+        labels_rel = f"models/{self.tag}/best_labels.parquet"
+        cluster_labels_rel = f"labels/{self.tag}/cluster_labels.json"
+        tech_rel = f"raw/snapshot_{self.tag}/technologies.parquet"
+
         # --- best_labels: tech_id → cluster_id ---
-        labels_path = DATA_DIR / "models" / self.tag / "best_labels.parquet"
+        labels_path = (
+            _ensure_s3_file(s3_settings, labels_rel)
+            if s3_settings else DATA_DIR / labels_rel
+        )
         df_labels = pd.read_parquet(labels_path)
         # cluster_id = -1 → noise
         self.labels_df: pd.DataFrame = df_labels  # cols: tech_id, cluster_id
 
         # --- cluster_labels: dict[str, dict] hoặc list[dict] ---
-        labels_json = DATA_DIR / "labels" / self.tag / "cluster_labels.json"
+        labels_json = (
+            _ensure_s3_file(s3_settings, cluster_labels_rel)
+            if s3_settings else DATA_DIR / cluster_labels_rel
+        )
         with open(labels_json, encoding="utf-8") as f:
             raw_labels = json.load(f)
         # Hỗ trợ cả 2 format: dict{"0": {...}} và list[{cluster_id: 0, ...}]
@@ -48,8 +130,10 @@ class AppStore:
             self.cluster_labels = {int(c["cluster_id"]): c for c in raw_labels}
 
         # --- technologies snapshot: tech_id → name ---
-        snap_dir = DATA_DIR / "raw" / f"snapshot_{self.tag}"
-        tech_path = snap_dir / "technologies.parquet"
+        tech_path = (
+            _ensure_s3_file(s3_settings, tech_rel)
+            if s3_settings else DATA_DIR / tech_rel
+        )
         df_tech = pd.read_parquet(tech_path)
         # Tạo 2 index: tech_id→name và name_lower→tech_id (để lookup theo tên)
         self.id_to_name: dict[str, str] = dict(

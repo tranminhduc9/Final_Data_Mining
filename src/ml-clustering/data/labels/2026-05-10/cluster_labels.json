@@ -1,54 +1,169 @@
 {
   "0": {
     "cluster_id": 0,
-    "label": "Thiết kế Đồ họa",
-    "label_en": "Graphic Design",
-    "description": "Cụm này bao gồm các công nghệ chủ yếu được sử dụng trong lĩnh vực thiết kế đồ họa và sản xuất video.",
-    "domain": "Other",
+    "label": "Công nghệ Dữ liệu",
+    "label_en": "Data Technologies",
+    "description": "Cụm này bao gồm các công nghệ liên quan đến xử lý và quản lý dữ liệu lớn, với sự tập trung vào các công cụ và ngôn ngữ lập trình phục vụ cho kỹ sư dữ liệu.",
+    "domain": "Data Engineering",
     "confidence": 0.9,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
-    "member_count": 6,
+    "member_count": 3,
     "sample_techs": [
-      "Indesign",
-      "After Effects",
-      "Adobe Premiere",
-      "Blender",
-      "Adobe Photoshop",
-      "Adobe Illustrator"
+      "Neo4j",
+      "HBase",
+      "Scala"
     ]
   },
   "1": {
     "cluster_id": 1,
-    "label": "Công nghệ Backend Java",
-    "label_en": "Java Backend Technologies",
-    "description": "Cụm công nghệ này bao gồm các công nghệ và công cụ chủ yếu được sử dụng trong phát triển backend, đặc biệt là với ngôn ngữ lập trình Java.",
-    "domain": "Web Backend",
-    "confidence": 0.95,
+    "label": "Phân Tích Dữ Liệu",
+    "label_en": "Data Analysis",
+    "description": "Cụm công nghệ này tập trung vào các công cụ phân tích và trực quan hóa dữ liệu, phục vụ cho việc ra quyết định trong kinh doanh.",
+    "domain": "Data Engineering",
+    "confidence": 0.9,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
-    "member_count": 11,
+    "member_count": 4,
     "sample_techs": [
-      "RESTful",
-      "API",
-      "SQL",
-      "Git",
-      "PostgreSQL",
-      "Java",
-      "MySQL",
-      "MongoDB",
-      "Redis",
-      "Spring Boot",
-      "Spring"
+      "Power BI",
+      "Looker",
+      "Tableau",
+      "ETL"
     ]
   },
   "2": {
     "cluster_id": 2,
     "label": "Công nghệ DevOps",
     "label_en": "DevOps Technologies",
-    "description": "Cụm công nghệ này tập trung vào các công cụ và nền tảng hỗ trợ quy trình phát triển phần mềm và quản lý hạ tầng, bao gồm CI/CD, Kubernetes, Docker và Azure.",
+    "description": "Cụm công nghệ này bao gồm các công cụ và kỹ thuật liên quan đến DevOps, tập trung vào việc quản lý và giám sát hệ thống.",
+    "domain": "DevOps/Cloud",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "DDoS",
+      "Kibana",
+      "Bitbucket"
+    ]
+  },
+  "3": {
+    "cluster_id": 3,
+    "label": "Phát triển Web",
+    "label_en": "Web Development",
+    "description": "Cụm công nghệ này tập trung vào phát triển web với các công nghệ chủ yếu là JavaScript, HTML và React, phục vụ cho các vai trò lập trình viên frontend và fullstack.",
+    "domain": "Web Frontend",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "JavaScript",
+      "HTML",
+      "React"
+    ]
+  },
+  "4": {
+    "cluster_id": 4,
+    "label": "Công nghệ Machine Learning",
+    "label_en": "Machine Learning Technologies",
+    "description": "Cụm này bao gồm các công nghệ phổ biến trong lĩnh vực Machine Learning, chủ yếu được sử dụng bởi các Data Scientist và Kỹ Sư Machine Learning.",
+    "domain": "AI/ML",
+    "confidence": 0.95,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "XGBoost",
+      "Transformers",
+      "LightGBM"
+    ]
+  },
+  "5": {
+    "cluster_id": 5,
+    "label": "Công nghệ Python Web",
+    "label_en": "Python Web Technologies",
+    "description": "Cụm công nghệ này bao gồm các framework Python phổ biến cho phát triển web, chủ yếu phục vụ cho các vị trí liên quan đến lập trình backend và AI.",
+    "domain": "Web Backend",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "Flask",
+      "Django",
+      "FastAPI"
+    ]
+  },
+  "6": {
+    "cluster_id": 6,
+    "label": "Công nghệ xử lý dữ liệu",
+    "label_en": "Data Processing Technologies",
+    "description": "Cụm công nghệ này bao gồm các công cụ phục vụ cho việc xử lý và quản lý dữ liệu trong môi trường phân tích dữ liệu.",
+    "domain": "Data Engineering",
+    "confidence": 0.85,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "Flink",
+      "Airflow",
+      "Grok"
+    ]
+  },
+  "7": {
+    "cluster_id": 7,
+    "label": "Phân Tích Dữ Liệu",
+    "label_en": "Data Analytics",
+    "description": "Cụm công nghệ này tập trung vào các công cụ phân tích dữ liệu và theo dõi hiệu suất, phục vụ cho các vai trò liên quan đến sản phẩm và marketing.",
+    "domain": "Data Engineering",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "Amplitude",
+      "Google Analytics",
+      "Mixpanel"
+    ]
+  },
+  "8": {
+    "cluster_id": 8,
+    "label": "Công nghệ AI và NLP",
+    "label_en": "AI and NLP Technologies",
+    "description": "Cụm này bao gồm các công nghệ liên quan đến trí tuệ nhân tạo, đặc biệt là các mô hình ngôn ngữ lớn và xử lý ngôn ngữ tự nhiên.",
+    "domain": "AI/ML",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 9,
+    "sample_techs": [
+      "LLM",
+      "RAG",
+      "NLP",
+      "AI",
+      "C++",
+      "Keras",
+      "Python",
+      "LangChain",
+      "LlamaIndex"
+    ]
+  },
+  "9": {
+    "cluster_id": 9,
+    "label": "Hạ tầng mạng",
+    "label_en": "Networking Infrastructure",
+    "description": "Cụm công nghệ này tập trung vào các giải pháp và công cụ quản lý hạ tầng mạng và máy chủ, bao gồm Cisco, VLAN, DHCP và Windows Server.",
     "domain": "DevOps/Cloud",
     "confidence": 0.9,
     "is_coherent": true,
@@ -56,17 +171,118 @@
     "outliers": [],
     "member_count": 4,
     "sample_techs": [
-      "CI/CD",
-      "Kubernetes",
-      "Docker",
-      "Azure"
+      "Cisco",
+      "VLAN",
+      "DHCP",
+      "Windows Server"
     ]
   },
-  "3": {
-    "cluster_id": 3,
+  "10": {
+    "cluster_id": 10,
+    "label": "Công nghệ AI và Machine Learning",
+    "label_en": "AI and Machine Learning",
+    "description": "Cụm này tập trung vào các công nghệ và khái niệm liên quan đến trí tuệ nhân tạo và học máy, bao gồm các thư viện phổ biến và các lĩnh vực ứng dụng trong ngành.",
+    "domain": "AI/ML",
+    "confidence": 0.95,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 5,
+    "sample_techs": [
+      "PyTorch",
+      "TensorFlow",
+      "Machine Learning",
+      "Deep Learning",
+      "Hugging Face"
+    ]
+  },
+  "11": {
+    "cluster_id": 11,
+    "label": "Học máy và Thị giác máy tính",
+    "label_en": "Machine Learning and Computer Vision",
+    "description": "Cụm này tập trung vào các công nghệ liên quan đến học máy và thị giác máy tính, bao gồm Kubeflow và MLFlow, hai công cụ quan trọng trong việc triển khai và quản lý mô hình học máy.",
+    "domain": "AI/ML",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "Kubeflow",
+      "Computer Vision",
+      "MLFlow"
+    ]
+  },
+  "12": {
+    "cluster_id": 12,
+    "label": "Công cụ Thiết kế và Phát triển",
+    "label_en": "Design and Development Tools",
+    "description": "Cụm này bao gồm các công nghệ liên quan đến thiết kế đồ họa và phát triển web, chủ yếu phục vụ cho các nhà phát triển frontend và designer.",
+    "domain": "Web Frontend",
+    "confidence": 0.85,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 17,
+    "sample_techs": [
+      "Adobe Photoshop",
+      "Indesign",
+      "Blender",
+      "After Effects",
+      "Adobe Premiere",
+      "Adobe Illustrator",
+      "Vuex",
+      "Recoil",
+      "SageMaker",
+      "Scrum",
+      "Vite",
+      "Pinia",
+      "Vertex AI",
+      "Webpack",
+      "Agile",
+      "RabbitMQ",
+      "Kafka"
+    ]
+  },
+  "13": {
+    "cluster_id": 13,
+    "label": "Kiểm thử tự động",
+    "label_en": "Automated Testing",
+    "description": "Cụm công nghệ này tập trung vào các công cụ kiểm thử tự động, bao gồm Cypress, Playwright và Selenium, được sử dụng phổ biến trong lĩnh vực kiểm thử phần mềm.",
+    "domain": "Other",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "Cypress",
+      "Playwright",
+      "Selenium"
+    ]
+  },
+  "14": {
+    "cluster_id": 14,
     "label": "Công nghệ DevOps",
     "label_en": "DevOps Technologies",
-    "description": "Cụm công nghệ này bao gồm các công cụ và nền tảng chủ yếu được sử dụng trong quy trình DevOps, giúp tự động hóa và quản lý hạ tầng cũng như quy trình phát triển phần mềm.",
+    "description": "Cụm này bao gồm các công nghệ chủ chốt trong lĩnh vực DevOps, tập trung vào việc tự động hóa quy trình phát triển và triển khai phần mềm.",
+    "domain": "DevOps/Cloud",
+    "confidence": 0.9,
+    "is_coherent": true,
+    "coherence_reason": "",
+    "outliers": [],
+    "member_count": 3,
+    "sample_techs": [
+      "CI/CD",
+      "Kubernetes",
+      "Docker"
+    ]
+  },
+  "15": {
+    "cluster_id": 15,
+    "label": "Công nghệ DevOps",
+    "label_en": "DevOps Technologies",
+    "description": "Cụm công nghệ này bao gồm các công cụ và nền tảng phổ biến trong lĩnh vực DevOps, giúp tự động hóa quy trình phát triển và triển khai phần mềm.",
     "domain": "DevOps/Cloud",
     "confidence": 0.95,
     "is_coherent": true,
@@ -84,366 +300,142 @@
       "GitHub Actions"
     ]
   },
-  "4": {
-    "cluster_id": 4,
-    "label": "Công nghệ Khoa Học Dữ Liệu",
-    "label_en": "Data Science Technologies",
-    "description": "Cụm công nghệ này bao gồm các công cụ và thư viện phổ biến trong lĩnh vực khoa học dữ liệu và học máy, phục vụ cho việc phân tích và xử lý dữ liệu.",
-    "domain": "AI/ML",
+  "16": {
+    "cluster_id": 16,
+    "label": "Công nghệ Backend",
+    "label_en": "Backend Technologies",
+    "description": "Cụm công nghệ này chủ yếu liên quan đến phát triển backend, bao gồm các công nghệ quản lý cơ sở dữ liệu và giao thức API.",
+    "domain": "Web Backend",
     "confidence": 0.9,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
     "member_count": 7,
     "sample_techs": [
-      "LightGBM",
-      "Transformers",
-      "XGBoost",
-      "Redshift",
-      "Databricks",
-      "Flink",
-      "Seaborn"
+      "RESTful",
+      "PostgreSQL",
+      "Git",
+      "API",
+      "MySQL",
+      "SQL",
+      "MongoDB"
     ]
   },
-  "5": {
-    "cluster_id": 5,
-    "label": "Công nghệ AI và NLP",
-    "label_en": "AI and NLP Technologies",
-    "description": "Cụm này bao gồm các công nghệ liên quan đến trí tuệ nhân tạo và xử lý ngôn ngữ tự nhiên, chủ yếu phục vụ cho các vai trò kỹ sư AI và nhà khoa học dữ liệu.",
-    "domain": "AI/ML",
+  "17": {
+    "cluster_id": 17,
+    "label": "Công nghệ Java và Spring",
+    "label_en": "Java and Spring Technologies",
+    "description": "Cụm này tập trung vào các công nghệ Java và Spring, chủ yếu phục vụ cho phát triển ứng dụng backend và fullstack.",
+    "domain": "Web Backend",
     "confidence": 0.9,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
-    "member_count": 8,
+    "member_count": 3,
     "sample_techs": [
-      "RAG",
-      "LLM",
-      "AI",
-      "NLP",
-      "Python",
-      "LangChain",
-      "Keras",
-      "LlamaIndex"
+      "Spring Boot",
+      "Spring",
+      "Java"
     ]
   },
-  "6": {
-    "cluster_id": 6,
-    "label": "Công nghệ DevOps",
-    "label_en": "DevOps Technologies",
-    "description": "Cụm công nghệ này bao gồm các công cụ và kỹ thuật chủ yếu được sử dụng trong lĩnh vực DevOps, tập trung vào việc giám sát, quản lý và phát triển ứng dụng.",
-    "domain": "DevOps/Cloud",
+  "18": {
+    "cluster_id": 18,
+    "label": "Công nghệ AI và Phân tích",
+    "label_en": "AI and Analytics",
+    "description": "Cụm này tập trung vào các công nghệ liên quan đến trí tuệ nhân tạo và phân tích dữ liệu, với các vai trò công việc chủ yếu trong lĩnh vực phát triển phần mềm và phân tích nghiệp vụ.",
+    "domain": "AI/ML",
     "confidence": 0.85,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
-    "member_count": 4,
+    "member_count": 3,
     "sample_techs": [
-      "DDoS",
-      "Bitbucket",
-      "Kibana",
-      "InfluxDB"
+      "Claude",
+      "ChatGPT",
+      "Cursor"
     ]
   },
-  "7": {
-    "cluster_id": 7,
-    "label": "Phân Tích Dữ Liệu",
-    "label_en": "Data Analysis",
-    "description": "Cụm công nghệ này bao gồm các công cụ và thư viện phổ biến trong lĩnh vực phân tích dữ liệu và học máy, phục vụ cho các vai trò liên quan đến khoa học dữ liệu.",
+  "19": {
+    "cluster_id": 19,
+    "label": "Công nghệ AI và Cloud",
+    "label_en": "AI and Cloud Technologies",
+    "description": "Cụm công nghệ này bao gồm các công nghệ liên quan đến trí tuệ nhân tạo, phát triển ứng dụng web và điện toán đám mây, phục vụ cho nhiều vai trò trong lĩnh vực công nghệ thông tin.",
     "domain": "AI/ML",
-    "confidence": 0.9,
+    "confidence": 0.85,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
     "member_count": 9,
     "sample_techs": [
-      "Matplotlib",
-      "RPA",
-      "Presto",
-      "Ruby",
-      "Pinecone",
-      "Qdrant",
-      "AutoML",
-      "NumPy",
-      "Pandas"
+      "SASS",
+      "Private Cloud",
+      "C#",
+      "Jest",
+      "GDPR",
+      "Databricks",
+      "Trí tuệ nhân tạo",
+      "AI agent",
+      "jQuery"
     ]
   },
-  "8": {
-    "cluster_id": 8,
-    "label": "Công Nghệ Nhúng và AI",
-    "label_en": "Embedded and AI Technologies",
-    "description": "Cụm này bao gồm các công nghệ liên quan đến lập trình nhúng và trí tuệ nhân tạo, với sự tập trung vào các ứng dụng trong lĩnh vực máy học và xử lý hình ảnh.",
-    "domain": "AI/ML",
-    "confidence": 0.85,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 4,
-    "sample_techs": [
-      "OCR",
-      "Symfony",
-      "Qualcomm",
-      "Dart"
-    ]
-  },
-  "9": {
-    "cluster_id": 9,
-    "label": "Phát triển phần mềm",
-    "label_en": "Software Development",
-    "description": "Cụm công nghệ này chủ yếu liên quan đến phát triển phần mềm, đặc biệt là các ứng dụng desktop và backend sử dụng các ngôn ngữ lập trình như C++, C#, và Perl.",
-    "domain": "Other",
+  "20": {
+    "cluster_id": 20,
+    "label": "Công nghệ Phát triển Web",
+    "label_en": "Web Development",
+    "description": "Cụm công nghệ này bao gồm các công nghệ và công cụ phổ biến trong phát triển web, từ frontend đến backend, cùng với các giải pháp tự động hóa và bảo mật.",
+    "domain": "Web Backend",
     "confidence": 0.85,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
     "member_count": 5,
     "sample_techs": [
-      "MSSQL",
-      "Springboot",
-      "Perl",
-      "C#",
-      "C++"
+      "Zapier",
+      "AngularJS",
+      "HTTPS",
+      "DWH",
+      "Rust"
     ]
   },
-  "10": {
-    "cluster_id": 10,
-    "label": "Công nghệ Đám Mây và AI",
-    "label_en": "Cloud and AI Technologies",
-    "description": "Cụm công nghệ này tập trung vào các giải pháp đám mây, dịch vụ vi mô và các mô hình AI hiện đại, phục vụ cho phát triển phần mềm và phân tích dữ liệu.",
-    "domain": "AI/ML",
+  "21": {
+    "cluster_id": 21,
+    "label": "Công nghệ Web Backend",
+    "label_en": "Web Backend",
+    "description": "Cụm công nghệ này tập trung vào phát triển backend cho ứng dụng web, bao gồm các công nghệ phổ biến như Laravel, Postman, Redux, JSON và GraphQL.",
+    "domain": "Web Backend",
     "confidence": 0.9,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
-    "member_count": 9,
+    "member_count": 5,
     "sample_techs": [
-      "public cloud",
-      "Elasticsearch",
-      "microservices",
-      "DeepSeek",
-      "pgvector",
-      "chatbot",
-      "foundation models",
-      "Cursor",
-      "Looker"
+      "Laravel",
+      "Postman",
+      "Redux",
+      "JSON",
+      "GraphQL"
     ]
   },
-  "11": {
-    "cluster_id": 11,
-    "label": "Quản lý trạng thái ứng dụng",
-    "label_en": "State Management",
-    "description": "Cụm công nghệ này tập trung vào các thư viện quản lý trạng thái cho ứng dụng web và di động, chủ yếu là Redux và MobX.",
+  "22": {
+    "cluster_id": 22,
+    "label": "Phát triển Web và AI",
+    "label_en": "Web Development and AI",
+    "description": "Cụm công nghệ này tập trung vào phát triển ứng dụng web và tích hợp trí tuệ nhân tạo, bao gồm các công nghệ frontend và backend phổ biến.",
     "domain": "Web Frontend",
     "confidence": 0.9,
     "is_coherent": true,
     "coherence_reason": "",
     "outliers": [],
-    "member_count": 2,
-    "sample_techs": [
-      "Redux",
-      "MobX"
-    ]
-  },
-  "12": {
-    "cluster_id": 12,
-    "label": "Công nghệ Đám mây và Phân tích Dữ liệu",
-    "label_en": "Cloud and Data Analysis Technologies",
-    "description": "Cụm công nghệ này bao gồm các công nghệ liên quan đến đám mây, phát triển ứng dụng và phân tích dữ liệu, phục vụ cho các vai trò phát triển phần mềm và phân tích dữ liệu.",
-    "domain": "DevOps/Cloud",
-    "confidence": 0.85,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 6,
-    "sample_techs": [
-      "Hybrid Cloud",
-      "Helm",
-      "TypeScript",
-      "DWH",
-      "SCSS",
-      "ETL"
-    ]
-  },
-  "13": {
-    "cluster_id": 13,
-    "label": "Công nghệ AI và Phát triển Frontend",
-    "label_en": "AI and Frontend Development",
-    "description": "Cụm công nghệ này tập trung vào các công nghệ liên quan đến trí tuệ nhân tạo và phát triển giao diện người dùng, bao gồm cả các công cụ thiết kế và lập trình.",
-    "domain": "AI/ML",
-    "confidence": 0.85,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 9,
-    "sample_techs": [
-      "Figma",
-      "Power Automate",
-      "Golang",
-      "Generative AI",
-      "Agentic AI",
-      "AI agent",
-      "Ant Design",
-      "GPU",
-      "Genesys"
-    ]
-  },
-  "14": {
-    "cluster_id": 14,
-    "label": "Công nghệ DevOps",
-    "label_en": "DevOps Technologies",
-    "description": "Cụm công nghệ này bao gồm các công cụ và nền tảng phổ biến trong lĩnh vực DevOps, hỗ trợ cho việc phát triển và vận hành hệ thống.",
-    "domain": "DevOps/Cloud",
-    "confidence": 0.9,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 6,
-    "sample_techs": [
-      "OpenCV",
-      "Chef",
-      "Tomcat",
-      "MariaDB",
-      "Claude Code",
-      "Salesforce"
-    ]
-  },
-  "15": {
-    "cluster_id": 15,
-    "label": "Phát triển Mobile",
-    "label_en": "Mobile Development",
-    "description": "Cụm công nghệ này tập trung vào phát triển ứng dụng di động, chủ yếu là Swift và Talend, phục vụ cho các vai trò liên quan đến mobile developer và cloud engineer.",
-    "domain": "Mobile",
-    "confidence": 0.9,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 2,
-    "sample_techs": [
-      "Swift",
-      "Talend"
-    ]
-  },
-  "16": {
-    "cluster_id": 16,
-    "label": "Công nghệ phát triển phần mềm",
-    "label_en": "Software Development Technologies",
-    "description": "Cụm này bao gồm các công nghệ và công cụ phổ biến trong phát triển phần mềm, đặc biệt là cho backend và kiểm thử.",
-    "domain": "Web Backend",
-    "confidence": 0.85,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 5,
-    "sample_techs": [
-      "REST",
-      "Github",
-      "JUnit",
-      "GitLab",
-      "Rust"
-    ]
-  },
-  "17": {
-    "cluster_id": 17,
-    "label": "Công nghệ Phát triển Web và AI",
-    "label_en": "Web Development and AI",
-    "description": "Cụm công nghệ này bao gồm các công nghệ phát triển web như Node.js, Vue.js và Odoo, cùng với các công nghệ AI như BERT, tạo thành một nhóm đa dạng nhưng liên quan đến phát triển phần mềm và trí tuệ nhân tạo.",
-    "domain": "Web Backend",
-    "confidence": 0.85,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
     "member_count": 8,
     "sample_techs": [
-      "Node.js",
-      "BERT",
-      "Odoo",
-      "Appium",
-      "Sora",
-      "Vue.js",
-      "Serverless",
-      "Zustand"
-    ]
-  },
-  "18": {
-    "cluster_id": 18,
-    "label": "Công nghệ Fullstack",
-    "label_en": "Fullstack Technologies",
-    "description": "Cụm công nghệ này bao gồm các công nghệ phổ biến cho phát triển ứng dụng web toàn diện, từ frontend đến backend.",
-    "domain": "Web Fullstack",
-    "confidence": 0.9,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 9,
-    "sample_techs": [
-      "JSON",
-      "NodeJS",
-      "SASS",
-      "AngularJS",
-      "Express",
-      "eSIM",
-      "Airflow",
-      "Next.js",
-      "FAISS"
-    ]
-  },
-  "19": {
-    "cluster_id": 19,
-    "label": "Công nghệ Dữ liệu và Phân tích",
-    "label_en": "Data and Analytics Technologies",
-    "description": "Cụm công nghệ này bao gồm các công cụ và nền tảng chủ yếu phục vụ cho việc xử lý, phân tích và quản lý dữ liệu trong môi trường phát triển phần mềm và hạ tầng đám mây.",
-    "domain": "Data Engineering",
-    "confidence": 0.9,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 7,
-    "sample_techs": [
-      "jQuery",
-      "Apache Kafka",
-      "GDPR",
-      "Metabase",
-      "Cassandra",
-      "K8s",
-      "Google Analytics"
-    ]
-  },
-  "20": {
-    "cluster_id": 20,
-    "label": "Công nghệ Tự động hóa",
-    "label_en": "Automation Technologies",
-    "description": "Cụm công nghệ này bao gồm các công cụ và giao thức hỗ trợ tự động hóa quy trình và giao tiếp trong phát triển phần mềm.",
-    "domain": "AI/ML",
-    "confidence": 0.8,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 4,
-    "sample_techs": [
-      "n8n",
-      "Hive",
-      "WebSocket",
-      "DHCP"
-    ]
-  },
-  "21": {
-    "cluster_id": 21,
-    "label": "Hệ thống Quản lý Doanh nghiệp",
-    "label_en": "Enterprise Management Systems",
-    "description": "Cụm công nghệ này chủ yếu tập trung vào các hệ thống quản lý doanh nghiệp như CRM và ERP, cùng với các công cụ hỗ trợ phát triển phần mềm và phân tích dữ liệu.",
-    "domain": "DevOps/Cloud",
-    "confidence": 0.85,
-    "is_coherent": true,
-    "coherence_reason": "",
-    "outliers": [],
-    "member_count": 6,
-    "sample_techs": [
+      "Figma",
+      "học máy",
+      "TypeScript",
       "CRM",
-      "ERP",
-      "Gitlab CI",
-      "OLAP",
-      "SAP ERP",
-      "Oracle ERP"
+      "IT",
+      "microservices",
+      "ReactJS",
+      "NodeJS"
     ]
   }
 }

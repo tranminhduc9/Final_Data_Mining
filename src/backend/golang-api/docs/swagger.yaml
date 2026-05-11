@@ -1168,6 +1168,11 @@ paths:
         in: query
         name: location
         type: string
+      - description: Minimum salary in triệu VND (e.g. 15). Filters Job nodes by upper
+          salary bound. No effect when location filter is active.
+        in: query
+        name: min_salary
+        type: number
       produces:
       - application/json
       responses:

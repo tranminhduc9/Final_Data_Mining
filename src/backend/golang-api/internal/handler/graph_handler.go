@@ -25,9 +25,10 @@ func (h *GraphHandler) Index(c *gin.Context) {
 // @Summary      Explore knowledge graph starting from keyword nodes
 // @Tags         graph
 // @Produce      json
-// @Param        keywords  query  []string  true   "Keywords (Technology or Skill names)"  collectionFormat(multi)
-// @Param        depth     query  int       false  "Traversal depth: 1 or 2 (default 1). Ignored when location is set."
-// @Param        location  query  string    false  "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword."
+// @Param        keywords    query  []string  true   "Keywords (Technology or Skill names)"  collectionFormat(multi)
+// @Param        depth       query  int       false  "Traversal depth: 1 or 2 (default 1). Ignored when location is set."
+// @Param        location    query  string    false  "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword."
+// @Param        min_salary  query  number    false  "Minimum salary in triệu VND (e.g. 15). Filters Job nodes by upper salary bound. No effect when location filter is active."
 // @Success      200 {object} dto.GraphExploreResponse
 // @Failure      400 {object} dto.ErrorResponse
 // @Failure      503 {object} dto.ErrorResponse
@@ -49,13 +50,23 @@ func (h *GraphHandler) Explore(c *gin.Context) {
 		return
 	}
 
+	minSalary := 0.0
+	if raw := c.Query("min_salary"); raw != "" {
+		v, err := strconv.ParseFloat(raw, 64)
+		if err != nil || v < 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "min_salary must be a non-negative number"})
+			return
+		}
+		minSalary = v
+	}
+
 	location := strings.TrimSpace(c.Query("location"))
 	if location != "" {
 		if len(keywords) != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "exactly one keyword is required when location filter is used"})
 			return
 		}
-		result, err := h.graphService.ExploreByLocation(c.Request.Context(), keywords[0], location)
+		result, err := h.graphService.ExploreByLocation(c.Request.Context(), keywords[0], location, minSalary)
 		if err != nil {
 			c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to explore graph: " + err.Error()})
 			return
@@ -71,7 +82,7 @@ func (h *GraphHandler) Explore(c *gin.Context) {
 		return
 	}
 
-	result, err := h.graphService.Explore(c.Request.Context(), keywords, depth)
+	result, err := h.graphService.Explore(c.Request.Context(), keywords, depth, minSalary)
 	if err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to explore graph: " + err.Error()})
 		return

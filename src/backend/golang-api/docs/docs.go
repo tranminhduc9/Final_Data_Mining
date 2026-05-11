@@ -1075,6 +1075,12 @@ const docTemplate = `{
                         "description": "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword.",
                         "name": "location",
                         "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Minimum salary in triệu VND (e.g. 15). Filters Job nodes by upper salary bound. No effect when location filter is active.",
+                        "name": "min_salary",
+                        "in": "query"
                     }
                 ],
                 "responses": {

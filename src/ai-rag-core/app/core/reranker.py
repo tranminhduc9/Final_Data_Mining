@@ -1,13 +1,14 @@
 from functools import lru_cache
-
-from sentence_transformers import CrossEncoder
+from typing import Any
 
 from app.config import get_settings
 
 
 @lru_cache(maxsize=1)
-def get_reranker() -> CrossEncoder:
+def get_reranker() -> Any:
     """Load CrossEncoder một lần duy nhất, cache lại cho các lần gọi sau."""
+    from sentence_transformers import CrossEncoder
+
     settings = get_settings()
     return CrossEncoder(settings.reranker_model)
 

@@ -16,9 +16,6 @@ import re
 from functools import lru_cache
 from typing import List
 
-import torch
-from transformers import AutoModelForTokenClassification, AutoTokenizer, pipeline as hf_pipeline
-
 # ==========================================
 # TECH DICTIONARIES
 # ==========================================
@@ -285,6 +282,9 @@ NER_MODEL_NAME = "NlpHust/ner-vietnamese-electra-base"
 @lru_cache(maxsize=1)
 def get_ner_pipeline():
     """Load NER model một lần, cache lại. Dùng GPU nếu có."""
+    import torch
+    from transformers import AutoModelForTokenClassification, AutoTokenizer, pipeline as hf_pipeline
+
     tokenizer = AutoTokenizer.from_pretrained(NER_MODEL_NAME)
     model = AutoModelForTokenClassification.from_pretrained(NER_MODEL_NAME)
     return hf_pipeline(

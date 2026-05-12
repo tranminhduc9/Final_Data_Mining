@@ -40,6 +40,8 @@ class Settings(BaseSettings):
     reranker_model: str = "BAAI/bge-reranker-v2-m3"
     llm_model: str = "gpt-4o-mini"
     embedding_dim: int = 768
+    model_warmup: str = "blocking"  # "none" | "background" | "blocking"
+    warmup_ner_model: bool = True
 
     # Neo4j vector index name
     neo4j_vector_index: str = "article_embedding_index"

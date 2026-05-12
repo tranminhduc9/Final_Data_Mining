@@ -17,6 +17,24 @@ if str(UTILS_DIR) not in sys.path:
 
 from src.database.utils import database_connection as db
 from src.database.utils import schema_define as schema
+from dataclasses import dataclass
+
+@dataclass
+class PatchedJobNode:
+    title: str
+    description: str = ""
+    requirement: str = ""
+    benefit: str = ""
+    salary: str = ""
+    due_date: __import__("datetime").datetime = None
+    source_url: str = ""
+    salary_min: int = 0
+    salary_max: int = 0
+    level: str = "mid"
+    company_name: str = ""
+    posted_date: __import__("datetime").datetime = None
+
+db.JobNode = PatchedJobNode
 
 
 class FakeResult:

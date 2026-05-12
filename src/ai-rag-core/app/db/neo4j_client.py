@@ -1,12 +1,15 @@
-from neo4j import AsyncGraphDatabase, AsyncDriver
+from typing import Any
+
 from app.config import get_settings
 
-_driver: AsyncDriver | None = None
+_driver: Any | None = None
 
 
-async def get_driver() -> AsyncDriver:
+async def get_driver() -> Any:
     global _driver
     if _driver is None:
+        from neo4j import AsyncGraphDatabase
+
         settings = get_settings()
         uri = settings.active_neo4j_uri
         # AuraDB trên macOS cần bypass SSL verify

@@ -95,3 +95,9 @@ TechPulse-VN/
 | 6 | QC / Tester | `tests/` | Test Functional, API, Data Quality, Performance |
 
 ---
+
+## Contributors
+
+<a href="https://github.com/tranminhduc9/Final_Data_Mining/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tranminhduc9/Final_Data_Mining" />
+</a>

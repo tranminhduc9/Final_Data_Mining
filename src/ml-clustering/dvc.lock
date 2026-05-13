@@ -18,21 +18,21 @@ stages:
     params:
       params.yaml:
         snapshot:
-          tag: '2026-05-11'
+          tag: '2026-05-12'
           min_tech_degree: 1
     outs:
-    - path: data/raw/snapshot_2026-05-11
+    - path: data/raw/snapshot_2026-05-12
       hash: md5
-      md5: 124d416268d25ab6cda31b3b72f2a932.dir
-      size: 3183591
+      md5: 6bf349e63b50bd71e1ab158813ed93fd.dir
+      size: 3174078
       nfiles: 12
   features:
     cmd: python -m pipelines.stage_02_features --params params.yaml
     deps:
-    - path: data/raw/snapshot_2026-05-11
+    - path: data/raw/snapshot_2026-05-12
       hash: md5
-      md5: 124d416268d25ab6cda31b3b72f2a932.dir
-      size: 3183591
+      md5: 6bf349e63b50bd71e1ab158813ed93fd.dir
+      size: 3174078
       nfiles: 12
     - path: pipelines/stage_02_features.py
       hash: md5
@@ -40,8 +40,8 @@ stages:
       size: 8696
     - path: src/features
       hash: md5
-      md5: b3e44234188c882fae706333c2047a7a.dir
-      size: 94209
+      md5: 9c62e706d45d534e9d04b7c4ffeaea0c.dir
+      size: 94885
       nfiles: 14
     params:
       params.yaml:
@@ -85,6 +85,10 @@ stages:
             - Rhino
             - FCC
             - Mô Hình Ngôn Ngữ
+            - Cinema4D
+            - Substance 3D
+            - FCC
+            - Mô Hình Ngôn Ngữ
             - Revit
             - 3ds Max
             - 3DS Max
@@ -125,11 +129,136 @@ stages:
             method: umap
             n_components: 32
         snapshot:
-          tag: '2026-05-11'
+          tag: '2026-05-12'
           min_tech_degree: 1
     outs:
-    - path: data/features/2026-05-11
+    - path: data/features/2026-05-12
       hash: md5
-      md5: e2210c1d35e9002766037b3c288321a7.dir
-      size: 48434
+      md5: 29660d85fd526590b53009941ff813ac.dir
+      size: 55059
       nfiles: 3
+  train:
+    cmd: python -m pipelines.stage_03_train --params params.yaml
+    deps:
+    - path: data/features/2026-05-12
+      hash: md5
+      md5: 29660d85fd526590b53009941ff813ac.dir
+      size: 55059
+      nfiles: 3
+    - path: pipelines/stage_03_train.py
+      hash: md5
+      md5: 754e1200a0731786d3f46c04288260b1
+      size: 10021
+    - path: src/clustering
+      hash: md5
+      md5: bad69dac60f4ee3c639e6b6ba9fc8317.dir
+      size: 37252
+      nfiles: 8
+    - path: src/tracking/mlflow_logger.py
+      hash: md5
+      md5: 28e40a3aa2fd8d1c9c67e2515bb855d7
+      size: 7238
+    params:
+      params.yaml:
+        clustering:
+          algorithm: hdbscan
+          dbscan:
+            eps_grid:
+            - 0.5
+            - 1.0
+            - 1.5
+            - 2.0
+            - 2.5
+            - 3.0
+            - 4.0
+            min_samples_grid:
+            - 3
+            - 5
+            - 7
+            - 10
+            metric: euclidean
+          hdbscan:
+            min_cluster_size_grid:
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            min_samples_grid:
+            - 1
+            - 2
+            - 3
+            cluster_selection_method: leaf
+          kmeans:
+            n_clusters_grid:
+            - 20
+            - 24
+            - 28
+            - 32
+            - 36
+            n_init: 10
+            random_state: 42
+          near_cluster_threshold: 0.7
+          selection:
+            primary_metric: silhouette
+            require_min_clusters: 12
+            require_max_clusters: 28
+            require_max_noise_ratio: 0.6
+        mlflow:
+          experiment_name: tech_clustering_v1
+          tracking_uri: sqlite:///mlruns.db
+          registry_model_name: tech_clusterer
+        snapshot:
+          tag: '2026-05-12'
+          min_tech_degree: 1
+    outs:
+    - path: data/metrics/2026-05-12/best_metrics.json
+      hash: md5
+      md5: 249b63453710d3f41a093c47daed5e2d
+      size: 245
+    - path: data/models/2026-05-12
+      hash: md5
+      md5: e3a427a040f8f862ea0264909d4c34ce.dir
+      size: 91768
+      nfiles: 2
+  label:
+    cmd: python -m pipelines.stage_04_label --params params.yaml
+    deps:
+    - path: data/models/2026-05-12
+      hash: md5
+      md5: e3a427a040f8f862ea0264909d4c34ce.dir
+      size: 91768
+      nfiles: 2
+    - path: data/raw/snapshot_2026-05-12
+      hash: md5
+      md5: 6bf349e63b50bd71e1ab158813ed93fd.dir
+      size: 3174078
+      nfiles: 12
+    - path: pipelines/stage_04_label.py
+      hash: md5
+      md5: 31aa11fb459ec6454d7514f9adfa53d7
+      size: 6063
+    - path: src/labeling
+      hash: md5
+      md5: 8a84aea0cc41bf413a5426eab8528d30.dir
+      size: 44129
+      nfiles: 6
+    params:
+      params.yaml:
+        labeling:
+          provider: openai
+          openai_model: gpt-4o-mini
+          gemini_model: gemini-2.5-flash
+          max_members_in_prompt: 25
+          temperature: 0.2
+          cache_dir: data/labels/.llm_cache
+        snapshot:
+          tag: '2026-05-12'
+          min_tech_degree: 1
+    outs:
+    - path: data/labels/2026-05-12
+      hash: md5
+      md5: e3328adaa587c86613331a5383967923.dir
+      size: 16674
+      nfiles: 1

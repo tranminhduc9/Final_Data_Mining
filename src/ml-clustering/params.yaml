@@ -2,7 +2,7 @@
 # Đổi giá trị ở đây + `dvc repro` sẽ chạy lại đúng các stage cần thiết.
 
 snapshot:
-  tag: "2026-05-11"          # nhãn snapshot, gắn vào path data/<tag>/
+  tag: "2026-05-12"          # nhãn snapshot, gắn vào path data/<tag>/
   min_tech_degree: 1         # lọc Technology có degree < ngưỡng (đã thoả với inspect)
 
 features:

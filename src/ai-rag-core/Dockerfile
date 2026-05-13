@@ -18,8 +18,11 @@ COPY . .
 # Download models lúc build (tránh download lại mỗi lần start)
 RUN python -c "\
 from sentence_transformers import SentenceTransformer, CrossEncoder; \
+from transformers import AutoTokenizer, AutoModelForTokenClassification; \
 SentenceTransformer('intfloat/multilingual-e5-base'); \
-CrossEncoder('BAAI/bge-reranker-v2-m3')"
+CrossEncoder('BAAI/bge-reranker-v2-m3'); \
+AutoTokenizer.from_pretrained('NlpHust/ner-vietnamese-electra-base'); \
+AutoModelForTokenClassification.from_pretrained('NlpHust/ner-vietnamese-electra-base')"
 
 EXPOSE 8000
 

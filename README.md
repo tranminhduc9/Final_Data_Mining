@@ -1,3 +1,5 @@
+![banner](banner.svg)
+
 # 🚀 TechPulse VN
 
 **Nền tảng Intelligence Phân tích Xu hướng Công nghệ & Thị trường Tuyển dụng IT**

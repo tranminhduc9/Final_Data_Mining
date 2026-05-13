@@ -81,6 +81,9 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 	aiClient := service.NewAIClient(cfg.PythonAIBaseURL)
 	chatHandler := handler.NewChatHandler(aiClient, chatSessionRepo)
 
+	mlClusteringClient := service.NewMLClusteringClient(cfg.PythonMLClusteringBaseURL)
+	clusteringHandler := handler.NewClusteringHandler(mlClusteringClient)
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.GET("/health", func(c *gin.Context) {
@@ -133,8 +136,18 @@ func New(cfg *config.Config, db *database.Postgres, neo4jDB *database.Neo4jDB) *
 		graph.Use(middleware.FeatureEnabled(settingsService, "feature_graph"))
 		{
 			graph.GET("/explore", graphHandler.Explore)
+			graph.GET("/explore_by_location", graphHandler.ExploreByLocation)
 			graph.GET("/road_analysis", graphHandler.RoadAnalysis)
 			graph.GET("/filter", graphHandler.Filter)
+		}
+
+		clustering := api.Group("/clustering")
+		clustering.Use(middleware.MaintenanceCheck(settingsService))
+		{
+			clustering.GET("/clusters", clusteringHandler.ListClusters)
+			clustering.GET("/clusters/:id", clusteringHandler.GetCluster)
+			clustering.GET("/tech/:name/cluster", clusteringHandler.GetTechCluster)
+			clustering.POST("/predict/batch", clusteringHandler.PredictBatch)
 		}
 
 		auth := api.Group("/auth")

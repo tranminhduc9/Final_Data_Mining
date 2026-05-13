@@ -1,5 +1,15 @@
 ![banner](banner.png)
 
+<p align="center">
+  <a href="https://github.com/tranminhduc9/Final_Data_Mining/releases/latest"><img src="https://img.shields.io/github/v/release/tranminhduc9/Final_Data_Mining?label=latest%20release&color=blue" alt="Latest Release"></a>
+  <a href="https://github.com/tranminhduc9/Final_Data_Mining/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/tranminhduc9/Final_Data_Mining/release.yml?label=build" alt="Build Status"></a>
+  <a href="https://hub.docker.com/r/tranminhduc9/Final_Data_Mining"><img src="https://img.shields.io/docker/pulls/tranminhduc9/Final_Data_Mining?label=docker%20pulls" alt="Docker Pulls"></a>
+  <a href="https://hub.docker.com/r/tranminhduc9/Final_Data_Mining"><img src="https://img.shields.io/docker/image-size/tranminhduc9/Final_Data_Mining/latest?label=image%20size" alt="Docker Image Size"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
+  <a href="https://github.com/tranminhduc9/Final_Data_Mining/stargazers"><img src="https://img.shields.io/github/stars/tranminhduc9/Final_Data_Mining?style=flat" alt="GitHub Stars"></a>
+  <a href="https://github.com/tranminhduc9/Final_Data_Mining/graphs/contributors"><img src="https://img.shields.io/github/contributors/tranminhduc9/Final_Data_Mining" alt="GitHub Contributors"></a>
+</p>
+
 # 🚀 TechPulse VN
 
 **Nền tảng Intelligence Phân tích Xu hướng Công nghệ & Thị trường Tuyển dụng IT**

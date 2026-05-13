@@ -52,6 +52,7 @@ def main(
         build_job_tech_tfidf,
         compute_neighborhood_stats,
     )
+    from src.features.tech_aliases import canonicalize_technology_snapshot
 
     # 1. Params
     params_obj = load_params(params)
@@ -101,6 +102,25 @@ def main(
         logger.warning(
             "Data validation warning: {} more warning(s) omitted",
             len(validation_report.warnings) - 10,
+        )
+
+    canonicalized = canonicalize_technology_snapshot(
+        df_tech=df_tech,
+        df_edges_mentions=df_edges_mentions,
+        df_edges_company_uses_tech=df_edges_company_uses_tech,
+        df_edges_job_requires_tech=df_edges_job_requires_tech,
+        df_edges_tech_related=df_edges_tech_related,
+    )
+    df_tech = canonicalized.technologies
+    df_edges_mentions = canonicalized.edges_article_mentions_tech
+    df_edges_company_uses_tech = canonicalized.edges_company_uses_tech
+    df_edges_job_requires_tech = canonicalized.edges_job_requires_tech
+    df_edges_tech_related = canonicalized.edges_tech_related_tech
+    if canonicalized.n_merged:
+        logger.info(
+            "Canonicalized Technology aliases: merged {} duplicate/alias rows; {} techs remain",
+            canonicalized.n_merged,
+            len(df_tech),
         )
 
     # 2b. Noise filter — loại tech nodes không hợp lệ trước khi build features

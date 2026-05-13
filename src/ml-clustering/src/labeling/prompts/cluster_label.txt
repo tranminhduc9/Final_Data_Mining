@@ -4,8 +4,6 @@ Nhiệm vụ của bạn là đánh giá và đặt tên cho các cụm công ng
 CỤM #{cluster_id} ({n_members} thành viên)
 Top thành viên:
 {top_members}
-Vai trò/Job:
-{top_jobs}
 
 ---
 BƯỚC 1 — QUY TẮC ĐÁNH GIÁ SỰ ĐỒNG NHẤT (COHERENCE):
@@ -30,6 +28,6 @@ YÊU CẦU OUTPUT CHUẨN JSON:
   "label": "Tên tiếng Việt, tối đa 5 từ. Nếu false, điền 'Cụm Hỗn Hợp / Nhiễu'",
   "label_en": "Tên tiếng Anh. Nếu false, thêm hậu tố '(Mixed)'",
   "description": "Mô tả 1-2 câu. Nếu false, mô tả sự lộn xộn của cụm này",
-  "outliers": ["Danh sách các tech gây nhiễu, nếu có"],
+  "outliers": ["Chỉ liệt kê các tech gây nhiễu có xuất hiện trong Top thành viên, nếu có"],
   "confidence": <float 0.1 đến 1.0 đánh giá độ tự tin của cụm>
 }}

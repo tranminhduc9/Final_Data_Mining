@@ -71,3 +71,6 @@ Thumbs.db
 
 # Tài liệu nội bộ
 *.pdf
+
+# AWS EC2
+*.pem

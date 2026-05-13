@@ -14,7 +14,7 @@ Chạy:
 """
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 
 from app.schemas import (
     BatchPredictRequest,
@@ -90,12 +90,14 @@ def health():
 
 
 @app.get("/clusters", response_model=list[ClusterSummary])
-def list_clusters():
+def list_clusters(is_coherent: bool | None = Query(default=None)):
     """Danh sách tất cả cluster (bỏ noise cluster -1)."""
     store = get_store()
     result = []
     for cid, info in sorted(store.cluster_labels.items()):
         if cid == -1:
+            continue
+        if is_coherent is not None and info.get("is_coherent", True) != is_coherent:
             continue
         members = store.cluster_to_techs.get(cid, [])
         result.append(ClusterSummary(

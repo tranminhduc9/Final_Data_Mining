@@ -6,20 +6,6 @@
   <a href="https://github.com/tranminhduc9/Final_Data_Mining/graphs/contributors"><img src="https://img.shields.io/github/contributors/tranminhduc9/Final_Data_Mining" alt="GitHub Contributors"></a>
 </p>
 
-## Contributors
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/tranminhduc9">
-        <img src="https://github.com/tranminhduc9.png" width="80px;" alt="tranminhduc9"/><br/>
-        <sub><b>Trần Minh Đức</b></sub>
-      </a>
-    </td>
-    <!-- Thêm thành viên khác tương tự -->
-  </tr>
-</table>
-
 # 🚀 TechPulse VN
 
 **Nền tảng Intelligence Phân tích Xu hướng Công nghệ & Thị trường Tuyển dụng IT**

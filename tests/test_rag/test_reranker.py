@@ -6,8 +6,8 @@ from app.core.reranker import rerank # type: ignore # noqa
 def test_rerank_basic(monkeypatch):
     """Kiểm tra logic sắp xếp của rerank."""
     mock_model = MagicMock()
-    # Mock scores: article 2 cao nhất, sau đó đến 1
-    mock_model.predict.return_value = np.array([0.1, 0.9])
+    # Mock scores: cả 2 đều trên ngưỡng 0.4, article 2 cao nhất
+    mock_model.predict.return_value = np.array([0.5, 0.9])
     monkeypatch.setattr("app.core.reranker.get_reranker", lambda: mock_model)
     
     query = "Học Python"

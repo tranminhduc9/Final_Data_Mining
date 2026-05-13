@@ -2,7 +2,7 @@
 # Đổi giá trị ở đây + `dvc repro` sẽ chạy lại đúng các stage cần thiết.
 
 snapshot:
-  tag: "2026-05-12"          # nhãn snapshot, gắn vào path data/<tag>/
+  tag: "2026-05-13"          # nhãn snapshot, gắn vào path data/<tag>/
   min_tech_degree: 1         # lọc Technology có degree < ngưỡng (đã thoả với inspect)
 
 features:
@@ -68,8 +68,25 @@ features:
       - "Confluence"
       - "JIRA"
       - "ServiceNow"
+      # Process / generic terms — quá rộng, không phải technology cụ thể
+      - "Agile"
+      - "Scrum"
+      - "IT"
+      - "vibe coding"
       # Phần mềm chỉnh sửa video (đã có cluster riêng nếu muốn giữ, xoá nếu không)
       - "Capcut"
+      # Design / marketing analytics tools — loại khỏi clustering tech stack chính
+      - "Figma"
+      - "Adobe Photoshop"
+      - "Adobe Illustrator"
+      - "Adobe Premiere"
+      - "After Effects"
+      - "InDesign"
+      - "Blender"
+      - "SketchUp"
+      - "Mixpanel"
+      - "Amplitude"
+      - "Google Analytics"
     heuristic_patterns:        # regex pattern (case-insensitive) — match → loại
       - "^[a-z]{1,3}$"         # từ viết thường 1-3 ký tự (không phải Go, C, R)
       - "^(an|theo|trong|bang|quan|ly|co|voi|cac|khi|tai|lam|va|hoac|duoc)$"  # tiếng Việt không dấu

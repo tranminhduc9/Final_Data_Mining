@@ -18,7 +18,7 @@ func NewGraphService(graphRepo *neo4jrepo.GraphRepository) *GraphService {
 	return &GraphService{graphRepo: graphRepo}
 }
 
-func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int, minSalary float64) (*domain.GraphResult, error) {
+func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int) (*domain.GraphResult, error) {
 	if s.graphRepo == nil {
 		return nil, fmt.Errorf("neo4j unavailable")
 	}
@@ -105,7 +105,7 @@ func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int
 		result.Edges = append(result.Edges, *e)
 	}
 
-	filterBySalary(result, minSalary)
+	enrichNodeProps(result)
 	return result, nil
 }
 
@@ -149,7 +149,7 @@ func (s *GraphService) RoadAnalysis(ctx context.Context, keyword1, keyword2 stri
 	}, nil
 }
 
-func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location string, minSalary float64) (*domain.GraphResult, error) {
+func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location string) (*domain.GraphResult, error) {
 	if s.graphRepo == nil {
 		return nil, fmt.Errorf("neo4j unavailable")
 	}
@@ -208,20 +208,20 @@ func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location 
 	for _, e := range edgeMap {
 		result.Edges = append(result.Edges, *e)
 	}
-	filterBySalary(result, minSalary)
+	enrichNodeProps(result)
 	return result, nil
 }
 
-// parseSalaryMax extracts the upper bound from Vietnamese salary strings.
-// "Từ X triệu" → X  |  "X-Y triệu" → Y
-func parseSalaryMax(s string) (float64, bool) {
+// parseSalaryMin extracts the lower bound from Vietnamese salary strings.
+// "Từ X triệu" → X  |  "X-Y triệu" → X
+func parseSalaryMin(s string) (float64, bool) {
 	if idx := strings.Index(s, "triệu"); idx >= 0 {
 		s = strings.TrimSpace(s[:idx])
 	}
 	s = strings.TrimPrefix(strings.TrimPrefix(s, "Từ "), "từ ")
 	s = strings.TrimSpace(s)
-	if idx := strings.LastIndex(s, "-"); idx > 0 {
-		if v, err := strconv.ParseFloat(strings.TrimSpace(s[idx+1:]), 64); err == nil {
+	if idx := strings.Index(s, "-"); idx > 0 {
+		if v, err := strconv.ParseFloat(strings.TrimSpace(s[:idx]), 64); err == nil {
 			return v, true
 		}
 	}
@@ -231,38 +231,42 @@ func parseSalaryMax(s string) (float64, bool) {
 	return 0, false
 }
 
-func filterBySalary(result *domain.GraphResult, minSalary float64) {
-	if minSalary <= 0 {
-		return
-	}
-	removed := map[string]bool{}
-	kept := result.Nodes[:0]
+// enrichNodeProps adds computed fields to nodes for client-side filtering:
+// - Job nodes: min_salary (float, lower bound from salary string) and location (from connected Company via HIRES_FOR)
+func enrichNodeProps(result *domain.GraphResult) {
+	companyLoc := map[string]string{}
 	for _, node := range result.Nodes {
-		isJob := false
 		for _, l := range node.Labels {
-			if l == "Job" {
-				isJob = true
+			if l == "Company" {
+				if loc, _ := node.Properties["location"].(string); loc != "" {
+					companyLoc[node.ID] = loc
+				}
 				break
 			}
 		}
-		if isJob {
-			sal, _ := node.Properties["salary"].(string)
-			max, ok := parseSalaryMax(sal)
-			if !ok || max < minSalary {
-				removed[node.ID] = true
-				continue
+	}
+	jobCompany := map[string]string{}
+	for _, e := range result.Edges {
+		if e.Type == "HIRES_FOR" {
+			jobCompany[e.Source] = e.Target
+		}
+	}
+	for i, node := range result.Nodes {
+		for _, l := range node.Labels {
+			if l == "Job" {
+				sal, _ := node.Properties["salary"].(string)
+				if v, ok := parseSalaryMin(sal); ok {
+					result.Nodes[i].Properties["min_salary"] = v
+				}
+				if cid, ok := jobCompany[node.ID]; ok {
+					if loc, ok := companyLoc[cid]; ok {
+						result.Nodes[i].Properties["location"] = loc
+					}
+				}
+				break
 			}
 		}
-		kept = append(kept, node)
 	}
-	result.Nodes = kept
-	filteredEdges := result.Edges[:0]
-	for _, e := range result.Edges {
-		if !removed[e.Source] && !removed[e.Target] {
-			filteredEdges = append(filteredEdges, e)
-		}
-	}
-	result.Edges = filteredEdges
 }
 
 // sanitizeNodeProps removes heavy fields (e.g. Article.content) to keep the response lean.

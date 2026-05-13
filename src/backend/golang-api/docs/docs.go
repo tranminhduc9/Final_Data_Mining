@@ -1045,6 +1045,7 @@ const docTemplate = `{
         },
         "/graph/explore": {
             "get": {
+                "description": "Returns nodes and edges up to the given depth. Job nodes include computed fields: min_salary (float) and location (from connected Company). Company nodes include location.",
                 "produces": [
                     "application/json"
                 ],
@@ -1066,21 +1067,57 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Traversal depth: 1 or 2 (default 1). Ignored when location is set.",
+                        "description": "Traversal depth: 1 or 2 (default 1)",
                         "name": "depth",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GraphExploreResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/graph/explore_by_location": {
+            "get": {
+                "description": "Returns Technology + Company nodes for companies matching the given location that use the keyword technology. Graph pattern: Technology ←[USES]- Company(location) -[USES]→ OtherTechnology.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "graph"
+                ],
+                "summary": "Explore graph filtered by company location",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Technology or Skill name",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
-                        "description": "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword.",
+                        "description": "Company location filter (partial, case-insensitive)",
                         "name": "location",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "description": "Minimum salary in triệu VND (e.g. 15). Filters Job nodes by upper salary bound. No effect when location filter is active.",
-                        "name": "min_salary",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {

@@ -1149,6 +1149,9 @@ paths:
       - compare
   /graph/explore:
     get:
+      description: 'Returns nodes and edges up to the given depth. Job nodes include
+        computed fields: min_salary (float) and location (from connected Company).
+        Company nodes include location.'
       parameters:
       - collectionFormat: multi
         description: Keywords (Technology or Skill names)
@@ -1158,21 +1161,10 @@ paths:
         name: keywords
         required: true
         type: array
-      - description: 'Traversal depth: 1 or 2 (default 1). Ignored when location is
-          set.'
+      - description: 'Traversal depth: 1 or 2 (default 1)'
         in: query
         name: depth
         type: integer
-      - description: Filter by company location (partial, case-insensitive). When
-          set, requires exactly one keyword.
-        in: query
-        name: location
-        type: string
-      - description: Minimum salary in triệu VND (e.g. 15). Filters Job nodes by upper
-          salary bound. No effect when location filter is active.
-        in: query
-        name: min_salary
-        type: number
       produces:
       - application/json
       responses:
@@ -1189,6 +1181,40 @@ paths:
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       summary: Explore knowledge graph starting from keyword nodes
+      tags:
+      - graph
+  /graph/explore_by_location:
+    get:
+      description: 'Returns Technology + Company nodes for companies matching the
+        given location that use the keyword technology. Graph pattern: Technology
+        ←[USES]- Company(location) -[USES]→ OtherTechnology.'
+      parameters:
+      - description: Technology or Skill name
+        in: query
+        name: keyword
+        required: true
+        type: string
+      - description: Company location filter (partial, case-insensitive)
+        in: query
+        name: location
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GraphExploreResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Explore graph filtered by company location
       tags:
       - graph
   /graph/road_analysis:

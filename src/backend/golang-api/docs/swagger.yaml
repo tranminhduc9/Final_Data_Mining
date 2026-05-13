@@ -1,5 +1,104 @@
 basePath: /api/v1
 definitions:
+  domain.BatchPredictRequest:
+    properties:
+      tech_names:
+        example:
+        - Python
+        - NodeJS
+        - Rust
+        items:
+          type: string
+        type: array
+    required:
+    - tech_names
+    type: object
+  domain.BatchPredictResponse:
+    properties:
+      n_found:
+        example: 2
+        type: integer
+      n_not_found:
+        example: 1
+        type: integer
+      results:
+        items:
+          $ref: '#/definitions/domain.TechClusterResult'
+        type: array
+      snapshot_tag:
+        example: "2025-05-01"
+        type: string
+    type: object
+  domain.ClusterDetail:
+    properties:
+      cluster_id:
+        example: 0
+        type: integer
+      coherence_reason:
+        type: string
+        x-nullable: "true"
+      confidence:
+        example: 0.87
+        type: number
+      description:
+        example: Cluster chứa các công nghệ phía backend dùng Python.
+        type: string
+      domain:
+        example: Backend
+        type: string
+      is_coherent:
+        example: true
+        type: boolean
+      label:
+        example: Lập trình Backend Python
+        type: string
+      label_en:
+        example: Python Backend Programming
+        type: string
+      members:
+        example:
+        - Python
+        - Django
+        - FastAPI
+        - Flask
+        items:
+          type: string
+        type: array
+      n_members:
+        example: 42
+        type: integer
+      outliers:
+        example:
+        - jQuery
+        - WordPress
+        items:
+          type: string
+        type: array
+    type: object
+  domain.ClusterSummary:
+    properties:
+      cluster_id:
+        example: 0
+        type: integer
+      confidence:
+        example: 0.87
+        type: number
+      domain:
+        example: Backend
+        type: string
+      is_coherent:
+        example: true
+        type: boolean
+      label:
+        example: Lập trình Backend Python
+        type: string
+      label_en:
+        example: Python Backend Programming
+        type: string
+      n_members:
+        example: 42
+        type: integer
+    type: object
   domain.CompareMonthlyCount:
     properties:
       job_count:
@@ -137,6 +236,30 @@ definitions:
           $ref: '#/definitions/domain.GraphNode'
         type: array
     type: object
+  domain.TechClusterResult:
+    properties:
+      cluster_id:
+        type: integer
+        x-nullable: "true"
+      domain:
+        type: string
+        x-nullable: "true"
+      found:
+        example: true
+        type: boolean
+      label:
+        type: string
+        x-nullable: "true"
+      label_en:
+        type: string
+        x-nullable: "true"
+      tech_id:
+        type: string
+        x-nullable: "true"
+      tech_name:
+        example: Python
+        type: string
+    type: object
   dto.AlterUserRequest:
     properties:
       full_name:
@@ -171,6 +294,16 @@ definitions:
         type: string
       token_type:
         type: string
+    type: object
+  dto.BatchPredictResponseWrapper:
+    properties:
+      data:
+        $ref: '#/definitions/domain.BatchPredictResponse'
+    type: object
+  dto.ClusterDetailResponse:
+    properties:
+      data:
+        $ref: '#/definitions/domain.ClusterDetail'
     type: object
   dto.CompareSearchResponse:
     properties:
@@ -226,6 +359,13 @@ definitions:
     - password
     - role
     - status
+    type: object
+  dto.ListClustersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.ClusterSummary'
+        type: array
     type: object
   dto.ListUsersResponse:
     properties:
@@ -334,6 +474,11 @@ definitions:
         type: boolean
       maintenance_web:
         type: boolean
+    type: object
+  dto.TechClusterResponse:
+    properties:
+      data:
+        $ref: '#/definitions/domain.TechClusterResult'
     type: object
   dto.Top4Response:
     properties:
@@ -492,7 +637,7 @@ host: localhost:8080
 info:
   contact: {}
   description: Backend API for Final Data Mining project — radar, compare, graph,
-    auth, chat endpoints.
+    clustering, auth, chat endpoints.
   title: Final Data Mining API
   version: "1.0"
 paths:
@@ -1114,6 +1259,166 @@ paths:
       summary: Lấy danh sách session chat của user hiện tại
       tags:
       - chatbot
+  /clustering/clusters:
+    get:
+      description: |-
+        Trả về toàn bộ cluster đã được phân (noise cluster -1 bị loại). Mỗi item là `ClusterSummary` (không kèm member list — dùng `/clustering/clusters/{id}` để lấy chi tiết).
+
+        Query param `is_coherent` là tuỳ chọn:
+        - `true`  → chỉ trả cluster có nhãn coherent (đa số trường hợp dùng cho UI).
+        - `false` → chỉ trả cluster bị LLM đánh giá thiếu nhất quán (dùng cho admin/debug).
+        - bỏ qua → trả tất cả.
+
+        Upstream: GET /clusters trên ml-clustering (port 8001).
+      parameters:
+      - description: Filter theo cờ is_coherent (bỏ qua = trả tất cả)
+        in: query
+        name: is_coherent
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ListClustersResponse'
+        "400":
+          description: is_coherent không phải boolean
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "502":
+          description: Upstream trả status không hợp lệ
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: ml-clustering không reachable hoặc đang maintenance
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: List all clusters
+      tags:
+      - clustering
+  /clustering/clusters/{id}:
+    get:
+      description: |-
+        Trả về metadata đầy đủ của 1 cluster: label, domain, description (LLM-generated), coherence_reason, outliers, và toàn bộ danh sách tech members trong cluster.
+
+        Lưu ý: `id = -1` là noise cluster (không có metadata) — sẽ trả 404.
+
+        Upstream: GET /clusters/{id} trên ml-clustering (port 8001).
+      parameters:
+      - description: Cluster ID (số nguyên, >= 0)
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ClusterDetailResponse'
+        "400":
+          description: id không phải số nguyên
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Cluster id không tồn tại
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "502":
+          description: Upstream trả status không hợp lệ
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: ml-clustering không reachable hoặc đang maintenance
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get cluster detail by id
+      tags:
+      - clustering
+  /clustering/predict/batch:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Tra cluster cho nhiều tech name trong 1 request. Mỗi item trong `results` luôn có field `found` để client biết tech đó có trong snapshot hay không (không bao giờ trả 404 ở level batch — chỉ trả 4xx/5xx khi request invalid hoặc upstream lỗi).
+
+        Field `snapshot_tag` ở response chính là phiên bản snapshot ml-clustering — client có thể dùng làm cache key.
+
+        Upstream: POST /predict/batch trên ml-clustering (port 8001).
+      parameters:
+      - description: Danh sách tech names cần tra (không rỗng)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.BatchPredictRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BatchPredictResponseWrapper'
+        "400":
+          description: Body không hợp lệ hoặc tech_names rỗng
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "502":
+          description: Upstream trả status không hợp lệ
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: ml-clustering không reachable hoặc đang maintenance
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Batch lookup clusters for multiple tech names
+      tags:
+      - clustering
+  /clustering/tech/{name}/cluster:
+    get:
+      description: |-
+        Tra cứu cluster của 1 tech theo tên (case-insensitive).
+
+        Edge cases:
+        - Tech không có trong snapshot hiện tại → upstream trả 404 (gateway forward thành 404).
+        - Tech ở noise cluster (-1) → 200 với `cluster_id: -1` và `label: null`.
+        - Tên có ký tự đặc biệt (C++, C#, khoảng trắng) → tự động URL-encode khi forward sang upstream.
+
+        Upstream: GET /tech/{name}/cluster trên ml-clustering (port 8001).
+      parameters:
+      - description: 'Tên technology (case-insensitive, ví dụ: Python, C++, NodeJS)'
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TechClusterResponse'
+        "400":
+          description: name rỗng
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Tech name không có trong snapshot hiện tại
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "502":
+          description: Upstream trả status không hợp lệ
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: ml-clustering không reachable hoặc đang maintenance
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get the cluster a technology belongs to
+      tags:
+      - clustering
   /compare/search:
     get:
       parameters:

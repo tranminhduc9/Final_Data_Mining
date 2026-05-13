@@ -32,6 +32,24 @@ type RoadAnalysisResponse struct {
 	Data domain.RoadAnalysisResult `json:"data"`
 }
 
+// --- Clustering ---
+
+type ListClustersResponse struct {
+	Data []domain.ClusterSummary `json:"data"`
+}
+
+type ClusterDetailResponse struct {
+	Data domain.ClusterDetail `json:"data"`
+}
+
+type TechClusterResponse struct {
+	Data domain.TechClusterResult `json:"data"`
+}
+
+type BatchPredictResponseWrapper struct {
+	Data domain.BatchPredictResponse `json:"data"`
+}
+
 // --- Admin ---
 
 type CountResponse struct {

@@ -49,6 +49,16 @@
   /* Transitions */
   --t: 0.2s ease;
   --t-slow: 0.4s ease;
+
+  /* Admin Sidebar */
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 80px;
+
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────── */
@@ -119,6 +129,13 @@ select {
   width: 100%;
   margin: 0 auto;
   overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding: 16px;
+    padding-top: calc(var(--header-h) + 16px);
+  }
 }
 
 /* ─── Shared UI Primitives ───────────────────────────────────────────── */
@@ -283,4 +300,38 @@ select {
 
 .w-full {
   width: 100%;
+}
+
+/* ─── Responsive Utilities ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .show-mobile {
+    display: none !important;
+  }
+}
+
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 1), 1fr);
+  gap: var(--grid-gap, 16px);
+}
+
+@media (min-width: 768px) {
+  .responsive-grid-md {
+    --grid-cols: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid-lg {
+    --grid-cols: 3;
+  }
+  .responsive-grid-xl {
+    --grid-cols: 4;
+  }
 }

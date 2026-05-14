@@ -10,6 +10,8 @@ import TrendDashboard from './pages/TrendDashboard';
 import ComparePage from './pages/ComparePage';
 import GraphExplorer from './pages/GraphExplorer';
 import ChatbotPage from './pages/ChatbotPage';
+import ClusterDashboard from './pages/ClusterDashboard';
+import UserProfile from './pages/UserProfile';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import './styles/global.css';
@@ -29,18 +31,22 @@ export default function App() {
           <Route path="/dashboard" element={<TrendDashboard />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/graph" element={<GraphExplorer />} />
+          <Route path="/clusters" element={<ClusterDashboard />} />
           <Route path="/chat" element={<ChatbotPage />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Route>
 
-        {/* Module dành cho Quản trị viên (Admin) */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="users" element={<AdminUsers />} />
-          <Route path="cms" element={<AdminCMS />} />
-          <Route path="settings" element={<AdminSettings />} />
-        </Route>
-      </Routes>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="cms" element={<AdminCMS />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
+
+          {/* Catch-all: Điều hướng các route không tồn tại về trang chủ */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
     </BrowserRouter>
     </AppProvider>
   );

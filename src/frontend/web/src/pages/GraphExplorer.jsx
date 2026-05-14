@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { exploreGraph, analyzeRoad } from '../api/graphService';
+import { useAppContext } from '../contexts/AppContext';
+import MaintenancePage from './MaintenancePage';
 import './GraphExplorer.css';
 
 const LINK_TYPE_COLORS = {
@@ -21,7 +23,11 @@ const NODE_TYPES = {
 };
 
 export default function GraphExplorer() {
+    const context = useAppContext();
+    const settings = context?.settings;
     const fgRef = useRef();
+
+    // -- KHAI BÁO TẤT CẢ HOOKS Ở ĐÂY (TRƯỚC KHI RETURN) --
     const [graphData, setGraphData] = useState({ nodes: [], links: [] });
     const [loading, setLoading] = useState(false);
     
@@ -33,8 +39,10 @@ export default function GraphExplorer() {
     const [filterOpen, setFilterOpen] = useState(false);
     const [filters, setFilters] = useState({ salary: 0, location: 'all' });
     
-    const [focusNodeIds, setFocusNodeIds] = useState(['Golang']); // Bắt đầu với Golang
+    const [focusNodeIds, setFocusNodeIds] = useState(['Golang']); 
     const [depth, setDepth] = useState(1);
+    const [location, setLocation] = useState('');
+    const [minSalary, setMinSalary] = useState('');
     const [nodeCount, setNodeCount] = useState(0);
     
     const [activeFeature, setActiveFeature] = useState('explore'); 
@@ -45,13 +53,17 @@ export default function GraphExplorer() {
     const [journeyStartQuery, setJourneyStartQuery] = useState('');
     const [journeyEndQuery, setJourneyEndQuery] = useState('');
 
+    // -- TẤT CẢ EFFECT VÀ CALLBACK PHẢI Ở ĐÂY --
+
     // Fetch data từ backend khi focusNodeIds hoặc depth thay đổi
     useEffect(() => {
         const fetchGraph = async () => {
+            if (!settings || settings.isGraphEnabled === false) return;
             if (focusNodeIds.length === 0) return;
+            
             setLoading(true);
             try {
-                const res = await exploreGraph(focusNodeIds, depth);
+                const res = await exploreGraph(focusNodeIds, depth, location, minSalary);
                 if (res?.data) {
                     const rawNodes = res.data.nodes || [];
                     const rawLinks = res.data.edges || res.data.links || [];
@@ -76,12 +88,15 @@ export default function GraphExplorer() {
                 }
             } catch (err) {
                 console.error("Lỗi lấy dữ liệu graph:", err);
+                if (err.message?.includes('403') || err.message?.includes('503')) {
+                    context.updateSettings({ isGraphEnabled: false });
+                }
             } finally {
                 setLoading(false);
             }
         };
         fetchGraph();
-    }, [focusNodeIds, depth]);
+    }, [focusNodeIds, depth, location, minSalary, settings?.isGraphEnabled]);
 
     // Điều chỉnh lực đẩy
     useEffect(() => {
@@ -92,8 +107,13 @@ export default function GraphExplorer() {
         }
     }, [graphData]);
 
-    // Tìm kiếm local trong mảng nodes hiện tại (do không có API search autocomplete)
+    // Tìm kiếm local
     useEffect(() => {
+        if (searchQuery.length > 0 && focusNodeIds.length > 0 && searchQuery.trim().toLowerCase() === focusNodeIds[0].toLowerCase()) {
+            setSearchResults([]);
+            return;
+        }
+
         if (searchQuery.length > 0) {
             const lower = searchQuery.toLowerCase();
             const res = graphData.nodes.filter(n => (n.label || n.id).toLowerCase().includes(lower)).slice(0, 5);
@@ -101,9 +121,7 @@ export default function GraphExplorer() {
         } else {
             setSearchResults([]);
         }
-    }, [searchQuery, graphData.nodes]);
-
-
+    }, [searchQuery, graphData.nodes, focusNodeIds]);
 
     const handleSearch = (node) => {
         const searchKeyword = node.label || node.id;
@@ -126,6 +144,8 @@ export default function GraphExplorer() {
         setFocusNodeIds(['Golang']);
         setDepth(1);
         setSearchQuery('');
+        setLocation('');
+        setMinSalary('');
         setSelectedEdge(null);
         setPathStart(null);
         setPathEnd(null);
@@ -162,6 +182,8 @@ export default function GraphExplorer() {
     useEffect(() => {
         if (activeFeature === 'journey' && pathStart && pathEnd) {
             const fetchPath = async () => {
+                if (!settings || settings.isGraphEnabled === false) return;
+                
                 setLoading(true);
                 try {
                     const res = await analyzeRoad(pathStart.id, pathEnd.id);
@@ -183,8 +205,6 @@ export default function GraphExplorer() {
 
                         setActivePath({ nodes: pathNodes, links: pathLinks });
                         
-                        // Cập nhật graphData để hiển thị lộ trình trên canvas
-                        // Cập nhật graphData để hiển thị lộ trình trên canvas (ẩn các node không liên quan)
                         setGraphData({
                             nodes: pathNodes.map(pn => ({ ...pn })),
                             links: pathLinks.map(pl => ({ ...pl }))
@@ -206,7 +226,7 @@ export default function GraphExplorer() {
             };
             fetchPath();
         }
-    }, [pathStart, pathEnd, activeFeature]);
+    }, [pathStart, pathEnd, activeFeature, settings?.isGraphEnabled]);
 
 
     const isNodeVisible = useCallback((node) => {
@@ -340,6 +360,33 @@ export default function GraphExplorer() {
         ctx.restore();
     }, []);
 
+    // -- CUỐI CÙNG MỚI ĐẾN CÁC LỆNH RETURN ĐIỀU KIỆN --
+
+    if (!settings) {
+        return (
+            <div className="graph-page flex-center" style={{ minHeight: '100vh', background: '#000' }}>
+                <div className="loading-spinner"></div>
+                <span style={{ color: '#888', marginLeft: 12 }}>Đang kiểm tra trạng thái...</span>
+            </div>
+        );
+    }
+
+    if (settings.isGraphEnabled === false) {
+        return (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 9999,
+                background: '#000'
+            }}>
+                <MaintenancePage message="Chúng tôi đang bảo trì graph theo định kỳ. Vui lòng quay lại sau." />
+            </div>
+        );
+    }
+
     const locations = ['all', 'Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng'];
 
     return (
@@ -351,26 +398,28 @@ export default function GraphExplorer() {
                 </div>
 
                 {activeFeature === 'explore' ? (
-                    <div className="search-input-wrap">
-                        <input
-                            className="search-input"
-                            placeholder="Tìm kiếm/Nhập keyword và ấn Enter..."
-                            value={searchQuery}
-                            onChange={e => setSearchQuery(e.target.value)}
-                            onKeyDown={handleSearchSubmit}
-                        />
-                        {searchResults.length > 0 && (
-                            <div className="search-dropdown">
-                                {searchResults.map(n => (
-                                    <button key={n.id} className="search-result-item" onClick={() => handleSearch(n)}>
-                                        <span className="srd-type-badge" style={{ background: NODE_TYPES[n.type]?.color + '33', color: NODE_TYPES[n.type]?.color }}>
-                                            {n.type}
-                                        </span>
-                                        {n.label || n.id}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div className="search-input-wrap">
+                            <input
+                                className="search-input"
+                                placeholder="Tìm kiếm/Nhập keyword và ấn Enter..."
+                                value={searchQuery}
+                                onChange={e => setSearchQuery(e.target.value)}
+                                onKeyDown={handleSearchSubmit}
+                            />
+                            {searchResults.length > 0 && (
+                                <div className="search-dropdown">
+                                    {searchResults.map(n => (
+                                        <button key={n.id} className="search-result-item" onClick={() => handleSearch(n)}>
+                                            <span className="srd-type-badge" style={{ background: NODE_TYPES[n.type]?.color + '33', color: NODE_TYPES[n.type]?.color }}>
+                                                {n.type}
+                                            </span>
+                                            {n.label || n.id}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <div className="journey-search-row">
@@ -437,22 +486,12 @@ export default function GraphExplorer() {
                             </div>
                         </div>
                     )}
-                    <button className="btn btn-ghost" onClick={() => setFilterOpen(o => !o)}>Lọc</button>
                     <button className="btn btn-ghost" onClick={handleFocusNode}>Focus</button>
                     <button className="btn btn-secondary" onClick={handleReset}>Reset</button>
                 </div>
             </div>
 
             <div className="graph-body">
-                {filterOpen && (
-                    <div className="filter-panel card">
-                        <h3 className="filter-title">Bộ lọc</h3>
-                        <button className="btn btn-ghost w-full mt-16" onClick={() => setFilters({ salary: 0, location: 'all' })}>
-                            Xóa bộ lọc
-                        </button>
-                    </div>
-                )}
-
                 <div className="graph-canvas-wrapper">
                     {loading && <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 10, color: 'white' }}>Đang tải đồ thị...</div>}
                     <ForceGraph2D
@@ -467,8 +506,8 @@ export default function GraphExplorer() {
                         linkWidth={linkWidth}
                         linkCanvasObject={paintLink}
                         linkCanvasObjectMode={() => 'after'}
-                        linkDirectionalArrowLength={5}
-                        linkDirectionalArrowRelPos={1}
+                        linkDirectionalArrowLength={8}
+                        linkDirectionalArrowRelPos={0.8}
                         backgroundColor="#000000"
                     />
 
@@ -497,58 +536,60 @@ export default function GraphExplorer() {
                     </div>
                 </div>
 
-                <div className="graph-side-panels">
-                    {activePath && (
-                        <div className="journey-panel card">
-                            <div className="jp-header">
-                                <h3>Lộ trình kết nối</h3>
-                                <button className="btn btn-ghost" onClick={() => { setPathStart(null); setPathEnd(null); setActivePath(null); }}>X</button>
-                            </div>
-                            <div className="jp-body">
-                                <div className="jp-summary">
-                                    Từ <b>{pathStart?.label || pathStart?.id}</b> đến <b>{pathEnd?.label || pathEnd?.id}</b>
+                {(activePath || selectedEdge) && (
+                    <div className="graph-side-panels">
+                        {activePath && (
+                            <div className="journey-panel card">
+                                <div className="jp-header">
+                                    <h3>Lộ trình kết nối</h3>
+                                    <button className="btn btn-ghost" onClick={() => { setPathStart(null); setPathEnd(null); setActivePath(null); }}>X</button>
                                 </div>
-                                <div className="jp-steps">
-                                    {activePath.links.map((link, i) => {
-                                        const source = activePath.nodes[i];
-                                        const target = activePath.nodes[i + 1];
-                                        return (
-                                            <div key={i} className="jp-step">
-                                                <div className="jp-step-node">
-                                                    <span className="jp-step-dot" style={{ background: NODE_TYPES[source.type]?.color }} />
-                                                    {source.label || source.id}
-                                                </div>
-                                                <div className="jp-step-link" style={{ borderLeftColor: LINK_TYPE_COLORS[link.type] }}>
-                                                    <span className="jp-step-label">{link.label || link.type}</span>
-                                                </div>
-                                                {i === activePath.links.length - 1 && (
+                                <div className="jp-body">
+                                    <div className="jp-summary">
+                                        Từ <b>{pathStart?.label || pathStart?.id}</b> đến <b>{pathEnd?.label || pathEnd?.id}</b>
+                                    </div>
+                                    <div className="jp-steps">
+                                        {activePath.links.map((link, i) => {
+                                            const source = activePath.nodes[i];
+                                            const target = activePath.nodes[i + 1];
+                                            return (
+                                                <div key={i} className="jp-step">
                                                     <div className="jp-step-node">
-                                                        <span className="jp-step-dot" style={{ background: NODE_TYPES[target.type]?.color }} />
-                                                        {target.label || target.id}
+                                                        <span className="jp-step-dot" style={{ background: NODE_TYPES[source.type]?.color }} />
+                                                        {source.label || source.id}
                                                     </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                                    <div className="jp-step-link" style={{ borderLeftColor: LINK_TYPE_COLORS[link.type] }}>
+                                                        <span className="jp-step-label">{link.label || link.type}</span>
+                                                    </div>
+                                                    {i === activePath.links.length - 1 && (
+                                                        <div className="jp-step-node">
+                                                            <span className="jp-step-dot" style={{ background: NODE_TYPES[target.type]?.color }} />
+                                                            {target.label || target.id}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                    {selectedEdge && (
-                        <div className="edge-panel card">
-                            <div className="ep-header">
-                                <h3>Chi tiết mối quan hệ</h3>
-                                <button className="btn btn-ghost" onClick={() => setSelectedEdge(null)}>X</button>
-                            </div>
-                            <div className="ep-body">
-                                <div className="ep-row">
-                                    <span className="ep-label">Quan hệ</span>
-                                    <span className="ep-type" style={{ color: LINK_TYPE_COLORS[selectedEdge.type] }}>{selectedEdge.type}</span>
+                        )}
+                        {selectedEdge && (
+                            <div className="edge-panel card">
+                                <div className="ep-header">
+                                    <h3>Chi tiết mối quan hệ</h3>
+                                    <button className="btn btn-ghost" onClick={() => setSelectedEdge(null)}>X</button>
+                                </div>
+                                <div className="ep-body">
+                                    <div className="ep-row">
+                                        <span className="ep-label">Quan hệ</span>
+                                        <span className="ep-type" style={{ color: LINK_TYPE_COLORS[selectedEdge.type] }}>{selectedEdge.type}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

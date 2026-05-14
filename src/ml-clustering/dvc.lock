@@ -18,31 +18,31 @@ stages:
     params:
       params.yaml:
         snapshot:
-          tag: '2026-05-12'
+          tag: '2026-05-13'
           min_tech_degree: 1
     outs:
-    - path: data/raw/snapshot_2026-05-12
+    - path: data/raw/snapshot_2026-05-13
       hash: md5
-      md5: 6bf349e63b50bd71e1ab158813ed93fd.dir
-      size: 3174078
+      md5: 290bb9fc52446841d62965a0545a088e.dir
+      size: 3197255
       nfiles: 12
   features:
     cmd: python -m pipelines.stage_02_features --params params.yaml
     deps:
-    - path: data/raw/snapshot_2026-05-12
+    - path: data/raw/snapshot_2026-05-13
       hash: md5
-      md5: 6bf349e63b50bd71e1ab158813ed93fd.dir
-      size: 3174078
+      md5: 290bb9fc52446841d62965a0545a088e.dir
+      size: 3197255
       nfiles: 12
     - path: pipelines/stage_02_features.py
       hash: md5
-      md5: b223dd463d18010735b1ea7291304cd9
-      size: 8696
+      md5: 848623bd067bd3288c18ce356b3667c5
+      size: 10884
     - path: src/features
       hash: md5
-      md5: 9c62e706d45d534e9d04b7c4ffeaea0c.dir
-      size: 94885
-      nfiles: 14
+      md5: aadd5577dd6455c889e3359e4e57ce62.dir
+      size: 115869
+      nfiles: 16
     params:
       params.yaml:
         features:
@@ -105,7 +105,22 @@ stages:
             - Confluence
             - JIRA
             - ServiceNow
+            - Agile
+            - Scrum
+            - IT
+            - vibe coding
             - Capcut
+            - Figma
+            - Adobe Photoshop
+            - Adobe Illustrator
+            - Adobe Premiere
+            - After Effects
+            - InDesign
+            - Blender
+            - SketchUp
+            - Mixpanel
+            - Amplitude
+            - Google Analytics
             heuristic_patterns:
             - ^[a-z]{1,3}$
             - ^(an|theo|trong|bang|quan|ly|co|voi|cac|khi|tai|lam|va|hoac|duoc)$
@@ -129,21 +144,21 @@ stages:
             method: umap
             n_components: 32
         snapshot:
-          tag: '2026-05-12'
+          tag: '2026-05-13'
           min_tech_degree: 1
     outs:
-    - path: data/features/2026-05-12
+    - path: data/features/2026-05-13
       hash: md5
-      md5: 29660d85fd526590b53009941ff813ac.dir
-      size: 55059
+      md5: 09bf37ae7b3d2f7be154d3ffd82fb6e4.dir
+      size: 53314
       nfiles: 3
   train:
     cmd: python -m pipelines.stage_03_train --params params.yaml
     deps:
-    - path: data/features/2026-05-12
+    - path: data/features/2026-05-13
       hash: md5
-      md5: 29660d85fd526590b53009941ff813ac.dir
-      size: 55059
+      md5: 09bf37ae7b3d2f7be154d3ffd82fb6e4.dir
+      size: 53314
       nfiles: 3
     - path: pipelines/stage_03_train.py
       hash: md5
@@ -210,30 +225,30 @@ stages:
           tracking_uri: sqlite:///mlruns.db
           registry_model_name: tech_clusterer
         snapshot:
-          tag: '2026-05-12'
+          tag: '2026-05-13'
           min_tech_degree: 1
     outs:
-    - path: data/metrics/2026-05-12/best_metrics.json
+    - path: data/metrics/2026-05-13/best_metrics.json
       hash: md5
-      md5: 249b63453710d3f41a093c47daed5e2d
-      size: 245
-    - path: data/models/2026-05-12
+      md5: 611ca87bb8e54b9e13761f50d292622c
+      size: 246
+    - path: data/models/2026-05-13
       hash: md5
-      md5: e3a427a040f8f862ea0264909d4c34ce.dir
-      size: 91768
+      md5: 53f370afcfcb5af7365562450e499d33.dir
+      size: 88828
       nfiles: 2
   label:
     cmd: python -m pipelines.stage_04_label --params params.yaml
     deps:
-    - path: data/models/2026-05-12
+    - path: data/models/2026-05-13
       hash: md5
-      md5: e3a427a040f8f862ea0264909d4c34ce.dir
-      size: 91768
+      md5: 53f370afcfcb5af7365562450e499d33.dir
+      size: 88828
       nfiles: 2
-    - path: data/raw/snapshot_2026-05-12
+    - path: data/raw/snapshot_2026-05-13
       hash: md5
-      md5: 6bf349e63b50bd71e1ab158813ed93fd.dir
-      size: 3174078
+      md5: 290bb9fc52446841d62965a0545a088e.dir
+      size: 3197255
       nfiles: 12
     - path: pipelines/stage_04_label.py
       hash: md5
@@ -241,8 +256,8 @@ stages:
       size: 6063
     - path: src/labeling
       hash: md5
-      md5: 8a84aea0cc41bf413a5426eab8528d30.dir
-      size: 44129
+      md5: aedc09e34b4dc18499a105bd99208930.dir
+      size: 43508
       nfiles: 6
     params:
       params.yaml:
@@ -254,11 +269,11 @@ stages:
           temperature: 0.2
           cache_dir: data/labels/.llm_cache
         snapshot:
-          tag: '2026-05-12'
+          tag: '2026-05-13'
           min_tech_degree: 1
     outs:
-    - path: data/labels/2026-05-12
+    - path: data/labels/2026-05-13
       hash: md5
-      md5: e3328adaa587c86613331a5383967923.dir
-      size: 16674
+      md5: 34f5dcd259b7502d6b64276d3e82cdd2.dir
+      size: 11808
       nfiles: 1

@@ -40,6 +40,7 @@ def main(
 
     from conf.config import features_dir, load_params, snapshot_dir
     from src.data.neo4j_loader import load_parquet
+    from src.validation import SnapshotValidationError, validate_stage2_snapshot
     from src.features.content_features import (
         aggregate_article_embeddings,
         embed_tech_names_fallback,
@@ -51,6 +52,7 @@ def main(
         build_job_tech_tfidf,
         compute_neighborhood_stats,
     )
+    from src.features.tech_aliases import canonicalize_technology_snapshot
 
     # 1. Params
     params_obj = load_params(params)
@@ -71,6 +73,55 @@ def main(
     df_edges_job_requires_skill = load_parquet(snap_dir / "edges_job_requires_skill.parquet")
     df_edges_tech_related      = load_parquet(snap_dir / "edges_tech_related_tech.parquet")
     logger.info("Snapshot loaded: {} techs, {} articles, {} jobs", len(df_tech), len(df_article), len(df_job))
+
+    try:
+        validation_report = validate_stage2_snapshot(
+            df_tech=df_tech,
+            df_company=df_company,
+            df_article=df_article,
+            df_job=df_job,
+            df_edges_mentions=df_edges_mentions,
+            df_edges_company_uses_tech=df_edges_company_uses_tech,
+            df_edges_job_requires_tech=df_edges_job_requires_tech,
+            df_edges_job_requires_skill=df_edges_job_requires_skill,
+            df_edges_tech_related=df_edges_tech_related,
+            feature_params=fp,
+        )
+    except SnapshotValidationError as exc:
+        logger.error("Data validation failed before feature build:\n{}", exc)
+        raise typer.Exit(code=1)
+
+    logger.info(
+        "Data validation OK: {} checks, {} warning(s)",
+        validation_report.checks_run,
+        len(validation_report.warnings),
+    )
+    for issue in validation_report.warnings[:10]:
+        logger.warning("Data validation warning [{}]: {}", issue.check, issue.message)
+    if len(validation_report.warnings) > 10:
+        logger.warning(
+            "Data validation warning: {} more warning(s) omitted",
+            len(validation_report.warnings) - 10,
+        )
+
+    canonicalized = canonicalize_technology_snapshot(
+        df_tech=df_tech,
+        df_edges_mentions=df_edges_mentions,
+        df_edges_company_uses_tech=df_edges_company_uses_tech,
+        df_edges_job_requires_tech=df_edges_job_requires_tech,
+        df_edges_tech_related=df_edges_tech_related,
+    )
+    df_tech = canonicalized.technologies
+    df_edges_mentions = canonicalized.edges_article_mentions_tech
+    df_edges_company_uses_tech = canonicalized.edges_company_uses_tech
+    df_edges_job_requires_tech = canonicalized.edges_job_requires_tech
+    df_edges_tech_related = canonicalized.edges_tech_related_tech
+    if canonicalized.n_merged:
+        logger.info(
+            "Canonicalized Technology aliases: merged {} duplicate/alias rows; {} techs remain",
+            canonicalized.n_merged,
+            len(df_tech),
+        )
 
     # 2b. Noise filter — loại tech nodes không hợp lệ trước khi build features
     if fp.noise_filter.enabled:

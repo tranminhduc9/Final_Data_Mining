@@ -194,8 +194,6 @@ def render_prompt(
     cluster_id: int,
     n_members: int,
     top_members: list[str],
-    top_companies: list[str],
-    top_jobs: list[str],
 ) -> str:
     """
     Đọc template `prompts/cluster_label.txt` rồi `.format(...)` an toàn.
@@ -218,8 +216,6 @@ def render_prompt(
         cluster_id=cluster_id,
         n_members=n_members,
         top_members=to_bullets(top_members),
-        top_companies=to_bullets(top_companies),
-        top_jobs=to_bullets(top_jobs),
     )
 
 
@@ -328,13 +324,12 @@ def label_all_clusters(
 
     Yêu cầu logic:
       1. `select_top_members_per_cluster` → top members.
-      2. `collect_cluster_context` → top companies + jobs cho mỗi cụm.
-      3. Với mỗi cluster_id (≠ -1):
+      2. Với mỗi cluster_id (≠ -1):
            render_prompt → call_gemini → parse → tạo `ClusterLabel`.
-      4. Bỏ cluster -1 (noise) — không gọi LLM.
-      5. Log progress (loguru) sau mỗi cụm; KHÔNG dừng cả batch nếu 1 cụm fail
+      3. Bỏ cluster -1 (noise) — không gọi LLM.
+      4. Log progress (loguru) sau mỗi cụm; KHÔNG dừng cả batch nếu 1 cụm fail
          (đặt label="UNLABELED" + ghi failure_reason).
-      6. Trả về dict {cluster_id: ClusterLabel}.
+      5. Trả về dict {cluster_id: ClusterLabel}.
     """
     prompt_template_path = Path(__file__).parent / "prompts" / "cluster_label.txt"
 
@@ -342,12 +337,6 @@ def label_all_clusters(
         cluster_to_members, X, tech_ids, df_technologies,
         top_k=params.max_members_in_prompt,
     )
-    context = collect_cluster_context(
-        cluster_to_members,
-        df_edges_company_uses_tech, df_companies,
-        df_edges_job_requires_tech, df_jobs,
-    )
-
     cluster_ids = sorted(cid for cid in cluster_to_members if cid != -1)
     logger.info("Bắt đầu gán nhãn {} cụm với {} ...", len(cluster_ids), params.provider.upper())
 
@@ -355,7 +344,6 @@ def label_all_clusters(
     for cluster_id in cluster_ids:
         members = cluster_to_members[cluster_id]
         top_names = top_members_by_name.get(cluster_id, [])
-        ctx = context.get(cluster_id, {"top_companies": [], "top_jobs": []})
 
         try:
             prompt = render_prompt(
@@ -363,12 +351,15 @@ def label_all_clusters(
                 cluster_id=cluster_id,
                 n_members=len(members),
                 top_members=top_names,
-                top_companies=ctx["top_companies"],
-                top_jobs=ctx["top_jobs"],
             )
             data = call_gemini(prompt, params, cache_dir=params.cache_dir)
             time.sleep(5)  # tránh rate limit Gemini (free tier ~10 RPM)
             is_coherent = bool(data.get("is_coherent", True))
+            allowed_outliers = set(top_names)
+            outliers = [
+                item for item in list(data.get("outliers", []))
+                if item in allowed_outliers
+            ]
             label = ClusterLabel(
                 cluster_id=cluster_id,
                 label=data["label"],
@@ -378,7 +369,7 @@ def label_all_clusters(
                 confidence=float(data["confidence"]),
                 is_coherent=is_coherent,
                 coherence_reason=data.get("coherence_reason", ""),
-                outliers=list(data.get("outliers", [])),
+                outliers=outliers,
                 member_count=len(members),
                 sample_techs=top_names,
             )

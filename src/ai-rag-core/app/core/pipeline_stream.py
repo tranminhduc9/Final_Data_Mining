@@ -22,7 +22,7 @@ async def answer_stream(query: str, user_id: str | None = None) -> AsyncIterator
     """
     # 1. Chạy song song: vector search + graph traversal + user profile
     gather_tasks = [
-        vector_search(query, top_k=10),
+        vector_search(query, top_k=5),
         graph_search(query),
     ]
     if user_id:

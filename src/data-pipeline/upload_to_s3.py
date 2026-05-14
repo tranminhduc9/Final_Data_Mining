@@ -12,7 +12,8 @@ s3 = boto3.client(
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
 )
 
-BUCKET_NAME = "raw-data-kpdl"
+#BUCKET_NAME = "raw-data-kpdl"
+BUCKET_NAME = "database-data-mining"
 LOCAL_FOLDER = os.path.join(os.path.dirname(__file__), "extracted_data")
 S3_PREFIX = "extracted_data/"  # Thư mục trên S3, để "" nếu muốn upload vào root
 

@@ -138,7 +138,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-phobert_title_classifier_best/*
-extracted_data/*
-filtered_data/*
-raw_data/*
+phobert_title_classifier_best/
+src/data-pipeline/extracted_data/*
+src/data-pipeline/filtered_data/*
+src/data-pipeline/raw_data/*

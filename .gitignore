@@ -72,29 +72,3 @@ env/
 
 # Project specific
 /PROMPT
-.claude/
-.claude/settings.local.json
-.mcp.json
-
-# Data & Logs
-*.json.bak
-data/
-data/export/
-data/raw/
-output/
-logs/
-*.tmp
-
-# Models cache
-.cache/
-/models/
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
-
-# AWS EC2
-*.pem
-
-# Tài liệu nội bộ
-*.pdf

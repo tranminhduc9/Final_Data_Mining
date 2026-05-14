@@ -139,6 +139,6 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 phobert_title_classifier_best/
-src/data-pipeline/extracted_data/
-src/data-pipeline/filtered_data/
-src/data-pipeline/raw_data/
+src/data-pipeline/extracted_data/*
+src/data-pipeline/filtered_data/*
+src/data-pipeline/raw_data/*

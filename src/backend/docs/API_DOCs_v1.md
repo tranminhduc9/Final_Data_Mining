@@ -80,26 +80,26 @@ Phần API cho nội dung trang radar chia làm 3 layer:
 }
 ```
 
-`Response mẫu`:
+`Response mẫu` (cumulative theo ngày, sort tăng dần theo `date`):
 
 ```json
 {
-  "data": {
-    "React": {
-      "months": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06"],
-      "job_counts": [1000, 1100, 1200, 1300, 1400, 1500]
+  "data": [
+    {
+      "date": "2026-03-18",
+      "year": 2026, "month": 3, "day": 18,
+      "keywords": {"React": 12, "Node.js": 8, "Python": 15}
     },
-    "Node.js": {
-      "months": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06"],
-      "job_counts": [800, 900, 1000, 1100, 1150, 1200]
-    },
-    "Python": {
-      "months": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06"],
-      "job_counts": [1500, 1600, 1700, 1800, 1900, 2000]
+    {
+      "date": "2026-03-19",
+      "year": 2026, "month": 3, "day": 19,
+      "keywords": {"React": 22, "Node.js": 17, "Python": 29}
     }
-  }
+  ]
 }
 ```
+
+> `keywords` là **cumulative count** tính từ đầu cửa sổ `months` đến `date` của điểm đó (không phải count rời từng ngày). Ngày không có job match nào không xuất hiện trong response — cumulative "nhảy" sang ngày kế có dữ liệu.
 
 | Method | Endpoint | Description | Auth |
 | --- | --- | --- | --- |

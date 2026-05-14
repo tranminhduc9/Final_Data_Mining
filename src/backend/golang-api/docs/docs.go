@@ -1396,13 +1396,14 @@ const docTemplate = `{
         },
         "/radar/search": {
             "get": {
+                "description": "Mỗi điểm trong response chứa keywords là TỔNG TÍCH LŨY từ đầu cửa sổ đến ngày đó (không phải count rời). Ngày không có job match không xuất hiện trong response.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "radar"
                 ],
-                "summary": "Monthly job counts per keyword over a time window",
+                "summary": "Cumulative daily job counts per keyword over a time window",
                 "parameters": [
                     {
                         "type": "array",
@@ -1883,6 +1884,13 @@ const docTemplate = `{
         "domain.RadarSearchPoint": {
             "type": "object",
             "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "2026-03-18"
+                },
+                "day": {
+                    "type": "integer"
+                },
                 "keywords": {
                     "type": "object",
                     "additionalProperties": {

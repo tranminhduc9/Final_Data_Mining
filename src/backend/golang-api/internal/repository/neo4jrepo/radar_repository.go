@@ -214,9 +214,10 @@ func (r *RadarRepository) SearchByKeywords(ctx context.Context, keywords []strin
 		WITH kw,
 		     date(datetime(j.posted_date)).year  AS year,
 		     date(datetime(j.posted_date)).month AS month,
+		     date(datetime(j.posted_date)).day   AS day,
 		     j
-		RETURN year, month, kw AS keyword, count(j) AS job_count
-		ORDER BY year, month, keyword
+		RETURN year, month, day, kw AS keyword, count(j) AS job_count
+		ORDER BY year, month, day, keyword
 	`
 
 	result, err := session.Run(ctx, query, map[string]interface{}{
@@ -227,28 +228,32 @@ func (r *RadarRepository) SearchByKeywords(ctx context.Context, keywords []strin
 		return nil, fmt.Errorf("neo4j query search: %w", err)
 	}
 
-	type monthKey struct{ year, month int }
-	pointMap := map[monthKey]*domain.RadarSearchPoint{}
-	var order []monthKey
+	type dayKey struct{ year, month, day int }
+	pointMap := map[dayKey]*domain.RadarSearchPoint{}
+	var order []dayKey
 
 	for result.Next(ctx) {
 		rec := result.Record()
 
 		yearVal, _ := rec.Get("year")
 		monthVal, _ := rec.Get("month")
+		dayVal, _ := rec.Get("day")
 		keywordVal, _ := rec.Get("keyword")
 		countVal, _ := rec.Get("job_count")
 
 		y := toInt(yearVal)
 		m := toInt(monthVal)
+		d := toInt(dayVal)
 		k := toString(keywordVal)
 		c := toInt(countVal)
 
-		key := monthKey{y, m}
+		key := dayKey{y, m, d}
 		if _, ok := pointMap[key]; !ok {
 			pointMap[key] = &domain.RadarSearchPoint{
+				Date:     fmt.Sprintf("%04d-%02d-%02d", y, m, d),
 				Year:     y,
 				Month:    m,
+				Day:      d,
 				Keywords: make(map[string]int),
 			}
 			order = append(order, key)
@@ -258,6 +263,19 @@ func (r *RadarRepository) SearchByKeywords(ctx context.Context, keywords []strin
 
 	if err := result.Err(); err != nil {
 		return nil, fmt.Errorf("neo4j result search: %w", err)
+	}
+
+	cumulative := map[string]int{}
+	for _, key := range order {
+		p := pointMap[key]
+		for k, c := range p.Keywords {
+			cumulative[k] += c
+		}
+		snapshot := make(map[string]int, len(cumulative))
+		for k, v := range cumulative {
+			snapshot[k] = v
+		}
+		p.Keywords = snapshot
 	}
 
 	points := make([]domain.RadarSearchPoint, 0, len(order))

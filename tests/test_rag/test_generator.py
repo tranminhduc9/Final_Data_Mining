@@ -33,7 +33,8 @@ async def test_generate_max_retries_reached(monkeypatch):
     
     with pytest.raises(RuntimeError) as exc:
         await generate([{"role": "user", "content": "Hi"}])
-    assert "Gemini lỗi" in str(exc.value)
+    assert "lỗi:" in str(exc.value)
+    assert "503 Server Busy" in str(exc.value)
 
 @pytest.mark.asyncio
 async def test_generate_stream_success(monkeypatch):

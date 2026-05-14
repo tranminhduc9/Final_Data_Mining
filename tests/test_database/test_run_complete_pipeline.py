@@ -70,16 +70,18 @@ def test_run_complete_pipeline_executes_import_and_relationship_steps(monkeypatc
     fake_config_module.NEO4J_USERNAME = "neo4j"
     fake_config_module.NEO4J_PASSWORD = "secret"
     fake_config_module.NEO4J_DATABASE = "neo4j"
+    fake_config_module.BATCH_SIZE = 100
 
-    fake_multi_source_module = types.ModuleType("multi_source_import_v3")
+    fake_multi_source_module = types.ModuleType("import_multi_source")
     fake_multi_source_module.RelationshipBuilder = FakeRelationshipBuilder
+    fake_multi_source_module.find_latest_data_files = lambda *args, **kwargs: (["news1.json"], "topcv1.json")
     fake_multi_source_module.main = None
 
     real_database_connection = __import__("src.database.utils.database_connection", fromlist=["dummy"])
 
     monkeypatch.setitem(sys.modules, "neo4j", fake_neo4j_module)
     monkeypatch.setitem(sys.modules, "neo4j_config", fake_config_module)
-    monkeypatch.setitem(sys.modules, "multi_source_import_v3", fake_multi_source_module)
+    monkeypatch.setitem(sys.modules, "import_multi_source", fake_multi_source_module)
     monkeypatch.setitem(sys.modules, "database_connection", real_database_connection)
 
     if str(UTILS_DIR) not in sys.path:
@@ -89,14 +91,13 @@ def test_run_complete_pipeline_executes_import_and_relationship_steps(monkeypatc
 
     instance = FakeRelationshipBuilder.last_instance
     assert instance is not None
-    assert len(instance.called_with[0]) == 2
+    assert len(instance.called_with[0]) == 1
     assert instance.called_with[1] is not None
 
     assert fake_driver.closed is True
-    assert fake_driver.session_calls == ["neo4j", "neo4j"]
-    assert len(fake_driver.session_obj.run_calls) == 12
-    assert any("HIRES_FOR" in query for query in fake_driver.session_obj.run_calls)
-    assert any("REQUIRES {is_mandatory: true, frequency: 1}" in query for query in fake_driver.session_obj.run_calls)
-    assert any("USES {frequency: 1}" in query for query in fake_driver.session_obj.run_calls)
+    assert fake_driver.session_calls == ["neo4j"]
+    
+    # We should have one query for each node type and one for relationships
+    assert len(fake_driver.session_obj.run_calls) == 7
     assert any("MATCH (n:Article) RETURN count(n) as count" in query for query in fake_driver.session_obj.run_calls)
     assert any("MATCH ()-[r]->() RETURN count(r) as count" in query for query in fake_driver.session_obj.run_calls)

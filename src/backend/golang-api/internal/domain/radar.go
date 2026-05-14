@@ -11,8 +11,10 @@ type RadarTrend struct {
 }
 
 type RadarSearchPoint struct {
+	Date     string         `json:"date" example:"2026-03-18"`
 	Year     int            `json:"year"`
 	Month    int            `json:"month"`
+	Day      int            `json:"day"`
 	Keywords map[string]int `json:"keywords"`
 }
 

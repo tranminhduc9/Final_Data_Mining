@@ -1,0 +1,28 @@
+# Golang Orchestrator Dockerfile
+FROM golang:1.22-alpine AS builder
+
+WORKDIR /app
+
+# Copy go.mod and go.sum first for caching
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the orchestrator
+RUN CGO_ENABLED=0 GOOS=linux go build -o orchestrator ./cmd/orchestrator
+
+# Final stage
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy binary from builder
+COPY --from=builder /app/orchestrator .
+
+# Set environment variables
+ENV KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+
+# Run the orchestrator
+CMD ["./orchestrator"]

@@ -82,6 +82,8 @@ def health():
     return {
         "status": "ok",
         "snapshot_tag": store.tag,
+        "requested_snapshot_tag": store.requested_tag,
+        "artifact_source": store.source,
         "n_techs_total": len(store.tech_to_cluster),
         "n_clustered": n_clustered,
         "n_noise": n_noise,

@@ -1,16 +1,37 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { streamChatResponse } from '../api/chatMock';
+import { createChatSession, streamChatMessage, getChatHistory, getChatSessions } from '../api/chatService';
+import { useAppContext } from '../contexts/AppContext';
+import MaintenancePage from './MaintenancePage';
 import './ChatbotPage.css';
 
-// Minimal markdown renderer (bold, italic, headers, lists, tables)
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+const GREETING = 'Xin chào! Mình là **Tech Radar AI**, trợ lý tư vấn công nghệ dựa trên dữ liệu thực từ thị trường tuyển dụng IT Việt Nam.\n\nBạn có thể hỏi mình về:\n- Cơ hội việc làm theo tech stack\n- Xu hướng công nghệ & mức lương\n- Lộ trình học và chuyển hướng sự nghiệp';
+
+const ACTIVE_SID_KEY = 'chat_session_id';
+
+function formatTime(isoStr) {
+    if (!isoStr) return '';
+    const d = new Date(isoStr);
+    const now = new Date();
+    const diffMs = now - d;
+    const diffMin = Math.floor(diffMs / 60000);
+    if (diffMin < 1)  return 'vừa xong';
+    if (diffMin < 60) return `${diffMin} phút trước`;
+    const diffH = Math.floor(diffMin / 60);
+    if (diffH < 24)   return `${diffH} giờ trước`;
+    return d.toLocaleDateString('vi-VN');
+}
+
+// ─── Markdown renderer ───────────────────────────────────────────────────────
+
 function renderMarkdown(text) {
     const lines = text.split('\n');
     const elements = [];
     let i = 0;
     while (i < lines.length) {
         const line = lines[i];
-        // Table
         if (line.includes('|') && lines[i + 1]?.includes('---')) {
             const headers = line.split('|').filter(h => h.trim());
             const rows = [];
@@ -53,15 +74,14 @@ function inlineMarkdown(text) {
     const parts = [];
     let rest = text;
     let key = 0;
-    // Bold **text**
     while (rest.length > 0) {
-        const boldMatch = rest.match(/\*\*(.+?)\*\*/);
+        const boldMatch   = rest.match(/\*\*(.+?)\*\*/);
         const italicMatch = rest.match(/\*(.+?)\*/);
-        const codeMatch = rest.match(/`(.+?)`/);
+        const codeMatch   = rest.match(/`(.+?)`/);
         const earliest = [
-            boldMatch ? { idx: rest.indexOf(boldMatch[0]), len: boldMatch[0].length, el: <strong key={key++}>{boldMatch[1]}</strong> } : null,
-            italicMatch ? { idx: rest.indexOf(italicMatch[0]), len: italicMatch[0].length, el: <em key={key++}>{italicMatch[1]}</em> } : null,
-            codeMatch ? { idx: rest.indexOf(codeMatch[0]), len: codeMatch[0].length, el: <code key={key++} className="md-code">{codeMatch[1]}</code> } : null,
+            boldMatch   ? { idx: rest.indexOf(boldMatch[0]),   len: boldMatch[0].length,   el: <strong key={key++}>{boldMatch[1]}</strong> }   : null,
+            italicMatch ? { idx: rest.indexOf(italicMatch[0]), len: italicMatch[0].length, el: <em key={key++}>{italicMatch[1]}</em> }           : null,
+            codeMatch   ? { idx: rest.indexOf(codeMatch[0]),   len: codeMatch[0].length,   el: <code key={key++} className="md-code">{codeMatch[1]}</code> } : null,
         ].filter(Boolean).sort((a, b) => a.idx - b.idx)[0];
         if (!earliest) { parts.push(rest); break; }
         if (earliest.idx > 0) parts.push(rest.slice(0, earliest.idx));
@@ -70,6 +90,8 @@ function inlineMarkdown(text) {
     }
     return parts;
 }
+
+// ─── Quick prompts ───────────────────────────────────────────────────────────
 
 const QUICK_PROMPTS = [
     'Học Golang thì nên apply công ty nào ở Việt Nam, lương bao nhiêu?',
@@ -80,42 +102,227 @@ const QUICK_PROMPTS = [
 
 let msgId = 0;
 
-export default function ChatbotPage() {
+// ─── Component ───────────────────────────────────────────────────────────────
 
+export default function ChatbotPage() {
+    const context = useAppContext();
+    const settings = context?.settings;
     const navigate = useNavigate();
-    const [messages, setMessages] = useState([
-        {
-            id: msgId++, role: 'bot',
-            text: 'Xin chào! Mình là **Tech Radar AI**, trợ lý tư vấn công nghệ dựa trên dữ liệu thực từ thị trường tuyển dụng IT Việt Nam.\n\nBạn có thể hỏi mình về:\n- Cơ hội việc làm theo tech stack\n- Xu hướng công nghệ & mức lương\n- Lộ trình học và chuyển hướng sự nghiệp',
-        }
-    ]);
-    const [input, setInput] = useState('');
-    const [isStreaming, setIsStreaming] = useState(false);
-    const [profile, setProfile] = useState({ skills: '', exp: '', salary: '' });
-    const [showProfile, setShowProfile] = useState(false);
+
+    const [sessionId,    setSessionId]    = useState(null);
+    const [sessionError, setSessionError] = useState(false);
+    const [sessions,     setSessions]     = useState([]);   // history list
+    const [messages,     setMessages]     = useState([{ id: msgId++, role: 'bot', text: GREETING }]);
+    const [input,        setInput]        = useState('');
+    const [isStreaming,  setIsStreaming]  = useState(false);
+    const [loadingHistory, setLoadingHistory] = useState(false);
+    const [showHistory, setShowHistory] = useState(false);
     const bottomRef = useRef();
 
+
+
+    // ── Init: load active session or create new ──────────────────────────────
+
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const init = async () => {
+            try {
+                // 1. Fetch sessions from API
+                const sessionList = await getChatSessions();
+                const msgs = Array.isArray(sessionList) ? sessionList : sessionList?.data || [];
+                setSessions(msgs);
+
+                // 2. Load active session
+                const savedSid = localStorage.getItem(ACTIVE_SID_KEY);
+                if (savedSid) {
+                    setSessionId(savedSid);
+                    await loadHistory(savedSid);
+                } else if (msgs.length > 0) {
+                    // Nếu không có session active, lấy session mới nhất
+                    const latest = msgs[0].id;
+                    localStorage.setItem(ACTIVE_SID_KEY, latest);
+                    setSessionId(latest);
+                    await loadHistory(latest);
+                } else {
+                    await startNewSession();
+                }
+            } catch (err) {
+                console.error('[ChatbotPage] Init error:', err);
+                setSessionError(true);
+            }
+        };
+        init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        // Thay vì 'smooth' (bị giật/ngắt quãng khi stream nhanh), dùng 'auto' để bám sát dòng chữ
+        bottomRef.current?.scrollIntoView({ behavior: 'auto' });
     }, [messages]);
+
+    // ── Core functions ───────────────────────────────────────────────────────
+
+    const loadHistory = async (sid) => {
+        setLoadingHistory(true);
+        try {
+            const history = await getChatHistory(sid);
+            const msgs = Array.isArray(history) ? history : history?.data;
+            if (Array.isArray(msgs) && msgs.length > 0) {
+                setMessages(msgs.map(m => ({
+                    id:   msgId++,
+                    role: m.role === 'user' ? 'user' : 'bot',
+                    text: m.content || m.text || '',
+                })));
+            } else {
+                setMessages([{ id: msgId++, role: 'bot', text: GREETING }]);
+            }
+        } catch {
+            setMessages([{ id: msgId++, role: 'bot', text: GREETING }]);
+        } finally {
+            setLoadingHistory(false);
+        }
+    };
+
+    const startNewSession = async () => {
+        const res = await createChatSession();
+        const sid = res?.session_id || res?.data?.session_id;
+        if (!sid) throw new Error('No session_id returned');
+        localStorage.setItem(ACTIVE_SID_KEY, sid);
+        setSessionId(sid);
+        
+        // Refresh session list from server
+        const updatedList = await getChatSessions();
+        setSessions(Array.isArray(updatedList) ? updatedList : updatedList?.data || []);
+        
+        return sid;
+    };
+
+    // ── Switch to an existing session ────────────────────────────────────────
+
+    const switchSession = async (sid) => {
+        if (sid === sessionId || isStreaming) return;
+        localStorage.setItem(ACTIVE_SID_KEY, sid);
+        setSessionId(sid);
+        await loadHistory(sid);
+    };
+
+    // ── Clear & start new conversation (optimistic) ──────────────────────────
+
+    const clearSession = async () => {
+        if (isStreaming) return;
+        setSessionError(false);
+
+        // 1. Reset UI ngay lập tức — không chờ API
+        const PLACEHOLDER = '__new__';
+        const placeholderEntry = {
+            id: PLACEHOLDER,
+            title: 'Cuộc trò chuyện mới',
+            created_at: new Date().toISOString(),
+        };
+        setSessions(prev => {
+            const updated = [placeholderEntry, ...prev.filter(s => s.id !== PLACEHOLDER)];
+            saveSessionsList(updated);
+            return updated;
+        });
+        setSessionId(PLACEHOLDER);
+        setMessages([{ id: msgId++, role: 'bot', text: GREETING }]);
+
+        // 2. Gọi API ngầm → thay placeholder bằng session thực
+        try {
+            const res = await createChatSession();
+            const sid = res?.session_id || res?.data?.session_id;
+            if (!sid) throw new Error('No session_id returned');
+            localStorage.setItem(ACTIVE_SID_KEY, sid);
+            setSessionId(sid);
+            // Thay placeholder trong danh sách
+            setSessions(prev => {
+                const updated = prev.map(s =>
+                    s.id === PLACEHOLDER ? { ...s, id: sid } : s
+                );
+                saveSessionsList(updated);
+                return updated;
+            });
+        } catch (err) {
+            console.error('[ChatbotPage] clearSession error:', err);
+            setSessionError(true);
+            // Xóa placeholder nếu tạo session thất bại
+            setSessions(prev => {
+                const updated = prev.filter(s => s.id !== PLACEHOLDER);
+                saveSessionsList(updated);
+                return updated;
+            });
+            setSessionId(null);
+        }
+    };
+
+    // ── Delete a session from history list (local only) ──────────────────────
+
+    const deleteSession = (e, sid) => {
+        e.stopPropagation();
+        setSessions(prev => {
+            const updated = prev.filter(s => s.id !== sid);
+            saveSessionsList(updated);
+            return updated;
+        });
+        // Nếu đang xóa session hiện tại → clear
+        if (sid === sessionId) {
+            clearSession();
+        }
+    };
+
+    // ── Send message ─────────────────────────────────────────────────────────
 
     const sendMessage = (text) => {
         if (!text.trim() || isStreaming) return;
+
         const userMsg = { id: msgId++, role: 'user', text };
-        const botMsg = { id: msgId++, role: 'bot', text: '', streaming: true };
+        const botMsg  = { id: msgId++, role: 'bot', text: '', streaming: true };
         setMessages(prev => [...prev, userMsg, botMsg]);
         setInput('');
         setIsStreaming(true);
 
+        // Cập nhật title session theo tin nhắn đầu tiên (Local UI update trước)
+        setSessions(prev => {
+            const userMsgs = messages.filter(m => m.role === 'user');
+            if (userMsgs.length === 0 && sessionId) {
+                 return prev.map(s => s.id === sessionId ? { ...s, title: text.slice(0, 40) } : s);
+            }
+            return prev;
+        });
+
+        if (!sessionId) {
+            setMessages(prev => prev.map(m =>
+                m.id === botMsg.id
+                    ? { ...m, text: 'Chưa kết nối được tới server. Vui lòng thử lại sau.', streaming: false }
+                    : m
+            ));
+            setIsStreaming(false);
+            return;
+        }
+
         let accumulated = '';
-        streamChatResponse(
-            text,
+        streamChatMessage(
+            sessionId, text,
             (chunk) => {
                 accumulated += chunk;
-                setMessages(prev => prev.map(m => m.id === botMsg.id ? { ...m, text: accumulated } : m));
+                setMessages(prev => prev.map(m =>
+                    m.id === botMsg.id ? { ...m, text: accumulated } : m
+                ));
             },
-            () => {
-                setMessages(prev => prev.map(m => m.id === botMsg.id ? { ...m, streaming: false } : m));
+            (meta) => {
+                const finalText = meta?.answer || accumulated;
+                setMessages(prev => prev.map(m =>
+                    m.id === botMsg.id ? { ...m, text: finalText, streaming: false, meta } : m
+                ));
+                setIsStreaming(false);
+            },
+            (err) => {
+                console.error('[ChatbotPage] Stream error:', err);
+                const errText = accumulated
+                    ? accumulated + '\n\n*Kết nối bị gián đoạn.*'
+                    : 'Không nhận được phản hồi từ server. Vui lòng thử lại.';
+                setMessages(prev => prev.map(m =>
+                    m.id === botMsg.id ? { ...m, text: errText, streaming: false } : m
+                ));
                 setIsStreaming(false);
             }
         );
@@ -125,31 +332,134 @@ export default function ChatbotPage() {
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input); }
     };
 
+    // ── Render ───────────────────────────────────────────────────────────────
+
+    if (!settings) {
+        return (
+            <div className="chat-page flex-center" style={{ minHeight: '100vh', background: '#000' }}>
+                <div className="loading-spinner"></div>
+                <span style={{ color: '#888', marginLeft: 12 }}>Đang kiểm tra trạng thái...</span>
+            </div>
+        );
+    }
+
+    if (settings.isChatEnabled === false) {
+        return (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 9999,
+                background: '#000'
+            }}>
+                <MaintenancePage message="Chúng tôi đang bảo trì tính năng AI Chat theo định kỳ. Vui lòng quay lại sau." />
+            </div>
+        );
+    }
+
     return (
         <div className="chat-page">
-            {/* Left: Chat */}
+            {/* ── MIDDLE: Chat ── */}
             <div className="chat-main">
-                <div className="chat-window">
-                    {messages.map(msg => (
-                        <div key={msg.id} className={`chat-bubble-wrap ${msg.role}`}>
-                            {msg.role === 'bot' && <div className="bot-avatar text-avatar">AI</div>}
-                            <div className={`chat-bubble ${msg.role}`}>
-                                <div className="bubble-content">
-                                    {renderMarkdown(msg.text)}
-                                    {msg.streaming && <span className="cursor-blink" />}
-                                </div>
-                                {msg.role === 'bot' && !msg.streaming && msg.text.length > 100 && (
-                                    <div className="bubble-actions">
-                                        <button className="bubble-action-btn" onClick={() => navigate('/graph')}>
-                                            Xem chi tiết job matching trong Graph
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                            {msg.role === 'user' && <div className="user-avatar text-avatar">U</div>}
+                {/* Chat header */}
+                <div className="chat-header">
+                    <div className="flex-center gap-12">
+                        <button 
+                            className={`btn btn-ghost history-toggle-btn ${showHistory ? 'active' : ''}`}
+                            onClick={() => setShowHistory(!showHistory)}
+                            title={showHistory ? 'Ẩn lịch sử' : 'Xem lịch sử'}
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span className="hide-mobile">{showHistory ? 'Ẩn lịch sử' : 'Lịch sử'}</span>
+                        </button>
+                        <span className="chat-header-title">Tech Radar AI</span>
+                    </div>
+                    {sessionError && (
+                        <span className="chat-status-err">Mất kết nối server</span>
+                    )}
+                    <button
+                        className="btn btn-ghost new-chat-btn"
+                        onClick={clearSession}
+                        disabled={isStreaming}
+                        title="Bắt đầu cuộc trò chuyện mới"
+                    >
+                        Cuộc trò chuyện mới
+                    </button>
+                </div>
+
+                {/* ── LEFT: History panel (Now moved here for mobile/desktop flexibility) ── */}
+                <div className="chat-content-wrap">
+                    <div className={`chat-history-panel ${showHistory ? 'is-open' : ''}`}>
+                        <div className="history-header">
+                            <span className="history-title">Lịch sử</span>
+                            <button
+                                className="new-chat-icon-btn"
+                                onClick={clearSession}
+                                disabled={isStreaming}
+                                title="Cuộc trò chuyện mới"
+                            >
+                                +
+                            </button>
                         </div>
-                    ))}
-                    <div ref={bottomRef} />
+
+                        <div className="history-list">
+                            {sessions.length === 0 && (
+                                <p className="history-empty">Chưa có cuộc trò chuyện nào.</p>
+                            )}
+                            {sessions.map(s => (
+                                <div
+                                    key={s.id}
+                                    className={`history-item${s.id === sessionId ? ' active' : ''}`}
+                                    onClick={() => {
+                                        switchSession(s.id);
+                                        if (window.innerWidth <= 1024) setShowHistory(false); // Close on selection on mobile
+                                    }}
+                                >
+                                    <div className="history-item-body">
+                                        <span className="history-item-title">{s.title}</span>
+                                        <span className="history-item-time">{formatTime(s.created_at)}</span>
+                                    </div>
+                                    <button
+                                        className="history-item-del"
+                                        onClick={(e) => deleteSession(e, s.id)}
+                                        title="Xóa"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="chat-window">
+                        {loadingHistory && (
+                            <div className="history-loading">Đang tải lịch sử…</div>
+                        )}
+                        {messages.map(msg => (
+                            <div key={msg.id} className={`chat-bubble-wrap ${msg.role}`}>
+                                {msg.role === 'bot' && <div className="bot-avatar text-avatar">AI</div>}
+                                <div className={`chat-bubble ${msg.role}`}>
+                                    <div className="bubble-content">
+                                        {renderMarkdown(msg.text)}
+                                        {msg.streaming && <span className="cursor-blink" />}
+                                    </div>
+                                    {msg.role === 'bot' && !msg.streaming && msg.text.length > 100 && (
+                                        <div className="bubble-actions">
+                                            <button className="bubble-action-btn" onClick={() => navigate('/graph')}>
+                                                Xem chi tiết job matching trong Graph
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                                {msg.role === 'user' && <div className="user-avatar text-avatar">U</div>}
+                            </div>
+                        ))}
+                        <div ref={bottomRef} />
+                    </div>
                 </div>
 
                 {/* Quick prompts */}
@@ -180,63 +490,8 @@ export default function ChatbotPage() {
                 </div>
             </div>
 
-            {/* Right: Profile panel */}
+            {/* ── RIGHT: Profile panel ── */}
             <div className="chat-sidebar">
-                <div className="card profile-panel">
-                    <div className="flex-between" style={{ marginBottom: 12 }}>
-                        <h3 className="section-title" style={{ marginBottom: 0 }}>
-                            <span>Hồ sơ của bạn</span>
-                        </h3>
-                        <button className="btn btn-ghost" style={{ padding: '4px 8px', fontSize: '0.75rem' }}
-                            onClick={() => setShowProfile(p => !p)}>
-                            {showProfile ? 'Thu gọn' : 'Mở rộng'}
-                        </button>
-                    </div>
-
-                    {showProfile && (
-                        <div className="profile-form">
-                            <div className="pf-group">
-                                <label className="pf-label">Kỹ năng hiện tại</label>
-                                <input className="pf-input" placeholder="React, Node.js, SQL..."
-                                    value={profile.skills} onChange={e => setProfile(p => ({ ...p, skills: e.target.value }))} />
-                            </div>
-                            <div className="pf-group">
-                                <label className="pf-label">Số năm kinh nghiệm</label>
-                                <input className="pf-input" placeholder="2 năm" type="text"
-                                    value={profile.exp} onChange={e => setProfile(p => ({ ...p, exp: e.target.value }))} />
-                            </div>
-                            <div className="pf-group">
-                                <label className="pf-label">Mức lương mong muốn</label>
-                                <input className="pf-input" placeholder="45 triệu" type="text"
-                                    value={profile.salary} onChange={e => setProfile(p => ({ ...p, salary: e.target.value }))} />
-                            </div>
-                            <button className="btn btn-primary w-full" style={{ marginTop: 8, justifyContent: 'center' }}
-                                onClick={() => {
-                                    const q = `Mình biết ${profile.skills || 'React, Node.js'}, ${profile.exp || '2 năm'} kinh nghiệm, lương hiện ${profile.salary || '25tr'}, nên học gì tiếp?`;
-                                    sendMessage(q);
-                                    setShowProfile(false);
-                                }}>
-                                Nhận tư vấn lộ trình
-                            </button>
-                        </div>
-                    )}
-
-                    {!showProfile && (
-                        <p className="text-2 text-sm">Nhập hồ sơ để nhận tư vấn lộ trình cá nhân hóa.</p>
-                    )}
-                </div>
-
-                <div className="card" style={{ marginTop: 12 }}>
-                    <h3 className="section-title">Gợi ý câu hỏi</h3>
-                    <div className="suggestion-list">
-                        {QUICK_PROMPTS.map((p, i) => (
-                            <button key={i} className="suggestion-item" onClick={() => sendMessage(p)}>
-                                <span className="sug-num">{i + 1}</span>
-                                <span>{p}</span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
 
                 <div className="card" style={{ marginTop: 12 }}>
                     <h3 className="section-title">Công cụ liên quan</h3>
@@ -250,6 +505,7 @@ export default function ChatbotPage() {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }

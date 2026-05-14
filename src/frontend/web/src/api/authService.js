@@ -33,6 +33,12 @@ export const getCurrentUser = async () => {
     });
 };
 
+export const getSystemStatus = async () => {
+    return await apiClient('/status', {
+        method: 'GET'
+    });
+};
+
 // Export tên hàm mock cũ để duy trì tương thích tạm thời
 export const loginMock = loginUser;
 export const registerMock = registerUser;

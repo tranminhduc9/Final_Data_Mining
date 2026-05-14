@@ -1,58 +1,6 @@
-# TechPulse VN - Docker Compose Configuration
-# Airflow orchestrates all services, runs at 22:00 VN time daily
+# version: '3.8'
 
 services:
-  # ============ AIRFLOW ORCHESTRATOR ============
-  airflow-webserver:
-    image: apache/airflow:2.8.0-python3.10
-    container_name: airflow-webserver
-    ports:
-      - "${AIRFLOW_WEBSERVER_PORT}:8080"
-    env_file:
-      - ../../.env
-    environment:
-      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
-      - AIRFLOW__CORE__DAGS_FOLDER=${AIRFLOW_DAGS_FOLDER}
-      - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__WEBSERVER__WEB_SERVER_HOST=${AIRFLOW_WEBSERVER_HOST}
-      - AIRFLOW__WEBSERVER__WEB_SERVER_PORT=${AIRFLOW_WEBSERVER_PORT}
-      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=${AIRFLOW_DAG_DIR_LIST_INTERVAL}
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
-    volumes:
-      - ./orchestrator/dags:/opt/airflow/dags
-      - airflow-data:/opt/airflow
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - kafka
-    networks:
-      - techpulse-network
-    command: bash -c "airflow db init && airflow webserver"
-    restart: unless-stopped
-
-  airflow-scheduler:
-    image: apache/airflow:2.8.0-python3.10
-    container_name: airflow-scheduler
-    env_file:
-      - ../../.env
-    environment:
-      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
-      - AIRFLOW__CORE__DAGS_FOLDER=${AIRFLOW_DAGS_FOLDER}
-      - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=${AIRFLOW_DAG_DIR_LIST_INTERVAL}
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
-    volumes:
-      - ./orchestrator/dags:/opt/airflow/dags
-      - airflow-data:/opt/airflow
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - airflow-webserver
-    networks:
-      - techpulse-network
-    command: airflow scheduler
-    restart: unless-stopped
-
   # ============ INFRASTRUCTURE ============
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
@@ -89,24 +37,19 @@ services:
     networks:
       - techpulse-network
 
-  # ============ CRAWLERS (Python) ============
-  # Crawlers are now started/stopped by Airflow DAG
-  # They remain running but Airflow controls when they actually crawl
-  
+  # ============ CRAWLERS (Python) - Skip TopCV (broken) ============
   crawler-vnexpress:
     build:
       context: ./crawl
       dockerfile: Dockerfile
     container_name: crawler-vnexpress
-    command: tail -f /dev/null  # Keep container running, Airflow will exec into it
+    command: python VNExpress.py
     volumes:
       - ./data/raw/vnexpress:/app/data/raw/vnexpress
-    env_file:
-      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MAX_ARTICLES=${MAX_ARTICLES}
-      - CRAWL_TIMEOUT_HOURS=${CRAWL_TIMEOUT_HOURS}
+      - MAX_ARTICLES=150
+      - CRAWL_INTERVAL_MINUTES=60
     depends_on:
       - kafka
     networks:
@@ -118,15 +61,13 @@ services:
       context: ./crawl
       dockerfile: Dockerfile
     container_name: crawler-genk
-    command: tail -f /dev/null  # Keep container running, Airflow will exec into it
+    command: python GenK.py
     volumes:
       - ./data/raw/genk:/app/data/raw/genk
-    env_file:
-      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MAX_ARTICLES=${MAX_ARTICLES}
-      - CRAWL_TIMEOUT_HOURS=${CRAWL_TIMEOUT_HOURS}
+      - MAX_ARTICLES=150
+      - CRAWL_INTERVAL_MINUTES=60
     depends_on:
       - kafka
     networks:
@@ -138,15 +79,13 @@ services:
       context: ./crawl
       dockerfile: Dockerfile
     container_name: crawler-dantri
-    command: tail -f /dev/null  # Keep container running, Airflow will exec into it
+    command: python DanTri.py
     volumes:
       - ./data/raw/dantri:/app/data/raw/dantri
-    env_file:
-      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MAX_ARTICLES=${MAX_ARTICLES}
-      - CRAWL_TIMEOUT_HOURS=${CRAWL_TIMEOUT_HOURS}
+      - MAX_ARTICLES=150
+      - CRAWL_INTERVAL_MINUTES=60
     depends_on:
       - kafka
     networks:
@@ -161,7 +100,7 @@ services:
       dockerfile: Dockerfile
     container_name: embedding-service
     env_file:
-      - ../../.env
+      - .env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
     depends_on:
@@ -170,22 +109,20 @@ services:
       - techpulse-network
     restart: unless-stopped
 
-  # Processing Orchestrator (Golang): Entity Extractor + Neo4j Writer + Qdrant Writer
+  # Orchestrator (Golang): Entity Extractor + Neo4j Writer + Qdrant Writer
   orchestrator:
     build:
       context: .
-      dockerfile: build/Dockerfile.orchestrator
+      dockerfile: docker/Dockerfile.orchestrator
     container_name: orchestrator
     env_file:
-      - ../../.env
+      - .env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
     depends_on:
       - kafka
     networks:
       - techpulse-network
-    # Started by Airflow DAG after crawling
-    command: tail -f /dev/null
     restart: unless-stopped
 
 networks:
@@ -196,4 +133,3 @@ volumes:
   zookeeper-data:
   zookeeper-logs:
   kafka-data:
-  airflow-data:

@@ -7,15 +7,17 @@ services:
     image: apache/airflow:2.8.0-python3.10
     container_name: airflow-webserver
     ports:
-      - "8080:8080"
+      - "${AIRFLOW_WEBSERVER_PORT}:8080"
+    env_file:
+      - ../../.env
     environment:
       - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__CORE__FERNET_KEY=FT8Lt2VuuvLtcWG3jpzTTvcVXZsyJsn69Mo0FnZ2utI=
-      - AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/dags
+      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
+      - AIRFLOW__CORE__DAGS_FOLDER=${AIRFLOW_DAGS_FOLDER}
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__WEBSERVER__WEB_SERVER_HOST=0.0.0.0
-      - AIRFLOW__WEBSERVER__WEB_SERVER_PORT=8080
-      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=30
+      - AIRFLOW__WEBSERVER__WEB_SERVER_HOST=${AIRFLOW_WEBSERVER_HOST}
+      - AIRFLOW__WEBSERVER__WEB_SERVER_PORT=${AIRFLOW_WEBSERVER_PORT}
+      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=${AIRFLOW_DAG_DIR_LIST_INTERVAL}
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
     volumes:
       - ./orchestrator/dags:/opt/airflow/dags
@@ -31,12 +33,14 @@ services:
   airflow-scheduler:
     image: apache/airflow:2.8.0-python3.10
     container_name: airflow-scheduler
+    env_file:
+      - ../../.env
     environment:
       - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__CORE__FERNET_KEY=FT8Lt2VuuvLtcWG3jpzTTvcVXZsyJsn69Mo0FnZ2utI=
-      - AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/dags
+      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
+      - AIRFLOW__CORE__DAGS_FOLDER=${AIRFLOW_DAGS_FOLDER}
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=30
+      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=${AIRFLOW_DAG_DIR_LIST_INTERVAL}
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
     volumes:
       - ./orchestrator/dags:/opt/airflow/dags
@@ -97,10 +101,12 @@ services:
     command: tail -f /dev/null  # Keep container running, Airflow will exec into it
     volumes:
       - ./data/raw/vnexpress:/app/data/raw/vnexpress
+    env_file:
+      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MAX_ARTICLES=150
-      - CRAWL_TIMEOUT_HOURS=2
+      - MAX_ARTICLES=${MAX_ARTICLES}
+      - CRAWL_TIMEOUT_HOURS=${CRAWL_TIMEOUT_HOURS}
     depends_on:
       - kafka
     networks:
@@ -115,10 +121,12 @@ services:
     command: tail -f /dev/null  # Keep container running, Airflow will exec into it
     volumes:
       - ./data/raw/genk:/app/data/raw/genk
+    env_file:
+      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MAX_ARTICLES=150
-      - CRAWL_TIMEOUT_HOURS=2
+      - MAX_ARTICLES=${MAX_ARTICLES}
+      - CRAWL_TIMEOUT_HOURS=${CRAWL_TIMEOUT_HOURS}
     depends_on:
       - kafka
     networks:
@@ -133,10 +141,12 @@ services:
     command: tail -f /dev/null  # Keep container running, Airflow will exec into it
     volumes:
       - ./data/raw/dantri:/app/data/raw/dantri
+    env_file:
+      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MAX_ARTICLES=150
-      - CRAWL_TIMEOUT_HOURS=2
+      - MAX_ARTICLES=${MAX_ARTICLES}
+      - CRAWL_TIMEOUT_HOURS=${CRAWL_TIMEOUT_HOURS}
     depends_on:
       - kafka
     networks:
@@ -151,7 +161,7 @@ services:
       dockerfile: Dockerfile
     container_name: embedding-service
     env_file:
-      - .env
+      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
     depends_on:
@@ -167,7 +177,7 @@ services:
       dockerfile: build/Dockerfile.orchestrator
     container_name: orchestrator
     env_file:
-      - .env
+      - ../../.env
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
     depends_on:

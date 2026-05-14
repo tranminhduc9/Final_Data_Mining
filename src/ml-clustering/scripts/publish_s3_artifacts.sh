@@ -11,6 +11,8 @@ Required:
 Optional:
   --tag <tag>              Snapshot tag. Defaults to params.yaml snapshot.tag
   --prefix <prefix>        S3 prefix. Defaults to ml-clustering
+  --manifest-key <key>     S3 manifest key under prefix. Defaults to latest.json
+  --no-latest              Upload artifacts only; do not update latest manifest
   --region <region>        AWS region, or set AWS_DEFAULT_REGION / MLCLUSTER_S3_REGION
   --dry-run                Print upload commands without uploading
   -h, --help               Show this help
@@ -25,6 +27,7 @@ Files uploaded:
   data/models/<tag>/best_labels.parquet
   data/labels/<tag>/cluster_labels.json
   data/raw/snapshot_<tag>/technologies.parquet
+  latest.json              Updated last, unless --no-latest is set
 EOF
 }
 
@@ -36,6 +39,8 @@ prefix="${PREFIX:-${MLCLUSTER_S3_PREFIX:-ml-clustering}}"
 region="${REGION:-${MLCLUSTER_S3_REGION:-${AWS_DEFAULT_REGION:-}}}"
 tag="${TAG:-}"
 dry_run="false"
+publish_latest="${PUBLISH_LATEST:-true}"
+manifest_key="${MANIFEST_KEY:-${MLCLUSTER_S3_MANIFEST_KEY:-latest.json}}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -51,9 +56,17 @@ while [[ $# -gt 0 ]]; do
       region="${2:-}"
       shift 2
       ;;
+    --manifest-key)
+      manifest_key="${2:-}"
+      shift 2
+      ;;
     --tag)
       tag="${2:-}"
       shift 2
+      ;;
+    --no-latest)
+      publish_latest="false"
+      shift
       ;;
     --dry-run)
       dry_run="true"
@@ -96,6 +109,7 @@ fi
 
 prefix="${prefix#/}"
 prefix="${prefix%/}"
+manifest_key="${manifest_key#/}"
 
 labels_file="data/models/$tag/best_labels.parquet"
 cluster_labels_file="data/labels/$tag/cluster_labels.json"
@@ -126,10 +140,18 @@ upload() {
   local dest="$2"
   echo "Uploading $src -> $dest"
   if [[ "$dry_run" == "true" ]]; then
-    echo "DRY RUN: aws ${aws_args[*]} s3 cp $src $dest"
+    local dry_cmd="aws"
+    if ((${#aws_args[@]})); then
+      dry_cmd="$dry_cmd ${aws_args[*]}"
+    fi
+    echo "DRY RUN: $dry_cmd s3 cp $src $dest"
     return 0
   fi
-  aws "${aws_args[@]}" s3 cp "$src" "$dest"
+  if ((${#aws_args[@]})); then
+    aws "${aws_args[@]}" s3 cp "$src" "$dest"
+  else
+    aws s3 cp "$src" "$dest"
+  fi
 }
 
 base_uri="s3://$bucket"
@@ -141,6 +163,23 @@ upload "$labels_file" "$base_uri/models/$tag/best_labels.parquet"
 upload "$cluster_labels_file" "$base_uri/labels/$tag/cluster_labels.json"
 upload "$tech_file" "$base_uri/raw/snapshot_$tag/technologies.parquet"
 
+if [[ "$publish_latest" == "true" ]]; then
+  manifest_file="$(mktemp)"
+  trap 'rm -f "$manifest_file"' EXIT
+  cat >"$manifest_file" <<EOF
+{
+  "tag": "$tag",
+  "created_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "artifacts": {
+    "best_labels": "models/$tag/best_labels.parquet",
+    "cluster_labels": "labels/$tag/cluster_labels.json",
+    "technologies": "raw/snapshot_$tag/technologies.parquet"
+  }
+}
+EOF
+  upload "$manifest_file" "$base_uri/$manifest_key"
+fi
+
 cat <<EOF
 
 Done.
@@ -149,9 +188,13 @@ Backend/API environment:
   MLCLUSTER_S3_BUCKET=$bucket
   MLCLUSTER_S3_PREFIX=$prefix
   MLCLUSTER_S3_REGION=$region
+  MLCLUSTER_SNAPSHOT_TAG=latest
+  MLCLUSTER_S3_MANIFEST_KEY=$manifest_key
+  MLCLUSTER_RELOAD_TTL_SECONDS=300
 
 Runtime artifact paths:
   $base_uri/models/$tag/best_labels.parquet
   $base_uri/labels/$tag/cluster_labels.json
   $base_uri/raw/snapshot_$tag/technologies.parquet
+  $base_uri/$manifest_key
 EOF

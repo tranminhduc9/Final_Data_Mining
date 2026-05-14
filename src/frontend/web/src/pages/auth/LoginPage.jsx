@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser } from '../../api/authService';
+import { loginUser, getCurrentUser, getSystemStatus } from '../../api/authService';
 import './Auth.css';
 
 export default function LoginPage() {
@@ -16,13 +16,54 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
+            // 1. Fetch system status (Don't block yet, we need to know the role first)
+            let status = null;
+            try {
+                status = await getSystemStatus();
+                if (status) {
+                    localStorage.setItem('feature_graph', String(status.feature_graph));
+                    localStorage.setItem('feature_rag', String(status.feature_rag));
+                    localStorage.setItem('feature_chat', String(status.feature_chat));
+                }
+            } catch (e) {
+                console.error('Failed to get system status', e);
+            }
+
+            // 2. Proceed with Login
             const res = await loginUser({ email, password });
             if (res.access_token) {
                 localStorage.setItem('access_token', res.access_token);
                 if (res.refresh_token) {
                     localStorage.setItem('refresh_token', res.refresh_token);
                 }
-                navigate('/dashboard');
+                localStorage.setItem('login_timestamp', Date.now().toString());
+
+                // Check user role for redirection and maintenance bypass
+                let userRole = 'user';
+                try {
+                    const user = await getCurrentUser();
+                    if (user && user.role) {
+                        userRole = user.role;
+                    }
+                } catch (userError) {
+                    console.error('Failed to fetch user info:', userError);
+                }
+
+                // If system is under maintenance, block non-admin users
+                if (status && status.maintenance_web === true && userRole !== 'admin') {
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    localStorage.removeItem('login_timestamp');
+                    setError('Hệ thống đang bảo trì phiên bản Web. Vui lòng quay lại sau.');
+                    setLoading(false);
+                    return;
+                }
+
+                if (userRole === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
             }

@@ -1,10 +1,12 @@
 import { apiClient } from '../utils/apiClient';
 
 // GET /graph/explore — keywords: array[string], depth: integer (default 1)
-export const exploreGraph = async (keywords = [], depth = 1) => {
+export const exploreGraph = async (keywords = [], depth = 1, location = '', minSalary = null) => {
     const params = new URLSearchParams();
     keywords.forEach(kw => params.append('keywords', kw));
     params.append('depth', depth);
+    if (location) params.append('location', location);
+    if (minSalary !== null && minSalary !== '') params.append('min_salary', minSalary.toString());
     return await apiClient(`/graph/explore?${params.toString()}`, { method: 'GET' });
 };
 

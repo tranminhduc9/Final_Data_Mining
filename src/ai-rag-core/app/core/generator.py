@@ -1,8 +1,6 @@
 import asyncio
 from functools import lru_cache
 
-from langchain_core.messages import SystemMessage, HumanMessage
-
 from app.config import get_settings
 
 _MAX_RETRIES = 3
@@ -38,6 +36,8 @@ async def generate(messages: list[dict]) -> str:
     messages: output của prompt_builder.build_messages()
               [{"role": "system", "content": ...}, {"role": "user", "content": ...}]
     """
+    from langchain_core.messages import HumanMessage, SystemMessage
+
     settings = get_settings()
     llm = get_llm()
 

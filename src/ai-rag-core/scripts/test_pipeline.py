@@ -51,7 +51,7 @@ async def run_timed(query: str) -> dict:
     # --- Parallel: vector search + graph search ---
     t = time.perf_counter()
     candidates, graph_data = await asyncio.gather(
-        vector_search(query, top_k=10),
+        vector_search(query, top_k=5),
         graph_search(query),
     )
     t_retrieve = time.perf_counter() - t

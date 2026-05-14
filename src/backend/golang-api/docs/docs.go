@@ -950,6 +950,253 @@ const docTemplate = `{
                 }
             }
         },
+        "/chat/sessions": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Trả về toàn bộ session của user, sắp xếp theo thời gian tạo mới nhất. Title có thể null nếu RAG chưa set.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatbot"
+                ],
+                "summary": "Lấy danh sách session chat của user hiện tại",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ListSessionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/clustering/clusters": {
+            "get": {
+                "description": "Trả về toàn bộ cluster đã được phân (noise cluster -1 bị loại). Mỗi item là ` + "`" + `ClusterSummary` + "`" + ` (không kèm member list — dùng ` + "`" + `/clustering/clusters/{id}` + "`" + ` để lấy chi tiết).\n\nQuery param ` + "`" + `is_coherent` + "`" + ` là tuỳ chọn:\n- ` + "`" + `true` + "`" + `  → chỉ trả cluster có nhãn coherent (đa số trường hợp dùng cho UI).\n- ` + "`" + `false` + "`" + ` → chỉ trả cluster bị LLM đánh giá thiếu nhất quán (dùng cho admin/debug).\n- bỏ qua → trả tất cả.\n\nUpstream: GET /clusters trên ml-clustering (port 8001).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clustering"
+                ],
+                "summary": "List all clusters",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "Filter theo cờ is_coherent (bỏ qua = trả tất cả)",
+                        "name": "is_coherent",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ListClustersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "is_coherent không phải boolean",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "502": {
+                        "description": "Upstream trả status không hợp lệ",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "ml-clustering không reachable hoặc đang maintenance",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/clustering/clusters/{id}": {
+            "get": {
+                "description": "Trả về metadata đầy đủ của 1 cluster: label, domain, description (LLM-generated), coherence_reason, outliers, và toàn bộ danh sách tech members trong cluster.\n\nLưu ý: ` + "`" + `id = -1` + "`" + ` là noise cluster (không có metadata) — sẽ trả 404.\n\nUpstream: GET /clusters/{id} trên ml-clustering (port 8001).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clustering"
+                ],
+                "summary": "Get cluster detail by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Cluster ID (số nguyên, \u003e= 0)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ClusterDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "id không phải số nguyên",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Cluster id không tồn tại",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "502": {
+                        "description": "Upstream trả status không hợp lệ",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "ml-clustering không reachable hoặc đang maintenance",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/clustering/predict/batch": {
+            "post": {
+                "description": "Tra cluster cho nhiều tech name trong 1 request. Mỗi item trong ` + "`" + `results` + "`" + ` luôn có field ` + "`" + `found` + "`" + ` để client biết tech đó có trong snapshot hay không (không bao giờ trả 404 ở level batch — chỉ trả 4xx/5xx khi request invalid hoặc upstream lỗi).\n\nField ` + "`" + `snapshot_tag` + "`" + ` ở response chính là phiên bản snapshot ml-clustering — client có thể dùng làm cache key.\n\nUpstream: POST /predict/batch trên ml-clustering (port 8001).",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clustering"
+                ],
+                "summary": "Batch lookup clusters for multiple tech names",
+                "parameters": [
+                    {
+                        "description": "Danh sách tech names cần tra (không rỗng)",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.BatchPredictRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.BatchPredictResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Body không hợp lệ hoặc tech_names rỗng",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "502": {
+                        "description": "Upstream trả status không hợp lệ",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "ml-clustering không reachable hoặc đang maintenance",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/clustering/tech/{name}/cluster": {
+            "get": {
+                "description": "Tra cứu cluster của 1 tech theo tên (case-insensitive).\n\nEdge cases:\n- Tech không có trong snapshot hiện tại → upstream trả 404 (gateway forward thành 404).\n- Tech ở noise cluster (-1) → 200 với ` + "`" + `cluster_id: -1` + "`" + ` và ` + "`" + `label: null` + "`" + `.\n- Tên có ký tự đặc biệt (C++, C#, khoảng trắng) → tự động URL-encode khi forward sang upstream.\n\nUpstream: GET /tech/{name}/cluster trên ml-clustering (port 8001).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clustering"
+                ],
+                "summary": "Get the cluster a technology belongs to",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tên technology (case-insensitive, ví dụ: Python, C++, NodeJS)",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.TechClusterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "name rỗng",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Tech name không có trong snapshot hiện tại",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "502": {
+                        "description": "Upstream trả status không hợp lệ",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "ml-clustering không reachable hoặc đang maintenance",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/compare/search": {
             "get": {
                 "produces": [
@@ -1002,6 +1249,7 @@ const docTemplate = `{
         },
         "/graph/explore": {
             "get": {
+                "description": "Returns nodes and edges up to the given depth. Job nodes include computed fields: min_salary (float) and location (from connected Company). Company nodes include location.",
                 "produces": [
                     "application/json"
                 ],
@@ -1023,15 +1271,57 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Traversal depth: 1 or 2 (default 1). Ignored when location is set.",
+                        "description": "Traversal depth: 1 or 2 (default 1)",
                         "name": "depth",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GraphExploreResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/graph/explore_by_location": {
+            "get": {
+                "description": "Returns Technology + Company nodes for companies matching the given location that use the keyword technology. Graph pattern: Technology ←[USES]- Company(location) -[USES]→ OtherTechnology.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "graph"
+                ],
+                "summary": "Explore graph filtered by company location",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Technology or Skill name",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
-                        "description": "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword.",
+                        "description": "Company location filter (partial, case-insensitive)",
                         "name": "location",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1315,6 +1605,144 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "domain.BatchPredictRequest": {
+            "type": "object",
+            "required": [
+                "tech_names"
+            ],
+            "properties": {
+                "tech_names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "Python",
+                        "NodeJS",
+                        "Rust"
+                    ]
+                }
+            }
+        },
+        "domain.BatchPredictResponse": {
+            "type": "object",
+            "properties": {
+                "n_found": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "n_not_found": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.TechClusterResult"
+                    }
+                },
+                "snapshot_tag": {
+                    "type": "string",
+                    "example": "2025-05-01"
+                }
+            }
+        },
+        "domain.ClusterDetail": {
+            "type": "object",
+            "properties": {
+                "cluster_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "coherence_reason": {
+                    "type": "string",
+                    "x-nullable": "true"
+                },
+                "confidence": {
+                    "type": "number",
+                    "example": 0.87
+                },
+                "description": {
+                    "type": "string",
+                    "example": "Cluster chứa các công nghệ phía backend dùng Python."
+                },
+                "domain": {
+                    "type": "string",
+                    "example": "Backend"
+                },
+                "is_coherent": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Lập trình Backend Python"
+                },
+                "label_en": {
+                    "type": "string",
+                    "example": "Python Backend Programming"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "Python",
+                        "Django",
+                        "FastAPI",
+                        "Flask"
+                    ]
+                },
+                "n_members": {
+                    "type": "integer",
+                    "example": 42
+                },
+                "outliers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "jQuery",
+                        "WordPress"
+                    ]
+                }
+            }
+        },
+        "domain.ClusterSummary": {
+            "type": "object",
+            "properties": {
+                "cluster_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "confidence": {
+                    "type": "number",
+                    "example": 0.87
+                },
+                "domain": {
+                    "type": "string",
+                    "example": "Backend"
+                },
+                "is_coherent": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Lập trình Backend Python"
+                },
+                "label_en": {
+                    "type": "string",
+                    "example": "Python Backend Programming"
+                },
+                "n_members": {
+                    "type": "integer",
+                    "example": 42
+                }
+            }
+        },
         "domain.CompareMonthlyCount": {
             "type": "object",
             "properties": {
@@ -1522,6 +1950,39 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.TechClusterResult": {
+            "type": "object",
+            "properties": {
+                "cluster_id": {
+                    "type": "integer",
+                    "x-nullable": "true"
+                },
+                "domain": {
+                    "type": "string",
+                    "x-nullable": "true"
+                },
+                "found": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "x-nullable": "true"
+                },
+                "label_en": {
+                    "type": "string",
+                    "x-nullable": "true"
+                },
+                "tech_id": {
+                    "type": "string",
+                    "x-nullable": "true"
+                },
+                "tech_name": {
+                    "type": "string",
+                    "example": "Python"
+                }
+            }
+        },
         "dto.AlterUserRequest": {
             "type": "object",
             "required": [
@@ -1570,6 +2031,22 @@ const docTemplate = `{
                 },
                 "token_type": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.BatchPredictResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.BatchPredictResponse"
+                }
+            }
+        },
+        "dto.ClusterDetailResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.ClusterDetail"
                 }
             }
         },
@@ -1652,6 +2129,17 @@ const docTemplate = `{
                         "active",
                         "blocked"
                     ]
+                }
+            }
+        },
+        "dto.ListClustersResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.ClusterSummary"
+                    }
                 }
             }
         },
@@ -1821,6 +2309,14 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.TechClusterResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/domain.TechClusterResult"
+                }
+            }
+        },
         "dto.Top10Response": {
             "type": "object",
             "properties": {
@@ -1955,6 +2451,17 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.ListSessionsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler.SessionItem"
+                    }
+                }
+            }
+        },
         "handler.PostMessageRequest": {
             "type": "object",
             "required": [
@@ -1965,6 +2472,20 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 2000,
                     "minLength": 1
+                }
+            }
+        },
+        "handler.SessionItem": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },
@@ -2049,7 +2570,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Final Data Mining API",
-	Description:      "Backend API for Final Data Mining project — radar, compare, graph, auth, chat endpoints.",
+	Description:      "Backend API for Final Data Mining project — radar, compare, graph, clustering, auth, chat endpoints.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

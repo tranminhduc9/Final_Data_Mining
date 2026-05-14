@@ -51,9 +51,24 @@ services:
     env_file:
       - .env
     environment:
-      PYTHON_AI_BASE_URL: "http://rag-service:8000"   # docker network override
+      PYTHON_AI_BASE_URL: "http://rag-service:8000"                # docker network override
+      PYTHON_ML_CLUSTERING_BASE_URL: "http://ml-clustering:8001"   # docker network override
     depends_on:
       - rag-service
+      - ml-clustering
+    restart: unless-stopped
+
+  ml-clustering:
+    build:
+      context: ./src/ml-clustering
+      dockerfile: Dockerfile
+    container_name: techpulse-ml-clustering
+    env_file:
+      - .env
+    environment:
+      MLCLUSTER_S3_CACHE_DIR: /tmp/ml-clustering-cache
+    volumes:
+      - ml_clustering_cache:/tmp/ml-clustering-cache
     restart: unless-stopped
 
   mlflow:
@@ -62,7 +77,7 @@ services:
     ports:
       - "5001:5000"
     volumes:
-      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core:/Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core
+      - ./src/ai-rag-core:/mlflow-data
     command:
       - mlflow
       - server
@@ -71,9 +86,9 @@ services:
       - --port
       - "5000"
       - --backend-store-uri
-      - sqlite:////Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core/mlflow.db
+      - sqlite:////mlflow-data/mlflow.db
       - --default-artifact-root
-      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ai-rag-core/mlruns
+      - /mlflow-data/mlruns
     restart: unless-stopped
 
   mlflow-clustering:
@@ -82,7 +97,7 @@ services:
     ports:
       - "5002:5000"
     volumes:
-      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering:/Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering
+      - ./src/ml-clustering:/mlflow-data
     command:
       - mlflow
       - server
@@ -91,12 +106,13 @@ services:
       - --port
       - "5000"
       - --backend-store-uri
-      - sqlite:////Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering/mlruns.db
+      - sqlite:////mlflow-data/mlruns.db
       - --default-artifact-root
-      - /Users/koiita/Downloads/Final_Data_Mining-1/src/ml-clustering/mlruns
+      - /mlflow-data/mlruns
     restart: unless-stopped
 
 volumes:
   neo4j_data:
   neo4j_logs:
   redis_data:
+  ml_clustering_cache:

@@ -1,3 +1,11 @@
+![banner](banner.png)
+
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
+  <a href="https://github.com/tranminhduc9/Final_Data_Mining/stargazers"><img src="https://img.shields.io/github/stars/tranminhduc9/Final_Data_Mining?style=flat" alt="GitHub Stars"></a>
+  <a href="https://github.com/tranminhduc9/Final_Data_Mining/graphs/contributors"><img src="https://img.shields.io/github/contributors/tranminhduc9/Final_Data_Mining" alt="GitHub Contributors"></a>
+</p>
+
 # 🚀 TechPulse VN
 
 **Nền tảng Intelligence Phân tích Xu hướng Công nghệ & Thị trường Tuyển dụng IT**
@@ -87,3 +95,9 @@ TechPulse-VN/
 | 6 | QC / Tester | `tests/` | Test Functional, API, Data Quality, Performance |
 
 ---
+
+## Contributors
+
+<a href="https://github.com/tranminhduc9/Final_Data_Mining/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tranminhduc9/Final_Data_Mining" />
+</a>

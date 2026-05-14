@@ -1,10 +1,9 @@
 .graph-page {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--topbar-h) - 24px);
-    /* Tăng chiều cao tổng thể */
+    min-height: calc(100vh - var(--header-h));
     gap: 12px;
-    padding: 0 12px 12px 12px;
+    padding: 12px;
 }
 
 .graph-search-bar {
@@ -67,6 +66,13 @@
     gap: 12px;
     flex: 1;
     flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .journey-search-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 .journey-search-field {
@@ -202,6 +208,12 @@
     flex-wrap: wrap;
 }
 
+@media (max-width: 640px) {
+    .graph-controls {
+        justify-content: space-between;
+    }
+}
+
 .control-group-inline {
     display: flex;
     align-items: center;
@@ -250,6 +262,13 @@
     gap: 12px;
     overflow: hidden;
     position: relative;
+}
+
+@media (max-width: 1024px) {
+    .graph-body {
+        flex-direction: column;
+        overflow: visible;
+    }
 }
 
 /* Filter panel */
@@ -310,8 +329,7 @@
     border-radius: var(--radius);
     position: relative;
     overflow: hidden;
-    min-height: 600px;
-    /* Tăng chiều cao tối thiểu của đồ thị */
+    min-height: 500px;
     display: flex;
 }
 
@@ -435,6 +453,14 @@
     gap: 12px;
     overflow-y: auto;
     padding-right: 4px;
+}
+
+@media (max-width: 1024px) {
+    .graph-side-panels {
+        width: 100%;
+        overflow: visible;
+        padding-right: 0;
+    }
 }
 
 /* Journey panel */

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/domain"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/neo4jrepo"
@@ -104,6 +105,7 @@ func (s *GraphService) Explore(ctx context.Context, keywords []string, depth int
 		result.Edges = append(result.Edges, *e)
 	}
 
+	enrichNodeProps(result)
 	return result, nil
 }
 
@@ -206,7 +208,65 @@ func (s *GraphService) ExploreByLocation(ctx context.Context, keyword, location 
 	for _, e := range edgeMap {
 		result.Edges = append(result.Edges, *e)
 	}
+	enrichNodeProps(result)
 	return result, nil
+}
+
+// parseSalaryMin extracts the lower bound from Vietnamese salary strings.
+// "Từ X triệu" → X  |  "X-Y triệu" → X
+func parseSalaryMin(s string) (float64, bool) {
+	if idx := strings.Index(s, "triệu"); idx >= 0 {
+		s = strings.TrimSpace(s[:idx])
+	}
+	s = strings.TrimPrefix(strings.TrimPrefix(s, "Từ "), "từ ")
+	s = strings.TrimSpace(s)
+	if idx := strings.Index(s, "-"); idx > 0 {
+		if v, err := strconv.ParseFloat(strings.TrimSpace(s[:idx]), 64); err == nil {
+			return v, true
+		}
+	}
+	if v, err := strconv.ParseFloat(s, 64); err == nil {
+		return v, true
+	}
+	return 0, false
+}
+
+// enrichNodeProps adds computed fields to nodes for client-side filtering:
+// - Job nodes: min_salary (float, lower bound from salary string) and location (from connected Company via HIRES_FOR)
+func enrichNodeProps(result *domain.GraphResult) {
+	companyLoc := map[string]string{}
+	for _, node := range result.Nodes {
+		for _, l := range node.Labels {
+			if l == "Company" {
+				if loc, _ := node.Properties["location"].(string); loc != "" {
+					companyLoc[node.ID] = loc
+				}
+				break
+			}
+		}
+	}
+	jobCompany := map[string]string{}
+	for _, e := range result.Edges {
+		if e.Type == "HIRES_FOR" {
+			jobCompany[e.Source] = e.Target
+		}
+	}
+	for i, node := range result.Nodes {
+		for _, l := range node.Labels {
+			if l == "Job" {
+				sal, _ := node.Properties["salary"].(string)
+				if v, ok := parseSalaryMin(sal); ok {
+					result.Nodes[i].Properties["min_salary"] = v
+				}
+				if cid, ok := jobCompany[node.ID]; ok {
+					if loc, ok := companyLoc[cid]; ok {
+						result.Nodes[i].Properties["location"] = loc
+					}
+				}
+				break
+			}
+		}
+	}
 }
 
 // sanitizeNodeProps removes heavy fields (e.g. Article.content) to keep the response lean.

@@ -1,10 +1,13 @@
 from functools import lru_cache
-from sentence_transformers import SentenceTransformer
+from typing import Any
+
 from app.config import get_settings
 
 
 @lru_cache(maxsize=1)
-def get_embedder() -> SentenceTransformer:
+def get_embedder() -> Any:
+    from sentence_transformers import SentenceTransformer
+
     settings = get_settings()
     return SentenceTransformer(settings.embedding_model)
 

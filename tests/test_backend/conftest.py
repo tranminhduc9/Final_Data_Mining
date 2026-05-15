@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-GOLANG_API_URL = "http://localhost:8080/api/v1"
-PYTHON_AI_URL = "http://localhost:8000"
+GOLANG_API_URL = "http://127.0.0.1:8080/api/v1"
+PYTHON_AI_URL = "http://127.0.0.1:8000"
 
 @pytest.fixture(scope="session")
 def api_urls():

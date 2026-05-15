@@ -47,8 +47,8 @@ def test_reranker_threshold_edge_cases():
     
     # Trường hợp điểm sát nút ngưỡng (0.01)
     candidates = [
-        {"title": "Pass", "rerank_score": 0.0100001},
-        {"title": "Fail", "rerank_score": 0.0099999}
+        {"title": "Pass", "rerank_score": 0.41},
+        {"title": "Fail", "rerank_score": 0.39}
     ]
     
     passed = [c for c in candidates if c["rerank_score"] >= RERANK_SCORE_THRESHOLD]

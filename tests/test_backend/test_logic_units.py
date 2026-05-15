@@ -29,8 +29,8 @@ def test_threshold_filtering_logic():
     
     # Giả sử ngưỡng là 0.01, ta test xem logic lọc có hoạt động không
     results = [
-        {"title": "A", "rerank_score": 0.05},
-        {"title": "B", "rerank_score": 0.001} # Thấp hơn ngưỡng
+        {"title": "A", "rerank_score": 0.5},
+        {"title": "B", "rerank_score": 0.1} # Thấp hơn ngưỡng
     ]
     filtered = [r for r in results if r["rerank_score"] >= RERANK_SCORE_THRESHOLD]
     

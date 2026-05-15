@@ -23,11 +23,11 @@ func (h *GraphHandler) Index(c *gin.Context) {
 
 // Explore godoc
 // @Summary      Explore knowledge graph starting from keyword nodes
+// @Description  Returns nodes and edges up to the given depth. Job nodes include computed fields: min_salary (float) and location (from connected Company). Company nodes include location.
 // @Tags         graph
 // @Produce      json
 // @Param        keywords  query  []string  true   "Keywords (Technology or Skill names)"  collectionFormat(multi)
-// @Param        depth     query  int       false  "Traversal depth: 1 or 2 (default 1). Ignored when location is set."
-// @Param        location  query  string    false  "Filter by company location (partial, case-insensitive). When set, requires exactly one keyword."
+// @Param        depth     query  int       false  "Traversal depth: 1 or 2 (default 1)"
 // @Success      200 {object} dto.GraphExploreResponse
 // @Failure      400 {object} dto.ErrorResponse
 // @Failure      503 {object} dto.ErrorResponse
@@ -49,21 +49,6 @@ func (h *GraphHandler) Explore(c *gin.Context) {
 		return
 	}
 
-	location := strings.TrimSpace(c.Query("location"))
-	if location != "" {
-		if len(keywords) != 1 {
-			c.JSON(http.StatusBadRequest, gin.H{"message": "exactly one keyword is required when location filter is used"})
-			return
-		}
-		result, err := h.graphService.ExploreByLocation(c.Request.Context(), keywords[0], location)
-		if err != nil {
-			c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to explore graph: " + err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"data": result})
-		return
-	}
-
 	depthStr := c.DefaultQuery("depth", "1")
 	depth, err := strconv.Atoi(depthStr)
 	if err != nil || (depth != 1 && depth != 2) {
@@ -72,6 +57,34 @@ func (h *GraphHandler) Explore(c *gin.Context) {
 	}
 
 	result, err := h.graphService.Explore(c.Request.Context(), keywords, depth)
+	if err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to explore graph: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": result})
+}
+
+// ExploreByLocation godoc
+// @Summary      Explore graph filtered by company location
+// @Description  Returns Technology + Company nodes for companies matching the given location that use the keyword technology. Graph pattern: Technology ←[USES]- Company(location) -[USES]→ OtherTechnology.
+// @Tags         graph
+// @Produce      json
+// @Param        keyword   query  string  true  "Technology or Skill name"
+// @Param        location  query  string  true  "Company location filter (partial, case-insensitive)"
+// @Success      200 {object} dto.GraphExploreResponse
+// @Failure      400 {object} dto.ErrorResponse
+// @Failure      503 {object} dto.ErrorResponse
+// @Router       /graph/explore_by_location [get]
+func (h *GraphHandler) ExploreByLocation(c *gin.Context) {
+	keyword := strings.TrimSpace(c.Query("keyword"))
+	location := strings.TrimSpace(c.Query("location"))
+	if keyword == "" || location == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "keyword and location are required"})
+		return
+	}
+
+	result, err := h.graphService.ExploreByLocation(c.Request.Context(), keyword, location)
 	if err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "failed to explore graph: " + err.Error()})
 		return

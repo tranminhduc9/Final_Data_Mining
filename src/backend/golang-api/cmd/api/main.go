@@ -1,6 +1,6 @@
 // @title           Final Data Mining API
 // @version         1.0
-// @description     Backend API for Final Data Mining project — radar, compare, graph, auth, chat endpoints.
+// @description     Backend API for Final Data Mining project — radar, compare, graph, clustering, auth, chat endpoints.
 // @host            localhost:8080
 // @BasePath        /api/v1
 // @securityDefinitions.apikey BearerAuth

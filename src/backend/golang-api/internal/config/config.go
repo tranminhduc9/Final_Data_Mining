@@ -13,6 +13,7 @@ type Config struct {
 	Port                     string
 	PostgresConnectionString string
 	PythonAIBaseURL          string
+	PythonMLClusteringBaseURL string
 	JWTSecret                string
 	Neo4jURI                 string
 	Neo4jUsername            string
@@ -34,6 +35,7 @@ func Load() (*Config, error) {
 		Port:                     getEnv("PORT", "8080"),
 		PostgresConnectionString: normalize(getEnv("PostgreSQL_CONNECTION_STRING", "")),
 		PythonAIBaseURL:          getEnv("PYTHON_AI_BASE_URL", "http://localhost:8000"),
+		PythonMLClusteringBaseURL: getEnv("PYTHON_ML_CLUSTERING_BASE_URL", "http://localhost:8001"),
 		JWTSecret:                getEnv("JWT_SECRET", "change-this-in-production"),
 		Neo4jURI:                 getEnv("NEO4J_URI", ""),
 		Neo4jUsername:            getEnv("NEO4J_USERNAME", ""),

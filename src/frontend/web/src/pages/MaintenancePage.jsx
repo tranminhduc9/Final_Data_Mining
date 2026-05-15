@@ -1,15 +1,23 @@
 import './MaintenancePage.css';
 
-export default function MaintenancePage() {
+export default function MaintenancePage({ message }) {
     return (
         <div className="maintenance-wrapper">
             <div className="maintenance-content">
                 <div className="icon-pulse">🚧</div>
                 <h1>Hệ Thống Đang Bảo Trì</h1>
-                <p>Tech Radar VN đang tiến hành nâng cấp thuật toán AI và tối ưu hoá dữ liệu định kỳ. Chúng tôi sẽ nhanh chóng khôi phục hệ thống.</p>
-                <div className="maintenance-footer">
-                    * Quyền Admin? <a href="/admin">Khu vực Quản trị nội bộ</a>
+                <p>{message || 'Chúng tôi đang tiến hành bảo trì định kỳ. Vui lòng quay lại sau.'}</p>
+                
+                <div style={{ marginBottom: '30px' }}>
+                    <button 
+                        className="btn btn-primary" 
+                        onClick={() => window.location.href = '/dashboard'}
+                        style={{ padding: '12px 32px', fontSize: '1rem', fontWeight: '600' }}
+                    >
+                        Quay lại Trang chủ
+                    </button>
                 </div>
+
             </div>
         </div>
     );

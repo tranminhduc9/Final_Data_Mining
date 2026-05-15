@@ -1,8 +1,6 @@
 import asyncio
 from typing import AsyncIterator
 
-from langchain_core.messages import SystemMessage, HumanMessage
-
 from app.core.generator import get_llm
 
 _MAX_RETRIES = 3
@@ -16,6 +14,8 @@ async def generate_stream(messages: list[dict]) -> AsyncIterator[str]:
 
     messages: output của prompt_builder.build_messages()
     """
+    from langchain_core.messages import HumanMessage, SystemMessage
+
     llm = get_llm()
 
     lc_messages = []

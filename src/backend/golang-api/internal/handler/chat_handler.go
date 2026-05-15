@@ -10,16 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/middleware"
+	"github.com/techpulsevn/final-data-mining/golang-api/internal/repository/postgres"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/service"
 	"github.com/techpulsevn/final-data-mining/golang-api/internal/sse"
 )
 
 type ChatHandler struct {
-	AI *service.AIClient
+	AI          *service.AIClient
+	SessionRepo *postgres.ChatSessionRepository
 }
 
-func NewChatHandler(ai *service.AIClient) *ChatHandler {
-	return &ChatHandler{AI: ai}
+func NewChatHandler(ai *service.AIClient, sessionRepo *postgres.ChatSessionRepository) *ChatHandler {
+	return &ChatHandler{AI: ai, SessionRepo: sessionRepo}
 }
 
 // ── DTOs ──────────────────────────────────────────────────────────────────────
@@ -42,7 +44,51 @@ type IndexResponse struct {
 	Neo4j  bool   `json:"neo4j"`
 }
 
+// SessionItem là 1 phần tử trong danh sách session.
+type SessionItem struct {
+	SessionID string     `json:"session_id"`
+	Title     *string    `json:"title"`
+	CreatedAt time.Time  `json:"created_at"`
+}
+
+// ListSessionsResponse là body trả về cho GET /chat/sessions.
+type ListSessionsResponse struct {
+	Data []SessionItem `json:"data"`
+}
+
 // ── Handlers ──────────────────────────────────────────────────────────────────
+
+// ListSessions godoc
+// @Summary  Lấy danh sách session chat của user hiện tại
+// @Description  Trả về toàn bộ session của user, sắp xếp theo thời gian tạo mới nhất. Title có thể null nếu RAG chưa set.
+// @Tags     chatbot
+// @Security BearerAuth
+// @Produce  json
+// @Success  200 {object} ListSessionsResponse
+// @Failure  401 {object} map[string]string
+// @Failure  502 {object} map[string]string
+// @Router   /chat/sessions [get]
+func (h *ChatHandler) ListSessions(c *gin.Context) {
+	userID := userIDFromContext(c)
+	if userID == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		return
+	}
+	rows, err := h.SessionRepo.ListByUserID(c.Request.Context(), *userID)
+	if err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+		return
+	}
+	items := make([]SessionItem, 0, len(rows))
+	for _, r := range rows {
+		items = append(items, SessionItem{
+			SessionID: r.ID,
+			Title:     r.Title,
+			CreatedAt: r.CreatedAt,
+		})
+	}
+	c.JSON(http.StatusOK, ListSessionsResponse{Data: items})
+}
 
 // Index godoc
 // @Summary  Health check của RAG service (proxy)

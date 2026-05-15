@@ -18,8 +18,7 @@ from src.database.utils import neo4j_config as neo4j_config_module
 
 sys.modules["database_connection"] = db_module
 sys.modules["neo4j_config"] = neo4j_config_module
-
-from src.database.utils import multi_source_import_v3 as module
+from src.database.utils import import_multi_source as module
 
 RelationshipBuilder = module.RelationshipBuilder
 
@@ -121,24 +120,27 @@ def test_import_topcv_data_extracts_jobs_and_skills(tmp_path, builder):
                 "source_platform": "TopCV",
                 "post_detail": [
                     {
-                        "title": "Junior Python Developer",
-                        "description": "Cần Python, React và công ty FPT.",
-                        "created_at": "2026-04-10",
-                        "entities": {
-                            "SKILL/TECH": ["Python", "React"],
-                            "ORG": ["FPT"],
-                            "SALARY": ["10 - 20 triệu"],
+                        "job": {
+                            "title": "Junior Python Developer",
+                            "description": "Cần Python, React và công ty FPT.",
+                            "due_date": "2026-04-10",
+                            "salary": "10 - 20 triệu",
+                            "source_url": "https://topcv.vn/..."
                         },
+                        "company": {"name": "FPT", "field": "Tech", "location": "Hanoi"},
+                        "skills": ["Python", "React"],
+                        "technologies": ["Python", "React"]
                     },
                     {
-                        "title": "Senior Backend Engineer",
-                        "description": "Lương thoả thuận, yêu cầu AWS.",
-                        "created_at": "2026-04-11",
-                        "entities": {
-                            "SKILL/TECH": ["AWS"],
-                            "ORG": ["OpenAI"],
-                            "SALARY": ["Thoả thuận"],
+                        "job": {
+                            "title": "Senior Backend Engineer",
+                            "description": "Lương thoả thuận, yêu cầu AWS.",
+                            "due_date": "2026-04-11",
+                            "salary": "Thoả thuận"
                         },
+                        "company": {"name": "OpenAI"},
+                        "skills": ["AWS"],
+                        "technologies": ["AWS"]
                     },
                 ]
             },
@@ -154,12 +156,13 @@ def test_import_topcv_data_extracts_jobs_and_skills(tmp_path, builder):
         "technologies": 3,
         "job_roles": 2,
         "skills": 3,
+        "companies": 2,
     }
     assert len(builder.jobs) == 2
-    assert builder.jobs[0].level == "junior"
+    assert builder.jobs[0].level == "mid"
     assert builder.jobs[0].salary_min == 0
     assert builder.jobs[0].salary_max == 0
-    assert builder.jobs[1].level == "senior"
+    assert builder.jobs[1].level == "mid"
     assert len(builder.technologies) == 3
     assert len(builder.skills) == 3
     assert builder._job_company_map == {

@@ -37,9 +37,13 @@ class Settings(BaseSettings):
 
     # Model
     embedding_model: str = "intfloat/multilingual-e5-base"
-    reranker_model: str = "BAAI/bge-reranker-v2-m3"
+    reranker_backend: str = "onnx"  # "cross_encoder" | "onnx"
+    reranker_model: str = "woxpas-ai/bge-reranker-v2-m3-onnx"
+    reranker_onnx_file: str = "onnx/model_quantized.onnx"
     llm_model: str = "gpt-4o-mini"
     embedding_dim: int = 768
+    model_warmup: str = "blocking"  # "none" | "background" | "blocking"
+    warmup_ner_model: bool = True
 
     # Neo4j vector index name
     neo4j_vector_index: str = "article_embedding_index"

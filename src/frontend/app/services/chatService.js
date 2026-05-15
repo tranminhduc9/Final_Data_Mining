@@ -7,6 +7,11 @@ const API_BASE_URL =
         ? 'http://localhost:8080/api/v1'
         : 'http://10.0.2.2:8080/api/v1';
 
+const parseSseData = (line) => {
+    const data = line.slice(5);
+    return data.startsWith(' ') ? data.slice(1) : data;
+};
+
 // ─────────────────────────────────────────────
 // GET /chat — Health check của RAG service
 // ─────────────────────────────────────────────
@@ -104,7 +109,7 @@ export const streamChatMessage = async (sessionId, query, onToken, onDone, onErr
                 if (!line.trim() || line.startsWith('event:')) continue;
 
                 if (line.startsWith('data:')) {
-                    const rawData = line.slice(5).trim();
+                    const rawData = parseSseData(line);
 
                     try {
                         const parsed = JSON.parse(rawData);

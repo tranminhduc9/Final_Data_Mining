@@ -22,10 +22,11 @@ const SESSIONS_KEY = 'chat_sessions_list';
 const GREETING = 'Xin chào! Mình là **Tech Radar AI**. Mình có thể giúp bạn phân tích xu hướng công nghệ, mức lương và tư vấn lộ trình sự nghiệp.';
 
 const QUICK_PROMPTS = [
-    'Học Golang thì nên apply công ty nào ở Việt Nam, lương bao nhiêu?',
-    'AI/ML đang hot như thế nào và cần học gì?',
-    'Mình biết React + Node.js 2 năm, lương 25tr, muốn lên senior hoặc chuyển sang AI, nên học gì?',
-    'So sánh Python vs Golang cho backend tại Việt Nam',
+    'Tôi muốn tìm việc Data Engineer',
+    'FPT tuyển kỹ sư phần mềm không?',
+    'Shopee đang tuyển vị trí gì?',
+    'Lương DevOps engineer ở Việt Nam bao nhiêu?',
+    'Vì sao AI được cho là gây hại cho môi trường?',
 ];
 
 interface Message { id: number; role: 'user' | 'bot'; text: string; streaming?: boolean }
@@ -287,32 +288,60 @@ export default function ChatScreen() {
         }
 
         let accumulated = '';
+        let pendingText = '';
+        let flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const updateBotText = (textValue: string, extra: Partial<Message> = {}) => {
+            setMessages(prev => prev.map(m =>
+                m.id === botMsg.id ? { ...m, text: textValue, ...extra } : m
+            ));
+        };
+
+        const flushPendingText = () => {
+            if (!pendingText) return;
+            accumulated += pendingText;
+            pendingText = '';
+            updateBotText(accumulated);
+        };
+
+        const scheduleFlush = () => {
+            if (flushTimer) return;
+            flushTimer = setTimeout(() => {
+                flushTimer = null;
+                flushPendingText();
+            }, 45);
+        };
+
         streamChatMessage(
             sessionId, text,
             // onToken
             (chunk: string) => {
-                accumulated += chunk;
-                setMessages(prev => prev.map(m =>
-                    m.id === botMsg.id ? { ...m, text: accumulated } : m
-                ));
+                pendingText += chunk;
+                scheduleFlush();
             },
             // onDone
             (meta: any) => {
+                if (flushTimer) {
+                    clearTimeout(flushTimer);
+                    flushTimer = null;
+                }
+                flushPendingText();
                 const finalText = meta?.answer || accumulated;
-                setMessages(prev => prev.map(m =>
-                    m.id === botMsg.id ? { ...m, text: finalText, streaming: false } : m
-                ));
+                updateBotText(finalText, { streaming: false });
                 setIsStreaming(false);
             },
             // onError
             (err: Error) => {
                 console.error('[ChatScreen] Stream error:', err);
+                if (flushTimer) {
+                    clearTimeout(flushTimer);
+                    flushTimer = null;
+                }
+                flushPendingText();
                 const errText = accumulated
                     ? accumulated + '\n\n⚠️ Kết nối bị gián đoạn.'
                     : '⚠️ Không nhận được phản hồi. Vui lòng thử lại.';
-                setMessages(prev => prev.map(m =>
-                    m.id === botMsg.id ? { ...m, text: errText, streaming: false } : m
-                ));
+                updateBotText(errText, { streaming: false });
                 setIsStreaming(false);
             }
         );
@@ -407,11 +436,6 @@ export default function ChatScreen() {
                                 <View style={[s.bubble, msg.role === 'user' ? s.bubbleUser : s.bubbleBot]}>
                                     {renderText(msg.text)}
                                     {msg.streaming && <Text style={s.cursor}>▊</Text>}
-                                    {msg.role === 'bot' && !msg.streaming && msg.text.length > 100 && (
-                                        <TouchableOpacity style={s.graphBtn} onPress={() => router.push('/graph')}>
-                                            <Text style={s.graphBtnText}>Xem chi tiết job matching trong Graph</Text>
-                                        </TouchableOpacity>
-                                    )}
                                 </View>
                                 {msg.role === 'user' && (
                                     <View style={s.userAvatar}><Text style={s.avatarTextUser}>U</Text></View>
@@ -548,13 +572,6 @@ const s = StyleSheet.create({
     mdHeading: { color: DM.text, fontSize: 14, fontWeight: '700', marginTop: 6, marginBottom: 2 },
 
     cursor: { color: DM.primary, fontSize: 14 },
-    graphBtn: {
-        marginTop: 10, paddingHorizontal: 12, paddingVertical: 6,
-        backgroundColor: DM.primaryGlow, borderRadius: DM.radiusSm,
-        borderWidth: 1, borderColor: DM.primary, alignSelf: 'flex-start',
-    },
-    graphBtnText: { color: DM.primaryLight, fontSize: 11, fontWeight: '600' },
-
     // Quick prompts
     quickRow: { maxHeight: 44, marginBottom: 6 },
     quickContent: { gap: 8, alignItems: 'center' },

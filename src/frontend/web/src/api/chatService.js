@@ -2,6 +2,11 @@ import { apiClient } from '../utils/apiClient';
 
 const API_BASE_URL = '/api/v1';
 
+const parseSseData = (line) => {
+    const data = line.slice(5);
+    return data.startsWith(' ') ? data.slice(1) : data;
+};
+
 // ─────────────────────────────────────────────
 // GET /chat — Health check của RAG service
 // ─────────────────────────────────────────────
@@ -107,7 +112,7 @@ export const streamChatMessage = async (sessionId, query, onToken, onDone, onErr
                 }
 
                 if (line.startsWith('data:')) {
-                    const rawData = line.slice(5).trim();
+                    const rawData = parseSseData(line);
 
                     // Thử parse JSON (event done)
                     try {

@@ -11,6 +11,27 @@ const GREETING = 'Xin chào! Mình là **Tech Radar AI**, trợ lý tư vấn c�
 
 const ACTIVE_SID_KEY = 'chat_session_id';
 
+function normalizeSession(session) {
+    const id = session?.session_id || session?.id;
+    if (!id) return null;
+    return {
+        ...session,
+        id,
+        session_id: id,
+        title: session?.title || 'Cuộc trò chuyện mới',
+        created_at: session?.created_at || session?.createdAt || new Date().toISOString(),
+    };
+}
+
+function normalizeSessions(payload) {
+    const raw = Array.isArray(payload) ? payload : payload?.data || [];
+    return raw.map(normalizeSession).filter(Boolean).sort(sortSessionsNewestFirst);
+}
+
+function sortSessionsNewestFirst(a, b) {
+    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+}
+
 function formatTime(isoStr) {
     if (!isoStr) return '';
     const d = new Date(isoStr);
@@ -94,10 +115,11 @@ function inlineMarkdown(text) {
 // ─── Quick prompts ───────────────────────────────────────────────────────────
 
 const QUICK_PROMPTS = [
-    'Học Golang thì nên apply công ty nào ở Việt Nam, lương bao nhiêu?',
-    'AI/ML đang hot như thế nào và cần học gì?',
-    'Mình biết React + Node.js 2 năm, lương 25tr, muốn lên senior hoặc chuyển sang AI, nên học gì?',
-    'So sánh Python vs Golang cho backend tại Việt Nam',
+    'Tôi muốn tìm việc Data Engineer',
+    'FPT tuyển kỹ sư phần mềm không?',
+    'Shopee đang tuyển vị trí gì?',
+    'Lương DevOps engineer ở Việt Nam bao nhiêu?',
+    'Vì sao AI được cho là gây hại cho môi trường?',
 ];
 
 let msgId = 0;
@@ -117,7 +139,9 @@ export default function ChatbotPage() {
     const [isStreaming,  setIsStreaming]  = useState(false);
     const [loadingHistory, setLoadingHistory] = useState(false);
     const [showHistory, setShowHistory] = useState(false);
-    const bottomRef = useRef();
+    const chatWindowRef = useRef();
+    const scrollNewSessionToTopRef = useRef(false);
+    const shouldAutoScrollRef = useRef(true);
 
 
 
@@ -128,7 +152,7 @@ export default function ChatbotPage() {
             try {
                 // 1. Fetch sessions from API
                 const sessionList = await getChatSessions();
-                const msgs = Array.isArray(sessionList) ? sessionList : sessionList?.data || [];
+                const msgs = normalizeSessions(sessionList);
                 setSessions(msgs);
 
                 // 2. Load active session
@@ -155,9 +179,29 @@ export default function ChatbotPage() {
     }, []);
 
     useEffect(() => {
-        // Thay vì 'smooth' (bị giật/ngắt quãng khi stream nhanh), dùng 'auto' để bám sát dòng chữ
-        bottomRef.current?.scrollIntoView({ behavior: 'auto' });
+        const chatWindow = chatWindowRef.current;
+        if (!chatWindow) return;
+
+        if (scrollNewSessionToTopRef.current) {
+            scrollNewSessionToTopRef.current = false;
+            chatWindow.scrollTo({ top: 0, behavior: 'auto' });
+            return;
+        }
+
+        if (!shouldAutoScrollRef.current) return;
+
+        requestAnimationFrame(() => {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        });
     }, [messages]);
+
+    const handleChatScroll = () => {
+        const chatWindow = chatWindowRef.current;
+        if (!chatWindow) return;
+        const distanceFromBottom =
+            chatWindow.scrollHeight - chatWindow.scrollTop - chatWindow.clientHeight;
+        shouldAutoScrollRef.current = distanceFromBottom < 80;
+    };
 
     // ── Core functions ───────────────────────────────────────────────────────
 
@@ -191,7 +235,7 @@ export default function ChatbotPage() {
         
         // Refresh session list from server
         const updatedList = await getChatSessions();
-        setSessions(Array.isArray(updatedList) ? updatedList : updatedList?.data || []);
+        setSessions(normalizeSessions(updatedList));
         
         return sid;
     };
@@ -200,6 +244,7 @@ export default function ChatbotPage() {
 
     const switchSession = async (sid) => {
         if (sid === sessionId || isStreaming) return;
+        scrollNewSessionToTopRef.current = true;
         localStorage.setItem(ACTIVE_SID_KEY, sid);
         setSessionId(sid);
         await loadHistory(sid);
@@ -210,6 +255,7 @@ export default function ChatbotPage() {
     const clearSession = async () => {
         if (isStreaming) return;
         setSessionError(false);
+        scrollNewSessionToTopRef.current = true;
 
         // 1. Reset UI ngay lập tức — không chờ API
         const PLACEHOLDER = '__new__';
@@ -219,8 +265,8 @@ export default function ChatbotPage() {
             created_at: new Date().toISOString(),
         };
         setSessions(prev => {
-            const updated = [placeholderEntry, ...prev.filter(s => s.id !== PLACEHOLDER)];
-            saveSessionsList(updated);
+            const updated = [placeholderEntry, ...prev.filter(s => s.id !== PLACEHOLDER)]
+                .sort(sortSessionsNewestFirst);
             return updated;
         });
         setSessionId(PLACEHOLDER);
@@ -236,9 +282,8 @@ export default function ChatbotPage() {
             // Thay placeholder trong danh sách
             setSessions(prev => {
                 const updated = prev.map(s =>
-                    s.id === PLACEHOLDER ? { ...s, id: sid } : s
-                );
-                saveSessionsList(updated);
+                    s.id === PLACEHOLDER ? { ...s, id: sid, session_id: sid } : s
+                ).sort(sortSessionsNewestFirst);
                 return updated;
             });
         } catch (err) {
@@ -247,25 +292,9 @@ export default function ChatbotPage() {
             // Xóa placeholder nếu tạo session thất bại
             setSessions(prev => {
                 const updated = prev.filter(s => s.id !== PLACEHOLDER);
-                saveSessionsList(updated);
                 return updated;
             });
             setSessionId(null);
-        }
-    };
-
-    // ── Delete a session from history list (local only) ──────────────────────
-
-    const deleteSession = (e, sid) => {
-        e.stopPropagation();
-        setSessions(prev => {
-            const updated = prev.filter(s => s.id !== sid);
-            saveSessionsList(updated);
-            return updated;
-        });
-        // Nếu đang xóa session hiện tại → clear
-        if (sid === sessionId) {
-            clearSession();
         }
     };
 
@@ -300,29 +329,57 @@ export default function ChatbotPage() {
         }
 
         let accumulated = '';
+        let pendingText = '';
+        let flushTimer = null;
+
+        const updateBotText = (textValue, extra = {}) => {
+            setMessages(prev => prev.map(m =>
+                m.id === botMsg.id ? { ...m, text: textValue, ...extra } : m
+            ));
+        };
+
+        const flushPendingText = () => {
+            if (!pendingText) return;
+            accumulated += pendingText;
+            pendingText = '';
+            updateBotText(accumulated);
+        };
+
+        const scheduleFlush = () => {
+            if (flushTimer) return;
+            flushTimer = setTimeout(() => {
+                flushTimer = null;
+                flushPendingText();
+            }, 45);
+        };
+
         streamChatMessage(
             sessionId, text,
             (chunk) => {
-                accumulated += chunk;
-                setMessages(prev => prev.map(m =>
-                    m.id === botMsg.id ? { ...m, text: accumulated } : m
-                ));
+                pendingText += chunk;
+                scheduleFlush();
             },
             (meta) => {
+                if (flushTimer) {
+                    clearTimeout(flushTimer);
+                    flushTimer = null;
+                }
+                flushPendingText();
                 const finalText = meta?.answer || accumulated;
-                setMessages(prev => prev.map(m =>
-                    m.id === botMsg.id ? { ...m, text: finalText, streaming: false, meta } : m
-                ));
+                updateBotText(finalText, { streaming: false, meta });
                 setIsStreaming(false);
             },
             (err) => {
                 console.error('[ChatbotPage] Stream error:', err);
+                if (flushTimer) {
+                    clearTimeout(flushTimer);
+                    flushTimer = null;
+                }
+                flushPendingText();
                 const errText = accumulated
                     ? accumulated + '\n\n*Kết nối bị gián đoạn.*'
                     : 'Không nhận được phản hồi từ server. Vui lòng thử lại.';
-                setMessages(prev => prev.map(m =>
-                    m.id === botMsg.id ? { ...m, text: errText, streaming: false } : m
-                ));
+                updateBotText(errText, { streaming: false });
                 setIsStreaming(false);
             }
         );
@@ -423,19 +480,12 @@ export default function ChatbotPage() {
                                         <span className="history-item-title">{s.title}</span>
                                         <span className="history-item-time">{formatTime(s.created_at)}</span>
                                     </div>
-                                    <button
-                                        className="history-item-del"
-                                        onClick={(e) => deleteSession(e, s.id)}
-                                        title="Xóa"
-                                    >
-                                        ×
-                                    </button>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="chat-window">
+                    <div className="chat-window" ref={chatWindowRef} onScroll={handleChatScroll}>
                         {loadingHistory && (
                             <div className="history-loading">Đang tải lịch sử…</div>
                         )}
@@ -447,18 +497,10 @@ export default function ChatbotPage() {
                                         {renderMarkdown(msg.text)}
                                         {msg.streaming && <span className="cursor-blink" />}
                                     </div>
-                                    {msg.role === 'bot' && !msg.streaming && msg.text.length > 100 && (
-                                        <div className="bubble-actions">
-                                            <button className="bubble-action-btn" onClick={() => navigate('/graph')}>
-                                                Xem chi tiết job matching trong Graph
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
                                 {msg.role === 'user' && <div className="user-avatar text-avatar">U</div>}
                             </div>
                         ))}
-                        <div ref={bottomRef} />
                     </div>
                 </div>
 

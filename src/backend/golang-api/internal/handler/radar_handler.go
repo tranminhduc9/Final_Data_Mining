@@ -38,8 +38,8 @@ func (h *RadarHandler) Top4(c *gin.Context) {
 }
 
 // Search godoc
-// @Summary      Cumulative daily job counts per keyword over a time window
-// @Description  Mỗi điểm trong response chứa keywords là TỔNG TÍCH LŨY từ đầu cửa sổ đến ngày đó (không phải count rời). Ngày không có job match không xuất hiện trong response.
+// @Summary      Monthly job counts per keyword over a time window
+// @Description  Match Job qua quan hệ (j:Job)-[]-(t:Technology) với toLower(t.name) CONTAINS keyword. Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month > hiện tại). Mỗi job count 1 lần (count(DISTINCT j)).
 // @Tags         radar
 // @Produce      json
 // @Param        keywords  query  []string  true   "Keywords (repeat or comma-separated)"  collectionFormat(multi)

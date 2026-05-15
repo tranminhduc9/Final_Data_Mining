@@ -80,26 +80,18 @@ Phần API cho nội dung trang radar chia làm 3 layer:
 }
 ```
 
-`Response mẫu` (cumulative theo ngày, sort tăng dần theo `date`):
+`Response mẫu` (group by tháng, sort tăng dần theo `(year, month)`):
 
 ```json
 {
   "data": [
-    {
-      "date": "2026-03-18",
-      "year": 2026, "month": 3, "day": 18,
-      "keywords": {"React": 12, "Node.js": 8, "Python": 15}
-    },
-    {
-      "date": "2026-03-19",
-      "year": 2026, "month": 3, "day": 19,
-      "keywords": {"React": 22, "Node.js": 17, "Python": 29}
-    }
+    {"year": 2026, "month": 3, "keywords": {"Python": 42, "React": 30}},
+    {"year": 2026, "month": 4, "keywords": {"Python": 51, "React": 28}}
   ]
 }
 ```
 
-> `keywords` là **cumulative count** tính từ đầu cửa sổ `months` đến `date` của điểm đó (không phải count rời từng ngày). Ngày không có job match nào không xuất hiện trong response — cumulative "nhảy" sang ngày kế có dữ liệu.
+> **Match logic**: `(j:Job)-[]-(t:Technology)` với `toLower(t.name) CONTAINS toLower(keyword)`. Bỏ qua job có `posted_date` NULL hoặc thuộc tháng tương lai (do lỗi data). Mỗi job count 1 lần (`count(DISTINCT j)`) — kể cả khi job có nhiều Technology cùng match keyword.
 
 | Method | Endpoint | Description | Auth |
 | --- | --- | --- | --- |

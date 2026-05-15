@@ -191,11 +191,6 @@ definitions:
     type: object
   domain.RadarSearchPoint:
     properties:
-      date:
-        example: "2026-03-18"
-        type: string
-      day:
-        type: integer
       keywords:
         additionalProperties:
           type: integer
@@ -1563,9 +1558,9 @@ paths:
       - graph
   /radar/search:
     get:
-      description: Mỗi điểm trong response chứa keywords là TỔNG TÍCH LŨY từ đầu cửa
-        sổ đến ngày đó (không phải count rời). Ngày không có job match không xuất
-        hiện trong response.
+      description: Match Job qua quan hệ (j:Job)-[]-(t:Technology) với toLower(t.name)
+        CONTAINS keyword. Bỏ qua job có posted_date NULL và job ở tháng tương lai
+        (year/month > hiện tại). Mỗi job count 1 lần (count(DISTINCT j)).
       parameters:
       - collectionFormat: multi
         description: Keywords (repeat or comma-separated)
@@ -1594,7 +1589,7 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
-      summary: Cumulative daily job counts per keyword over a time window
+      summary: Monthly job counts per keyword over a time window
       tags:
       - radar
   /radar/top4:

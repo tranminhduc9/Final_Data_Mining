@@ -1,4 +1,15 @@
 services:
+  frontend:
+    build:
+      context: ./src/frontend/web
+      dockerfile: Dockerfile
+    container_name: techpulse-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - golang-api
+    restart: unless-stopped
+  
   neo4j-local:
     image: neo4j:5
     container_name: neo4j-local

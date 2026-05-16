@@ -1,0 +1,4 @@
+1. Đăng ký không báo lỗi do email không tồn tại hay gì mà lại báo lỗi API 400
+2.Lúc đăng nhập sai email/mật khẩu lại báo lỗi API 401 thay vì báo lỗi sai email/mật khẩu
+3. Phần tìm đường đi sau khi nhập điểm đi và đến không hiện tên node
+4.Lỗi AI không nhận được phản hồi vui lòng thử lại

@@ -2,14 +2,25 @@ import { apiClient } from '../utils/apiClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-const API_BASE_URL =
-    Platform.OS === 'web'
-        ? 'http://localhost:8080/api/v1'
-        : 'http://10.0.2.2:8080/api/v1';
+const API_BASE_URL = 'https://datamining.ankkun.space/api/v1';
 
 const parseSseData = (line) => {
     const data = line.slice(5);
     return data.startsWith(' ') ? data.slice(1) : data;
+};
+
+const normalizeChatPayload = (payload, sessionId, query) => {
+    const body = payload?.data || payload || {};
+    const answer =
+        typeof body === 'string'
+            ? body
+            : body?.answer || body?.message || body?.content || '';
+    return {
+        ...body,
+        answer,
+        query: body?.query || query,
+        session_id: body?.session_id || sessionId,
+    };
 };
 
 // ─────────────────────────────────────────────
@@ -70,6 +81,18 @@ export const sendChatMessage = async (sessionId, query) => {
 // ─────────────────────────────────────────────
 export const streamChatMessage = async (sessionId, query, onToken, onDone, onError) => {
     try {
+        if (Platform.OS !== 'web') {
+            const response = await sendChatMessage(sessionId, query);
+            const payload = normalizeChatPayload(response, sessionId, query);
+
+            if (!payload.answer) {
+                throw new Error('Không nhận được phản hồi từ máy chủ.');
+            }
+
+            onDone(payload);
+            return;
+        }
+
         const token = await AsyncStorage.getItem('access_token');
 
         const headers = {
@@ -90,6 +113,17 @@ export const streamChatMessage = async (sessionId, query, onToken, onDone, onErr
 
         if (!response.ok) {
             throw new Error(`Stream error: ${response.status}`);
+        }
+
+        if (!response.body?.getReader) {
+            const payload = await response.json();
+            onDone({
+                ...payload,
+                answer: payload?.answer || payload?.message || payload?.content || '',
+                query,
+                session_id: payload?.session_id || sessionId,
+            });
+            return;
         }
 
         const reader = response.body.getReader();

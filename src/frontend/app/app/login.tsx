@@ -16,6 +16,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginUser, getSystemStatus } from '../api/authService';
 import { useRouter } from 'expo-router';
 
+const resolveLoginErrorMessage = (error: any) => {
+  const status = error?.status;
+  const message = String(error?.message || '').trim();
+  const lower = message.toLowerCase();
+
+  if (status === 401 || lower.includes('invalid email or password')) {
+    return 'Sai email hoặc mật khẩu. Vui lòng kiểm tra lại.';
+  }
+
+  if (status === 400) {
+    return message || 'Thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra lại.';
+  }
+
+  if (status === 403) {
+    return 'Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.';
+  }
+
+  return message || 'Không thể đăng nhập. Vui lòng thử lại.';
+};
+
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -30,14 +50,11 @@ export default function LoginScreen() {
 
     setLoading(true);
     try {
-      // 1. Check System Status (Maintenance & Features)
       const status = await getSystemStatus();
       if (status) {
-        // Save feature flags for other tabs to use
         await AsyncStorage.setItem('feature_graph', String(status.feature_graph));
         await AsyncStorage.setItem('feature_rag', String(status.feature_rag));
 
-        // Block if mobile is in maintenance
         if (status.maintenance_mobile === true) {
           const maintenanceMsg = 'Hệ thống đang bảo trì phiên bản di động. Vui lòng quay lại sau.';
           if (Platform.OS === 'web') {
@@ -50,7 +67,6 @@ export default function LoginScreen() {
         }
       }
 
-      // 2. Proceed with Login
       const response = await loginUser({ email, password });
       if (response && response.access_token) {
         await AsyncStorage.setItem('access_token', response.access_token);
@@ -68,8 +84,8 @@ export default function LoginScreen() {
         }
       }
     } catch (error: any) {
-      console.error("Login error:", error);
-      const errorMsg = error?.message || 'Sai email hoặc mật khẩu. Vui lòng kiểm tra lại.';
+      console.error('Login error:', error);
+      const errorMsg = resolveLoginErrorMessage(error);
       if (Platform.OS === 'web') {
         window.alert('Lỗi đăng nhập: ' + errorMsg);
       } else {
@@ -87,8 +103,8 @@ export default function LoginScreen() {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-            <Text style={styles.logo}>TechRadar</Text>
-            <Text style={styles.tagline}>Theo dõi xu hướng công nghệ thông minh</Text>
+          <Text style={styles.logo}>TechRadar</Text>
+          <Text style={styles.tagline}>Theo dõi xu hướng công nghệ thông minh</Text>
         </View>
 
         <View style={styles.formCard}>
@@ -141,7 +157,7 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.bottomBranding}>
-            <Text style={styles.brandingText}>HARDCORE MINIMALISM · 2026</Text>
+          <Text style={styles.brandingText}>HARDCORE MINIMALISM · 2026</Text>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

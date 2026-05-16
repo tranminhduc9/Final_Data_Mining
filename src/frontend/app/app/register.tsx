@@ -15,6 +15,22 @@ import { DM } from '../constants/theme';
 import { registerUser } from '../api/authService';
 import { useRouter } from 'expo-router';
 
+const resolveRegisterErrorMessage = (error: any) => {
+  const status = error?.status;
+  const message = String(error?.message || '').trim();
+  const lower = message.toLowerCase();
+
+  if (status === 409 || lower.includes('already registered') || lower.includes('email already taken')) {
+    return 'Email đã tồn tại. Vui lòng dùng email khác.';
+  }
+
+  if (status === 400) {
+    return message || 'Thông tin đăng ký không hợp lệ. Vui lòng kiểm tra lại.';
+  }
+
+  return message || 'Không thể tạo tài khoản. Vui lòng thử lại.';
+};
+
 export default function RegisterScreen() {
   const router = useRouter();
   const [name, setName] = useState('');
@@ -36,25 +52,24 @@ export default function RegisterScreen() {
 
     setLoading(true);
     try {
-      await registerUser({ 
-        email, 
-        password, 
-        full_name: name, 
-        confirm_password: confirmPassword 
+      await registerUser({
+        email,
+        password,
+        full_name: name,
+        confirm_password: confirmPassword,
       });
 
-      // Nếu đã chạy đến đây mà không bị throw error, nghĩa là API trả về 2xx (Thành công)
       if (Platform.OS === 'web') {
         window.alert('Thành công: Tài khoản của bạn đã được khởi tạo thành công!');
         router.replace('/login');
       } else {
         Alert.alert('Thành công', 'Tài khoản của bạn đã được khởi tạo thành công!', [
-          { text: 'Đăng nhập ngay', onPress: () => router.replace('/login') }
+          { text: 'Đăng nhập ngay', onPress: () => router.replace('/login') },
         ]);
       }
     } catch (error: any) {
-      console.error("Register error:", error);
-      const errorMsg = error?.message || 'Email đã tồn tại hoặc thông tin không hợp lệ.';
+      console.error('Register error:', error);
+      const errorMsg = resolveRegisterErrorMessage(error);
       if (Platform.OS === 'web') {
         window.alert('Lỗi đăng ký: ' + errorMsg);
       } else {
@@ -72,8 +87,8 @@ export default function RegisterScreen() {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-            <Text style={styles.logo}>TechRadar</Text>
-            <Text style={styles.tagline}>Gia nhập cộng đồng dữ liệu công nghệ</Text>
+          <Text style={styles.logo}>TechRadar</Text>
+          <Text style={styles.tagline}>Gia nhập cộng đồng dữ liệu công nghệ</Text>
         </View>
 
         <View style={styles.formCard}>
@@ -105,7 +120,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}> MẬT KHẨU</Text>
+            <Text style={styles.label}>MẬT KHẨU</Text>
             <TextInput
               style={styles.input}
               placeholder="••••••••"
@@ -117,7 +132,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}> XÁC NHẬN MẬT KHẨU</Text>
+            <Text style={styles.label}>XÁC NHẬN MẬT KHẨU</Text>
             <TextInput
               style={styles.input}
               placeholder="••••••••"
@@ -149,7 +164,7 @@ export default function RegisterScreen() {
         </View>
 
         <View style={styles.bottomBranding}>
-            <Text style={styles.brandingText}>JOIN THE FUTURE · 2026</Text>
+          <Text style={styles.brandingText}>JOIN THE FUTURE · 2026</Text>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

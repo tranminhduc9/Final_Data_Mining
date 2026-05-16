@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+    Keyboard,
     Dimensions,
     KeyboardAvoidingView, Platform,
     ScrollView, StyleSheet,
@@ -43,6 +44,14 @@ function formatTime(isoStr?: string) {
     const diffH = Math.floor(diffMin / 60);
     if (diffH < 24) return `${diffH} giờ trước`;
     return d.toLocaleDateString('vi-VN');
+}
+
+function resolveChatErrorMessage(err: unknown, fallback: string) {
+    const message = err instanceof Error ? err.message : String((err as any)?.message || '');
+    if (!message) return fallback;
+    if (/^(API error|Stream error):\s*\d+$/i.test(message)) return fallback;
+    if (message === 'SESSION_TIMEOUT') return 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+    return message;
 }
 
 // Simple markdown: bold, bullet list
@@ -94,6 +103,7 @@ export default function ChatScreen() {
     const [loadingSessions, setLoadingSessions] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [loadingHistory, setLoadingHistory] = useState(false);
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
 
 
 
@@ -195,6 +205,29 @@ export default function ChatScreen() {
     useEffect(() => {
         setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
     }, [messages]);
+
+    useEffect(() => {
+        if (keyboardHeight > 0) {
+            setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+        }
+    }, [keyboardHeight]);
+
+    useEffect(() => {
+        const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+        const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+        const showSub = Keyboard.addListener(showEvent, (event) => {
+            setKeyboardHeight(event.endCoordinates?.height || 0);
+        });
+        const hideSub = Keyboard.addListener(hideEvent, () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            showSub.remove();
+            hideSub.remove();
+        };
+    }, []);
 
     const createNewSession = async () => {
         const res = await createChatSession();
@@ -338,9 +371,12 @@ export default function ChatScreen() {
                     flushTimer = null;
                 }
                 flushPendingText();
+                const detail = resolveChatErrorMessage(err, '');
                 const errText = accumulated
                     ? accumulated + '\n\n⚠️ Kết nối bị gián đoạn.'
-                    : '⚠️ Không nhận được phản hồi. Vui lòng thử lại.';
+                    : detail
+                        ? `⚠️ ${detail}`
+                        : '⚠️ Không nhận được phản hồi. Vui lòng thử lại.';
                 updateBotText(errText, { streaming: false });
                 setIsStreaming(false);
             }
@@ -352,7 +388,8 @@ export default function ChatScreen() {
     return (
         <KeyboardAvoidingView
             style={s.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 8 : 0}
         >
             <MaintenanceOverlay visible={isMaintenance} />
             <View style={s.header}>
@@ -384,7 +421,11 @@ export default function ChatScreen() {
                             {fetchError && <Text style={{ color: '#ff4444', fontSize: 10 }}>{fetchError}</Text>}
                         </View>
 
-                        <ScrollView style={s.historyContainer} contentContainerStyle={{ paddingBottom: 40 }}>
+                        <ScrollView
+                            style={s.historyContainer}
+                            contentContainerStyle={{ paddingBottom: 40 }}
+                            showsVerticalScrollIndicator={false}
+                        >
                             {sessions.length === 0 && !loadingSessions ? (
                                 <View style={{ marginTop: 40, alignItems: 'center', paddingHorizontal: 20 }}>
                                     <Text style={[s.historyEmpty, { color: '#ffffff' }]}>Chưa có cuộc trò chuyện nào.</Text>
@@ -412,12 +453,12 @@ export default function ChatScreen() {
                                                 </Text>
                                                 <Text style={{ color: '#888888', fontSize: 12 }}>{formatTime(s.created_at)}</Text>
                                             </View>
-                                            <TouchableOpacity 
+                                            {false && <TouchableOpacity 
                                                 onPress={() => deleteSession(s.id || s.session_id)} 
                                                 style={{ padding: 10, backgroundColor: 'rgba(239, 68, 68, 0.1)', borderRadius: 8 }}
                                             >
                                                 <Text style={{ color: '#ef4444', fontSize: 20, fontWeight: '700' }}>×</Text>
-                                            </TouchableOpacity>
+                                            </TouchableOpacity>}
                                         </TouchableOpacity>
                                     ))
                             )}
@@ -426,7 +467,13 @@ export default function ChatScreen() {
                 ) : (
                 <View style={s.chatMain}>
                     {/* Messages */}
-                    <ScrollView ref={scrollRef} style={s.chatWindow} contentContainerStyle={s.chatContent}>
+                    <ScrollView
+                        ref={scrollRef}
+                        style={s.chatWindow}
+                        contentContainerStyle={s.chatContent}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                    >
                         {loadingHistory && <Text style={{ color: DM.text3, textAlign: 'center', marginVertical: 10 }}>Đang tải...</Text>}
                         {messages.map(msg => (
                             <View key={msg.id} style={[s.bubbleWrap, msg.role === 'user' && s.bubbleWrapUser]}>
@@ -455,6 +502,8 @@ export default function ChatScreen() {
                             onSubmitEditing={() => sendMessage(input)}
                             editable={!isStreaming}
                             multiline
+                            scrollEnabled={false}
+                            showsVerticalScrollIndicator={false}
                         />
                         <TouchableOpacity
                             style={[s.sendBtn, (!input.trim() || isStreaming) && s.sendBtnDisabled]}
@@ -545,7 +594,7 @@ const s = StyleSheet.create({
     // Chat main
     chatMain: { flex: 1 },
     chatWindow: { flex: 1, marginBottom: 12 },
-    chatContent: { paddingBottom: 8 },
+    chatContent: { paddingBottom: 12 },
 
     bubbleWrap: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 12 },
     bubbleWrapUser: { justifyContent: 'flex-end' },
@@ -563,7 +612,7 @@ const s = StyleSheet.create({
         maxWidth: '75%', borderRadius: DM.radius, padding: 14,
     },
     bubbleBot: { backgroundColor: DM.surface, borderWidth: 1, borderColor: DM.border },
-    bubbleUser: { backgroundColor: DM.primaryGlow, borderWidth: 1, borderColor: DM.primary },
+    bubbleUser: { backgroundColor: DM.primaryGlow, borderWidth: 1, borderColor: DM.primary, overflow: 'hidden' },
 
     // Markdown
     mdP: { color: DM.text, fontSize: 13, lineHeight: 20 },
@@ -589,7 +638,7 @@ const s = StyleSheet.create({
         borderRadius: DM.radius, paddingHorizontal: 12, paddingVertical: 6,
         marginBottom: 18,
     },
-    chatInput: { flex: 1, color: DM.text, fontSize: 13, paddingVertical: 6, maxHeight: 80 },
+    chatInput: { flex: 1, color: DM.text, fontSize: 13, paddingVertical: 6, maxHeight: 80, overflow: 'hidden' },
     sendBtn: {
         paddingHorizontal: 16, paddingVertical: 8, borderRadius: DM.radiusSm,
         backgroundColor: DM.primary,

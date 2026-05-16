@@ -1,39 +1,83 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { router } from 'expo-router';
 import { Platform, Alert } from 'react-native';
 
-// Đối với Mobile, localhost thường không hoạt động trên Android Emulator (dùng 10.0.2.2)
-// Hoặc dùng địa chỉ IP nội bộ của máy tính nếu test trên thiết bị thật.
-const API_BASE_URL = Platform.OS === 'web' 
-    ? 'http://localhost:8080/api/v1' 
-    : 'http://10.0.2.2:8080/api/v1'; 
+// On mobile, localhost is usually not reachable from Android emulator.
+// The project currently targets the deployed backend by default.
+const API_BASE_URL = 'https://datamining.ankkun.space/api/v1';
+
+const AUTH_ENDPOINTS = ['/auth/login', '/auth/register', '/auth/refresh'];
+
+const isAuthEndpoint = (endpoint) => AUTH_ENDPOINTS.some((prefix) => endpoint.startsWith(prefix));
+let isAuthRedirectPending = false;
+let authRedirectTimer = null;
+
+const parseResponseBody = async (response) => {
+    const text = await response.text();
+    if (!text) return null;
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        return text;
+    }
+};
+
+const extractErrorMessage = (payload, fallback) => {
+    if (!payload) return fallback;
+    if (typeof payload === 'string') return payload.trim() || fallback;
+    return payload.message || payload.error || payload.detail || fallback;
+};
+
+const clearSession = async () => {
+    await AsyncStorage.multiRemove(['access_token', 'refresh_token', 'login_timestamp']);
+};
+
+const redirectToLogin = () => {
+    if (authRedirectTimer) {
+        clearTimeout(authRedirectTimer);
+        authRedirectTimer = null;
+    }
+
+    isAuthRedirectPending = false;
+    router.replace('/login');
+};
+
+const notifySessionExpired = (title, message) => {
+    if (isAuthRedirectPending) return;
+    isAuthRedirectPending = true;
+
+    if (Platform.OS === 'web') {
+        window.alert(message);
+        window.location.href = '/login';
+        return;
+    }
+
+    Alert.alert(title, message, [
+        { text: 'OK', onPress: redirectToLogin },
+    ], { cancelable: false });
+
+    authRedirectTimer = setTimeout(redirectToLogin, 15000);
+};
 
 export const apiClient = async (endpoint, options = {}) => {
     try {
-        // 1. Kiểm tra thời gian phiên đăng nhập (900 giây = 15 phút)
         const loginTimestamp = await AsyncStorage.getItem('login_timestamp');
         if (loginTimestamp) {
-            const diffSeconds = (Date.now() - parseInt(loginTimestamp)) / 1000;
+            const diffSeconds = (Date.now() - parseInt(loginTimestamp, 10)) / 1000;
             if (diffSeconds > 900) {
                 console.warn('Session timeout reached (900s). Clearing session...');
-                await AsyncStorage.removeItem('access_token');
-                await AsyncStorage.removeItem('refresh_token');
-                await AsyncStorage.removeItem('login_timestamp');
-                
-                const msg = 'Phiên đăng nhập đã hết hạn (sau 15 phút). Vui lòng đăng nhập lại.';
-                if (Platform.OS === 'web') {
-                    window.alert(msg);
-                    window.location.href = '/login';
-                } else {
-                    Alert.alert('Hết phiên', msg);
-                    // Lưu ý: Cần xử lý navigation ra ngoài login ở cấp UI hoặc thông qua Event
-                }
-                
+                await clearSession();
+
+                notifySessionExpired(
+                    'Het phien',
+                    'Phien dang nhap da het han sau 15 phut. Vui long dang nhap lai.'
+                );
+
                 throw new Error('SESSION_TIMEOUT');
             }
         }
 
-        // Lấy token từ AsyncStorage
         const token = await AsyncStorage.getItem('access_token');
 
         const headers = {
@@ -53,27 +97,28 @@ export const apiClient = async (endpoint, options = {}) => {
         console.log(`[API Call] ${API_BASE_URL}${endpoint}`);
 
         const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-        
-        if (!response.ok) {
-            if (response.status === 401) {
-                // Xử lý khi hết phiên đăng nhập hoặc Token không hợp lệ
-                console.warn('Unauthorized. Clearing session...');
-                await AsyncStorage.removeItem('access_token');
-                await AsyncStorage.removeItem('refresh_token');
-                await AsyncStorage.removeItem('login_timestamp');
+        const payload = await parseResponseBody(response);
 
-                const msg = 'Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.';
-                if (Platform.OS === 'web') {
-                    window.alert(msg);
-                    window.location.href = '/login';
-                } else {
-                    Alert.alert('Lỗi xác thực', msg);
-                }
+        if (!response.ok) {
+            const message = extractErrorMessage(payload, `API error: ${response.status}`);
+
+            if (response.status === 401 && !isAuthEndpoint(endpoint)) {
+                console.warn('Unauthorized. Clearing session...');
+                await clearSession();
+
+                notifySessionExpired(
+                    'Loi xac thuc',
+                    'Phien dang nhap cua ban da het han. Vui long dang nhap lai.'
+                );
             }
-            throw new Error(`API error: ${response.status}`);
+
+            const error = new Error(message);
+            error.status = response.status;
+            error.payload = payload;
+            throw error;
         }
-        
-        return await response.json();
+
+        return payload;
     } catch (error) {
         console.error('Mobile API call failed:', error);
         throw error;

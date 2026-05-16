@@ -18,6 +18,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "softwareKeyboardLayoutMode": "resize",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.nguyenkien2005.frontend_app"
@@ -47,8 +48,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "25c8f325-b990-48a7-a63b-23b9ae3dcbc0"
+        "projectId": "0bf8d9c8-fb44-49e7-81a3-9d414df0e052"
       }
-    }
+    },
+    "owner": "dnb1405"
   }
 }

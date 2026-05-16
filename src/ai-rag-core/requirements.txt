@@ -23,7 +23,7 @@ langchain-openai==0.1.25
 
 # Evaluation (RAGAS)
 datasets==2.20.0
-ragas==0.4.3
+# ragas==0.4.3
 mlflow==3.12.0
 tiktoken==0.7.0
 

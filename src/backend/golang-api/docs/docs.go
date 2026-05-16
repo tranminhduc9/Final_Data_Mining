@@ -1396,7 +1396,7 @@ const docTemplate = `{
         },
         "/radar/search": {
             "get": {
-                "description": "Match Job qua quan hệ (j:Job)-[]-(t:Technology) với toLower(t.name) CONTAINS keyword. Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month \u003e hiện tại). Mỗi job count 1 lần (count(DISTINCT j)).",
+                "description": "Match Job qua quan hệ (j:Job)-[]-(t:Technology) với toLower(t.name) = toLower(keyword) — exact case-insensitive. Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month \u003e hiện tại). Mỗi job count 1 lần (count(DISTINCT j)).",
                 "produces": [
                     "application/json"
                 ],
@@ -1447,7 +1447,7 @@ const docTemplate = `{
         },
         "/radar/top10": {
             "get": {
-                "description": "Match Job qua quan hệ (j:Job)-[]-(t:Technology). Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month \u003e hiện tại). Mỗi job count 1 lần (count(DISTINCT j)). Cùng logic match/filter với /radar/search.",
+                "description": "Match Job qua quan hệ (j:Job)-[]-(t:Technology). Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month \u003e hiện tại). Mỗi job count 1 lần (count(DISTINCT j)). Gộp Technology theo toLower(name) — \"Python\"/\"PYTHON\"/\"python\" đều count chung. Cùng logic match/filter với /radar/search.",
                 "produces": [
                     "application/json"
                 ],

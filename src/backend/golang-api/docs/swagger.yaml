@@ -1559,8 +1559,9 @@ paths:
   /radar/search:
     get:
       description: Match Job qua quan hệ (j:Job)-[]-(t:Technology) với toLower(t.name)
-        CONTAINS keyword. Bỏ qua job có posted_date NULL và job ở tháng tương lai
-        (year/month > hiện tại). Mỗi job count 1 lần (count(DISTINCT j)).
+        = toLower(keyword) — exact case-insensitive. Bỏ qua job có posted_date NULL
+        và job ở tháng tương lai (year/month > hiện tại). Mỗi job count 1 lần (count(DISTINCT
+        j)).
       parameters:
       - collectionFormat: multi
         description: Keywords (repeat or comma-separated)
@@ -1612,7 +1613,8 @@ paths:
     get:
       description: Match Job qua quan hệ (j:Job)-[]-(t:Technology). Bỏ qua job có
         posted_date NULL và job ở tháng tương lai (year/month > hiện tại). Mỗi job
-        count 1 lần (count(DISTINCT j)). Cùng logic match/filter với /radar/search.
+        count 1 lần (count(DISTINCT j)). Gộp Technology theo toLower(name) — "Python"/"PYTHON"/"python"
+        đều count chung. Cùng logic match/filter với /radar/search.
       produces:
       - application/json
       responses:

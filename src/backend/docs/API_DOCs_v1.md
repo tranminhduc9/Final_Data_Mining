@@ -91,7 +91,7 @@ Phần API cho nội dung trang radar chia làm 3 layer:
 }
 ```
 
-> **Match logic**: `(j:Job)-[]-(t:Technology)` với `toLower(t.name) CONTAINS toLower(keyword)`. Bỏ qua job có `posted_date` NULL hoặc thuộc tháng tương lai (do lỗi data). Mỗi job count 1 lần (`count(DISTINCT j)`) — kể cả khi job có nhiều Technology cùng match keyword.
+> **Match logic**: `(j:Job)-[]-(t:Technology)` với `toLower(t.name) = toLower(keyword)` — **exact case-insensitive** (không match "Python 3" hay "Micropython"). Bỏ qua job có `posted_date` NULL hoặc thuộc tháng tương lai (do lỗi data). Mỗi job count 1 lần (`count(DISTINCT j)`). Match cùng tech canonical với `/radar/top10`.
 
 | Method | Endpoint | Description | Auth |
 | --- | --- | --- | --- |
@@ -104,7 +104,7 @@ Phần API cho nội dung trang radar chia làm 3 layer:
 | --- | --- | --- | --- |
 | GET | `/radar/top10` | Lấy danh sách top 10 công nghệ kèm số lượng jobs | No |
 
-> **Match logic** (align với `/radar/search`): `(j:Job)-[]-(t:Technology)`, bỏ qua `posted_date` NULL và tháng tương lai, đếm `count(DISTINCT j)`. Không filter theo window thời gian — tổng toàn bộ dữ liệu.
+> **Match logic** (align với `/radar/search`): `(j:Job)-[]-(t:Technology)`, bỏ qua `posted_date` NULL và tháng tương lai, đếm `count(DISTINCT j)`. Không filter theo window thời gian — tổng toàn bộ dữ liệu. Gộp Technology theo `toLower(t.name)` — `"Python"`/`"PYTHON"`/`"python"` được tính chung 1 entry; `displayName` là một trong các biến thể đã thấy (head of collect).
 
 `Response mẫu`:
 

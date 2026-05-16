@@ -172,7 +172,11 @@ func (r *RadarRepository) GetTop10Keywords(ctx context.Context) ([]domain.RadarK
 		  AND (date(datetime(j.posted_date)).year < $curYear
 		       OR (date(datetime(j.posted_date)).year = $curYear
 		           AND date(datetime(j.posted_date)).month <= $curMonth))
-		RETURN t.name AS keyword, count(DISTINCT j) AS job_count
+		WITH toLower(t.name) AS nameLower, t.name AS tname, j
+		WITH nameLower,
+		     head(collect(DISTINCT tname)) AS displayName,
+		     count(DISTINCT j) AS job_count
+		RETURN displayName AS keyword, job_count
 		ORDER BY job_count DESC
 		LIMIT 10
 	`
@@ -218,7 +222,7 @@ func (r *RadarRepository) SearchByKeywords(ctx context.Context, keywords []strin
 		MATCH (j:Job)-[]-(t:Technology)
 		WHERE j.posted_date IS NOT NULL
 		  AND t.name IS NOT NULL
-		  AND toLower(t.name) CONTAINS toLower(kw)
+		  AND toLower(t.name) = toLower(kw)
 		  AND datetime(j.posted_date) >= datetime($cutoff)
 		  AND (date(datetime(j.posted_date)).year < $curYear
 		       OR (date(datetime(j.posted_date)).year = $curYear

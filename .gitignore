@@ -98,3 +98,5 @@ logs/
 
 # Tài liệu nội bộ
 *.pdf
+# File apk
+*.apk

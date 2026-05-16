@@ -104,6 +104,8 @@ Phần API cho nội dung trang radar chia làm 3 layer:
 | --- | --- | --- | --- |
 | GET | `/radar/top10` | Lấy danh sách top 10 công nghệ kèm số lượng jobs | No |
 
+> **Match logic** (align với `/radar/search`): `(j:Job)-[]-(t:Technology)`, bỏ qua `posted_date` NULL và tháng tương lai, đếm `count(DISTINCT j)`. Không filter theo window thời gian — tổng toàn bộ dữ liệu.
+
 `Response mẫu`:
 
 ```json

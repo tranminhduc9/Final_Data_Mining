@@ -164,15 +164,23 @@ func (r *RadarRepository) GetTop10Keywords(ctx context.Context) ([]domain.RadarK
 	})
 	defer session.Close(ctx)
 
+	now := time.Now()
 	query := `
-		MATCH (t:Technology)<-[:REQUIRES]-(j:Job)
-		WHERE t.name IS NOT NULL
-		RETURN t.name AS keyword, count(j) AS job_count
+		MATCH (j:Job)-[]-(t:Technology)
+		WHERE j.posted_date IS NOT NULL
+		  AND t.name IS NOT NULL
+		  AND (date(datetime(j.posted_date)).year < $curYear
+		       OR (date(datetime(j.posted_date)).year = $curYear
+		           AND date(datetime(j.posted_date)).month <= $curMonth))
+		RETURN t.name AS keyword, count(DISTINCT j) AS job_count
 		ORDER BY job_count DESC
 		LIMIT 10
 	`
 
-	result, err := session.Run(ctx, query, nil)
+	result, err := session.Run(ctx, query, map[string]interface{}{
+		"curYear":  now.Year(),
+		"curMonth": int(now.Month()),
+	})
 	if err != nil {
 		return nil, fmt.Errorf("neo4j query top10: %w", err)
 	}

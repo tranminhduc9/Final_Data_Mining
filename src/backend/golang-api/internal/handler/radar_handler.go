@@ -97,6 +97,7 @@ func (h *RadarHandler) ExportCSV(c *gin.Context) {
 
 // Top10 godoc
 // @Summary      Top 10 technologies by total job count
+// @Description  Match Job qua quan hệ (j:Job)-[]-(t:Technology). Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month > hiện tại). Mỗi job count 1 lần (count(DISTINCT j)). Cùng logic match/filter với /radar/search.
 // @Tags         radar
 // @Produce      json
 // @Success      200 {object} dto.Top10Response

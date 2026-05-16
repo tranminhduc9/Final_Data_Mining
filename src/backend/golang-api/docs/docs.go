@@ -1447,6 +1447,7 @@ const docTemplate = `{
         },
         "/radar/top10": {
             "get": {
+                "description": "Match Job qua quan hệ (j:Job)-[]-(t:Technology). Bỏ qua job có posted_date NULL và job ở tháng tương lai (year/month \u003e hiện tại). Mỗi job count 1 lần (count(DISTINCT j)). Cùng logic match/filter với /radar/search.",
                 "produces": [
                     "application/json"
                 ],

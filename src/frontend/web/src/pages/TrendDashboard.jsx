@@ -4,8 +4,7 @@ import {
     Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
 import Select from 'react-select';
-import { getCompareSearch } from '../api/compareService';
-import { getRadarTop4, getRadarTop10 } from '../api/trendService';
+import { getRadarSearch, getRadarTop4, getRadarTop10 } from '../api/trendService';
 import './TrendDashboard.css';
 
 const PALETTE = [
@@ -25,16 +24,14 @@ function transformToChartData(apiData) {
     if (!apiData?.data || !Array.isArray(apiData.data)) return [];
     
     const mergedMap = {}; 
-    apiData.data.forEach(techItem => {
-        const kw = techItem.keyword;
-        const history = techItem.monthly || [];
-        
-        history.forEach(point => {
-            const m = `T${point.month}/${point.year}`; 
-            if (!mergedMap[m]) {
-                mergedMap[m] = { month: m, rawSort: point.year * 100 + point.month };
-            }
-            mergedMap[m][kw] = point.job_count || 0; 
+    apiData.data.forEach(point => {
+        const m = `T${point.month}/${point.year}`;
+        if (!mergedMap[m]) {
+            mergedMap[m] = { month: m, rawSort: point.year * 100 + point.month };
+        }
+
+        Object.entries(point.keywords || {}).forEach(([kw, count]) => {
+            mergedMap[m][kw] = count || 0;
         });
     });
 
@@ -223,7 +220,7 @@ export default function TrendDashboard() {
         const fetch = async () => {
             setLoadingChart(true);
             try {
-                const res = await getCompareSearch(keywords, timeRange);
+                const res = await getRadarSearch(keywords, timeRange);
                 setTimelineData(transformToChartData(res));
             } catch {
                 setTimelineData([]);

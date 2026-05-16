@@ -65,6 +65,39 @@ function toGrowthData(timelineData, keywords) {
     });
 }
 
+function roundAxisLimit(value) {
+    if (value <= 100) return 100;
+    if (value <= 250) return Math.ceil(value / 50) * 50;
+    return Math.ceil(value / 100) * 100;
+}
+
+function getAxisLimit(value) {
+    if (value < 99) return 100;
+    return roundAxisLimit(value * 1.15);
+}
+
+function roundJobAxisLimit(value) {
+    if (value <= 100) return 100;
+    if (value <= 500) return Math.ceil(value / 50) * 50;
+    if (value <= 1000) return Math.ceil(value / 100) * 100;
+    return Math.ceil(value / 500) * 500;
+}
+
+function getJobAxisLimit(value) {
+    if (value <= 100) return 100;
+    return roundJobAxisLimit(value * 1.15);
+}
+
+function getPercentAxisDomain(data, keys) {
+    const values = data.flatMap(row => keys.map(key => Number(row[key] || 0)));
+    const maxGrowth = Math.max(0, ...values);
+    const minGrowth = Math.min(0, ...values);
+    const maxValue = getAxisLimit(maxGrowth);
+    const minValue = -getAxisLimit(Math.abs(minGrowth));
+
+    return [minValue, maxValue];
+}
+
 const selectStyles = {
     control: (base) => ({ ...base, background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text)', minHeight: '38px', boxShadow: 'none', '&:hover': { borderColor: 'var(--primary)' } }),
     menu: (base) => ({ ...base, background: 'var(--surface-2)', border: '1px solid var(--border)', zIndex: 200 }),
@@ -130,13 +163,26 @@ export default function TrendDashboard() {
         return map;
     }, [selectedTechs]);
 
+    const chartTimelineData = useMemo(() => {
+        const sliceStart = Math.max(0, timelineData.length - timeRange);
+        return timelineData.slice(sliceStart);
+    }, [timelineData, timeRange]);
+
     const growthData = useMemo(() =>
-        toGrowthData(timelineData, selectedTechs.map(t => t.value)),
-        [timelineData, selectedTechs]
+        toGrowthData(chartTimelineData, selectedTechs.map(t => t.value)),
+        [chartTimelineData, selectedTechs]
     );
 
-    const visibleData = chartMode === 'growth' ? growthData : timelineData;
+    const visibleData = chartMode === 'growth' ? growthData : chartTimelineData;
     const activeTechIds = selectedTechs.map(t => t.value);
+    const growthAxisDomain = useMemo(() =>
+        getPercentAxisDomain(growthData, activeTechIds),
+        [growthData, activeTechIds]
+    );
+    const jobAxisDomain = useMemo(() => {
+        const values = chartTimelineData.flatMap(row => activeTechIds.map(id => Number(row[id] || 0)));
+        return [0, getJobAxisLimit(Math.max(0, ...values))];
+    }, [chartTimelineData, activeTechIds]);
 
     // Load top4 + top10 on mount
     useEffect(() => {
@@ -322,7 +368,7 @@ export default function TrendDashboard() {
                         <BarChart data={visibleData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                             <XAxis dataKey="month" tick={{ fill: 'var(--text-3)', fontSize: 11 }} />
-                            <YAxis tick={{ fill: 'var(--text-3)', fontSize: 11 }} />
+                            <YAxis tick={{ fill: 'var(--text-3)', fontSize: 11 }} domain={jobAxisDomain} />
                             <Tooltip content={<CustomTooltip />} />
                             <Legend wrapperStyle={{ paddingTop: 12, fontSize: '0.8rem', color: 'var(--text-2)' }} />
                             {activeTechIds.map(id => (
@@ -333,7 +379,11 @@ export default function TrendDashboard() {
                         <LineChart data={visibleData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                             <XAxis dataKey="month" tick={{ fill: 'var(--text-3)', fontSize: 11 }} />
-                            <YAxis tick={{ fill: 'var(--text-3)', fontSize: 11 }} unit={chartMode === 'growth' ? '%' : ''} />
+                            <YAxis
+                                tick={{ fill: 'var(--text-3)', fontSize: 11 }}
+                                unit={chartMode === 'growth' ? '%' : ''}
+                                domain={chartMode === 'growth' ? growthAxisDomain : jobAxisDomain}
+                            />
                             {chartMode === 'growth' && <ReferenceLine y={0} stroke="var(--border-2)" strokeDasharray="4 4" />}
                             <Tooltip content={chartMode === 'growth' ? <GrowthTooltip /> : <CustomTooltip />} />
                             <Legend wrapperStyle={{ paddingTop: 12, fontSize: '0.8rem', color: 'var(--text-2)' }} />

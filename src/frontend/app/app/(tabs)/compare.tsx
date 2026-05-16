@@ -6,6 +6,7 @@ import {
     ScrollView, StyleSheet,
     Text,
     TouchableOpacity,
+    useWindowDimensions,
     View,
     ActivityIndicator,
 } from 'react-native';
@@ -25,7 +26,20 @@ const PALETTE = [
     '#FF8C00', '#7FBA00', '#E040FB', '#FF5252', '#00B4D8'
 ];
 
+const roundAxisLimit = (value: number) => {
+    if (value <= 100) return 100;
+    if (value <= 250) return Math.ceil(value / 50) * 50;
+    return Math.ceil(value / 100) * 100;
+};
+
+const getAxisLimit = (value: number) => {
+    if (value < 99) return 100;
+    return roundAxisLimit(value * 1.15);
+};
+
 export default function CompareScreen() {
+    const { width: windowWidthNow } = useWindowDimensions();
+    const currentScreenWidth = isWeb ? Math.min(windowWidthNow, 480) : windowWidthNow;
     const [selectedTechIds, setSelectedTechIds] = useState<string[]>([]);
     const [timeRange, setTimeRange] = useState(12);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -35,7 +49,7 @@ export default function CompareScreen() {
     const [loadingTop, setLoadingTop] = useState(true);
     const [loadingCompare, setLoadingCompare] = useState(false);
 
-    const chartWidth = screenWidth - (isMobile ? 16 : 56);
+    const chartWidth = Math.max(260, currentScreenWidth - 64);
     const chartHeight = isMobile ? 260 : 300;
 
     // Fetch initial options
@@ -122,33 +136,54 @@ export default function CompareScreen() {
             const kw = techItem.keyword;
             const history = techItem.monthly || [];
 
-            let baseVal: number | null = null;
             history.forEach((point: any) => {
                 const m = `T${point.month}/${point.year}`;
-
-                if (baseVal === null && point.job_count > 0) {
-                    baseVal = point.job_count;
-                }
-
-                let growth = 0;
-                if (baseVal !== null && baseVal > 0) {
-                    growth = Math.round(((point.job_count - baseVal) / baseVal) * 100);
-                } else {
-                    growth = 0;
-                }
 
                 if (!mergedMap[m]) {
                     mergedMap[m] = { month: m, rawSort: point.year * 100 + point.month };
                 }
-                mergedMap[m][kw] = growth;
+                mergedMap[m][kw] = point.job_count || 0;
             });
         });
 
         const sorted = Object.values(mergedMap).sort((a: any, b: any) => a.rawSort - b.rawSort);
         // Lọc theo timeRange
         const sliceStart = Math.max(0, sorted.length - timeRange);
-        return sorted.slice(sliceStart);
-    }, [compareData, timeRange]);
+        const visibleRows = sorted.slice(sliceStart);
+        const baseVals: any = {};
+
+        selectedTechIds.forEach((kw) => {
+            const firstValidRow: any = visibleRows.find((row: any) => row[kw] > 0);
+            baseVals[kw] = firstValidRow ? firstValidRow[kw] : null;
+        });
+
+        return visibleRows.map((row: any) => {
+            const growthRow: any = { month: row.month, rawSort: row.rawSort };
+            selectedTechIds.forEach((kw) => {
+                const baseVal = baseVals[kw];
+                growthRow[kw] = baseVal !== null && baseVal > 0
+                    ? Math.round(((Number(row[kw] || 0) - baseVal) / baseVal) * 100)
+                    : 0;
+            });
+            return growthRow;
+        });
+    }, [compareData, timeRange, selectedTechIds]);
+
+    const chartAxis = useMemo(() => {
+        const values = rawChartData.flatMap((row: any) =>
+            selectedTechIds.map((id: string) => Number(row[id] || 0))
+        );
+        const maxGrowth = Math.max(0, ...values);
+        const minGrowth = Math.min(0, ...values);
+        const maxValue = getAxisLimit(maxGrowth);
+        const mostNegativeValue = getAxisLimit(Math.abs(minGrowth));
+
+        return {
+            maxValue,
+            mostNegativeValue,
+            noOfSectionsBelowXAxis: 4,
+        };
+    }, [rawChartData, selectedTechIds]);
 
     const giftedChartData = useMemo(() => {
         if (rawChartData.length === 0) return [];
@@ -160,7 +195,7 @@ export default function CompareScreen() {
                 color: colorMap[id] || DM.primary,
                 data: rawChartData.map((row: any, i: number) => ({
                     value: row[id] || 0,
-                    label: i % step === 0 ? row.month : '',
+                    label: i === 0 || i === rawChartData.length - 1 || i % step === 0 ? row.month : '',
                     labelTextStyle: { color: DM.text3, fontSize: 10 },
                     month: row.month,
                 }))
@@ -182,6 +217,15 @@ export default function CompareScreen() {
         );
     };
 
+    const chartViewportWidth = Math.max(220, chartWidth - 40);
+
+    const lineChartSpacing = useMemo(() => {
+        if (rawChartData.length <= 1) return 32;
+        const initialSpacing = 10;
+        const endSpacing = 16;
+        return Math.max(16, (chartViewportWidth - initialSpacing - endSpacing) / Math.max(1, rawChartData.length - 1));
+    }, [chartViewportWidth, rawChartData.length]);
+
     if (loadingTop) {
         return (
             <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
@@ -193,7 +237,7 @@ export default function CompareScreen() {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
                 {/* Header */}
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>So sánh</Text>
@@ -312,7 +356,7 @@ export default function CompareScreen() {
                 {!loadingCompare && rawChartData.length > 0 && (
                     <View style={styles.card}>
                         <Text style={styles.sectionTitle}>So sánh % Tăng trưởng (so với tháng đầu)</Text>
-                        <View style={{ marginLeft: -10, paddingRight: 20 }}>
+                        <View style={styles.chartFrame}>
                             <LineChart
                                 data={giftedChartData[0]?.data || []}
                                 data2={giftedChartData[1]?.data}
@@ -329,12 +373,14 @@ export default function CompareScreen() {
                                 dataPointsColor3={giftedChartData[2]?.color}
                                 dataPointsColor4={giftedChartData[3]?.color}
                                 dataPointsColor5={giftedChartData[4]?.color}
-                                width={chartWidth - 40}
+                                width={chartViewportWidth}
                                 height={chartHeight - 40}
                                 curved
                                 thickness={2}
-                                spacing={Math.max(30, (chartWidth - 60) / Math.max(1, rawChartData.length))}
+                                spacing={lineChartSpacing}
                                 initialSpacing={10}
+                                endSpacing={16}
+                                disableScroll
                                 yAxisColor={DM.border}
                                 xAxisColor={DM.border}
                                 yAxisTextStyle={{ color: DM.text3, fontSize: 10 }}
@@ -343,6 +389,9 @@ export default function CompareScreen() {
                                 rulesType="dashed"
                                 yAxisLabelSuffix="%"
                                 noOfSections={4}
+                                maxValue={chartAxis.maxValue}
+                                mostNegativeValue={chartAxis.mostNegativeValue}
+                                noOfSectionsBelowXAxis={chartAxis.noOfSectionsBelowXAxis}
                                 hideDataPoints={false}
                                 dataPointsRadius={3}
                                 pointerConfig={{
@@ -484,6 +533,7 @@ const styles = StyleSheet.create({
 
     // Chart
     sectionTitle: { fontSize: 15, fontWeight: '700', color: DM.text, marginBottom: 12 },
+    chartFrame: { marginLeft: -10, paddingRight: 20 },
     chart: { borderRadius: DM.radius, marginLeft: -8 },
     legendRow: { flexDirection: 'row' as const, flexWrap: 'wrap' as const, gap: 12, marginTop: 12 },
     legendItem: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 5 },

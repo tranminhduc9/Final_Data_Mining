@@ -34,6 +34,42 @@ const NODE_TYPES: any = {
     requirement: { color: '#54C5F8', size: 6 },
 };
 
+const getNodeDisplayLabel = (node: any) => {
+    const props = node?.properties || {};
+    const candidates = [
+        node?.label,
+        props.name,
+        props.full_name,
+        props.title,
+        props.job_title,
+        props.company_name,
+        props.keyword,
+        props.tech_name,
+        props.label,
+        props.value,
+        node?.name,
+        node?.title,
+        node?.company_name,
+        node?.keyword,
+        node?.tech_name,
+        node?.id,
+    ];
+
+    for (const candidate of candidates) {
+        if (typeof candidate === 'string' && candidate.trim()) {
+            return candidate.trim();
+        }
+    }
+
+    for (const value of Object.values(props)) {
+        if (typeof value === 'string' && value.trim()) {
+            return value.trim();
+        }
+    }
+
+    return String(node?.id ?? '');
+};
+
 const HTML_CONTENT = `
 <!DOCTYPE html>
 <html>
@@ -60,21 +96,54 @@ const HTML_CONTENT = `
             'Requirement': 3.5
         };
 
+        const getNodeLabel = (node) => {
+            const props = node.properties || {};
+            const candidates = [
+                node.label,
+                props.name,
+                props.full_name,
+                props.title,
+                props.job_title,
+                props.company_name,
+                props.keyword,
+                props.tech_name,
+                props.label,
+                props.value,
+                node.name,
+                node.title,
+                node.company_name,
+                node.keyword,
+                node.tech_name,
+                node.id
+            ];
+
+            for (const candidate of candidates) {
+                if (typeof candidate === 'string' && candidate.trim()) {
+                    return candidate.trim();
+                }
+            }
+
+            for (const value of Object.values(props)) {
+                if (typeof value === 'string' && value.trim()) {
+                    return value.trim();
+                }
+            }
+
+            return String(node.id || '');
+        };
+
         const Graph = ForceGraph()(document.getElementById('graph'))
             .backgroundColor('#050505')
             .nodeRelSize(5)
             .nodeColor(n => colorMap[n.labels?.[0]] || '#9FA8C7')
-            .nodeLabel(n => {
-                const props = n.properties || {};
-                return props.name || props.title || props.company_name || n.id;
-            });
+            .nodeLabel(n => getNodeLabel(n));
             
         // Giảm lực đẩy và khoảng cách cạnh để gom các node lại gần nhau
         Graph.d3Force('charge').strength(-100);
         Graph.d3Force('link').distance(10);
 
         Graph.nodeCanvasObject((node, ctx, globalScale) => {
-                const label = node.properties?.name || node.properties?.title || node.properties?.company_name || node.id;
+                const label = getNodeLabel(node);
                 
                 // Draw node circle (Phân loại kích thước)
                 const r = sizeMap[node.labels?.[0]] || 4;
@@ -103,14 +172,40 @@ const HTML_CONTENT = `
                 const start = link.source;
                 const end = link.target;
                 if (typeof start !== 'object' || typeof end !== 'object') return;
+                const isJourneyLink = link.isJourneyPath === true;
+                const dx = end.x - start.x;
+                const dy = end.y - start.y;
+                const angle = Math.atan2(dy, dx);
 
                 // 1. Draw the line
                 ctx.beginPath();
                 ctx.moveTo(start.x, start.y);
                 ctx.lineTo(end.x, end.y);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.lineWidth = 1.5 / globalScale;
+                ctx.strokeStyle = isJourneyLink ? '#FFD166' : 'rgba(255, 255, 255, 0.7)';
+                ctx.lineWidth = (isJourneyLink ? 2.6 : 1.5) / globalScale;
                 ctx.stroke();
+
+                if (isJourneyLink) {
+                    const targetRadius = (sizeMap[end.labels?.[0]] || 4) + 2;
+                    const arrowLength = 13 / globalScale;
+                    const arrowWidth = 7 / globalScale;
+                    const tipX = end.x - Math.cos(angle) * targetRadius;
+                    const tipY = end.y - Math.sin(angle) * targetRadius;
+
+                    ctx.beginPath();
+                    ctx.moveTo(tipX, tipY);
+                    ctx.lineTo(
+                        tipX - arrowLength * Math.cos(angle) + arrowWidth * Math.sin(angle),
+                        tipY - arrowLength * Math.sin(angle) - arrowWidth * Math.cos(angle)
+                    );
+                    ctx.lineTo(
+                        tipX - arrowLength * Math.cos(angle) - arrowWidth * Math.sin(angle),
+                        tipY - arrowLength * Math.sin(angle) + arrowWidth * Math.cos(angle)
+                    );
+                    ctx.closePath();
+                    ctx.fillStyle = '#FFD166';
+                    ctx.fill();
+                }
 
                 // 2. Draw the label (always visible)
                 const label = link.type || '';
@@ -123,11 +218,9 @@ const HTML_CONTENT = `
                         y: start.y + (end.y - start.y) / 2
                     };
 
-                    const relAngle = Math.atan2(end.y - start.y, end.x - start.x);
-
                     ctx.save();
                     ctx.translate(textPos.x, textPos.y);
-                    ctx.rotate(relAngle);
+                    ctx.rotate(angle);
 
                     const textWidth = ctx.measureText(label).width;
                     const pad = fontSize * 0.4;
@@ -143,7 +236,7 @@ const HTML_CONTENT = `
                 }
             })
             .onNodeClick(node => {
-                const label = node.properties?.name || node.properties?.title || node.id;
+                const label = getNodeLabel(node);
                 const msg = JSON.stringify({ type: 'nodeClick', node: { id: node.id, label } });
                 if (window.ReactNativeWebView) {
                     window.ReactNativeWebView.postMessage(msg);
@@ -211,7 +304,7 @@ export default function GraphScreen() {
                 try {
                     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
                     if (data.type === 'nodeClick') {
-                        setSearchQuery(data.node.label);
+                        setSearchQuery(data.node.label || getNodeDisplayLabel(data.node));
                     }
                 } catch (e) {}
             };
@@ -230,7 +323,8 @@ export default function GraphScreen() {
                 
                 const nodes = rawNodes.map((n: any) => ({
                     ...n,
-                    id: n.id || n.keyword || n.name,
+                    id: n.id || n.keyword || n.name || getNodeDisplayLabel(n),
+                    label: getNodeDisplayLabel(n),
                 }));
                 const links = rawLinks.map((l: any) => ({
                     ...l,
@@ -277,11 +371,17 @@ export default function GraphScreen() {
                 }
 
                 // Chuẩn hóa dữ liệu
-                nodes = nodes.map(n => ({ ...n, id: n.id || n.keyword || n.name }));
+                nodes = nodes.map(n => ({
+                    ...n,
+                    id: n.id || n.keyword || n.name || getNodeDisplayLabel(n),
+                    label: getNodeDisplayLabel(n),
+                }));
                 links = links.map(l => ({
                     ...l,
                     source: l.source || l.source_id || l.from,
-                    target: l.target || l.target_id || l.to
+                    target: l.target || l.target_id || l.to,
+                    type: (l.type || l.relation || 'RELATED_TO').toUpperCase(),
+                    isJourneyPath: true
                 }));
 
                 // Deduplicate
@@ -341,7 +441,7 @@ export default function GraphScreen() {
         try {
             const data = JSON.parse(event.nativeEvent.data);
             if (data.type === 'nodeClick') {
-                const label = data.node.label;
+                const label = data.node.label || getNodeDisplayLabel(data.node);
                 if (activeFeature === 'explore') {
                     setFocusLabel(label);
                     setSearchQuery(label);
@@ -544,8 +644,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', gap: 8
     },
     searchInput: { 
-        flex: 1, color: DM.text, fontSize: 13, paddingVertical: 10, paddingHorizontal: 12,
-        backgroundColor: DM.bg2, borderRadius: DM.radiusSm, borderWidth: 1, borderColor: DM.border
+        flex: 1, color: '#FFFFFF', fontSize: 13, paddingVertical: 10, paddingHorizontal: 12,
+        backgroundColor: '#050505', borderRadius: DM.radiusSm, borderWidth: 1, borderColor: DM.border,
+        minHeight: 44, textAlignVertical: 'center',
+        ...(Platform.OS === 'android' && {
+            includeFontPadding: false,
+            paddingTop: 0,
+            paddingBottom: 0,
+        }),
     },
     
     // Journey Styles

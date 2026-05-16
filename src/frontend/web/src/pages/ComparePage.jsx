@@ -14,11 +14,28 @@ const PALETTE = [
 ];
 
 // Để chọn tạm các công nghệ
-const DEFAULT_TECHS = [
-    { value: 'React', label: 'React', color: PALETTE[0] },
-    { value: 'Angular', label: 'Angular', color: PALETTE[1] },
-    { value: 'Vue', label: 'Vue', color: PALETTE[2] }
-];
+const DEFAULT_TECHS = [];
+
+function roundAxisLimit(value) {
+    if (value <= 100) return 100;
+    if (value <= 250) return Math.ceil(value / 50) * 50;
+    return Math.ceil(value / 100) * 100;
+}
+
+function getAxisLimit(value) {
+    if (value < 99) return 100;
+    return roundAxisLimit(value * 1.15);
+}
+
+function getPercentAxisDomain(data, keys) {
+    const values = data.flatMap(row => keys.map(key => Number(row[key] || 0)));
+    const maxGrowth = Math.max(0, ...values);
+    const minGrowth = Math.min(0, ...values);
+    const maxValue = getAxisLimit(maxGrowth);
+    const minValue = -getAxisLimit(Math.abs(minGrowth));
+
+    return [minValue, maxValue];
+}
 
 const selectStyles = {
     control: (b) => ({ ...b, background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text)', minHeight: 38, boxShadow: 'none', '&:hover': { borderColor: 'var(--primary)' } }),
@@ -75,6 +92,7 @@ export default function ComparePage() {
                         color: PALETTE[i % PALETTE.length]
                     }));
                     setTechOptions(opts);
+                    setSelectedTechs(prev => prev.length ? prev : opts.slice(0, 2));
                 }
             } catch (e) {
                 console.warn("Could not fetch options", e);
@@ -153,13 +171,36 @@ export default function ComparePage() {
                 if (!mergedMap[m]) {
                     mergedMap[m] = { month: m, rawSort: point.year * 100 + point.month };
                 }
-                mergedMap[m][kw] = growth; 
+                mergedMap[m][kw] = point.job_count || 0; 
             });
         });
 
         const sorted = Object.values(mergedMap).sort((a, b) => a.rawSort - b.rawSort);
-        return sorted;
-    }, [compareData]);
+        const sliceStart = Math.max(0, sorted.length - timeRange);
+        const visibleRows = sorted.slice(sliceStart);
+        const baseVals = {};
+
+        activeTechIds.forEach(kw => {
+            const firstValidRow = visibleRows.find(row => row[kw] > 0);
+            baseVals[kw] = firstValidRow ? firstValidRow[kw] : null;
+        });
+
+        return visibleRows.map(row => {
+            const growthRow = { month: row.month, rawSort: row.rawSort };
+            activeTechIds.forEach(kw => {
+                const baseVal = baseVals[kw];
+                growthRow[kw] = baseVal !== null && baseVal > 0
+                    ? Math.round(((Number(row[kw] || 0) - baseVal) / baseVal) * 100)
+                    : 0;
+            });
+            return growthRow;
+        });
+    }, [compareData, timeRange, activeTechIds]);
+
+    const chartAxisDomain = useMemo(() =>
+        getPercentAxisDomain(chartData, activeTechIds),
+        [chartData, activeTechIds]
+    );
 
     return (
         <div className="compare-page">
@@ -218,7 +259,7 @@ export default function ComparePage() {
                         <LineChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                             <XAxis dataKey="month" tick={{ fill: 'var(--text-3)', fontSize: 11 }} />
-                            <YAxis tick={{ fill: 'var(--text-3)', fontSize: 11 }} />
+                            <YAxis tick={{ fill: 'var(--text-3)', fontSize: 11 }} domain={chartAxisDomain} />
                             <ReferenceLine y={0} stroke="var(--border-2)" strokeDasharray="4 4" />
                             <Tooltip content={<CompareTooltip />} />
                             <Legend wrapperStyle={{ fontSize: '0.8rem', color: 'var(--text-2)', paddingTop: 12 }} />

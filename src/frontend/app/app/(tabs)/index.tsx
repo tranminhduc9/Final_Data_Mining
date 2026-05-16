@@ -8,10 +8,12 @@ import {
   ScrollView, StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
   ActivityIndicator
 } from 'react-native';
 import { BarChart, LineChart } from 'react-native-gifted-charts';
+import { captureRef } from 'react-native-view-shot';
 import { getRadarTop4, getRadarTop10 } from '../../api/trendService';
 import { getCompareSearch } from '../../api/compareService';
 
@@ -33,6 +35,29 @@ const PALETTE = [
 ];
 
 // Removed chartConfig for chart-kit
+
+const roundAxisLimit = (value: number) => {
+  if (value <= 100) return 100;
+  if (value <= 250) return Math.ceil(value / 50) * 50;
+  return Math.ceil(value / 100) * 100;
+};
+
+const getAxisLimit = (value: number) => {
+  if (value < 99) return 100;
+  return roundAxisLimit(value * 1.15);
+};
+
+const roundJobAxisLimit = (value: number) => {
+  if (value <= 100) return 100;
+  if (value <= 500) return Math.ceil(value / 50) * 50;
+  if (value <= 1000) return Math.ceil(value / 100) * 100;
+  return Math.ceil(value / 500) * 500;
+};
+
+const getJobAxisLimit = (value: number) => {
+  if (value <= 100) return 100;
+  return roundJobAxisLimit(value * 1.15);
+};
 
 function transformToChartData(apiData) {
   if (!apiData?.data || !Array.isArray(apiData.data)) return [];
@@ -75,6 +100,8 @@ function toGrowthData(timelineData, keywords) {
 
 export default function DashboardScreen() {
   const chartRef = useRef<View>(null);
+  const { width: windowWidthNow } = useWindowDimensions();
+  const currentScreenWidth = isWeb ? Math.min(windowWidthNow, 480) : windowWidthNow;
 
   // API State
   const [top4Data, setTop4Data] = useState([]);
@@ -91,7 +118,7 @@ export default function DashboardScreen() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedTechIds, setSelectedTechIds] = useState<string[]>([]);
 
-  const radarChartWidth = screenWidth - 32;
+  const radarChartWidth = Math.max(260, currentScreenWidth - 64);
   const radarChartHeight = 280;
 
   // Fetch initial top data
@@ -142,8 +169,45 @@ export default function DashboardScreen() {
     fetchChart();
   }, [selectedTechIds, timeRange]);
 
-  const growthData = useMemo(() => toGrowthData(timelineData, selectedTechIds), [timelineData, selectedTechIds]);
-  const visibleData = chartMode === 'growth' ? growthData : timelineData;
+  const chartTimelineData = useMemo(() => {
+    const sliceStart = Math.max(0, timelineData.length - timeRange);
+    return timelineData.slice(sliceStart);
+  }, [timelineData, timeRange]);
+  const growthData = useMemo(() => toGrowthData(chartTimelineData, selectedTechIds), [chartTimelineData, selectedTechIds]);
+  const visibleData = chartMode === 'growth' ? growthData : chartTimelineData;
+
+  const growthChartAxis = useMemo(() => {
+    const values = growthData.flatMap((row: any) =>
+      selectedTechIds.map((id: string) => Number(row[id] || 0))
+    );
+    const maxGrowth = Math.max(0, ...values);
+    const minGrowth = Math.min(0, ...values);
+    const maxValue = getAxisLimit(maxGrowth);
+    const mostNegativeValue = getAxisLimit(Math.abs(minGrowth));
+
+    return {
+      maxValue,
+      mostNegativeValue,
+      noOfSectionsBelowXAxis: 4,
+    };
+  }, [growthData, selectedTechIds]);
+
+  const jobChartMaxValue = useMemo(() => {
+    const values = chartTimelineData.flatMap((row: any) =>
+      selectedTechIds.map((id: string) => Number(row[id] || 0))
+    );
+    return getJobAxisLimit(Math.max(0, ...values));
+  }, [chartTimelineData, selectedTechIds]);
+
+  const chartViewportWidth = Math.max(220, radarChartWidth - 40);
+  const barGroupSpacing = visibleData.length >= 12 ? 6 : 12;
+  const adaptiveBarWidth = useMemo(() => {
+    const groups = Math.max(1, visibleData.length);
+    const seriesCount = Math.max(1, selectedTechIds.length);
+    const availableWidth = chartViewportWidth - 24 - groups * barGroupSpacing;
+    const fitWidth = availableWidth / Math.max(1, groups * seriesCount) - 2;
+    return Math.max(4, Math.min(12, fitWidth));
+  }, [barGroupSpacing, chartViewportWidth, selectedTechIds.length, visibleData.length]);
 
   const giftedChartData = useMemo(() => {
     if (visibleData.length === 0) return [];
@@ -156,7 +220,7 @@ export default function DashboardScreen() {
         color: tech?.color || DM.primary,
         data: visibleData.map((row: any, i: number) => ({
           value: row[id] || 0,
-          label: i % step === 0 ? row.month : '',
+          label: i === 0 || i === visibleData.length - 1 || i % step === 0 ? row.month : '',
           labelTextStyle: { color: DM.text3, fontSize: 10 },
           month: row.month,
         }))
@@ -179,14 +243,14 @@ export default function DashboardScreen() {
         result.push({
           value: Number(Math.max(0, row[id] || 0)),
           frontColor: tech?.color || DM.primary,
-          label: (isFirst && i % step === 0) ? row.month : '',
+          label: (isFirst && (i === 0 || i === visibleData.length - 1 || i % step === 0)) ? row.month : '',
           labelTextStyle: { color: DM.text3, fontSize: 10 },
-          spacing: isLast ? 20 : 2, // Fixed spacing to ensure stable rendering
+          spacing: isLast ? barGroupSpacing : 2,
         });
       });
     });
     return result;
-  }, [visibleData, selectedTechIds, allTechs]);
+  }, [barGroupSpacing, visibleData, selectedTechIds, allTechs]);
 
   const toggleTech = (id: string) => {
     setSelectedTechIds((prev: string[]) =>
@@ -201,6 +265,17 @@ export default function DashboardScreen() {
       setSelectedTechIds((prev: string[]) => prev.filter((t: string) => t !== id));
     }
   };
+
+  const lineChartSpacing = useMemo(() => {
+    if (visibleData.length <= 1) return 32;
+    const initialSpacing = 10;
+    const endSpacing = 16;
+    return Math.max(16, (chartViewportWidth - initialSpacing - endSpacing) / Math.max(1, visibleData.length - 1));
+  }, [chartViewportWidth, visibleData.length]);
+
+  const barChartWidth = useMemo(() => {
+    return Math.max(220, radarChartWidth - 40);
+  }, [radarChartWidth]);
 
   const handleExportCSV = useCallback(async () => {
     const headers = ['Month', ...selectedTechIds];
@@ -239,9 +314,33 @@ export default function DashboardScreen() {
         Alert.alert('Lỗi', 'Không thể export PNG');
       }
     } else {
-      Alert.alert('Chưa hỗ trợ', 'Xuất PNG trên Expo Go chưa được bật trong bản này. Bạn vẫn có thể chia sẻ CSV.');
+      try {
+        if (!chartRef.current) {
+          Alert.alert('Lỗi', 'Không tìm thấy biểu đồ để xuất ảnh');
+          return;
+        }
+
+        const uri = await captureRef(chartRef.current, {
+          format: 'png',
+          quality: 1,
+          result: 'tmpfile',
+        });
+
+        if (await Sharing.isAvailableAsync()) {
+          await Sharing.shareAsync(uri, {
+            mimeType: 'image/png',
+            dialogTitle: 'Chia sẻ ảnh biểu đồ',
+          });
+        } else {
+          Alert.alert('Không hỗ trợ', 'Thiết bị không hỗ trợ chia sẻ file');
+        }
+      } catch (e) {
+        console.error('Export PNG failed:', e);
+        const message = e instanceof Error ? e.message : 'Khong the xuat PNG. Vui long thu lai.';
+        Alert.alert('Loi xuat PNG', message);
+      }
     }
-  }, []);
+  }, [chartRef]);
 
   if (error) {
     return (
@@ -265,7 +364,7 @@ export default function DashboardScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Tech<Text style={styles.headerAccent}>Radar</Text></Text>
         </View>
@@ -395,7 +494,7 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        <View style={styles.card} ref={chartRef} nativeID="main-chart-wrapper">
+        <View style={styles.card} ref={chartRef} nativeID="main-chart-wrapper" collapsable={false}>
           <View style={styles.chartHeader}>
             <Text style={styles.sectionTitle}>
               {chartMode === 'growth' ? 'Tăng trưởng % theo thời gian' : 'Số lượng Job Postings theo thời gian'}
@@ -404,14 +503,16 @@ export default function DashboardScreen() {
           </View>
 
           {visibleData.length > 0 ? (
-            <View style={{ marginLeft: -10, paddingRight: 20 }}>
+            <View style={styles.chartFrame}>
               {chartMode === 'bar' ? (
                 <BarChart
                   data={groupedBarData}
-                  width={radarChartWidth - 40}
+                  width={barChartWidth}
                   height={radarChartHeight - 40}
-                  barWidth={12}
+                  barWidth={adaptiveBarWidth}
                   initialSpacing={10}
+                  endSpacing={16}
+                  disableScroll
                   yAxisTextStyle={{ color: DM.text3, fontSize: 10 }}
                   xAxisLabelTextStyle={{ color: DM.text3, fontSize: 10 }}
                   yAxisColor={DM.border}
@@ -419,6 +520,7 @@ export default function DashboardScreen() {
                   rulesColor={DM.border}
                   rulesType="dashed"
                   noOfSections={4}
+                  maxValue={jobChartMaxValue}
                 />
               ) : (
                 <LineChart
@@ -437,12 +539,14 @@ export default function DashboardScreen() {
                   dataPointsColor3={giftedChartData[2]?.color}
                   dataPointsColor4={giftedChartData[3]?.color}
                   dataPointsColor5={giftedChartData[4]?.color}
-                  width={radarChartWidth - 40}
+                  width={chartViewportWidth}
                   height={radarChartHeight - 40}
                   curved
                   thickness={2}
-                  spacing={Math.max(30, (radarChartWidth - 60) / Math.max(1, visibleData.length))}
+                  spacing={lineChartSpacing}
                   initialSpacing={10}
+                  endSpacing={16}
+                  disableScroll
                   yAxisColor={DM.border}
                   xAxisColor={DM.border}
                   yAxisTextStyle={{ color: DM.text3, fontSize: 10 }}
@@ -451,6 +555,9 @@ export default function DashboardScreen() {
                   rulesType="dashed"
                   yAxisLabelSuffix={chartMode === 'growth' ? '%' : ''}
                   noOfSections={4}
+                  maxValue={chartMode === 'growth' ? growthChartAxis.maxValue : jobChartMaxValue}
+                  mostNegativeValue={chartMode === 'growth' ? growthChartAxis.mostNegativeValue : undefined}
+                  noOfSectionsBelowXAxis={chartMode === 'growth' ? growthChartAxis.noOfSectionsBelowXAxis : undefined}
                   hideDataPoints={false}
                   dataPointsRadius={3}
                   pointerConfig={{
@@ -633,6 +740,7 @@ const styles = StyleSheet.create({
     marginBottom: 16, flexWrap: 'wrap', gap: 8,
   },
   sectionTitle: { fontSize: 15, fontWeight: '700', color: DM.text },
+  chartFrame: { marginLeft: -10, paddingRight: 20 },
   chart: { borderRadius: DM.radius, marginLeft: -8 },
   legendRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 12 },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },

@@ -48,6 +48,11 @@ const selectStyles = {
     placeholder: (b) => ({ ...b, color: 'var(--text-3)' }),
 };
 
+function formatPercent(value) {
+    const n = Number(value || 0);
+    return `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
+}
+
 function CompareTooltip({ active, payload, label }) {
     if (!active || !payload?.length) return null;
     return (
@@ -57,7 +62,7 @@ function CompareTooltip({ active, payload, label }) {
                 <div key={p.dataKey} className="tooltip-row">
                     <span className="tooltip-dot" style={{ background: p.color }} />
                     <span className="tooltip-tech">{p.name}</span>
-                    <span className={`tooltip-jobs ${p.value >= 0 ? 'up' : 'down'}`}>{p.value >= 0 ? '+' : ''}{p.value}%</span>
+                    <span className={`tooltip-jobs ${p.value >= 0 ? 'up' : 'down'}`}>{formatPercent(p.value)}</span>
                 </div>
             ))}
         </div>
@@ -160,14 +165,6 @@ export default function ComparePage() {
                     baseVal = point.job_count;
                 }
                 
-                let growth = 0;
-                if (baseVal !== null && baseVal > 0) {
-                    growth = Math.round(((point.job_count - baseVal) / baseVal) * 100);
-                } else {
-                    // Nếu toàn 0 từ đầu đến giờ thì phần trăm tăng trưởng = 0
-                    growth = 0;
-                }
-                
                 if (!mergedMap[m]) {
                     mergedMap[m] = { month: m, rawSort: point.year * 100 + point.month };
                 }
@@ -190,7 +187,7 @@ export default function ComparePage() {
             activeTechIds.forEach(kw => {
                 const baseVal = baseVals[kw];
                 growthRow[kw] = baseVal !== null && baseVal > 0
-                    ? Math.round(((Number(row[kw] || 0) - baseVal) / baseVal) * 100)
+                    ? Number((((Number(row[kw] || 0) - baseVal) / baseVal) * 100).toFixed(2))
                     : 0;
             });
             return growthRow;
@@ -241,10 +238,10 @@ export default function ComparePage() {
                                 <span className="cs-dot" style={{ background: s.color }} />
                                 <span className="cs-name">{s.name}</span>
                             </div>
-                            <div className="cs-big">{s.total >= 0 ? '+' : ''}{s.total}%</div>
+                            <div className="cs-big">{formatPercent(s.total)}</div>
                             <div className="cs-meta-row">
-                                <div className="cs-meta"><span>YoY</span><strong className={s.yoy >= 0 ? 'up' : 'down'}>{s.yoy >= 0 ? '+' : ''}{Math.round(s.yoy)}%</strong></div>
-                                <div className="cs-meta"><span>MoM</span><strong className={s.mom >= 0 ? 'up' : 'down'}>{s.mom >= 0 ? '+' : ''}{Math.round(s.mom)}%</strong></div>
+                                <div className="cs-meta"><span>YoY</span><strong className={s.yoy >= 0 ? 'up' : 'down'}>{formatPercent(s.yoy)}</strong></div>
+                                <div className="cs-meta"><span>MoM</span><strong className={s.mom >= 0 ? 'up' : 'down'}>{formatPercent(s.mom)}</strong></div>
                             </div>
                         </div>
                     ))}

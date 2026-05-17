@@ -1,9 +1,9 @@
 # 📊 Data Pipeline — Khai phá dữ liệu IT
 
-Pipeline thu thập, lọc và trích xuất thực thể từ các bài viết / tin tuyển dụng IT tiếng Việt, gồm **3 giai đoạn chính**:
+Pipeline thu thập, lọc và trích xuất thực thể từ các bài viết / tin tuyển dụng IT tiếng Việt, gồm **4 giai đoạn chính**:
 
 ```
-[Scraping] ──► [Filtering] ──► [Entity Extraction]
+[Scraping & Download] ──► [Filtering] ──► [Entity Extraction] ──► [Cloud Upload]
 ```
 
 ---
@@ -12,12 +12,15 @@ Pipeline thu thập, lọc và trích xuất thực thể từ các bài viết 
 
 ```
 data-pipeline/
+├── dowload_data.py                 # Tải dataset từ HuggingFace (tinixai/vietnamese-job-descriptions)
+├── clean_json_fields.py            # Làm sạch dữ liệu JSON tải về (xoá các trường không cần thiết)
 ├── scrape_from_DT.py               # Scraper: Dân Trí (công nghệ)
 ├── scrape_from_GenK.py             # Scraper: GenK (AI, internet, ICT...)
 ├── scrape_from_topCV.py            # Scraper: TopCV (tin tuyển dụng IT)
 ├── scrape_from_VN-EP.py            # Scraper: VnExpress (khoa học-công nghệ)
 ├── filter_data.py                  # Lọc IT/Non-IT bằng PhoBERT
 ├── extract_data.py                 # Trích xuất thực thể (NER + rule-based)
+├── upload_to_s3.py                 # Tải dữ liệu đã trích xuất (extracted_data) lên AWS S3
 ├── phobert_title_classifier_best/  # Model PhoBERT fine-tune (dùng trong filter_data.py)
 ├── raw_data/                       # Output của bước Scraping
 ├── filtered_data/                  # Output của bước Filtering
@@ -30,8 +33,10 @@ data-pipeline/
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  BƯỚC 1 — SCRAPING (Thu thập dữ liệu thô)                          │
+│  BƯỚC 1 — THU THẬP DỮ LIỆU (Scraping & Download)                   │
 │                                                                     │
+│   dowload_data.py      ──►  vietnamese_job_descriptions_1000.json │
+│   clean_json_fields.py ──►  raw_data_job_descriptions.json        │
 │   scrape_from_DT.py    ──►  raw_data/raw_data_DT_part{1,2}.json   │
 │   scrape_from_GenK.py  ──►  raw_data/raw_data_GenK_part{1..4}.json│
 │   scrape_from_topCV.py ──►  raw_data/raw_data_topCV.json          │
@@ -57,6 +62,15 @@ data-pipeline/
 │     Output : extracted_data/extracted_data_phobert_*.json           │
 │              (chỉ bài is_relevant=true, có thêm field "entities")   │
 └─────────────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  BƯỚC 4 — CLOUD STORAGE (Tải dữ liệu lên AWS S3)                   │
+│                                                                     │
+│   upload_to_s3.py                                                   │
+│     Input  : extracted_data/*.json                                  │
+│     Output : AWS S3 Bucket (database-data-mining/extracted_data)    │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -69,6 +83,7 @@ data-pipeline/
 pip install selenium undetected-chromedriver
 pip install torch transformers
 pip install underthesea
+pip install datasets boto3 python-dotenv
 ```
 
 ### Trình duyệt & Driver
@@ -86,7 +101,22 @@ pip install underthesea
 
 ## 📝 Chi tiết từng bước
 
-### Bước 1 — Scraping
+### Bước 1 — Scraping & Download Data
+
+#### `dowload_data.py` & `clean_json_fields.py` — HuggingFace
+
+- **Nguồn:** Dataset `tinixai/vietnamese-job-descriptions` trên HuggingFace
+- **Cơ chế:** Dùng thư viện `datasets` để tải 10,000 bản ghi đầu tiên, sau đó làm sạch các trường không cần thiết (như `id`, `job_type`, `year`, `experience_level`...).
+- **Output:** `raw_data_job_descriptions.json` (dạng mảng JSON trực tiếp).
+
+```bash
+# Tải dữ liệu từ HuggingFace
+python dowload_data.py
+# Làm sạch dữ liệu JSON
+python clean_json_fields.py
+```
+
+---
 
 #### `scrape_from_DT.py` — Dân Trí
 
@@ -172,6 +202,7 @@ num_pages = 10
 ### Bước 2 — Filtering (`filter_data.py`)
 
 Dùng model **PhoBERT** đã fine-tune (lưu tại `phobert_title_classifier_best/`) để phân loại mỗi bài là **IT** hay **Non-IT** dựa trên tiêu đề.
+*Hỗ trợ hai định dạng JSON: Dạng đối tượng có chứa mảng (legacy) và dạng mảng trực tiếp (từ HuggingFace).*
 
 #### Pipeline tiền xử lý tiêu đề (giống lúc training)
 
@@ -282,10 +313,24 @@ python extract_data.py --dir path/to/filtered_data/
 
 ---
 
+### Bước 4 — Upload AWS S3 (`upload_to_s3.py`)
+
+- **Mục đích:** Đồng bộ dữ liệu đã được trích xuất (`extracted_data/*.json`) lên bucket S3 `database-data-mining`.
+- **Cơ chế:** Script sẽ tự động xóa các file cũ trong thư mục S3 (đảm bảo tính idempotency) trước khi upload toàn bộ file mới.
+- **Yêu cầu:** Cần có file `.env` chứa `AWS_ACCESS_KEY_ID` và `AWS_SECRET_ACCESS_KEY`.
+
+```bash
+python upload_to_s3.py
+```
+
+---
+
 ## 🚀 Chạy toàn bộ pipeline
 
 ```bash
 # Bước 1: Thu thập dữ liệu (chạy từng script theo nhu cầu)
+python dowload_data.py
+python clean_json_fields.py
 python scrape_from_DT.py
 python scrape_from_GenK.py
 python scrape_from_topCV.py
@@ -296,6 +341,9 @@ python filter_data.py
 
 # Bước 3: Trích xuất thực thể
 python extract_data.py
+
+# Bước 4: Tải dữ liệu lên S3
+python upload_to_s3.py
 ```
 
 > **Tip:** Các bước 2 và 3 xử lý **tất cả** file trong thư mục tương ứng, nên có thể chạy từng script Scraping riêng rồi chạy filter/extract một lần sau cùng.
@@ -306,6 +354,7 @@ python extract_data.py
 
 | Script | Nguồn | Loại nội dung | File đầu ra |
 |--------|-------|---------------|-------------|
+| `dowload_data.py` | [HuggingFace](https://huggingface.co/datasets/tinixai/vietnamese-job-descriptions) | Dataset tin tuyển dụng IT tiếng Việt | `vietnamese_job_descriptions_1000.json` |
 | `scrape_from_DT.py` | [Dân Trí](https://dantri.com.vn/cong-nghe/) | Bài viết công nghệ (AI, an ninh mạng) | `raw_data_DT_part1.json`, `raw_data_DT_part2.json` |
 | `scrape_from_GenK.py` | [GenK](https://genk.vn/) | Bài viết IT, đồ chơi số, ICT | `raw_data_GenK_part1-4.json` |
 | `scrape_from_topCV.py` | [TopCV](https://www.topcv.vn/) | Tin tuyển dụng IT | `raw_data_topCV.json` |
@@ -390,9 +439,9 @@ Các cụm từ dài được match trước cụm ngắn (`sorted by len, rever
 ## 📊 Luồng dữ liệu đầy đủ
 
 ```
-Dantri / GenK / VnExpress / TopCV
+Dantri / GenK / VnExpress / TopCV / HuggingFace
           │
-          │  selenium / undetected_chromedriver
+          │  selenium / undetected_chromedriver / datasets
           ▼
     raw_data/*.json
     { source_platform, source_url, scraped_at,

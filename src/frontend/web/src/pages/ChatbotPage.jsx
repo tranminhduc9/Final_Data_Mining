@@ -523,11 +523,11 @@ export default function ChatbotPage() {
                         disabled={isStreaming}
                     />
                     <button
-                        className={`send-btn${isStreaming ? ' loading' : ''}`}
+                        className="send-btn"
                         onClick={() => sendMessage(input)}
                         disabled={isStreaming || !input.trim()}
                     >
-                        {isStreaming ? '...' : 'Gửi'}
+                        {isStreaming ? <span className="dots-animation"><span>.</span><span>.</span><span>.</span></span> : 'Gửi'}
                     </button>
                 </div>
             </div>

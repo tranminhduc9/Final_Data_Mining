@@ -1,158 +1,155 @@
-# ml-clustering — Hệ thống phân cụm Technology
+# ml-clustering — Hệ thống phân cụm công nghệ
 
-Module độc lập trong dự án **TechPulse** — dùng Scikit-learn làm core, Neo4j GDS sinh feature từ đồ thị tri thức, DVC quản lý phiên bản dữ liệu, MLflow track tham số/chỉ số, Gemini 2.5 Flash tự động đặt tên cụm.
+Module độc lập trong dự án **TechPulse** — phân cụm các node `:Technology` từ Neo4j AuraDB thành các nhóm có ý nghĩa, phục vụ ClusterDashboard và phân tích xu hướng.
 
 ## 1. Mục tiêu
 
-Phân cụm **1,137 node `:Technology`** đang nằm trong Neo4j AuraDB (đồ thị tri thức TechPulse) thành các nhóm có ý nghĩa (ví dụ: "AI/ML stack", "Frontend JS framework", "Cloud infra", "Mobile native"…) để:
+- Tự động nhóm công nghệ theo đặc trưng ngữ nghĩa, tuyển dụng và đồ thị.
+- Không cần gán nhãn thủ công.
+- Phục vụ phân tích xu hướng công nghệ theo cụm.
 
-1. Thay thế trường `category` hiện tại (97% là `"Other"` — vô giá trị).
-2. Cấp dữ liệu cho Trend Analysis (gom xu hướng theo cụm thay vì từng tech rời rạc).
-3. Hỗ trợ recommendation cho user roadmap (tech cùng cụm = học tiếp được).
-
-## 2. Kết luận khảo sát thực tế (đã inspect AuraDB ngày 06/05/2026)
-
-| Hạng mục | Giá trị |
-|---|---|
-| `Technology` nodes | 1,137 |
-| Có degree ≥ 5 | 391 (34%) — "lõi" để cluster ổn định |
-| Có degree ≤ 2 | 603 (53%) — DBSCAN sẽ tự đẩy vào nhóm noise |
-| GDS plugin trên AuraDB | ✅ 393 procedures sẵn sàng |
-| APOC plugin trên AuraDB | ✅ v2026.04.0 |
-| Article embedding (768d) đã có | 526 / 834 bài |
-| Cạnh `(Article)-[:MENTIONS]->(Technology)` | 15,957 |
-| Cạnh `(Company)-[:USES]->(Technology)` | 11,296 |
-| Cạnh `(Job)-[:REQUIRES]->(Technology)` | 4,916 |
-| Cạnh `(Technology)-[:RELATED_TO]->(Technology)` | 70 |
-
-**Hệ quả thiết kế:**
-- DBSCAN/HDBSCAN ưu tiên hơn KMeans (vì có ~53% node "thưa" đáng coi là noise).
-- Có thể chạy GDS thẳng trên AuraDB, không cần ETL về local.
-- Content feature mạnh: lấy mean embedding 768d của các Article có MENTIONS từng tech (Bag-of-Articles).
-
-## 3. Kiến trúc luồng xử lý
+## 2. Kiến trúc pipeline
 
 ```
-                    ┌─────────────────────────────┐
-                    │    Neo4j AuraDB (cloud)     │
-                    │  Technology / Article / ... │
-                    └──────────────┬──────────────┘
-                                   │
-        ┌──────────────────────────┴──────────────────────────┐
-        │                                                     │
-        ▼                                                     ▼
-  Stage 1: EXTRACT                                  Stage 2: FEATURES
-  pipelines/stage_01_extract.py                     pipelines/stage_02_features.py
-  data/raw/snapshot_<tag>/                          data/features/<tag>/X.npy
-   ├ technologies.parquet                            + tech_ids.parquet
-   ├ companies.parquet                               + feature_meta.json
-   ├ articles.parquet                               (tracked by DVC)
-   ├ jobs.parquet
-   └ edges.parquet
-  (tracked by DVC)
-                                                     ┌────────────────────┐
-                                                     │  GDS in-memory     │
-                                                     │  (FastRP, PageRank,│
-                                                     │   Louvain, degree) │
-                                                     └────────────────────┘
-                                                     │
-                                                     ▼
-                                              Stage 3: TRAIN
-                                              pipelines/stage_03_train.py
-                                              ├ DBSCAN/HDBSCAN/KMeans
-                                              ├ Grid search eps/min_samples
-                                              ├ Silhouette / DB / Calinski
-                                              └ MLflow log + register best
-                                                     │
-                                                     ▼
-                                              Stage 4: LABEL
-                                              pipelines/stage_04_label.py
-                                              Gemini 2.5 Flash gán tên cụm
-                                              data/labels/<tag>/cluster_labels.json
-                                                     │
-                                                     ▼
-                                              Stage 5: WRITEBACK (optional)
-                                              pipelines/stage_05_writeback.py
-                                              Ghi cluster_id, cluster_label
-                                              ngược về Neo4j (APOC batch)
+Neo4j AuraDB
+     │
+     ▼
+Stage 1: EXTRACT        pipelines/stage_01_extract.py
+data/raw/snapshot_<tag>/
+  ├ technologies.parquet
+  ├ companies.parquet
+  ├ articles.parquet
+  ├ jobs.parquet
+  └ edges_*.parquet
+     │
+     ▼
+Stage 2: FEATURES       pipelines/stage_02_features.py
+  - Chuẩn hóa alias (k8s → Kubernetes, ...)
+  - Noise filter (min_job_count=3, blocklist, regex)
+  - Name embedding 768d → PCA 64d  (intfloat/multilingual-e5-base)
+  - Graph stats (degree, job/article/company count)
+  - Job TF-IDF (500 features)
+  - StandardScaler → UMAP 32d
+data/features/<tag>/{X.npy, tech_ids.parquet, feature_meta.json}
+     │
+     ▼
+Stage 3: TRAIN          pipelines/stage_03_train.py
+  - HDBSCAN grid search (18 tổ hợp)
+  - Constraints: 12–28 cụm, noise ≤ 60%
+  - Chọn best theo Silhouette Score
+  - MLflow log toàn bộ trials + register best model
+data/models/<tag>/{best_model.pkl, best_labels.parquet}
+     │
+     ▼
+Stage 4: LABEL          pipelines/stage_04_label.py
+  - GPT-4o-mini tự động đặt tên + mô tả cụm
+data/labels/<tag>/cluster_labels.json
+     │
+     ▼
+FastAPI app             app/main.py  (port 8001)
+  - Serve kết quả từ artifacts
+  - Hỗ trợ publish lên S3 + auto-reload
 ```
 
-Mỗi stage là một **DVC stage** trong `dvc.yaml`, input/output rõ ràng, có thể `dvc repro` để tái lập toàn bộ pipeline.
+Stage 5 (writeback Neo4j) không sử dụng.
 
-## 4. Tech stack chốt
+## 3. Tech stack
 
 | Thành phần | Công nghệ |
 |---|---|
-| Core ML | Scikit-learn 1.5+ |
-| Graph features | Neo4j GDS (FastRP, PageRank, Louvain, degreeCentrality) |
-| Content features | Article embedding 768d sẵn có (multilingual-e5-base) |
-| Versioning data | DVC 3.x (remote tuỳ chọn — local hoặc S3) |
-| Experiment tracking | MLflow 2.x (sqlite backend cho dev, postgres khi prod) |
-| Auto label | Gemini 2.5 Flash qua `langchain-google-genai` |
-| Outlier-friendly clusterer | HDBSCAN (`hdbscan` package) |
+| Core ML | Scikit-learn 1.5+ (`sklearn.cluster.HDBSCAN`) |
+| Name embedding | `intfloat/multilingual-e5-base` (SentenceTransformers) |
+| Experiment tracking | MLflow (SQLite backend) |
+| Data versioning | DVC 3.x |
+| Auto label | GPT-4o-mini |
+| API | FastAPI |
+| Artifact storage | Local hoặc S3 (tuỳ cấu hình) |
 
-## 5. Cấu trúc thư mục
+## 4. Cấu trúc thư mục
 
 ```
 src/ml-clustering/
-├── README.md                               # tài liệu này
-├── requirements.txt
-├── dvc.yaml                                # định nghĩa 5 stage
-├── params.yaml                             # eps, min_samples, model name…
-├── conf/
-│   └── config.py                           # load .env, paths, neo4j conn
-├── data/                                   # gitignored, DVC-tracked
-│   ├── raw/snapshot_<tag>/
-│   ├── features/<tag>/
-│   └── labels/<tag>/
-├── src/
-│   ├── data/{neo4j_loader,snapshot}.py
-│   ├── features/{gds_features,content_features,graph_features,feature_pipeline}.py
-│   ├── clustering/{trainer,tuner,evaluator}.py
-│   ├── labeling/{llm_labeler.py, prompts/cluster_label.txt}
-│   └── tracking/mlflow_logger.py
+├── params.yaml                     # toàn bộ hyperparameter — DVC tracked
+├── dvc.yaml                        # định nghĩa 4 stage
+├── conf/config.py                  # load .env + params.yaml
+├── app/                            # FastAPI serving
+│   ├── main.py
+│   ├── store.py                    # load + cache artifacts (local/S3)
+│   └── schemas.py
 ├── pipelines/
 │   ├── stage_01_extract.py
 │   ├── stage_02_features.py
 │   ├── stage_03_train.py
-│   ├── stage_04_label.py
-│   └── stage_05_writeback.py
-└── tests/
-    ├── unit/
-    └── integration/
+│   └── stage_04_label.py
+├── src/
+│   ├── data/{neo4j_loader,snapshot}.py
+│   ├── features/{content_features,graph_features,feature_pipeline,
+│   │            noise_filter,tech_aliases,acronym_map}.py
+│   ├── clustering/{trainer,tuner,evaluator}.py
+│   ├── labeling/{llm_labeler.py,prompts/cluster_label.txt}
+│   └── tracking/mlflow_logger.py
+├── scripts/
+│   └── publish_s3_artifacts.sh    # đẩy artifact lên S3 sau khi train xong
+└── data/                          # gitignored, DVC-tracked
+    ├── raw/snapshot_<tag>/
+    ├── features/<tag>/
+    ├── models/<tag>/
+    └── labels/<tag>/
 ```
 
-## 6. Quy ước
+## 5. Cách chạy
 
-- **Tham số ở `params.yaml`** — không hardcode trong code. Mọi thay đổi tham số phải đi qua DVC để re-run được.
-- **Mọi run đều log MLflow** — với tag `dataset_snapshot=<tag>` để biết model nào ứng với snapshot data nào.
-- **Không gọi Gemini trong vòng lặp huấn luyện** — chỉ gọi 1 lần ở Stage 4 với cụm đã chốt.
-- **Tham số hoá Cypher** — không nối f-string, để cache execution plan.
-- **`tech_id` chính = `elementId(t)` của Neo4j** — bền vững hơn `name` (có thể trùng lower-case sau cleaning).
-
-## 7. Cách chạy
-
+### Cài đặt
 ```bash
 cd src/ml-clustering
 pip install -r requirements.txt
+cp ../../.env .env   # cần NEO4J_URI, NEO4J_PASSWORD, OPENAI_API_KEY
+```
 
-# Chạy toàn bộ pipeline lần đầu
+### Chạy pipeline
+```bash
+# Chạy toàn bộ pipeline (DVC tự bỏ qua stage không thay đổi)
 dvc repro
 
 # Hoặc chạy từng stage
-python -m pipelines.stage_01_extract --tag 2026-05-06
-python -m pipelines.stage_02_features --tag 2026-05-06
-python -m pipelines.stage_03_train --tag 2026-05-06 --experiment tech_clustering_v1
-python -m pipelines.stage_04_label --run-id <mlflow_run_id>
-python -m pipelines.stage_05_writeback --run-id <mlflow_run_id>   # optional
+python -m pipelines.stage_01_extract --params params.yaml [--force]
+python -m pipelines.stage_02_features --params params.yaml
+python -m pipelines.stage_03_train --params params.yaml
+python -m pipelines.stage_04_label --params params.yaml [--run-id <mlflow_run_id>]
+```
 
-# Xem kết quả MLflow
+### Xem kết quả MLflow
+```bash
 mlflow ui --backend-store-uri sqlite:///mlruns.db
 ```
 
-## 8. Trách nhiệm code (đề xuất)
+### Chạy API
+```bash
+uvicorn app.main:app --reload --port 8001
+```
 
-- Stage 1–2 (data + features): 1 người, ~3 ngày.
-- Stage 3 (train + tune + MLflow): 1 người, ~3 ngày.
-- Stage 4 (Gemini label): 1 người, ~1 ngày.
-- Stage 5 (writeback Neo4j) + tests + DVC wiring: 1 người, ~2 ngày.
+### Publish lên S3 (sau khi train xong)
+```bash
+scripts/publish_s3_artifacts.sh --bucket <bucket> --region ap-southeast-1
+```
+
+## 6. Cấu hình
+
+Toàn bộ hyperparameter trong `params.yaml`. Thay đổi giá trị → `dvc repro` để chạy lại đúng các stage bị ảnh hưởng.
+
+Biến môi trường (trong `.env`):
+
+| Biến | Mô tả |
+|---|---|
+| `NEO4J_URI` | URI AuraDB |
+| `NEO4J_PASSWORD` | Mật khẩu Neo4j |
+| `OPENAI_API_KEY` | Key GPT-4o-mini (dùng ở stage label) |
+| `MLCLUSTER_S3_BUCKET` | S3 bucket (tuỳ chọn) |
+| `MLCLUSTER_SNAPSHOT_TAG` | Tag snapshot API sẽ load (`latest` để tự động) |
+
+## 7. Quy ước
+
+- Mọi tham số ở `params.yaml`, không hardcode trong code.
+- Mọi run đều log MLflow với tag snapshot tương ứng.
+- Không gọi LLM trong vòng lặp train — chỉ gọi 1 lần ở Stage 4.
+- `tech_id` = `elementId(t)` của Neo4j.
